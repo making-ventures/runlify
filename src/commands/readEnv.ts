@@ -9,16 +9,7 @@ module.exports = {
       print: { info },
     } = toolbox
 
-    // const name = parameters.first
-
-    // await generate({
-    //   template: 'model.ts.ejs',
-    //   target: `models/${name}-model.ts`,
-    //   props: { name },
-    // })
-
     // echo $SOME
-
 
     // info(JSON.stringify())
     // info(process.env)
