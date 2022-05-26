@@ -32,9 +32,11 @@
     "cross-spawn": "^7.0.3",
     "gluegun": "latest",
     "nconf": "^0.12.0",
-    "ramda": "^0.28.0"
+    "ramda": "^0.28.0",
+    "update-check": "^1.5.4"
   },
   "devDependencies": {
+    "@types/cross-spawn": "^6.0.2",
     "@types/jest": "^26.0.20",
     "@types/nconf": "^0.10.2",
     "@types/node": "^12.7.11",

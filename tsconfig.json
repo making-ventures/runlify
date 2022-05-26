@@ -21,8 +21,12 @@
     "strict": false,
     "target": "es5",
     "declaration": true,
+    "resolveJsonModule": true,
     "declarationDir": "build/types"
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "files": [         // by whitelisting the files to include, TS won't automatically
+    "package.json"   // include all source below root, which is the default.
+  ]
 }

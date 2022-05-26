@@ -1,9 +1,18 @@
 import { spawn } from 'cross-spawn'
 import { GluegunToolbox } from 'gluegun'
-import { TermSignals } from '../signal-termination'
+import TermSignals from '../utils/TermSignals'
 import { constantCase } from 'change-case'
 import * as nconf from 'nconf'
 import * as R from 'ramda'
+
+// console.log('nconf')
+// console.log(nconf)
+
+// console.log('nconf keys')
+// console.log(Object.keys(nconf))
+
+// console.log('nconf.env')
+// console.log(nconf.env)
 
 nconf.env()
 
@@ -58,10 +67,10 @@ module.exports = {
     // const withoutEnv = parameters.string.replace(`${envName} `, '')
     // // info(`withoutEnv: ${withoutEnv}`)
 
-    const command = parameters.second
+    const command = parameters.second ?? ''
     info(`command: ${command}`)
 
-    const commandArgs = parameters.array.splice(2)
+    const commandArgs = parameters.array?.splice(2) ?? []
     info(`commandArgs`)
     info(commandArgs)
 
