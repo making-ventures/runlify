@@ -1,5 +1,4 @@
 import { GluegunToolbox } from 'gluegun'
-import notifyUpdate from '../utils/notifyUpdate'
 
 module.exports = {
   name: 'readEnv',
@@ -20,7 +19,6 @@ module.exports = {
 
     // echo $SOME
 
-    await notifyUpdate(info)
 
     // info(JSON.stringify())
     // info(process.env)

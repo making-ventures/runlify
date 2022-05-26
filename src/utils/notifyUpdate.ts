@@ -6,12 +6,12 @@ import getPkgManager from './getPkgManager'
 
 const update = (checkForUpdate as any)(packageJson).catch(() => null)
 
-const notifyUpdate = async (info: (message: any) => void): Promise<void> => {
+const notifyUpdate = async (): Promise<void> => {
   try {
     const res = await update
     if (res?.latest) {
       const pkgManager = getPkgManager()
-      info(`
+      console.log(`
 A new version of \`create-next-app\` is available!
 You can update by running: ${
         pkgManager === 'yarn'
