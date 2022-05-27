@@ -5,15 +5,6 @@ import { constantCase } from 'change-case'
 import * as nconf from 'nconf'
 import * as R from 'ramda'
 
-// console.log('nconf')
-// console.log(nconf)
-
-// console.log('nconf keys')
-// console.log(Object.keys(nconf))
-
-// console.log('nconf.env')
-// console.log(nconf.env)
-
 nconf.env()
 
 module.exports = {

@@ -28,6 +28,7 @@
   ],
   "license": "MIT",
   "dependencies": {
+    "appdata-path": "^1.0.0",
     "change-case": "^4.1.2",
     "cross-spawn": "^7.0.3",
     "gluegun": "latest",
