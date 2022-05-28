@@ -1,11 +1,11 @@
 import { GluegunToolbox } from 'gluegun'
-import getAuth from './getAuth'
-import getConfigAccess from './getConfigAccess'
+import getAuth from '../utils/getAuth'
+import getConfigService from './getConfigService'
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const getMetaAccess = (toolbox: GluegunToolbox) => {
+const getMetaService = (toolbox: GluegunToolbox) => {
   const { removeToken } = getAuth(toolbox)
-  const { getConfigValue } = getConfigAccess(toolbox)
+  const { getConfigValue } = getConfigService(toolbox)
   const {
     print: { info, error, warning },
   } = toolbox
@@ -47,4 +47,4 @@ You should login first:
   }
 }
 
-export default getMetaAccess
+export default getMetaService

@@ -1,5 +1,4 @@
 import { build } from 'gluegun'
-import notifyUpdate from './utils/notifyUpdate'
 
 /**
  * Create the cli and kick it off
@@ -12,13 +11,12 @@ async function run(argv: any) {
     .plugins('./node_modules', { matching: 'runlify-*', hidden: true })
     .help() // provides default for help, h, --help, -h
     .version() // provides default for version, v, --version, -v
+    .checkForUpdates(100)
     .create()
   // enable the following method if you'd like to skip loading one of these core extensions
   // this can improve performance if they're not necessary for your project:
   // .exclude(['meta', 'strings', 'print', 'filesystem', 'semver', 'system', 'prompt', 'http', 'template', 'patching', 'package-manager'])
   // and run it
-
-  await notifyUpdate()
 
   const toolbox = await cli.run(argv)
 

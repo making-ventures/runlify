@@ -1,5 +1,5 @@
 import { GluegunToolbox } from 'gluegun'
-import getMetaAccess from '../utils/getMetaAccess'
+import getMetaService from '../services/getMetaService'
 
 module.exports = {
   name: 'tryGetMeta',
@@ -9,7 +9,7 @@ module.exports = {
       print: { info },
     } = toolbox
 
-    const { getMeta } = getMetaAccess(toolbox)
+    const { getMeta } = getMetaService(toolbox)
 
     const res = await getMeta('prj')
     info(res)

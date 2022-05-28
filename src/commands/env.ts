@@ -16,26 +16,6 @@ module.exports = {
       print: { info },
     } = toolbox
 
-    // const name = parameters.first
-
-    // await generate({
-    //   template: 'model.ts.ejs',
-    //   target: `models/${name}-model.ts`,
-    //   props: { name },
-    // })
-
-    // // echo $SOME
-    // const env: Record<string, string> = {
-    //   ...process.env,
-    //   SOME: '000',
-    // }
-    // info(`env`)
-    // info(env)
-
-    // // info(JSON.stringify())
-    info(parameters)
-    // info(`Generated file at models/${name}-model.ts`)
-
     const envName = parameters.first
     info(`envName: ${envName}`)
 
@@ -52,18 +32,10 @@ module.exports = {
           ),
       },
     })
-    info(`get`)
-    info(nconf.get())
-
-    // const withoutEnv = parameters.string.replace(`${envName} `, '')
-    // // info(`withoutEnv: ${withoutEnv}`)
 
     const command = parameters.second ?? ''
-    info(`command: ${command}`)
 
     const commandArgs = parameters.array?.splice(2) ?? []
-    info(`commandArgs`)
-    info(commandArgs)
 
     // Execute the command with the given environment variables
     const proc = spawn(command, commandArgs, {

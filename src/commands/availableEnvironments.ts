@@ -1,16 +1,16 @@
 import { GluegunToolbox } from 'gluegun'
-import getConfigService from '../services/getConfigService'
+import getEnvService from '../services/getEnvService'
 
 module.exports = {
-  name: 'showToken',
-  alias: ['s'],
+  name: 'availableEnvironments',
+  alias: ['a'],
   run: async (toolbox: GluegunToolbox) => {
     const {
       parameters,
       print: { info },
     } = toolbox
 
-    info(`showToken`)
+    info(`writeToken`)
 
     const envName = parameters.first
     info(`envName: ${envName}`)
@@ -22,8 +22,17 @@ module.exports = {
     info(`commandArgs`)
     info(commandArgs)
 
-    const { getConfigValue } = getConfigService(toolbox)
+    const { getAvailableEnvironments } = getEnvService(toolbox)
+    // /environmentVariables
 
-    console.log(getConfigValue('token'))
+    const varialbles = await getAvailableEnvironments(
+      'prj'
+      // [
+      //   'back',
+      //   'worker',
+      //   'telegramBot',
+      // ]
+    )
+    info(varialbles)
   },
 }
