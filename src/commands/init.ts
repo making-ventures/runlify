@@ -44,7 +44,47 @@ module.exports = {
         'runlify.developer.example.json',
         'runlify.developer.json'
       )
-      info(`Copied runlify.developer.example.json to runlify.developer.json`)
+      info('Copied runlify.developer.example.json to runlify.developer.json')
+    }
+
+    const hasYarn = toolbox.packageManager.hasYarn()
+    if (hasYarn) {
+      const path = process.env.PATH
+
+      const yarnBin = await toolbox.system.exec('yarn global bin')
+
+      const hasYarnBinInPath = path.includes(yarnBin)
+
+      if (!hasYarnBinInPath) {
+        const profile = `${toolbox.filesystem.homedir}/.profile`
+
+        if (!toolbox.filesystem.exists(profile)) {
+          return
+        }
+
+        const hasYarnBinInProfile = await toolbox.patching.exists(
+          profile,
+          'yarn global bin'
+        )
+
+        if (hasYarnBinInProfile) {
+          return
+        }
+
+        const { addYarnBinToProfile } = await toolbox.prompt.ask({
+          name: 'addYarnBinToProfile',
+          message: 'Would you like to add yarn bin to profile?',
+          type: 'confirm',
+          initial: true,
+        })
+
+        if (addYarnBinToProfile) {
+          await toolbox.filesystem.append(
+            profile,
+            '\nexport PATH="$(yarn global bin):$PATH"\n'
+          )
+        }
+      }
     }
   },
 }

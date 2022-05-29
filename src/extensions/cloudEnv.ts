@@ -1,12 +1,9 @@
 import { GluegunToolbox } from 'gluegun'
 import * as R from 'ramda'
 import getAuth from '../utils/getAuth'
-import getGlobalConfigService from './getGlobalConfigService'
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const getEnvService = (toolbox: GluegunToolbox) => {
+module.exports = async (toolbox: GluegunToolbox) => {
   const { removeToken } = getAuth(toolbox)
-  const { getConfigValue } = getGlobalConfigService(toolbox)
   const {
     print: { info, error, warning },
   } = toolbox
@@ -16,7 +13,7 @@ const getEnvService = (toolbox: GluegunToolbox) => {
     environmentId: string,
     scopes: string[]
   ) => {
-    const token = getConfigValue('token')
+    const token = toolbox.globalConfig.getConfigValue('token')
     info(`token: ${token}`)
 
     if (!token) {
@@ -57,7 +54,7 @@ You should login first:
   }
 
   const getAvailableEnvironments = async (projectId: string) => {
-    const token = getConfigValue('token')
+    const token = toolbox.globalConfig.getConfigValue('token')
     info(`token: ${token}`)
 
     if (!token) {
@@ -91,10 +88,8 @@ You should login first:
     return res.data.data
   }
 
-  return {
+  toolbox.cloudEnv = {
     getEnvVariables,
     getAvailableEnvironments,
   }
 }
-
-export default getEnvService

@@ -1,9 +1,7 @@
 import { GluegunToolbox } from 'gluegun'
-import getGlobalConfigService from '../services/getGlobalConfigService'
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const getAuth = (toolbox: GluegunToolbox) => {
-  const { setConfigValue, getConfigValue } = getGlobalConfigService(toolbox)
   const {
     print: { info, error },
   } = toolbox
@@ -45,11 +43,11 @@ const getAuth = (toolbox: GluegunToolbox) => {
     info('tokenEntity')
     info(tokenEntity)
 
-    setConfigValue('token', tokenEntity.token)
+    toolbox.globalConfig.setConfigValue('token', tokenEntity.token)
   }
 
   const logout = async () => {
-    const token = getConfigValue('token')
+    const token = toolbox.globalConfig.getConfigValue('token')
     info(`token: ${token}`)
 
     const endpoint = 'http://localhost:3000'
@@ -69,7 +67,7 @@ const getAuth = (toolbox: GluegunToolbox) => {
   }
 
   const removeToken = () => {
-    setConfigValue('token', undefined)
+    toolbox.globalConfig.setConfigValue('token', undefined)
   }
 
   return {

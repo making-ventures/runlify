@@ -12,18 +12,13 @@ module.exports = {
   name: 'env',
   alias: ['e'],
   run: async (toolbox: GluegunToolbox) => {
-    const {
-      parameters,
-      print: { info },
-    } = toolbox
+    const { parameters } = toolbox
 
     const { getConfig } = getLocalConfigService(toolbox)
 
     const config = getConfig()
-    info(config)
 
     const envName = parameters.first || config.developer.defaultEnvironment
-    info(`envName: ${envName}`)
 
     nconf.file({
       file: `./config/${envName}.json`,
