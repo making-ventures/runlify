@@ -8,7 +8,7 @@ module.exports = {
       print: { info },
     } = toolbox
 
-    const { getAvailableEnvironments } = toolbox.cloudEnv
+    const { getAvailableEnvironments, getEnvVariables } = toolbox.cloudEnv
     const { getConfig } = toolbox.localConfig
 
     const config = getConfig()
@@ -26,7 +26,7 @@ module.exports = {
       // ]
     )
     for (const env of availableEnvironments) {
-      const variables = await toolbox.getEnvVariables(projectId, env, scopes)
+      const variables = await getEnvVariables(projectId, env, scopes)
 
       info(variables)
       info(env)
