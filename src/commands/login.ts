@@ -1,5 +1,4 @@
 import { GluegunToolbox } from 'gluegun'
-import getAuth from '../utils/getAuth'
 
 module.exports = {
   name: 'login',
@@ -22,7 +21,7 @@ module.exports = {
     info(`commandArgs`)
     info(commandArgs)
 
-    const { login } = getAuth(toolbox)
+    const { login } = toolbox.auth
 
     await login()
   },

@@ -1,9 +1,8 @@
 import { GluegunToolbox } from 'gluegun'
 import * as R from 'ramda'
-import getAuth from '../utils/getAuth'
 
 module.exports = async (toolbox: GluegunToolbox) => {
-  const { removeToken } = getAuth(toolbox)
+  const { removeToken } = toolbox.auth
   const {
     print: { info, error, warning },
   } = toolbox

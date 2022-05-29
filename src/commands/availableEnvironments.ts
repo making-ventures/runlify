@@ -1,6 +1,4 @@
 import { GluegunToolbox } from 'gluegun'
-// import getEnvService from '../services/getEnvService'
-import getLocalConfigService from '../services/getLocalConfigService'
 
 module.exports = {
   name: 'availableEnvironments',
@@ -25,7 +23,7 @@ module.exports = {
 
     const { getAvailableEnvironments } = toolbox.cloudEnv
     // /environmentVariables
-    const { getConfig } = getLocalConfigService(toolbox)
+    const { getConfig } = toolbox.localConfig
 
     const config = getConfig()
     info(config)

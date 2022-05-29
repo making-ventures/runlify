@@ -23,6 +23,6 @@
     "declaration": true,
     "declarationDir": "build/types"
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "src/extensions/.ts"],
   "exclude": ["node_modules"]
 }

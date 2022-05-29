@@ -1,7 +1,6 @@
 import { GluegunToolbox } from 'gluegun'
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const getLocalConfigService = (toolbox: GluegunToolbox) => {
+module.exports = async (toolbox: GluegunToolbox) => {
   const getConfig = () => {
     const runlifyConfig = toolbox.filesystem.read('./runlify.json', 'json')
     const developerRunlifyConfig = toolbox.filesystem.read(
@@ -17,9 +16,7 @@ const getLocalConfigService = (toolbox: GluegunToolbox) => {
     }
   }
 
-  return {
+  toolbox.localConfig = {
     getConfig,
   }
 }
-
-export default getLocalConfigService

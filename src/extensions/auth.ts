@@ -1,7 +1,6 @@
 import { GluegunToolbox } from 'gluegun'
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const getAuth = (toolbox: GluegunToolbox) => {
+module.exports = async (toolbox: GluegunToolbox) => {
   const {
     print: { info, error },
   } = toolbox
@@ -70,11 +69,9 @@ const getAuth = (toolbox: GluegunToolbox) => {
     toolbox.globalConfig.setConfigValue('token', undefined)
   }
 
-  return {
+  toolbox.auth = {
     login,
     logout,
     removeToken,
   }
 }
-
-export default getAuth

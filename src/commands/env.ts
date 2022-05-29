@@ -4,7 +4,6 @@ import TermSignals from '../utils/TermSignals'
 import { constantCase } from 'change-case'
 import * as nconf from 'nconf'
 import * as R from 'ramda'
-import getLocalConfigService from '../services/getLocalConfigService'
 
 nconf.env()
 
@@ -14,7 +13,7 @@ module.exports = {
   run: async (toolbox: GluegunToolbox) => {
     const { parameters } = toolbox
 
-    const { getConfig } = getLocalConfigService(toolbox)
+    const { getConfig } = toolbox.localConfig
 
     const config = getConfig()
 
