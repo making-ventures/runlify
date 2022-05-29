@@ -10,10 +10,9 @@ module.exports = async (toolbox: GluegunToolbox) => {
     toolbox.print.warning(`
 A new version of \`runlify\` is available!
 You can update by running: ${
-      // toolbox.packageManager.hasYarn()
-      //   ? 'yarn global add runlify'
-      //   :
-      `npm install --global runlify`
+      toolbox.packageManager.hasYarn()
+        ? 'yarn global add runlify'
+        : `npm install --global runlify`
     }
 `)
     process.exit()

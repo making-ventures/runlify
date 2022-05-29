@@ -45,7 +45,7 @@ module.exports = {
     })
     console.log(password)
 
-    const endpoint = 'http://localhost:3000/'
+    const endpoint = 'https://prj.prod.apps.stage01.making.ventures/'
     console.log(endpoint)
   },
 }

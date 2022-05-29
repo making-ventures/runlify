@@ -20,7 +20,7 @@ module.exports = async (toolbox: GluegunToolbox) => {
     })
     info(password)
 
-    const endpoint = 'http://localhost:3000'
+    const endpoint = 'https://prj.prod.apps.stage01.making.ventures/'
     info(endpoint)
 
     const http = await toolbox.http.create({ baseURL: endpoint })
@@ -49,7 +49,7 @@ module.exports = async (toolbox: GluegunToolbox) => {
     const token = toolbox.globalConfig.getConfigValue('token')
     info(`token: ${token}`)
 
-    const endpoint = 'http://localhost:3000'
+    const endpoint = 'https://prj.prod.apps.stage01.making.ventures/'
     const http = await toolbox.http.create({ baseURL: endpoint })
     const res = await http.post<any>(
       '/rest/cli/logout',
