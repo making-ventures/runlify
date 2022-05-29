@@ -1,5 +1,5 @@
 import { GluegunToolbox } from 'gluegun'
-import getConfigService from '../services/getConfigService'
+import getGlobalConfigService from '../services/getGlobalConfigService'
 
 module.exports = {
   name: 'writeToken',
@@ -23,7 +23,7 @@ module.exports = {
     info(commandArgs)
 
     const { getConfig, getConfigValue, getConfigPath } =
-      getConfigService(toolbox)
+      getGlobalConfigService(toolbox)
 
     console.log(getConfig())
 

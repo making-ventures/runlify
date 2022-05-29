@@ -1,6 +1,6 @@
 {
   "name": "runlify",
-  "version": "0.0.18",
+  "version": "0.0.27",
   "description": "runlify CLI",
   "private": false,
   "types": "build/types/types.d.ts",
@@ -10,7 +10,7 @@
   "scripts": {
     "clean-build": "rm -rf ./build",
     "compile": "tsc -p .",
-    "copy-templates": "copyfiles ./src/templates/* ./build/templates",
+    "copy-templates": "mkdir -p ./build/templates && cp ./src/templates/* ./build/templates",
     "build": "yarn clean-build && yarn compile && yarn copy-templates",
     "prepublishOnly": "yarn build",
     "format": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix && prettier \"**/*.{js,jsx,ts,tsx,json}\" --write",

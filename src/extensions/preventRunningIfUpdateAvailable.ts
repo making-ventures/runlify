@@ -6,9 +6,8 @@ module.exports = async (toolbox: GluegunToolbox) => {
   }
 
   const res = await toolbox.meta.checkForUpdate()
-  console.log(JSON.stringify(res))
   if (res) {
-    console.log(`
+    toolbox.print.warning(`
 A new version of \`runlify\` is available!
 You can update by running: ${
       // toolbox.packageManager.hasYarn()

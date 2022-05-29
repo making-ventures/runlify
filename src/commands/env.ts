@@ -4,6 +4,7 @@ import TermSignals from '../utils/TermSignals'
 import { constantCase } from 'change-case'
 import * as nconf from 'nconf'
 import * as R from 'ramda'
+import getLocalConfigService from '../services/getLocalConfigService'
 
 nconf.env()
 
@@ -16,7 +17,12 @@ module.exports = {
       print: { info },
     } = toolbox
 
-    const envName = parameters.first
+    const { getConfig } = getLocalConfigService(toolbox)
+
+    const config = getConfig()
+    info(config)
+
+    const envName = parameters.first || config.developer.defaultEnvironment
     info(`envName: ${envName}`)
 
     nconf.file({

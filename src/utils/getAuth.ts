@@ -1,9 +1,9 @@
 import { GluegunToolbox } from 'gluegun'
-import getConfigService from '../services/getConfigService'
+import getGlobalConfigService from '../services/getGlobalConfigService'
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const getAuth = (toolbox: GluegunToolbox) => {
-  const { setConfigValue, getConfigValue } = getConfigService(toolbox)
+  const { setConfigValue, getConfigValue } = getGlobalConfigService(toolbox)
   const {
     print: { info, error },
   } = toolbox

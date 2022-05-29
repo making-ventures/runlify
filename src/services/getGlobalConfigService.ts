@@ -2,7 +2,7 @@ import { GluegunToolbox } from 'gluegun'
 import getAppDataPath from 'appdata-path'
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const getConfigService = (toolbox: GluegunToolbox) => {
+const getGlobalConfigService = (toolbox: GluegunToolbox) => {
   const getConfigPath = () => getAppDataPath('runlify/runlify.json')
 
   const writeConfig = (config: Record<string, any>) => {
@@ -52,4 +52,4 @@ const getConfigService = (toolbox: GluegunToolbox) => {
   }
 }
 
-export default getConfigService
+export default getGlobalConfigService
