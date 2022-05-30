@@ -1,7 +1,7 @@
 import { GluegunToolbox } from 'gluegun'
 
 module.exports = {
-  name: 'showEnvironmentVariables',
+  name: 'pullEnv',
   // alias: ['a'],
   run: async (toolbox: GluegunToolbox) => {
     const {
@@ -25,11 +25,12 @@ module.exports = {
       //   'telegramBot',
       // ]
     )
+    info(availableEnvironments)
 
     for (const env of availableEnvironments) {
       const variables = await getEnvVariables(projectId, env, scopes)
 
-      info(variables)
+      // info(variables)
       info(env)
 
       toolbox.filesystem.write(`./config/${env}.json`, variables)
