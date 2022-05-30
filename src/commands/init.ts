@@ -56,34 +56,37 @@ module.exports = {
       const hasYarnBinInPath = path.includes(yarnBin)
 
       if (!hasYarnBinInPath) {
-        const profile = `${toolbox.filesystem.homedir}/.profile`
+        const tryToAddToProfile = async (path: string) => {
+          if (!toolbox.filesystem.exists(path)) {
+            return
+          }
 
-        if (!toolbox.filesystem.exists(profile)) {
-          return
-        }
-
-        const hasYarnBinInProfile = await toolbox.patching.exists(
-          profile,
-          'yarn global bin'
-        )
-
-        if (hasYarnBinInProfile) {
-          return
-        }
-
-        const { addYarnBinToProfile } = await toolbox.prompt.ask({
-          name: 'addYarnBinToProfile',
-          message: 'Would you like to add yarn bin to profile?',
-          type: 'confirm',
-          initial: true,
-        })
-
-        if (addYarnBinToProfile) {
-          await toolbox.filesystem.append(
-            profile,
-            '\nexport PATH="$(yarn global bin):$PATH"\n'
+          const hasYarnBinInProfile = await toolbox.patching.exists(
+            path,
+            'yarn global bin'
           )
+
+          if (hasYarnBinInProfile) {
+            return
+          }
+
+          const { addYarnBinToProfile } = await toolbox.prompt.ask({
+            name: 'addYarnBinToProfile',
+            message: `Would you like to add yarn bin to ${path}?`,
+            type: 'confirm',
+            initial: true,
+          })
+
+          if (addYarnBinToProfile) {
+            await toolbox.filesystem.append(
+              path,
+              '\nexport PATH="$(yarn global bin):$PATH"\n'
+            )
+          }
         }
+
+        await tryToAddToProfile(`${toolbox.filesystem.homedir}/.bashrc`)
+        await tryToAddToProfile(`${toolbox.filesystem.homedir}/.zshrc`)
       }
     }
   },
