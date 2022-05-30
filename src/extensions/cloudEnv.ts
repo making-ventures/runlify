@@ -6,6 +6,7 @@ module.exports = async (toolbox: GluegunToolbox) => {
   const {
     print: { error, warning },
   } = toolbox
+  // const endpoint = 'http://localhost:3000'
   const endpoint = 'https://prj-ep.prod.apps.stage01.making.ventures'
 
   const getEnvVariables = async (

@@ -1,7 +1,7 @@
 import { GluegunToolbox } from 'gluegun'
 
 module.exports = {
-  name: 'pullEnv',
+  name: 'pullEnvs',
   // alias: ['a'],
   run: async (toolbox: GluegunToolbox) => {
     const {
