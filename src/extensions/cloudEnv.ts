@@ -4,7 +4,7 @@ import * as R from 'ramda'
 module.exports = async (toolbox: GluegunToolbox) => {
   const { removeToken } = toolbox.auth
   const {
-    print: { info, error, warning },
+    print: { error, warning },
   } = toolbox
   const endpoint = 'https://prj-ep.prod.apps.stage01.making.ventures'
 
@@ -14,7 +14,6 @@ module.exports = async (toolbox: GluegunToolbox) => {
     scopes: string[]
   ) => {
     const token = toolbox.globalConfig.getConfigValue('token')
-    info(`token: ${token}`)
 
     if (!token) {
       warning(`
@@ -60,7 +59,6 @@ You should login first:
 
   const getAvailableEnvironments = async (projectId: string) => {
     const token = toolbox.globalConfig.getConfigValue('token')
-    info(`token: ${token}`)
 
     if (!token) {
       warning(`
@@ -94,8 +92,6 @@ You should login first:
       error(res.data)
       process.exit()
     }
-
-    console.log(res)
 
     return res.data.data
   }

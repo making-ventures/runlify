@@ -53,7 +53,6 @@ module.exports = async (toolbox: GluegunToolbox) => {
 
   const logout = async () => {
     const token = toolbox.globalConfig.getConfigValue('token')
-    info(`token: ${token}`)
 
     const http = await toolbox.http.create({ baseURL: endpoint })
     const res = await http.post<any>(

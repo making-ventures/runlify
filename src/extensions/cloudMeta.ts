@@ -11,7 +11,6 @@ module.exports = async (toolbox: GluegunToolbox) => {
     const { getConfigValue } = toolbox.globalConfig
 
     const token = getConfigValue('token')
-    info(`token: ${token}`)
 
     if (!token) {
       warning(`
