@@ -24,7 +24,7 @@ You should login first:
       process.exit()
     }
 
-    const endpoint = 'https://prj.prod.apps.stage01.making.ventures/'
+    const endpoint = 'https://prj.prod.apps.stage01.making.ventures'
     const http = await toolbox.http.create({ baseURL: endpoint })
     const res = await http.get<any>(
       `/rest/cli/environmentVariables`,
@@ -65,7 +65,7 @@ You should login first:
       process.exit()
     }
 
-    const endpoint = 'https://prj.prod.apps.stage01.making.ventures/'
+    const endpoint = 'https://prj.prod.apps.stage01.making.ventures'
     const http = await toolbox.http.create({ baseURL: endpoint })
     const res = await http.get<any>(
       `/rest/cli/environments`,

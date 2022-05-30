@@ -4,6 +4,7 @@ module.exports = async (toolbox: GluegunToolbox) => {
   const {
     print: { info, error },
   } = toolbox
+  const endpoint = 'https://prj-ep.prod.apps.stage01.making.ventures'
 
   const login = async () => {
     const { login } = await toolbox.prompt.ask({
@@ -20,7 +21,6 @@ module.exports = async (toolbox: GluegunToolbox) => {
     })
     info(password)
 
-    const endpoint = 'https://prj.prod.apps.stage01.making.ventures/'
     info(endpoint)
 
     const http = await toolbox.http.create({ baseURL: endpoint })
@@ -37,6 +37,12 @@ module.exports = async (toolbox: GluegunToolbox) => {
       process.exit()
     }
 
+    if (!res.ok) {
+      error(`Error. Status: ${res.status}`)
+      error(res.data)
+      process.exit()
+    }
+
     const tokenEntity = res.data.data
 
     info('tokenEntity')
@@ -49,7 +55,6 @@ module.exports = async (toolbox: GluegunToolbox) => {
     const token = toolbox.globalConfig.getConfigValue('token')
     info(`token: ${token}`)
 
-    const endpoint = 'https://prj.prod.apps.stage01.making.ventures/'
     const http = await toolbox.http.create({ baseURL: endpoint })
     const res = await http.post<any>(
       '/rest/cli/logout',
