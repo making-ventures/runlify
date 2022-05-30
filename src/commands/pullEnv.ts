@@ -12,7 +12,6 @@ module.exports = {
     const { getConfig } = toolbox.localConfig
 
     const config = getConfig()
-    info(config)
 
     const projectId = config.main.projectName
     const scopes = ['back', 'worker', 'telegramBot']
