@@ -6,6 +6,7 @@ module.exports = async (toolbox: GluegunToolbox) => {
   const {
     print: { info, error, warning },
   } = toolbox
+  const endpoint = 'https://prj-ep.prod.apps.stage01.making.ventures'
 
   const getEnvVariables = async (
     projectId: string,
@@ -24,7 +25,6 @@ You should login first:
       process.exit()
     }
 
-    const endpoint = 'https://prj.prod.apps.stage01.making.ventures'
     const http = await toolbox.http.create({ baseURL: endpoint })
     const res = await http.get<any>(
       `/rest/cli/environmentVariables`,
@@ -42,6 +42,12 @@ You should login first:
     if (res.status === 401) {
       removeToken()
       error('Unauthorized')
+      process.exit()
+    }
+
+    if (!res.ok) {
+      error(`Error. Status: ${res.status}`)
+      error(res.data)
       process.exit()
     }
 
@@ -65,7 +71,6 @@ You should login first:
       process.exit()
     }
 
-    const endpoint = 'https://prj.prod.apps.stage01.making.ventures'
     const http = await toolbox.http.create({ baseURL: endpoint })
     const res = await http.get<any>(
       `/rest/cli/environments`,
@@ -83,6 +88,14 @@ You should login first:
       error('Unauthorized')
       process.exit()
     }
+
+    if (!res.ok) {
+      error(`Error. Status: ${res.status}`)
+      error(res.data)
+      process.exit()
+    }
+
+    console.log(res)
 
     return res.data.data
   }

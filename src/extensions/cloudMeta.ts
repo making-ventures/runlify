@@ -4,6 +4,7 @@ module.exports = async (toolbox: GluegunToolbox) => {
   const {
     print: { info, error, warning },
   } = toolbox
+  const endpoint = 'https://prj-ep.prod.apps.stage01.making.ventures'
 
   const getMeta = async (project: string) => {
     const { removeToken } = toolbox.auth
@@ -20,8 +21,6 @@ You should login first:
 `)
       process.exit()
     }
-
-    const endpoint = 'https://prj.prod.apps.stage01.making.ventures'
     const http = await toolbox.http.create({ baseURL: endpoint })
     const res = await http.get<any>(
       `/rest/cli/projectMeta/${project}`,
@@ -36,6 +35,12 @@ You should login first:
     if (res.status === 401) {
       removeToken()
       error('Unauthorized')
+      process.exit()
+    }
+
+    if (!res.ok) {
+      error(`Error. Status: ${res.status}`)
+      error(res.data)
       process.exit()
     }
   }

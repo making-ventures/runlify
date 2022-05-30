@@ -25,6 +25,7 @@ module.exports = {
       //   'telegramBot',
       // ]
     )
+
     for (const env of availableEnvironments) {
       const variables = await getEnvVariables(projectId, env, scopes)
 
