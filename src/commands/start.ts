@@ -20,25 +20,33 @@ module.exports = {
     const envDefined = parameters.first.startsWith('env=')
     const envName = envDefined
       ? parameters.first.replace('env', '')
-      : config.developer.defaultEnvironment
+      : config?.developer?.defaultEnvironment
 
-    nconf.file({
-      file: `./config/${envName}.json`,
-      format: {
-        stringify: JSON.stringify,
-        parse: (str: string) =>
-          R.fromPairs(
-            R.toPairs(JSON.parse(str)).map(([key, value]) => [
-              constantCase(key),
-              value,
-            ])
-          ),
-      },
-    })
+    if (envName) {
+      nconf.file({
+        file: `./config/${envName}.json`,
+        format: {
+          stringify: JSON.stringify,
+          parse: (str: string) =>
+            R.fromPairs(
+              R.toPairs(JSON.parse(str)).map(([key, value]) => [
+                constantCase(key),
+                value,
+              ])
+            ),
+        },
+      })
+    }
 
     const command = parameters.second ?? ''
     // toolbox.print.info('command')
     // toolbox.print.info(command)
+
+    // toolbox.print.info('parameters.argv')
+    // toolbox.print.info(parameters.argv)
+
+    // toolbox.print.info('parameters.raw')
+    // toolbox.print.info(parameters.raw)
 
     const commandArgs = parameters.argv?.splice(5) ?? []
     // toolbox.print.info('commandArgs')
