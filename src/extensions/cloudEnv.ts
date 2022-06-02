@@ -52,7 +52,11 @@ You should login first:
     }
 
     const composedVariables = R.fromPairs(
-      res.data.data.map((v) => [v.environmentVariableId, v.value])
+      res.data.data
+        .sort((a, b) =>
+          a.environmentVariableId.localeCompare(b.environmentVariableId)
+        )
+        .map((v) => [v.environmentVariableId, v.value])
     )
 
     return composedVariables
