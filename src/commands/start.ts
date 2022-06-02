@@ -18,9 +18,13 @@ module.exports = {
     const config = getConfig()
 
     const envDefined = parameters.first.startsWith('env=')
+    toolbox.print.info('envDefined')
+    toolbox.print.info(envDefined)
     const envName = envDefined
-      ? parameters.first.replace('env', '')
+      ? parameters.first.replace('env=', '')
       : config?.developer?.defaultEnvironment
+    toolbox.print.info('envName')
+    toolbox.print.info(envName)
 
     if (envName) {
       nconf.file({
