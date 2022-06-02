@@ -8,7 +8,7 @@ import * as R from 'ramda'
 nconf.env()
 
 module.exports = {
-  name: 'env',
+  name: 'start',
   alias: ['e'],
   run: async (toolbox: GluegunToolbox) => {
     const { parameters } = toolbox
@@ -17,7 +17,10 @@ module.exports = {
 
     const config = getConfig()
 
-    const envName = parameters.first || config.developer.defaultEnvironment
+    const envDefined = parameters.first.startsWith('env=')
+    const envName = envDefined
+      ? parameters.first.replace('env', '')
+      : config.developer.defaultEnvironment
 
     nconf.file({
       file: `./config/${envName}.json`,
@@ -34,8 +37,12 @@ module.exports = {
     })
 
     const command = parameters.second ?? ''
+    // toolbox.print.info('command')
+    // toolbox.print.info(command)
 
-    const commandArgs = parameters.array?.splice(2) ?? []
+    const commandArgs = parameters.argv?.splice(5) ?? []
+    // toolbox.print.info('commandArgs')
+    // toolbox.print.info(commandArgs)
 
     // Execute the command with the given environment variables
     const proc = spawn(command, commandArgs, {
