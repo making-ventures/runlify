@@ -1,4 +1,6 @@
 import { GluegunToolbox } from 'gluegun'
+import * as path from 'path'
+import * as os from 'os'
 
 module.exports = {
   name: 'init',
@@ -7,7 +9,7 @@ module.exports = {
     const {
       parameters,
       template: { generate },
-      print: { info },
+      print: { info, warning },
     } = toolbox
 
     const projectName = parameters.first
@@ -48,23 +50,33 @@ module.exports = {
     }
 
     const hasYarn = toolbox.packageManager.hasYarn()
+    info(`hasYarn: ${hasYarn}`)
     if (hasYarn) {
-      const path = process.env.PATH
+      const pathEnv = process.env.PATH
+      info(`pathEnv: ${pathEnv}`)
 
       const yarnBin = await toolbox.system.exec('yarn global bin')
 
-      const hasYarnBinInPath = path.includes(yarnBin)
+      const hasYarnBinInPath = pathEnv.includes(yarnBin)
+      info(`hasYarnBinInPath: ${hasYarnBinInPath}`)
 
       if (!hasYarnBinInPath) {
-        const tryToAddToProfile = async (path: string) => {
-          if (!toolbox.filesystem.exists(path)) {
+        const tryToAddToProfile = async (pathEnv: string) => {
+          info(`tryToAddToProfile, pathEnv: ${pathEnv}`)
+          info(
+            `toolbox.filesystem.exists(pathEnv): ${toolbox.filesystem.exists(
+              pathEnv
+            )}`
+          )
+          if (!toolbox.filesystem.exists(pathEnv)) {
             return
           }
 
           const hasYarnBinInProfile = await toolbox.patching.exists(
-            path,
+            pathEnv,
             'yarn global bin'
           )
+          info(`hasYarnBinInProfile: ${hasYarnBinInProfile}`)
 
           if (hasYarnBinInProfile) {
             return
@@ -72,21 +84,40 @@ module.exports = {
 
           const { addYarnBinToProfile } = await toolbox.prompt.ask({
             name: 'addYarnBinToProfile',
-            message: `Would you like to add yarn bin to ${path}?`,
+            message: `Would you like to add yarn bin to ${pathEnv}?`,
             type: 'confirm',
             initial: true,
           })
+          info(`addYarnBinToProfile: ${addYarnBinToProfile}`)
 
           if (addYarnBinToProfile) {
             await toolbox.filesystem.append(
-              path,
+              pathEnv,
               '\nexport PATH="$(yarn global bin):$PATH"\n'
             )
           }
         }
 
-        await tryToAddToProfile(`${toolbox.filesystem.homedir}/.bashrc`)
-        await tryToAddToProfile(`${toolbox.filesystem.homedir}/.zshrc`)
+        if (os.platform() === 'win32') {
+          warning(`You should add "${await toolbox.system.exec(
+            'yarn global bin'
+          )}" to your Path environment variable.
+How-to in eng: https://helpdeskgeek.com/windows-10/add-windows-path-environment-variable/
+How-to in ru: https://remontka.pro/environment-variables-windows/
+Then restart your computer.
+After restart double check that Path environment variable was updated by you.`)
+        } else {
+          // toolbox.filesystem.file(
+          //   path.join(toolbox.filesystem.homedir(), '.bashrc')
+          // )
+          await tryToAddToProfile(
+            path.join(toolbox.filesystem.homedir(), '.bashrc')
+          )
+          // await tryToAddToProfile(`${toolbox.filesystem.homedir}/.bash_profile
+          await tryToAddToProfile(
+            path.join(toolbox.filesystem.homedir(), '.zshrc')
+          )
+        }
       }
     }
   },
