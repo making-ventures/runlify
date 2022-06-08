@@ -1,6 +1,6 @@
 {
   "name": "runlify",
-  "version": "0.0.49",
+  "version": "0.0.56",
   "description": "runlify CLI",
   "private": false,
   "types": "build/types/types.d.ts",

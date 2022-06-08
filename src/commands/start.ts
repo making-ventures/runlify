@@ -18,13 +18,13 @@ module.exports = {
     const config = getConfig()
 
     const envDefined = parameters.first.startsWith('env=')
-    toolbox.print.info('envDefined')
-    toolbox.print.info(envDefined)
+    // toolbox.print.info('envDefined')
+    // toolbox.print.info(envDefined)
     const envName = envDefined
       ? parameters.first.replace('env=', '')
       : config?.developer?.defaultEnvironment
-    toolbox.print.info('envName')
-    toolbox.print.info(envName)
+    // toolbox.print.info('envName')
+    // toolbox.print.info(envName)
 
     if (envName) {
       nconf.file({
@@ -42,7 +42,7 @@ module.exports = {
       })
     }
 
-    const command = parameters.second ?? ''
+    const command = (envDefined ? parameters.second : parameters.first) ?? ''
     // toolbox.print.info('command')
     // toolbox.print.info(command)
 
@@ -52,9 +52,21 @@ module.exports = {
     // toolbox.print.info('parameters.raw')
     // toolbox.print.info(parameters.raw)
 
-    const commandArgs = parameters.argv?.splice(5) ?? []
+    const commandArgs = parameters.argv?.slice(envDefined ? 5 : 4) ?? []
     // toolbox.print.info('commandArgs')
     // toolbox.print.info(commandArgs)
+
+    // toolbox.print.info('parameters.argv?.slice(5)')
+    // toolbox.print.info(parameters.argv?.slice(5))
+
+    // toolbox.print.info('parameters.argv?.slice(4)')
+    // toolbox.print.info(parameters.argv?.slice(4))
+
+    // toolbox.print.info('parameters.argv?.slice(3)')
+    // toolbox.print.info(parameters.argv?.slice(3))
+
+    // toolbox.print.info('parameters.argv?.slice(2)')
+    // toolbox.print.info(parameters.argv?.slice(2))
 
     // Execute the command with the given environment variables
     const proc = spawn(command, commandArgs, {
