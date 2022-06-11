@@ -4,7 +4,7 @@ module.exports = async (toolbox: GluegunToolbox) => {
   const getConfig = () => {
     const runlifyConfig = toolbox.filesystem.read('./runlify.json', 'json')
     const developerRunlifyConfig = toolbox.filesystem.read(
-      './runlify.developer.example.json',
+      './runlify.developer.json',
       'json'
     )
     // toolbox.print.info(runlifyConfig)
