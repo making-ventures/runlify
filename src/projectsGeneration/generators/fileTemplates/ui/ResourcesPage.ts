@@ -1,0 +1,55 @@
+import { defaultBootstrapEntityOptions } from '../../../types'
+import { pascalPlural } from '../../../../utils/cases'
+import { ProjectWideGenerationArgs } from '../../../args'
+import { generatedWarning } from '../../../utils'
+import { plural } from 'pluralize'
+
+export const uiResourcesPageTmpl = ({
+  entities,
+  options = defaultBootstrapEntityOptions,
+}: ProjectWideGenerationArgs) => {
+  return `import React, {
+  FC,
+} from 'react';
+import NumberWiget from '../widgets/NumberWiget';
+import {
+  gql,
+} from '@apollo/client';
+import {useTranslate} from 'react-admin';
+import Grid from '@mui/material/Grid';
+${
+  options.skipWarningThisIsGenerated
+    ? ''
+    : `
+// ${generatedWarning}
+`
+}
+const ResourcesPage: FC = () => {
+  const translate = useTranslate();
+
+  return (
+    <Grid container>
+${entities.map((entity) => {
+  return `      <NumberWiget
+        request={gql\`
+          query {
+            _all${pascalPlural(entity.name)}Meta {
+              count
+            }
+          }
+        \`}
+        resultToValue={result => result?._all${pascalPlural(
+          entity.name
+        )}Meta?.count}
+        title={translate('${plural(entity.type)}.${entity.name}.title')}
+        to='/${entity.name}'
+      />`
+}).join(`
+`)}
+    </Grid>
+  );
+};
+
+export default ResourcesPage;
+`
+}

@@ -3,11 +3,7 @@
     "allowSyntheticDefaultImports": false,
     "experimentalDecorators": true,
     "lib": [
-      "es2015",
-      "scripthost",
-      "es2015.promise",
-      "es2015.generator",
-      "es2015.iterable",
+      "es2021",
       "dom"
     ],
     "module": "commonjs",

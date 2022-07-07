@@ -1,0 +1,59 @@
+import * as path from 'path'
+import fs from 'fs-extra'
+import { exec } from 'child_process'
+import { BootstrapEntityOptions } from './types'
+import log from '../log'
+
+export const genGraphSchemesByLocalGenerator = async (
+  options: BootstrapEntityOptions
+) => {
+  // yarn ts-node src/gen/genGQSchemes.ts
+
+  await new Promise((resolve, reject) =>
+    exec(
+      `ts-node ${path.join(
+        options.detachedBackProject,
+        'src',
+        'gen',
+        'genGQSchemes.ts'
+      )}`,
+      (error, _stdout, stderr) => {
+        if (error) {
+          log.error(`error: ${error.message}`)
+          reject(new Error(`error: ${error.message}`))
+
+          return
+        }
+
+        if (stderr) {
+          log.error(`stderr: ${stderr}`)
+          reject(new Error(`stderr: ${stderr}`))
+
+          return
+        }
+
+        resolve(undefined)
+      }
+    )
+  )
+
+  await fs.copyFile(
+    path.join(options.detachedBackProject, 'src', 'generated', 'graphql.ts'),
+    path.join(options.detachedUiProject, 'src', 'generated', 'graphql.ts')
+  )
+
+  await fs.copyFile(
+    path.join(
+      options.detachedBackProject,
+      'src',
+      'generated',
+      'graphql.schema.json'
+    ),
+    path.join(
+      options.detachedUiProject,
+      'src',
+      'generated',
+      'graphql.schema.json'
+    )
+  )
+}

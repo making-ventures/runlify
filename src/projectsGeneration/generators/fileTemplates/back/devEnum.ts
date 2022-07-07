@@ -1,0 +1,23 @@
+import { singular } from 'pluralize'
+import { pascal } from '../../../../utils/cases'
+import { EntityWideGenerationArgs } from '../../../args'
+import { generatedWarning, pad1 } from '../../../utils'
+
+export const devEnumTmpl = ({
+  entity,
+  options,
+}: EntityWideGenerationArgs) => `${
+  options.skipWarningThisIsGenerated
+    ? ''
+    : `// ${generatedWarning}
+`
+}
+enum Dev${pascal(singular(entity.name))} {
+${entity.devPerefinedElements
+  .map((el) => `Dev${pascal(el.id)} = 'dev${pascal(el.id)}',`)
+  .map(pad1)
+  .join('\n')}
+}
+
+export default Dev${pascal(singular(entity.name))};
+`

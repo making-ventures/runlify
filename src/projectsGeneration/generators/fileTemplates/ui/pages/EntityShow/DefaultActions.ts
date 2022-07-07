@@ -1,0 +1,68 @@
+import { pascalSingular } from '../../../../../../utils/cases'
+import { Entity } from '../../../../../builders/buildedTypes'
+import { singular } from 'pluralize'
+import { EntityWideGenerationArgs } from '../../../../../args'
+import { pad5 } from '../../../../../utils'
+
+export const uiDefaultActionTmpl = (
+  data: EntityWideGenerationArgs,
+  entity?: Entity
+) => {
+  return `import React from 'react';
+import {
+  EditButton,
+  TopToolbar,
+  usePermissions,
+} from 'react-admin';
+import OpenAudit from '../../../commonActions/OpenAudit';
+import {hasPermission} from '../../../../utils/permissions';
+import OpenHelp from '../../../commonActions/OpenHelp';${
+    entity && entity.type === 'document' && entity.registries.length > 0
+      ? `
+import RePost from '../../../commonActions/RePost';
+import OpenRegistries from '../../../commonActions/OpenRegistries';`
+      : ''
+  }
+${
+  data.options.skipWarningThisIsGenerated
+    ? ''
+    : `
+// DO NOT EDIT! THIS IS GENERATED FILE
+`
+}
+const Default${pascalSingular(data.entity.name)}Actions = () => {
+  const {permissions} = usePermissions<string[]>();
+
+  return (
+    <TopToolbar sx={{alignItems: 'center'}}>${
+      entity && entity.type === 'document' && entity.registries.length > 0
+        ? `
+      <OpenRegistries
+        document='${singular(entity.name)}'
+        registries={${
+          entity.registries.length
+            ? `[
+${entity.registries
+  .map((r) => `'${r}',`)
+  .map(pad5)
+  .join('\n')}
+        ]`
+            : '[]'
+        }}
+      />
+      <RePost serviceName='${pascalSingular(entity.name)}' />`
+        : ''
+    }${
+    entity &&
+    `
+      <OpenAudit entityTypeId='${singular(entity.name)}' />
+      <OpenHelp entityType='${entity.name}' />
+      {hasPermission(permissions, '${entity.name}.update') && <EditButton />}`
+  }
+    </TopToolbar>
+  );
+};
+
+export default Default${pascalSingular(data.entity.name)}Actions;
+`
+}
