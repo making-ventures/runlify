@@ -2,6 +2,7 @@ import {
   BootstrapEntityOptions,
   EntityWithOptions,
   EntityBuilderWithOptions,
+  defaultBootstrapEntityOptions,
 } from '../types'
 import CatalogBuilder from './CatalogBuilder'
 import DocumentBuilder from './DocumentBuilder'
@@ -59,7 +60,7 @@ class SystemMetaBuilder {
   // space = '';
   constructor(
     prefix: string,
-    defOpts: BootstrapEntityOptions,
+    defOpts: BootstrapEntityOptions = defaultBootstrapEntityOptions,
     defaultLanguage = 'ru'
   ) {
     this.defOpts = defOpts

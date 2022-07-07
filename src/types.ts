@@ -1,4 +1,6 @@
+export * from './'
+
 export type MemoryAndCpu = {
-  memory: string;
-  cpu: string;
-} 
+  memory: string
+  cpu: string
+}

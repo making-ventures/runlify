@@ -9,10 +9,9 @@ module.exports = {
     sourceType: 'module',
   },
   extends: [
+    'canonical',
     'plugin:@typescript-eslint/recommended',
-
-    'prettier',
-    'plugin:prettier/recommended',
+    'eslint:recommended',
   ],
   rules: {
     '@typescript-eslint/no-explicit-any': 'off',
