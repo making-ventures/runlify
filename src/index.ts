@@ -1,2 +1,2 @@
 export { default as SystemMetaBuilder } from './projectsGeneration/builders/SystemMetaBuilder'
-export * from './projectsGeneration/commonEntities'
+export * from './projectsGeneration'
