@@ -540,7 +540,7 @@ export const generateFront = async (args: ProjectWideGenerationArgs) => {
   ])
 }
 
-export const generateProject = async (
+const generateProject = async (
   system: System,
   initialOpts: BootstrapEntityOptions = defaultBootstrapEntityOptions
 ) => {
@@ -805,3 +805,5 @@ export const generateProject = async (
 
   await generateEnvironment(args)
 }
+
+export default generateProject;

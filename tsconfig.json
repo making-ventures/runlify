@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "allowSyntheticDefaultImports": false,
+    "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "lib": [
       "es2021",
@@ -8,13 +8,14 @@
     ],
     "module": "commonjs",
     "moduleResolution": "node",
+    "esModuleInterop": true,
     "noImplicitAny": false,
     "noImplicitThis": true,
     "noUnusedLocals": true,
     "sourceMap": false,
     "inlineSourceMap": true,
     "outDir": "build",
-    "strict": false,
+    "strict": true,
     "target": "es5",
     "declaration": true,
     "declarationDir": "build/types"

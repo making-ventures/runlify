@@ -8,7 +8,7 @@ module.exports = async (toolbox: GluegunToolbox) => {
 
     const yarnBin = await toolbox.system.exec('yarn global bin')
 
-    const hasYarnBinInPath = pathEnv.includes(yarnBin)
+    const hasYarnBinInPath = pathEnv?.includes(yarnBin)
     toolbox.print.info(`hasYarnBinInPath: ${hasYarnBinInPath}`)
 
     toolbox.print.warning(`

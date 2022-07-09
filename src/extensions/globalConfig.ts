@@ -23,7 +23,7 @@ module.exports = async (toolbox: GluegunToolbox) => {
     const configPath = getConfigPath()
     const rawConfig = toolbox.filesystem.read(configPath)
 
-    return JSON.parse(rawConfig)
+    return rawConfig ? JSON.parse(rawConfig) : ''
   }
 
   const setConfigValue = (key: string, value: string) => {

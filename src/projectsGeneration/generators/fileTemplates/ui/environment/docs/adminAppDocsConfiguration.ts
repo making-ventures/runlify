@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import { constantCase } from 'change-case'
-import { markdownTable } from 'markdown-table'
+import markdownTable from 'markdown-table'
 import { ProjectWideGenerationArgs } from '../../../../../args'
 
 export const adminAppDocsConfiguration = ({

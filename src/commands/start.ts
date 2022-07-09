@@ -2,7 +2,7 @@ import { spawn } from 'cross-spawn'
 import { GluegunToolbox } from 'gluegun'
 import TermSignals from '../utils/TermSignals'
 import { constantCase } from 'change-case'
-import * as nconf from 'nconf'
+import nconf from 'nconf'
 import * as R from 'ramda'
 
 nconf.env()
@@ -17,11 +17,11 @@ module.exports = {
 
     const config = getConfig()
 
-    const envDefined = parameters.first.startsWith('env=')
+    const envDefined = parameters.first?.startsWith('env=')
     // toolbox.print.info('envDefined')
     // toolbox.print.info(envDefined)
     const envName = envDefined
-      ? parameters.first.replace('env=', '')
+      ? parameters.first?.replace('env=', '')
       : config?.developer?.defaultEnvironment
     // toolbox.print.info('envName')
     // toolbox.print.info(envName)

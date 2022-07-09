@@ -57,7 +57,7 @@ module.exports = {
 
       const yarnBin = await toolbox.system.exec('yarn global bin')
 
-      const hasYarnBinInPath = pathEnv.includes(yarnBin)
+      const hasYarnBinInPath = pathEnv?.includes(yarnBin)
       info(`hasYarnBinInPath: ${hasYarnBinInPath}`)
 
       if (!hasYarnBinInPath) {
