@@ -1,3 +1,5 @@
 export * from './commonEntities'
 export * from './types'
+export * from './defaultCatalogs'
+export * from './modules'
 export {default as generateProject} from './generateProject'
