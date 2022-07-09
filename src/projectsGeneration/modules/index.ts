@@ -1,1 +1,1 @@
-export * from './addEmailModuleEntities'
+export {default as addEmailModuleEntities} from './addEmailModuleEntities'
