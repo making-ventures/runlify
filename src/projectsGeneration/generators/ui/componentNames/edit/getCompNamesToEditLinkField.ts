@@ -14,5 +14,5 @@ export const getCompNamesToEditLinkField = (
 
   return getFieldByName(linkedEntity, linkedEntity.titleField).type === 'string'
     ? ['ReferenceInput', 'AutocompleteInput']
-    : ['ReferenceInput', 'SelectInput']
+    : ['ReferenceInput', 'AutocompleteInput']
 }
