@@ -1135,10 +1135,10 @@
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.5.tgz#1001cc5e6a3704b83c236027e77f2f58ea010f40"
   integrity sha512-Klz949h02Gz2uZCMGwDUSDS1YBlTdDDgbWHi+81l29tQALUtvz4rAYi5uoVhE5Lagoq6DeqAUlbrHvW/mXDgdQ==
 
-"@types/nconf@^0.10.2":
-  version "0.10.2"
-  resolved "https://registry.yarnpkg.com/@types/nconf/-/nconf-0.10.2.tgz#e21ada506738c5f999bf83f5e78d53a164325ced"
-  integrity sha512-qy5EPdN8hnlix/q/QYr4ZnICDgaEFh2qivsNYlg4/KlvM7Ye2CqeDo0UXxSoiWplZzyl2PzOxwx4MODaxS+KpA==
+"@types/nconf@^0.10.3":
+  version "0.10.3"
+  resolved "https://registry.yarnpkg.com/@types/nconf/-/nconf-0.10.3.tgz#c4482389412ad534bcf11635c7e0a645ddac62d2"
+  integrity sha512-leyIuBk/rMIp9114FlPRkc/cQG+/JzCz1Afx3BD+CwK2ep3ZRxoC843V1rqnE2pC/jRRjANWhuVBEn4clCwlug==
 
 "@types/node@*":
   version "17.0.33"
@@ -2526,10 +2526,10 @@ eslint-ast-utils@^1.0.0:
     lodash.get "^4.4.2"
     lodash.zip "^4.2.0"
 
-eslint-config-canonical@^35.0.1:
-  version "35.0.1"
-  resolved "https://registry.yarnpkg.com/eslint-config-canonical/-/eslint-config-canonical-35.0.1.tgz#a11f9f7f23db94a9aa1e38db049ca32d0a47de7f"
-  integrity sha512-U+9SI4qReC8ahl2tOvZsKTxG/6VshW9wnPlDBCwh8rm9TOlmHffMvtMgq+mWKBpRKqEW//UztXoWcPeGdmbvPQ==
+eslint-config-canonical@^35.1.4:
+  version "35.1.4"
+  resolved "https://registry.yarnpkg.com/eslint-config-canonical/-/eslint-config-canonical-35.1.4.tgz#0fe00d292c3475c7d38d5eab6be331e969fe4430"
+  integrity sha512-zkAFCTmG4BAZyJIqXbd+bMosed7y0JGwrI4K9X0XKaB9mxDoSbZdsF/QxMy0BNjlZIeEOPTO69ckDn+LGKMA4g==
   dependencies:
     "@babel/core" "^7.17.9"
     "@babel/eslint-parser" "^7.17.0"
@@ -6441,10 +6441,10 @@ ts-jest@^26.5.3:
     semver "7.x"
     yargs-parser "20.x"
 
-ts-node@^10.8.2:
-  version "10.8.2"
-  resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-10.8.2.tgz#3185b75228cef116bf82ffe8762594f54b2a23f2"
-  integrity sha512-LYdGnoGddf1D6v8REPtIH+5iq/gTDuZqv2/UJUU7tKjuEU8xVZorBM+buCGNjj+pGEud+sOoM4CX3/YzINpENA==
+ts-node@^10.9.1:
+  version "10.9.1"
+  resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-10.9.1.tgz#e73de9102958af9e1f0b168a6ff320e25adcff4b"
+  integrity sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==
   dependencies:
     "@cspotcode/source-map-support" "^0.8.0"
     "@tsconfig/node10" "^1.0.7"
