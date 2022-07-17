@@ -111,12 +111,6 @@ const Field: FC<{field: any}> = ({field}) => {
       <div className={classes.section}>
         category: {field.category}
       </div>
-      <div className={classes.section}>
-        constantOnCreate: {field.constantOnCreate?.toString()}
-      </div>
-      <div className={classes.section}>
-        constantOnUpdate: {field.constantOnUpdate?.toString()}
-      </div>
     </div>
   );
 };

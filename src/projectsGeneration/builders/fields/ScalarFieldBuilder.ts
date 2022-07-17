@@ -1,8 +1,4 @@
 import {
-  ConstantOnCreateDate,
-  ConstantOnCreateInt,
-  ConstantOnUpdateDate,
-  ConstantOnUpdateInt,
   ScalarField,
 } from '../buildedTypes'
 import { BaseFieldBuilder } from './BaseFieldBuilder'
@@ -25,8 +21,8 @@ export class ScalarFieldBuilder extends BaseFieldBuilder {
       return {
         ...base,
         type: this.type,
-        constantOnCreate: this.constantOnCreate as ConstantOnCreateDate,
-        constantOnUpdate: this.constantOnUpdate as ConstantOnUpdateDate,
+        // constantOnCreate: this.constantOnCreate as ConstantOnCreateDate,
+        // constantOnUpdate: this.constantOnUpdate as ConstantOnUpdateDate,
         category: 'scalar',
         title: this.title,
         showInList: this.showInList,
@@ -38,8 +34,8 @@ export class ScalarFieldBuilder extends BaseFieldBuilder {
       return {
         ...base,
         type: this.type,
-        constantOnCreate: this.constantOnCreate as ConstantOnCreateInt,
-        constantOnUpdate: this.constantOnUpdate as ConstantOnUpdateInt,
+        // constantOnCreate: this.constantOnCreate as ConstantOnCreateInt,
+        // constantOnUpdate: this.constantOnUpdate as ConstantOnUpdateInt,
         category: 'scalar',
         title: this.title,
         showInList: this.showInList,

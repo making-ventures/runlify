@@ -91,7 +91,7 @@ type LinkMainBaseField = BaseField & {
   category: 'link'
 }
 
-export type PredefinedLinkedEntity = 'none' | 'file'
+export type  PredefinedLinkedEntity = 'none' | 'file'
 
 type NotPredefinedLinkBaseField = LinkMainBaseField & {
   predefinedLinkedEntity: 'none'
@@ -106,37 +106,37 @@ type FilePredefinedLinkBaseField = LinkMainBaseField & {
 
 type LinkBaseField = NotPredefinedLinkBaseField | FilePredefinedLinkBaseField
 
-export type ConstantOnCreateDate = false | 'now'
-export type ConstantOnUpdateDate = false | 'now'
+// export type ConstantOnCreateDate = false | 'now'
+// export type ConstantOnUpdateDate = false | 'now'
 
 export type DateTimeField = ScalarBaseField & {
   type: 'datetime'
-  constantOnCreate: ConstantOnCreateDate
-  constantOnUpdate: ConstantOnUpdateDate
+  // constantOnCreate: ConstantOnCreateDate
+  // constantOnUpdate: ConstantOnUpdateDate
 }
 
 export type DateField = ScalarBaseField & {
   type: 'date'
-  constantOnCreate: ConstantOnCreateDate
-  constantOnUpdate: ConstantOnUpdateDate
+  // constantOnCreate: ConstantOnCreateDate
+  // constantOnUpdate: ConstantOnUpdateDate
 }
 
-export type ConstantOnCreateInt = false | 'currentUser'
-export type ConstantOnUpdateInt = false | 'currentUser'
+// export type ConstantOnCreateInt = false | 'currentUser'
+// export type ConstantOnUpdateInt = false | 'currentUser'
 
-export type ConstantOnCreate = ConstantOnCreateInt | ConstantOnCreateDate
-export type ConstantOnUpdate = ConstantOnUpdateInt | ConstantOnUpdateDate
+// export type ConstantOnCreate = ConstantOnCreateInt | ConstantOnCreateDate
+// export type ConstantOnUpdate = ConstantOnUpdateInt | ConstantOnUpdateDate
 
 export type IntField = ScalarBaseField & {
   type: 'int'
-  constantOnCreate: ConstantOnCreateInt
-  constantOnUpdate: ConstantOnUpdateInt
+  // constantOnCreate: ConstantOnCreateInt
+  // constantOnUpdate: ConstantOnUpdateInt
 }
 
 export type BigIntField = ScalarBaseField & {
   type: 'bigint'
-  constantOnCreate: ConstantOnCreateInt
-  constantOnUpdate: ConstantOnUpdateInt
+  // constantOnCreate: ConstantOnCreateInt
+  // constantOnUpdate: ConstantOnUpdateInt
 }
 
 export type BaseStringField = ScalarBaseField & {

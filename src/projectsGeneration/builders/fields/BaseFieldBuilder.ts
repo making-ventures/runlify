@@ -1,8 +1,6 @@
 import * as R from 'ramda'
 import { sentence } from '../../../utils/cases'
 import {
-  ConstantOnCreate,
-  ConstantOnUpdate,
   Meaning,
   FiledType,
   DefaultDbValue,
@@ -26,8 +24,8 @@ export abstract class BaseFieldBuilder {
   defaultDbValue: DefaultDbValue
   hidden = false
   searchable = true
-  constantOnCreate: ConstantOnCreate = false
-  constantOnUpdate: ConstantOnUpdate = false
+  // constantOnCreate: ConstantOnCreate = false
+  // constantOnUpdate: ConstantOnUpdate = false
   requiredOnInput: boolean | null = null
   updatable = true
   updatableByUser = true
@@ -163,66 +161,66 @@ export abstract class BaseFieldBuilder {
 
     return this
   }
-  setConstantOnCreate(value: ConstantOnCreate) {
-    if (this.type !== 'datetime' && this.type !== 'int') {
-      throw new Error('Operation not permitted')
-    }
-
-    if (this.type === 'datetime' && value !== false && value !== 'now') {
-      throw new Error('Constant not permitted')
-    }
-
-    if (this.type === 'int' && value !== false && value !== 'currentUser') {
-      throw new Error('Constant not permitted')
-    }
-
-    if (this.constantOnUpdate) {
-      throw new Error(
-        'constantOnCreate and constantOnUpdate can not be set at the same time'
-      )
-    }
-
-    this.constantOnCreate = value
-    this.setRequiredOnInput(false)
-    this.setUpdatable(false)
+  setDefaultDbValue(defaultDbValue: DefaultDbValue) {
+    this.defaultDbValue = defaultDbValue
 
     return this
   }
-  setConstantOnUpdate(value: ConstantOnUpdate) {
-    if (this.type !== 'datetime' && this.type !== 'int') {
-      throw new Error('Operation not permitted')
-    }
+  // setConstantOnCreate(value: ConstantOnCreate) {
+  //   if (this.type !== 'datetime' && this.type !== 'int') {
+  //     throw new Error('Operation not permitted')
+  //   }
 
-    if (this.type === 'datetime' && value !== false && value !== 'now') {
-      throw new Error('Constant not permitted')
-    }
+  //   if (this.type === 'datetime' && value !== false && value !== 'now') {
+  //     throw new Error('Constant not permitted')
+  //   }
 
-    if (this.type === 'int' && value !== false && value !== 'currentUser') {
-      throw new Error('Constant not permitted')
-    }
+  //   if (this.type === 'int' && value !== false && value !== 'currentUser') {
+  //     throw new Error('Constant not permitted')
+  //   }
 
-    if (this.constantOnCreate) {
-      throw new Error(
-        'constantOnCreate and constantOnUpdate can not be set at the same time'
-      )
-    }
+  //   if (this.constantOnUpdate) {
+  //     throw new Error(
+  //       'constantOnCreate and constantOnUpdate can not be set at the same time'
+  //     )
+  //   }
 
-    this.constantOnUpdate = value
-    this.setRequiredOnInput(false)
+  //   this.constantOnCreate = value
+  //   this.setRequiredOnInput(false)
+  //   this.setUpdatable(false)
 
-    return this
-  }
+  //   return this
+  // }
+  // setConstantOnUpdate(value: ConstantOnUpdate) {
+  //   if (this.type !== 'datetime' && this.type !== 'int') {
+  //     throw new Error('Operation not permitted')
+  //   }
+
+  //   if (this.type === 'datetime' && value !== false && value !== 'now') {
+  //     throw new Error('Constant not permitted')
+  //   }
+
+  //   if (this.type === 'int' && value !== false && value !== 'currentUser') {
+  //     throw new Error('Constant not permitted')
+  //   }
+
+  //   if (this.constantOnCreate) {
+  //     throw new Error(
+  //       'constantOnCreate and constantOnUpdate can not be set at the same time'
+  //     )
+  //   }
+
+  //   this.constantOnUpdate = value
+  //   this.setRequiredOnInput(false)
+
+  //   return this
+  // }
   setRequired(value = true) {
     this.required = value
 
     if (this.requiredOnInput === null) {
       this.requiredOnInput = value
     }
-
-    return this
-  }
-  setDefaultDbValue(defaultDbValue: DefaultDbValue) {
-    this.defaultDbValue = defaultDbValue
 
     return this
   }
