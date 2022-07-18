@@ -65,6 +65,8 @@ spec:
           containerPort: 80
         imagePullPolicy: Always
         env:
+        - name: NODE_ENV
+          value: production
         - name: RANDOM
           value: {{ $.Values.random | quote }}
         - name: ENV

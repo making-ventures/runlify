@@ -66,7 +66,7 @@ app.use(
   helmet(
     {
       contentSecurityPolicy: production ? undefined : false,
-      // crossOriginEmbedderPolicy: production ? undefined : false,
+      crossOriginEmbedderPolicy: production ? undefined : false,
     },
   ) as RequestHandler,
 );
