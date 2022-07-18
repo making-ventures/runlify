@@ -18,6 +18,7 @@ import {IntrospectionType, IntrospectionSchema} from 'graphql';
 import {mapping} from '../adm/entityMapping';
 import sch from '../generated/graphql.schema.json';
 import {ApolloClient} from '@apollo/client';
+import getCustomMethods from './getCustomMethods';
 ${
   options.skipWarningThisIsGenerated
     ? ''
@@ -79,15 +80,22 @@ const customBuildQuery = (introspection: IntrospectionResult) =>
     return builtQuery;
   };
 
-export default (client: ApolloClient<unknown>) => buildGraphQLProvider({
-  buildQuery: customBuildQuery,
-  client: client as any,
-  introspection: {
-    schema: schema as unknown as IntrospectionSchema,
-    operationNames: {
-      [DELETE]: (resource: IntrospectionType) =>
-        \`remove\${resource.name}\`,
+export default async (client: ApolloClient<unknown>) => {
+  const baseDataProvider = await buildGraphQLProvider({
+    buildQuery: customBuildQuery,
+    client: client as any,
+    introspection: {
+      schema: schema as unknown as IntrospectionSchema,
+      operationNames: {
+        [DELETE]: (resource: IntrospectionType) =>
+          \`remove\${resource.name}\`,
+      },
     },
-  },
-});
+  });
+
+  return {
+    ...baseDataProvider,
+    ...getCustomMethods(client, baseDataProvider),
+  };
+};
 `
