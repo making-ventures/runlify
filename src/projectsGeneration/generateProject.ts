@@ -41,7 +41,6 @@ import { adminAppDocsConfiguration } from './generators/fileTemplates/ui/environ
 import { backDocsRestApi } from './generators/fileTemplates/back/environment/docs/backDocsRestApi'
 import { backDocsEntity } from './generators/fileTemplates/back/environment/docs/backDocsEntity'
 import { plural, singular } from 'pluralize'
-import stringify from 'safe-stable-stringify'
 import baseResolversTmpl from './generators/fileTemplates/back/graph/help/baseResolvers'
 import helpServiceTmpl from './generators/fileTemplates/back/services/HelpService/HelpService'
 import graphBaseServicesTmpl from './generators/fileTemplates/back/services/BaseServices'
@@ -677,8 +676,8 @@ const generateProject = async (
     restRouter
   )
 
-  // src/gen/metadata.json
-  const genFolder = join(prjDetachedBackSrcDir, 'gen')
+  // // src/meta/metadata.json
+  // const genFolder = join(prjDetachedBackSrcDir, 'gen')
 
   // name: string;
   // prefix: string;
@@ -690,17 +689,17 @@ const generateProject = async (
   // infoRegistries: EntityWithOptions[];
   // sumRegistries: EntityWithOptions[];
 
-  const metaWithoutOptions = {
-    ...system,
-    catalogs: system.catalogs,
-    documents: system.documents,
-    infoRegistries: system.infoRegistries,
-    sumRegistries: system.sumRegistries,
-  }
-  await write(
-    join(genFolder, 'metadata.json'),
-    stringify(metaWithoutOptions, undefined, 1)
-  )
+  // const metaWithoutOptions = {
+  //   ...system,
+  //   catalogs: system.catalogs,
+  //   documents: system.documents,
+  //   infoRegistries: system.infoRegistries,
+  //   sumRegistries: system.sumRegistries,
+  // }
+  // await write(
+  //   join(genFolder, 'metadata.json'),
+  //   stringify(metaWithoutOptions, undefined, 1)
+  // )
 
   // UI
 

@@ -1,7 +1,7 @@
 export const graphMetaResolversTmpl = () => `import {
   Resolvers,
 } from '../../../../generated/graphql';
-import meta from '../../../../gen/metadata.json';
+import meta from '../../../../meta/metadata.json';
 
 const queryResolvers: Resolvers = {
   Query: {
