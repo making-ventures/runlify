@@ -17,7 +17,7 @@ You can update by running: ${
       toolbox.packageManager.hasYarn() && hasYarnBinInPath
         ? 'yarn global add runlify'
         : `npm install --global runlify`
-    }
+    } if you use global \`runlify\` or yarn add -D runlify@latest if you run command specified in package.json
 `)
     process.exit()
   }
