@@ -40,7 +40,7 @@ const addManagers = (system: SystemMetaBuilder) => {
 
   // units
   const units = system.addCatalog('units', 'Units');
-  units.addField('title', undefined, {isTitleField: true}).setType('string');
+  units.addField('title', undefined, {isTitleField: true}).setType('string').setRequired();
   units.addLinkField('units', 'parentId').setType('int');
 };
 
