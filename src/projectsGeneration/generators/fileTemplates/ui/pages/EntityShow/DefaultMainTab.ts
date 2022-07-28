@@ -3,13 +3,15 @@ import * as R from 'ramda'
 import { getShowComponent } from '../../../../ui/getShowComponent'
 import { EntityWideGenerationArgs } from '../../../../../args'
 import { pad3, generatedWarning, pad2 } from '../../../../../utils'
+import {isMarkdownField} from "../../../../../metaUtils";
 
 export const uiEntityShowDefaultMainTabTmpl = ({
   allEntities,
   entity,
   options,
 }: EntityWideGenerationArgs) => {
-  const fieldsToImport = R.flatten(entity.fields.filter((f) => !f.hidden))
+  // const fieldsToImport = R.flatten(entity.fields.filter(f => !f.hidden))
+  const fieldsToImport = R.flatten(entity.fields.filter(f => !f.hidden).filter(f => !isMarkdownField(f)))
   const dateFieldsToImport = fieldsToImport.filter((f) =>
     ['datetime', 'date'].includes(f.type)
   )
@@ -39,11 +41,11 @@ import DateField from '../../../../uiLib/DateField';`
       : ''
   }
 import {Grid} from '@mui/material';
+${entity.fields.some(isMarkdownField) ? 'import ReactMarkdownField from \'../../../../uiLib/ReactMarkdownField\';\n' : ''}
 ${
   options.skipWarningThisIsGenerated
     ? ''
-    : `
-// ${generatedWarning}
+    : `// ${generatedWarning}
 `
 }
 const DefaultMainTab: FC<Omit<TabProps, 'children'>> = (props) => {
@@ -54,7 +56,7 @@ const DefaultMainTab: FC<Omit<TabProps, 'children'>> = (props) => {
 ${entity.fields
   .filter((f) => !f.hidden)
   .map(
-    (f) => `<Grid item xs={12} sm={6} md={3} lg={2}>
+    (f) => `<Grid item ${isMarkdownField(f) ? 'xs={12} sm={12} md={12} lg={12}' : 'xs={12} sm={6} md={3} lg={2}'}>
   <Labeled>
 ${pad2(getShowComponent(entity, allEntities, f))}
   </Labeled>

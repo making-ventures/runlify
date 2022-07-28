@@ -28,6 +28,8 @@ export class ScalarFieldBuilder extends BaseFieldBuilder {
         showInList: this.showInList,
         showInCreate: this.showInCreate,
         showInEdit: this.showInEdit,
+        showInFilter: this.showInFilter,
+        showInWidget: this.showInWidget,
         defaultDbValue: this.defaultDbValue,
       }
     } else if (this.type === 'int' || this.type === 'bigint') {
@@ -41,6 +43,8 @@ export class ScalarFieldBuilder extends BaseFieldBuilder {
         showInList: this.showInList,
         showInCreate: this.showInCreate,
         showInEdit: this.showInEdit,
+        showInFilter: this.showInFilter,
+        showInWidget: this.showInWidget,
         defaultDbValue: this.defaultDbValue,
       }
     } else if (this.type === 'string') {
@@ -52,6 +56,8 @@ export class ScalarFieldBuilder extends BaseFieldBuilder {
         showInList: this.showInList,
         showInCreate: this.showInCreate,
         showInEdit: this.showInEdit,
+        showInFilter: this.showInFilter,
+        showInWidget: this.showInWidget,
         defaultDbValue: this.defaultDbValue,
         stringType: this.stringType,
       }
@@ -64,6 +70,8 @@ export class ScalarFieldBuilder extends BaseFieldBuilder {
         showInList: this.showInList,
         showInCreate: this.showInCreate,
         showInEdit: this.showInEdit,
+        showInFilter: this.showInFilter,
+        showInWidget: this.showInWidget,
         defaultDbValue: this.defaultDbValue,
       }
     }

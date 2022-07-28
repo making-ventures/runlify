@@ -9,6 +9,7 @@ import { pascal } from '../../../../../../utils/cases'
 import { getShowComponent } from '../../../../ui/getShowComponent'
 import { Entity } from '../../../../../builders/buildedTypes'
 import { addComma, pad4, generatedWarning } from '../../../../../utils'
+import {isMarkdownField} from "../../../../../metaUtils"
 
 export const uiEntityShowDependencyTabTmpl = (
   allEntities: Map<string, Entity>,
@@ -23,7 +24,7 @@ export const uiEntityShowDependencyTabTmpl = (
 
   const fieldsToImport = R.flatten(
     allEntitiesForImport.map((entity) =>
-      R.flatten(entity.fields.filter((f) => !f.hidden))
+      R.flatten(entity.fields.filter((f) => !f.hidden)).filter(f => !isMarkdownField(f))
     )
   )
   const dateFieldsToImport = fieldsToImport.filter((f) =>
@@ -86,6 +87,7 @@ const ${pascal(entity.name)}${pascal(
       <Datagrid>
 ${linkedEntity.fields
   .filter((f) => !f.hidden)
+  .filter((f) => !isMarkdownField(f))
   .map((f) => getShowComponent(entity, allEntities, f))
   .map(pad4)
   .join('\n')}

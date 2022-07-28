@@ -21,6 +21,8 @@ describe('genPrismaFieldFromExternalEntity', () => {
           showInList: true,
           showInCreate: true,
           showInEdit: true,
+          showInFilter: true,
+          showInWidget: true,
           externalEntity: '',
           category: 'link',
           type: 'string',

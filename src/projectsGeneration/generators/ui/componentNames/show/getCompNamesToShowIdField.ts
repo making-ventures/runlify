@@ -5,5 +5,5 @@ import { LinkShowComponentName, ShowComponentName } from '../types'
 export const getCompNamesToShowIdField = (
   field: IdField
 ): Array<ShowComponentName | LinkShowComponentName> => {
-  return [getCompNameToShowScalar(field.type)]
+  return [getCompNameToShowScalar(field)]
 }

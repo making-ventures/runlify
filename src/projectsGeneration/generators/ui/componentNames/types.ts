@@ -3,6 +3,7 @@ export type ShowComponentName =
   | 'TextField'
   | 'NumberField'
   | 'BooleanField'
+  | 'ReactMarkdownField'
 
 export type LinkShowComponentName = 'ReferenceField'
 

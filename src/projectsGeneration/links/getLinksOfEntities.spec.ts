@@ -36,6 +36,8 @@ describe('getLinksOfEntities', () => {
           showInCreate: true,
           showInEdit: true,
           showInList: true,
+          showInFilter: true,
+          showInWidget: true,
           title: {
             ru: 'Some',
           },
@@ -73,6 +75,8 @@ describe('getLinksOfEntities', () => {
           showInCreate: true,
           showInEdit: true,
           showInList: true,
+          showInFilter: true,
+          showInWidget: true,
           title: {
             ru: 'Some',
           },
@@ -101,6 +105,8 @@ describe('getLinksOfEntities', () => {
           showInCreate: true,
           showInEdit: true,
           showInList: true,
+          showInFilter: true,
+          showInWidget: true,
           title: {
             ru: 'Some id2',
           },
@@ -152,6 +158,8 @@ describe('getLinksOfEntities', () => {
           showInCreate: true,
           showInEdit: true,
           showInList: true,
+          showInFilter: true,
+          showInWidget: true,
           title: {
             ru: 'Second entity',
           },
@@ -180,6 +188,8 @@ describe('getLinksOfEntities', () => {
           showInCreate: true,
           showInEdit: true,
           showInList: true,
+          showInFilter: true,
+          showInWidget: true,
           title: {
             ru: 'First entity',
           },

@@ -8,3 +8,6 @@ build
 .vscode
 
 runlify.developer.json
+/.env
+/.idea/
+/yarn-error.log
