@@ -8,7 +8,7 @@ import {Entity, Field} from '../../../../../builders/buildedTypes';
 import {getCompNameToEditScalar} from '../../../../ui/componentNames/edit/getCompNameToEditScalar';
 import {EntityWideGenerationArgs} from '../../../../../args';
 import {generatedWarning, pad5, pad1} from '../../../../../utils';
-import {getFieldByName, isImageFileRef} from '../../../../../metaUtils';
+import {getFieldByName, isImageFileRef, isMarkdownField} from '../../../../../metaUtils';
 import {getFieldLabel} from '../../../../ui/getShowComponent';
 
 // 'string' | 'int' | 'bigint' | 'float' | 'bool' | 'datetime' | 'date'
@@ -42,7 +42,7 @@ export const getTsDefaultTypeValueExpression = (field: Field): string | undefine
 };
 
 export const getTrivialEditComponent = (entity: Entity, field: Field, additionalProps: string[] = []) => {
-  return `<${getCompNameToEditScalar(field.type)}${additionalProps.map(p => `\n  ${p}`)}
+  return `<${getCompNameToEditScalar(field.type)}${additionalProps.map(p => `\n  ${p}`).join('')}
   fullWidth
   source='${field.name}'${field.required ? '' : '\n  defaultValue={null}'}
   ${getFieldLabel(entity, field)}
@@ -61,7 +61,7 @@ export const getEditComponent = (entity: Entity, allEntities: Map<string, Entity
         return `<FileInput source='${field.name}' type='image' />`;
       } else if (type === 'create') {
         return `<FileInput source='${field.name}' type='image' />`;
-      } else if (type === 'filter') { /* todo: maybe need delete this field from filter component */ }
+      }
     }
 
     const linkedField = getFieldByName(linkedEntity, linkedEntity.titleField);
@@ -80,6 +80,11 @@ export const getEditComponent = (entity: Entity, allEntities: Map<string, Entity
   />
 </ReferenceInput>`;
   } else {
+    if (isMarkdownField(field)) {
+      additionalProps.push('multiline');
+      additionalProps.push('maxRows={24}');
+    }
+
     return getTrivialEditComponent(entity, field, additionalProps);
   }
 };
@@ -89,7 +94,7 @@ export const uiDefaultEditTmpl = ({
   entity,
   options,
 }: EntityWideGenerationArgs) => {
-  const fileRefFields = entity.fields.filter(f => 'fileType' in f && f.fileType === 'image');
+  const fileRefFields = entity.fields.filter(isImageFileRef);
   const withFileRef = fileRefFields.length > 0;
 
   const fieldsToImport = entity
@@ -170,7 +175,7 @@ ${initialValues.map(f => `${f.name}: ${getTsDefaultTypeValueExpression(f)},`).ma
         <Grid container spacing={2}>
 ${fieldsToWorkWith.length === 0 ? '          <div />' : fieldsToWorkWith
     .map(f => {
-      const comp = `<Grid item xs={12} sm={6} md={3} lg={2}>
+      const comp = `<Grid item ${isMarkdownField(f) ? 'xs={12} sm={12} md={12} lg={12}': 'xs={12} sm={6} md={3} lg={2}'}>
 ${pad1(getEditComponent(entity, allEntities, f, 'edit'))}
 </Grid>`;
 

@@ -17,7 +17,7 @@ export const getFieldLabel = (entity: Entity, field: Field) => {
 }
 
 export const getScalarShowComponent = (entity: Entity, field: ScalarField) => {
-  return `<${getCompNameToShowScalar(field.type)} source='${
+  return `<${getCompNameToShowScalar(field)} source='${
     field.name
   }' ${getFieldLabel(entity, field)}${
     field.type === 'datetime' ? ' showTime' : ''
@@ -25,7 +25,7 @@ export const getScalarShowComponent = (entity: Entity, field: ScalarField) => {
 }
 
 export const getIdShowComponent = (entity: Entity, field: IdField) => {
-  return `<${getCompNameToShowScalar(field.type)} source='${
+  return `<${getCompNameToShowScalar(field)} source='${
     field.name
   }' ${getFieldLabel(entity, field)} />`
 }
@@ -53,7 +53,7 @@ export const getLinkShowComponent = (
     field
   )} reference='${field.externalEntity}' link='show'>
   <${getCompNameToShowScalar(
-    getFieldByName(linkedEntity, linkedEntity.titleField).type
+    getFieldByName(linkedEntity, linkedEntity.titleField)
   )} source='${getFieldByName(linkedEntity, linkedEntity.titleField).name}' />
 </ReferenceField>`
 }

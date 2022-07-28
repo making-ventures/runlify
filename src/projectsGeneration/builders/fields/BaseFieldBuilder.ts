@@ -30,6 +30,8 @@ export abstract class BaseFieldBuilder {
   updatable = true
   updatableByUser = true
   showInList = true
+  showInFilter = true
+  showInWidget = true
   showInCreate = true
   showInEdit = true
   constructor(name: string, defaultLanguage: string, title?: string) {
@@ -84,6 +86,12 @@ export abstract class BaseFieldBuilder {
     }
 
     this.stringType = stringType
+
+    if (stringType === 'markdown') {
+      this.showInList = false
+      this.showInFilter = false
+      this.showInWidget = false
+    }
 
     return this
   }

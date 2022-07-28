@@ -22,9 +22,11 @@ export class ListFormFilterFieldBuilder {
   }
 
   build(): ListFormFilterField {
+    // Todo: check or fix generating
+
     return {
       name: this.getField().name,
-      hidden: this.getField().hidden,
+      hidden: this.getField().showInFilter && this.getField().hidden,
       alwaysOn: this.alwaysOn,
     }
   }

@@ -6,7 +6,7 @@ import { getShowComponent } from '../../../../ui/getShowComponent'
 import { Entity } from '../../../../../builders/buildedTypes'
 import { EntityWideGenerationArgs } from '../../../../../args'
 import { generatedWarning, pad4 } from '../../../../../utils'
-import { getFieldByName, isImageFileRef } from '../../../../../metaUtils'
+import { getFieldByName, isImageFileRef, isMarkdownField } from '../../../../../metaUtils'
 import { plural } from 'pluralize'
 
 export const uiDefaultListTmpl = ({
@@ -26,7 +26,7 @@ export const uiDefaultListTmpl = ({
   const fieldsToImport = [
     ...R.flatten(
       allEntitiesForImport.map((entity) =>
-        R.flatten(entity.fields.filter((f) => !f.hidden))
+        R.flatten(entity.fields.filter((f) => !f.hidden).filter(f => !isMarkdownField(f)))
       )
     ),
     ...R.flatten(
@@ -101,6 +101,7 @@ const Default${pascalSingular(
       <Datagrid rowClick='show'>
 ${entity.fields
   .filter((f) => !f.hidden)
+  .filter(f => f.showInList)
   .map((f) => getShowComponent(entity, allEntities, f, 'list'))
   .map(pad4)
   .join('\n')}${

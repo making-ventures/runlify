@@ -15,7 +15,7 @@ export const getCompNamesToShowLinkField = (
 
   return [
     getCompNameToShowScalar(
-      getFieldByName(linkedEntity, linkedEntity.titleField).type
+      getFieldByName(linkedEntity, linkedEntity.titleField)
     ),
     'ReferenceField',
   ]

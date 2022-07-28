@@ -72,6 +72,8 @@ type BaseField = {
   showInList: boolean
   showInCreate: boolean
   showInEdit: boolean
+  showInFilter: boolean
+  showInWidget: boolean
   defaultDbValue: DefaultDbValue
   defaultValueExpression?: string
   defaultBackendValueExpression?: string
@@ -143,7 +145,7 @@ export type BaseStringField = ScalarBaseField & {
   type: 'string'
 }
 
-export type StringType = 'plain' | 'multiline' | 'richEdit'
+export type StringType = 'plain' | 'multiline' | 'richEdit' | 'markdown';
 
 export type PlainStringField = BaseStringField & {
   stringType: 'plain'

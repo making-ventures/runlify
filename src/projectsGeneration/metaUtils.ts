@@ -44,4 +44,6 @@ export const getTitleField = (entity: Entity) => {
 }
 
 export const isImageFileRef = (f: Field) =>
-  'fileType' in f && f.fileType === 'image'
+  'fileType' in f && f.fileType === 'image';
+
+export const isMarkdownField = (f: Field) => f.type === 'string' && 'stringType' in f && f.stringType === 'markdown';

@@ -11,6 +11,7 @@ export class ListFormFilterBuilder {
 
     this.fields = this.getEntity()
       .getFileds()
+      .filter(f => f.showInFilter)
       .map(
         (field) => new ListFormFilterFieldBuilder(this.getEntity, () => field)
       )

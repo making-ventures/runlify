@@ -1,9 +1,13 @@
-import { FiledType } from '../../../../builders/buildedTypes'
-import { ShowComponentName } from '../types'
+import {Field} from '../../../../builders';
+import {ShowComponentName} from '../types';
+import {isMarkdownField} from "../../../../metaUtils";
 
-export const getCompNameToShowScalar = (type: FiledType): ShowComponentName => {
-  switch (type) {
+export const getCompNameToShowScalar = (field: Field): ShowComponentName => {
+  switch (field.type) {
     case 'string':
+      if (isMarkdownField(field)) {
+        return 'ReactMarkdownField';
+      }
       return 'TextField'
     case 'int':
       return 'NumberField'
@@ -17,7 +21,7 @@ export const getCompNameToShowScalar = (type: FiledType): ShowComponentName => {
       return 'DateField'
     case 'date':
       return 'DateField'
-    default:
-      throw new Error(`Unexpected "${type}" type`)
+    // default:
+    //   throw new Error(`Unexpected "${field.type}" type`)
   }
 }

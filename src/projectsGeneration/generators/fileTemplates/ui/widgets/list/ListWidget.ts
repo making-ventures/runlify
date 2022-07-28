@@ -1,6 +1,7 @@
 import { pascal, pascalSingular, sentence } from '../../../../../../utils/cases'
 import { EntityWideGenerationArgs } from '../../../../../args'
 import { generatedWarning, pad1, pad5 } from '../../../../../utils'
+// import { isMarkdownField } from '../../../../../metaUtils'
 
 export const uiListWidgetTmpl = ({
   entity,
@@ -8,6 +9,7 @@ export const uiListWidgetTmpl = ({
 }: EntityWideGenerationArgs) => {
   const fields = entity.fields
     .filter((f) => !f.hidden)
+    .filter(f => f.showInWidget)
     .map(
       (f) => `<div>
   {\`${sentence(f.name)}: \${props.${f.name}}\`}
