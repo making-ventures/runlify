@@ -11,9 +11,9 @@ const getFieldValidation = (field: Field): string | null => {
     return null
   }
 
-  if (field.category === 'id') {
-    return null
-  }
+  // if (field.category === 'id') {
+  //   return null
+  // }
 
   // if (!field.requiredOnInput && field.requiredOnInput !== null) {
   //   return null;
@@ -46,6 +46,7 @@ export const uiGetEntityValidationTmpl = ({
   const hasValidations = validations.length > 0
 
   return `import * as Yup from 'yup';
+  ${JSON.stringify(entity.fields.map(el => el.name))}
 import GetValidation from '../../../types/GetValidation';${
     hasValidations
       ? `
