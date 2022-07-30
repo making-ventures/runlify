@@ -76,6 +76,7 @@ const Default${pascalSingular(entity.name)}Filter: FC<any> = (props) => {
       }
         source='q'
         alwaysOn
+        sx={{m: 1}}
       />`
         : ''
     }
