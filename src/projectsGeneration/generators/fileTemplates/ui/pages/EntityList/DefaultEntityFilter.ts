@@ -86,7 +86,7 @@ ${fields
       allEntities,
       getEntityField(entity, f.name),
       'filter',
-      [f.alwaysOn ? 'alwaysOn' : undefined].filter(Boolean) as string[]
+      [f.alwaysOn ? 'alwaysOn' : undefined, 'sx={{m: 1}}'].filter(Boolean) as string[]
     )
   )
   .map(pad3)
