@@ -70,6 +70,7 @@ export const getEditComponent = (entity: Entity, allEntities: Map<string, Entity
   source='${field.name}'
   reference='${field.externalEntity}'
   sort={{id: '${entity.sortField}', order: '${entity.sortOrder}'}}
+  ${getFieldLabel(entity, field)}
 >
   <AutocompleteInput
     fullWidth
