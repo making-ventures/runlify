@@ -72,8 +72,9 @@ export const getEditComponent = (entity: Entity, allEntities: Map<string, Entity
   sort={{id: '${entity.sortField}', order: '${entity.sortOrder}'}}
 >
   <AutocompleteInput
-    sx={{m: 1}}
     fullWidth
+    sx={{m: 1}}
+    size='small'
     ${getFieldLabel(entity, field)}
     optionText='${linkedField.name}'
     defaultValue={null}
