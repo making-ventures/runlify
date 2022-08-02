@@ -44,7 +44,7 @@ ${
 interface List${pascal(entity.name)}WidgetProps extends
 Omit<ListWigetProps<${pascalSingular(
     entity.name
-  )}>, 'request' | 'resultToValue'| 'children'>,
+  )}>, 'request' | 'resultToValue'| 'children' | 'source'>,
 QueryAll${pascal(entity.name)}Args {
   children?: FC<${pascalSingular(entity.name)}>,
 }
@@ -88,6 +88,7 @@ const List${pascal(entity.name)}Widget: FC<List${pascal(
   return (
     <ListWiget<${pascalSingular(entity.name)}>
       {...rest}
+      source='${entity.name}'
       options={{
         variables: {
           page,
