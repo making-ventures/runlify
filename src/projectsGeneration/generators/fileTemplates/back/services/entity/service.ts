@@ -242,9 +242,10 @@ export interface Base${pascalPlural(entity.name)}Methods {
     entity.name
   )}ArgsWithoutAutodefinable, byUser?: boolean) =>
     Promise<${pascalSingular(entity.name)}>;
-  upsert: (data: MutationUpdate${pascalSingular(
-    entity.name
-  )}ArgsWithoutAutodefinable, byUser?: boolean) =>
+  upsert: (
+    data: PartialFieldsInRecord<MutationUpdate${pascalSingular(entity.name)}ArgsWithoutAutodefinable, 'id'>,
+    byUser?: boolean,
+  ) =>
     Promise<${pascalSingular(entity.name)}>;
   upsertAdvanced: (
     filter: ${pascalSingular(entity.name)}Filter,
@@ -723,11 +724,11 @@ ${
   };
 
   const upsert = async (
-    data: MutationUpdate${pascalSingular(entity.name)}ArgsWithoutAutodefinable,
+    data: PartialFieldsInRecord<MutationUpdate${pascalSingular(entity.name)}ArgsWithoutAutodefinable, 'id'>,
     byUser = false,
   ): Promise<${pascalSingular(entity.name)}> => {
     // Get db version
-    const dbVersion = await get(data.id);
+    const dbVersion = data.id ? await get(data.id) : null;
 
     // clear from fields forbidden for user
     const cleared = byUser ? R.omit(forbiddenForUserFields, data) : data;
