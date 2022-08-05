@@ -305,7 +305,7 @@ export const generateEntity = async (
       // if (entity.type === 'document' && entity.registries.length > 0) {
       await write(
         join(entityShowDir, 'DefaultActions.tsx'),
-        uiDefaultActionTmpl(entityWideGenerationArgs, entity)
+        uiDefaultActionTmpl(entityWideGenerationArgs)
       )
       // }
 

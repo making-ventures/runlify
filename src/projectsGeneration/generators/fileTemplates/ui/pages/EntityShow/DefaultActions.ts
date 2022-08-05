@@ -1,12 +1,14 @@
 import { pascalSingular } from '../../../../../../utils/cases'
-import { Entity } from '../../../../../builders/buildedTypes'
 import { singular } from 'pluralize'
 import { EntityWideGenerationArgs } from '../../../../../args'
 import { pad5 } from '../../../../../utils'
 
 export const uiDefaultActionTmpl = (
-  data: EntityWideGenerationArgs,
-  entity?: Entity
+  {
+    options,
+    entity,
+    allEntities,
+  }: EntityWideGenerationArgs,
 ) => {
   return `import React from 'react';
 import {
@@ -24,13 +26,13 @@ import OpenRegistries from '../../../commonActions/OpenRegistries';`
       : ''
   }
 ${
-  data.options.skipWarningThisIsGenerated
+  options.skipWarningThisIsGenerated
     ? ''
     : `
 // DO NOT EDIT! THIS IS GENERATED FILE
 `
 }
-const Default${pascalSingular(data.entity.name)}Actions = () => {
+const Default${pascalSingular(entity.name)}Actions = () => {
   const {permissions} = usePermissions<string[]>();
 
   return (
@@ -43,7 +45,7 @@ const Default${pascalSingular(data.entity.name)}Actions = () => {
           entity.registries.length
             ? `[
 ${entity.registries
-  .map((r) => `'${r}',`)
+  .map((r) => `{name: '${r}', type: '${allEntities.get(r)?.type}'},`)
   .map(pad5)
   .join('\n')}
         ]`
@@ -63,6 +65,6 @@ ${entity.registries
   );
 };
 
-export default Default${pascalSingular(data.entity.name)}Actions;
+export default Default${pascalSingular(entity.name)}Actions;
 `
 }
