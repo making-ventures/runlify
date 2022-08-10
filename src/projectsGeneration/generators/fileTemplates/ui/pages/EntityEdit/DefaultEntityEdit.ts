@@ -162,7 +162,10 @@ const CustomToolbar = (props: ToolbarProps) => {
   const {permissions} = usePermissions<string[]>();
 
   return (
-    <Toolbar {...props}>
+    <Toolbar
+      {...props}
+      sx={{display: 'flex', justifyContent: 'space-between'}}
+    >
       <SaveButton />
       {hasPermission(permissions, '${entity.name}.delete') && <DeleteButton mutationMode='pessimistic' />}
     </Toolbar>
