@@ -45,6 +45,9 @@ export const uiDefaultListTmpl = ({
     'List',
     'Datagrid',
     'ListProps',
+    'BulkActionProps',
+    'usePermissions',
+    'BulkDeleteButton',
 
     ...R.flatten(
       notDateFieldsToImport.map((f) => getCompNamesToShowField(f, allEntities))
@@ -76,6 +79,7 @@ import RegistrarField from '../../../../raUiLib/RegistrarField';`
 import ${pascalSingular(entity.name)}Filter from './${pascalSingular(
     entity.name
   )}Filter';
+import {hasPermission} from '../../../../utils/permissions';
 ${
   withFileRef
     ? "import ImageViewField from '../../../../uiLib/file/ImageViewField';\n"
@@ -87,17 +91,33 @@ ${
     : `// ${generatedWarning}
 `
 }
+const CustomBulkActionButton = (props: BulkActionProps) => {
+  const {permissions} = usePermissions<string[]>();
+
+  return (
+    <>
+      {hasPermission(permissions, '${entity.name}.delete') && <BulkDeleteButton {...props} />}
+    </>
+  );
+};
+
 const Default${pascalSingular(
     entity.name
   )}List: FC<ListProps> = (props: ListProps) => {
   const translate = useTranslate();
 
   return (
-    <List title={translate('${plural(entity.type)}.${
+    <List
+      title={translate('${plural(entity.type)}.${
     entity.name
-  }.title')} exporter={false} filters={<${pascalSingular(
+  }.title')}
+      exporter={false}
+      filters={<${pascalSingular(
     entity.name
-  )}Filter />} {...props}>
+  )}Filter />}
+      bulkActionButtons={<CustomBulkActionButton />}
+      {...props}
+    >
       <Datagrid rowClick='show'>
 ${entity.fields
   .filter((f) => !f.hidden)

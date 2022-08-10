@@ -116,6 +116,11 @@ export const uiDefaultEditTmpl = ({
     'Edit',
     'SimpleForm',
     'EditProps',
+    'ToolbarProps',
+    'Toolbar',
+    'SaveButton',
+    'DeleteButton',
+    'usePermissions',
 
     ...R.flatten(
       notDateFieldsToImport
@@ -149,9 +154,21 @@ import {useDebug} from '../../../../contexts/DebugContext';` : ''}
 import {Grid} from '@mui/material';
 import {yupResolver} from '@hookform/resolvers/yup';
 import get${pascalSingular(entity.name)}Validation from '../get${pascalSingular(entity.name)}Validation';
+import {hasPermission} from '../../../../utils/permissions';
 ${withFileRef ? 'import {FileInput} from \'../../../../uiLib/file/FileInput\';\n' : ''}
 ${options.skipWarningThisIsGenerated ? '' : `// ${generatedWarning}
 `}
+const CustomToolbar = (props: ToolbarProps) => {
+  const {permissions} = usePermissions<string[]>();
+
+  return (
+    <Toolbar {...props}>
+      <SaveButton />
+      {hasPermission(permissions, '${entity.name}.delete') && <DeleteButton mutationMode='pessimistic' />}
+    </Toolbar>
+  );
+};
+
 const Default${pascalSingular(entity.name)}Edit: FC<EditProps> = (props: EditProps) => {
 ${hasHidden ? `  const {debug} = useDebug();
 ` : ''}  const translate = useTranslate();
@@ -174,6 +191,7 @@ ${hasHidden ? `  const {debug} = useDebug();
 ${initialValues.map(f => `${f.name}: ${getTsDefaultTypeValueExpression(f)},`).map(pad5).join('\n')}
         }}`}
         resolver={resolver}
+        toolbar={<CustomToolbar />}
       >
         <Grid container spacing={2}>
 ${fieldsToWorkWith.length === 0 ? '          <div />' : fieldsToWorkWith
