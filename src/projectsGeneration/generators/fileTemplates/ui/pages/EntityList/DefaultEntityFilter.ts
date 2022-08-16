@@ -81,6 +81,7 @@ const Default${pascalSingular(entity.name)}Filter: FC<any> = (props) => {
         : ''
     }
 ${fields
+  .filter(el => entity.type !== 'document' || el.name !== 'date')
   .map((f) =>
     getEditComponent(
       entity,

@@ -44,6 +44,7 @@ export const getTsDefaultTypeValueExpression = (field: Field): string | undefine
 export const getTrivialEditComponent = (entity: Entity, field: Field, additionalProps: string[] = []) => {
   return `<${getCompNameToEditScalar(field.type)}${additionalProps.map(p => `\n  ${p}`).join('')}
   fullWidth
+  sx={{m: 1}}
   source='${field.name}'${field.required ? '' : '\n  defaultValue={null}'}
   ${getFieldLabel(entity, field)}
 />`;
