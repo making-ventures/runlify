@@ -36,18 +36,20 @@ export const uiDefaultFilterTmpl = ({
     ),
   ]
 
+  const dateFieldsExceptDocumentDateToImport = dateFieldsToImport.filter(el => entity.type !== 'document' || el.name !== 'date');
+
   return `import React, {FC} from 'react';
 import {
   ${R.uniq(reactAdminImports).map(addComma).join(`
   `)}
   useTranslate,
 } from 'react-admin';${
-    dateFieldsToImport.some((f) => f.type === 'datetime')
+    dateFieldsExceptDocumentDateToImport.some((f) => f.type === 'datetime')
       ? `
 import DateTimeInput from '../../../../uiLib/DateTimeInput';`
       : ''
   }${
-    dateFieldsToImport.some((f) => f.type === 'date')
+    dateFieldsExceptDocumentDateToImport.some((f) => f.type === 'date')
       ? `
 import DateInput from '../../../../uiLib/DateInput';`
       : ''
