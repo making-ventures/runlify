@@ -9,16 +9,16 @@ const addManagers = (system: SystemMetaBuilder) => {
   });
   managers.setNeedFor('Менеджерские (административные) аккаунты');
   managers.addField('title', undefined, {isTitleField: true}).setType('string');
-  managers.addField('lastName').setType('string').setRequired();
-  managers.addField('firstName').setType('string').setRequired();
-  managers.addLinkField('languages', 'languageId').setType('string');
-  managers.addField('email').setType('string').setRequired(true);
-  managers.addField('phone').setType('string');
-  managers.addField('photo').setType('string');
-  managers.addField('telegramLogin').setType('string');
-  managers.addLinkField('units', 'unitId');
-  managers.addField('headOfUnit').setType('bool').setDefaultValueExpression('false').setRequired();
-  managers.addField('active').setType('bool').setDefaultValueExpression('true').setRequired();
+  managers.addField('lastName', 'Фамилия').setType('string').setRequired();
+  managers.addField('firstName', 'Имя').setType('string').setRequired();
+  managers.addLinkField('languages', 'languageId', 'Язык').setType('string');
+  managers.addField('email', 'Email').setType('string').setRequired(true);
+  managers.addField('phone', 'Телефон').setType('string');
+  managers.addImageField('photoId', 'Фото');
+  managers.addField('telegramLogin', 'Логин в Telegram').setType('string');
+  managers.addLinkField('units', 'unitId', 'Подразделение');
+  managers.addField('headOfUnit', 'Глава подразделения').setType('bool').setDefaultValueExpression('false').setRequired();
+  managers.addField('active', 'Активный').setType('bool').setDefaultValueExpression('true').setRequired();
   managers.addUniqueConstraint(['email']);
   managers.setMultitenancy('optional', false);
 
