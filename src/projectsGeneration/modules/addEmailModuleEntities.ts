@@ -58,7 +58,11 @@ const addEmailModuleEntities = (system: SystemMetaBuilder) => {
   mailingMessages.addField('dateCreated').setType('datetime').setRequired();
   mailingMessages.addField('dateSent').setType('datetime');
   mailingMessages.addField('error').setType('string');
+  mailingMessages.addField('html').setType('string');
+  mailingMessages.addField('text').setType('string');
+  mailingMessages.addField('subject').setType('string');
   mailingMessages.addLinkField('mailingMessageStatuses', 'mailingMessageStatusId').setType('string').setRequired();
+  mailingMessages.addLinkField('messageTemplateLangVariants', 'messageTemplateLangVariantId').setType('int');
   mailingMessages.addUniqueConstraint(['mailingCampaignId', 'to', 'localsHash']);
 };
 

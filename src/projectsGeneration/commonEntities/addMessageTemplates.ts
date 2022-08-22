@@ -38,9 +38,21 @@ const addMessageTemplates = (system: SystemMetaBuilder) => {
   messageTemplates.addField('title', undefined, {isTitleField: true}).setType('string').setRequired();
   messageTemplates.addField('secretData').setType('bool').setRequired();
   messageTemplates.addLinkField('messageTypes', 'messageTypeId').setType('string').setRequired();
-  messageTemplates.addField('bodyTemplate').setType('string');
-  messageTemplates.addField('subjectTemplate').setType('string');
   messageTemplates.addLinkField('templateStyles', 'templateStyleId').setType('int');
+
+  // messageTemplateLangVariants
+  const messageTemplateLangVariants = system.addCatalog('messageTemplateLangVariants');
+  messageTemplateLangVariants.setTitles({
+    en: 'Message template lang variant',
+    ru: 'Языковой вариант шаблона сообщения',
+  });
+  messageTemplateLangVariants.setNeedFor('Языковой вариант шаблона сообщения');
+  messageTemplateLangVariants.addField('subjectTemplate').setType('string').setRequired();
+  messageTemplateLangVariants.addField('bodyTemplate').setType('string').setRequired();
+  messageTemplateLangVariants.addLinkField('messageTemplates', 'messageTemplateId').setRequired();
+  messageTemplateLangVariants.addLinkField('languages', 'languageId').setRequired();
+  messageTemplateLangVariants.addField('additionalStyle').setType('string');
+  messageTemplateLangVariants.addUniqueConstraint(['messageTemplateId', 'languageId']);
 };
 
 export default addMessageTemplates;
