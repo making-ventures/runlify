@@ -49,7 +49,7 @@ const addEmailModuleEntities = (system: SystemMetaBuilder) => {
   });
   mailingMessages.addLinkField('mailingCampaigns', 'mailingCampaignId').setRequired();
   mailingMessages.addField('template').setType('string').setRequired();
-  mailingMessages.addLinkField('messageTemplates', 'templateId').setType('int');
+  mailingMessages.addLinkField('messageTemplates', 'newTemplateId').setType('int');
   mailingMessages.addLinkField('languages', 'languageId').setType('string').setRequired();
   mailingMessages.addField('to').setType('string').setRequired();
   mailingMessages.addField('locals').setType('string').setRequired();
