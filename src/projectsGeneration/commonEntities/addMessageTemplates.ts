@@ -40,7 +40,7 @@ const addMessageTemplates = (system: SystemMetaBuilder) => {
   messageTemplates.addLinkField('messageTypes', 'messageTypeId').setType('string').setRequired();
   messageTemplates.addField('bodyTemplate').setType('string');
   messageTemplates.addField('subjectTemplate').setType('string');
-  messageTemplates.addLinkField('templateStyles', 'templateStyleId').setType('int').setRequired();
+  messageTemplates.addLinkField('templateStyles', 'templateStyleId').setType('int');
 };
 
 export default addMessageTemplates;
