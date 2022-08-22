@@ -18,6 +18,16 @@ const addMessageTemplates = (system: SystemMetaBuilder) => {
     },
   ]);
 
+  // templateStyles
+  const templateStyles = system.addCatalog('templateStyles');
+  templateStyles.setTitles({
+    en: 'Template styles',
+    ru: 'Стили шаблонов',
+  });
+  templateStyles.setNeedFor('Стили шаблонов');
+  templateStyles.addField('title', undefined, {isTitleField: true}).setType('string').setRequired();
+  templateStyles.addField('style').setType('string').setRequired();
+
   // messageTemplates
   const messageTemplates = system.addCatalog('messageTemplates');
   messageTemplates.setTitles({
@@ -25,10 +35,12 @@ const addMessageTemplates = (system: SystemMetaBuilder) => {
     ru: 'Шаблоны сообщений',
   });
   messageTemplates.setNeedFor('Шаблоны сообщений');
-  messageTemplates.getKey().setType('string');
   messageTemplates.addField('title', undefined, {isTitleField: true}).setType('string').setRequired();
   messageTemplates.addField('secretData').setType('bool').setRequired();
   messageTemplates.addLinkField('messageTypes', 'messageTypeId').setType('string').setRequired();
+  messageTemplates.addField('bodyTemplate').setType('string');
+  messageTemplates.addField('subjectTemplate').setType('string');
+  messageTemplates.addLinkField('templateStyles', 'templateStyleId').setType('int').setRequired();
 };
 
 export default addMessageTemplates;
