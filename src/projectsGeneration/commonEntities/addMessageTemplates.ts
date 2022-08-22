@@ -50,7 +50,7 @@ const addMessageTemplates = (system: SystemMetaBuilder) => {
   messageTemplateLangVariants.addField('subjectTemplate').setType('string').setRequired();
   messageTemplateLangVariants.addField('bodyTemplate').setType('string').setRequired();
   messageTemplateLangVariants.addLinkField('messageTemplates', 'messageTemplateId').setRequired();
-  messageTemplateLangVariants.addLinkField('languages', 'languageId').setRequired();
+  messageTemplateLangVariants.addLinkField('languages', 'languageId').setType('string').setRequired();
   messageTemplateLangVariants.addField('additionalStyle').setType('string');
   messageTemplateLangVariants.addUniqueConstraint(['messageTemplateId', 'languageId']);
 };
