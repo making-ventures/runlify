@@ -163,6 +163,7 @@ ${
   script:
     - NAMESPACE=\${NAMESPACE:-"${options.k8sNamespacePrefix || prefix}-\${ENV}"}
     - echo NAMESPACE \${NAMESPACE}
+    - echo chart \${NAMESPACE}-\${DEPLOY_KIND}
 
     - helm upgrade
       --install
