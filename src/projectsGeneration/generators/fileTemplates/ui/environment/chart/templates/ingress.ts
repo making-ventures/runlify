@@ -14,19 +14,19 @@ export const uiChartIngressTmpl = ({
 }apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
- name: ${options.k8sChartName || prefix}-ui
- labels:
+  name: ${options.k8sChartName || prefix}-ui
+  labels:
     app: ${options.k8sChartName || prefix}-back
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
     release: "{{ .Release.Name }}"
     heritage: "{{ .Release.Service }}"
- annotations:
- {{- range $key, $value := .Values.ingress.annotations }}
-   {{ $key }}: {{ $value | quote }}
- {{- end }}
- {{ if .Values.ingress.letsencryptCert }}
-   cert-manager.io/cluster-issuer: "letsencrypt-prod"
- {{ end }}
+  annotations:
+  {{- range $key, $value := .Values.ingress.annotations }}
+    {{ $key }}: {{ $value | quote }}
+  {{- end }}
+  {{ if .Values.ingress.letsencryptCert }}
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  {{ end }}
 spec:
   rules:
     {{ if .Values.ingress.rootEnabled }}
