@@ -204,6 +204,7 @@ ${
     ENV: "stage"
     DEV: "true"
     HOST: "making.ventures"
+    ROOT_ENABLED: "false"
     TAG: ":latest"${system.configVars
       .filter((v) => v.scopes.includes('back'))
       .map(
@@ -221,6 +222,7 @@ ${
     ENV: "prod"
     DEV: "false"
     HOST: "making.ventures"
+    ROOT_ENABLED: "true"
     TAG: ":release"${system.configVars
       .filter((v) => v.scopes.includes('back'))
       .map(
