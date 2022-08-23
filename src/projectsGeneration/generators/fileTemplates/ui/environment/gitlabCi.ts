@@ -118,6 +118,7 @@ ${
     ENV: "stage"
     DEV: "true"
     HOST: "making.ventures"
+    ROOT_ENABLED: "false"
     TAG: ":latest"
     KUBE_CONFIG: \${KUBE_STAGE01_CONFIG}${system.configVars
       .filter((v) => v.scopes.includes('admin-app'))
@@ -138,6 +139,7 @@ ${
     ENV: "prod"
     DEV: "false"
     HOST: "making.ventures"
+    ROOT_ENABLED: "true"
     TAG: ":release"
     KUBE_CONFIG: \${KUBE_PROD01_CONFIG}${system.configVars
       .filter((v) => v.scopes.includes('admin-app'))
