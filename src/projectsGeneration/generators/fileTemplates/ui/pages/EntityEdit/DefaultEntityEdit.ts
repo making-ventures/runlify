@@ -200,7 +200,7 @@ ${initialValues.map(f => `${f.name}: ${getTsDefaultTypeValueExpression(f)},`).ma
           toolbar={<CustomToolbar />}
         >
           <Grid container spacing={2}>
-${fieldsToWorkWith.length === 0 ? '           <div />' : fieldsToWorkWith
+${fieldsToWorkWith.length === 0 ? '            <div />' : fieldsToWorkWith
     .map(f => {
       const comp = `<Grid item ${isMarkdownField(f) ? 'xs={12} sm={12} md={12} lg={12}': 'xs={12} sm={6} md={3} lg={2}'}>
 ${pad1(getEditComponent(entity, allEntities, f, 'edit'))}
