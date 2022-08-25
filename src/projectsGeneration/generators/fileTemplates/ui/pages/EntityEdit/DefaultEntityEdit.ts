@@ -7,7 +7,7 @@ import * as R from 'ramda';
 import {Entity, Field} from '../../../../../builders/buildedTypes';
 import {getCompNameToEditScalar} from '../../../../ui/componentNames/edit/getCompNameToEditScalar';
 import {EntityWideGenerationArgs} from '../../../../../args';
-import {generatedWarning, pad5, pad1} from '../../../../../utils';
+import { generatedWarning, pad6, pad1 } from '../../../../../utils'
 import {getFieldByName, isImageFileRef, isMarkdownField} from '../../../../../metaUtils';
 import {getFieldLabel} from '../../../../ui/getShowComponent';
 
@@ -156,6 +156,7 @@ import {Grid} from '@mui/material';
 import {yupResolver} from '@hookform/resolvers/yup';
 import get${pascalSingular(entity.name)}Validation from '../get${pascalSingular(entity.name)}Validation';
 import {hasPermission} from '../../../../utils/permissions';
+import {SaveContext} from '../../../../contexts/SaveContext';
 ${withFileRef ? 'import {FileInput} from \'../../../../uiLib/file/FileInput\';\n' : ''}
 ${options.skipWarningThisIsGenerated ? '' : `// ${generatedWarning}
 `}
@@ -190,14 +191,15 @@ ${hasHidden ? `  const {debug} = useDebug();
     .join('')}
       }), [])}
     >
-      <SimpleForm
-        defaultValues=${initialValues.length === 0 ? '{{}}' : `{{
-${initialValues.map(f => `${f.name}: ${getTsDefaultTypeValueExpression(f)},`).map(pad5).join('\n')}
-        }}`}
-        resolver={resolver}
-        toolbar={<CustomToolbar />}
-      >
-        <Grid container spacing={2}>
+      <SaveContext>
+        <SimpleForm
+          defaultValues=${initialValues.length === 0 ? '{{}}' : `{{
+${initialValues.map(f => `${f.name}: ${getTsDefaultTypeValueExpression(f)},`).map(pad6).join('\n')}
+          }}`}
+          resolver={resolver}
+          toolbar={<CustomToolbar />}
+        >
+          <Grid container spacing={2}>
 ${fieldsToWorkWith.length === 0 ? '          <div />' : fieldsToWorkWith
     .map(f => {
       const comp = `<Grid item ${isMarkdownField(f) ? 'xs={12} sm={12} md={12} lg={12}': 'xs={12} sm={6} md={3} lg={2}'}>
@@ -206,11 +208,12 @@ ${pad1(getEditComponent(entity, allEntities, f, 'edit'))}
 
       const debuggedComp = f.requiredOnInput || f.requiredOnInput === null ? comp : `{debug && ${comp}}`;
 
-      return pad5(debuggedComp);
+      return pad6(debuggedComp);
     })
     .join('\n')}
-        </Grid>
-      </SimpleForm>
+          </Grid>
+        </SimpleForm>
+      </SaveContext>
     </Edit>
   );
 };

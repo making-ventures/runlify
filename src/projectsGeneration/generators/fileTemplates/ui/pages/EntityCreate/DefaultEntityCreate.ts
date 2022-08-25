@@ -6,7 +6,7 @@ import {
 } from '../EntityEdit/DefaultEntityEdit'
 import { getCompNamesToEditField } from '../../../../ui/componentNames/edit/getCompNamesToEditField'
 import { EntityWideGenerationArgs } from '../../../../../args'
-import { generatedWarning, pad5, pad1 } from '../../../../../utils'
+import { generatedWarning, pad1, pad6 } from '../../../../../utils'
 import { getKeyField, isImageFileRef, isMarkdownField } from '../../../../../metaUtils'
 
 export const uiDefaultCreateTmpl = ({
@@ -80,6 +80,7 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import get${pascalSingular(entity.name)}Validation from '../get${pascalSingular(
     entity.name
   )}Validation';
+import {SaveContext} from '../../../../contexts/SaveContext';
 ${
   withFileRef
     ? "import {FileInput} from '../../../../uiLib/file/FileInput';\n"
@@ -118,20 +119,21 @@ ${
           .join('')}
       }), [])}
     >
-      <SimpleForm
-        defaultValues=${
-          initialValues.length === 0
-            ? '{{}}'
-            : `{{
+      <SaveContext>
+        <SimpleForm
+          defaultValues=${
+            initialValues.length === 0
+              ? '{{}}'
+              : `{{
 ${initialValues
   .map((f) => `${f.name}: ${getTsDefaultTypeValueExpression(f)},`)
-  .map(pad5)
+  .map(pad6)
   .join('\n')}
-        }}`
+          }}`
         }
-        resolver={resolver}
-      >
-        <Grid container spacing={2}>
+          resolver={resolver}
+        >
+          <Grid container spacing={2}>
 ${fieldsToWorkWith
   .map((f) => {
     const comp = `<Grid item ${isMarkdownField(f) ? 'xs={12} sm={12} md={12} lg={12}': 'xs={12} sm={6} md={3} lg={2}'}>
@@ -143,11 +145,12 @@ ${pad1(getEditComponent(entity, allEntities, f, 'create'))}
         ? comp
         : `{debug && ${comp}}`
 
-    return pad5(debuggedComp)
+    return pad6(debuggedComp)
   })
   .join('\n')}
-        </Grid>
-      </SimpleForm>
+          </Grid>
+        </SimpleForm>
+      </SaveContext>
     </Create>
   );
 };
