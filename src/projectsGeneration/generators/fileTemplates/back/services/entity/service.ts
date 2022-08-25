@@ -883,7 +883,7 @@ ${
     rePost,
     getRegistryEntries: (data: ${pascalSingular(
       entity.name
-    )}) => getRegistryEntries(ctx, data),
+    )}) => getRegistryEntries(ctx, await augmentByDefault(data)),
     getPostOperations: async (data: ${pascalSingular(
       entity.name
     )}) => getPostOperations(ctx, await augmentByDefault(data)),
