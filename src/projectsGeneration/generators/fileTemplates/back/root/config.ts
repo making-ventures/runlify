@@ -7,6 +7,7 @@ export const configTmpl = ({
   options,
 }: ProjectWideGenerationArgs) => `import {constantCase} from 'change-case';
 import nconf from 'nconf';
+import {exists, read} from 'fs-jetpack';
 ${
   options.skipWarningThisIsGenerated
     ? ''
@@ -18,6 +19,15 @@ nconf
   .argv()
   .env()
   .file({file: './config/default.json'});
+
+const developerRunlifyConfig = read('runlify.developer.json', 'json') || 'dev';
+
+const envName = process.env.ENV || developerRunlifyConfig?.defaultEnvironment;
+const file = \`./config/\${envName}.json\`;
+
+if (exists(file)) {
+  nconf.file({file});
+}
 
 export const getFromNconf = (name: string): string | undefined => nconf.get(constantCase(name)) || nconf.get(name) || '';
 

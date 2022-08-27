@@ -72,7 +72,10 @@ module.exports = {
     const proc = spawn(command, commandArgs, {
       stdio: 'inherit',
       shell: true,
-      env: nconf.get(),
+      env: {
+        ...nconf.get(),
+        ...(envName ? {ENV: envName} : {}),
+      },
     })
 
     // Handle any termination signals for parent and child proceses
