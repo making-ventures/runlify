@@ -4,8 +4,13 @@ module.exports = {
   name: 'login',
   alias: ['l'],
   run: async (toolbox: GluegunToolbox) => {
-    const { login } = toolbox.auth
+    const {
+      parameters,
+      auth: {login}
+    } = toolbox;
 
-    await login()
+    await login({
+      ifNotLeggedin: parameters.options.ifNotLeggedin,
+    })
   },
 }

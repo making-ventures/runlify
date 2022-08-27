@@ -1,12 +1,29 @@
 import { GluegunToolbox } from 'gluegun'
 
+interface LoginOptions {
+  ifNotLeggedin: boolean;
+}
+
 module.exports = async (toolbox: GluegunToolbox) => {
   const {
     print: { info, error },
   } = toolbox
   const endpoint = 'https://prj-ep.prod.apps.stage01.making.ventures'
 
-  const login = async () => {
+  const isLoggedin = () => {
+    const token = toolbox.globalConfig.getConfigValue('token')
+
+    return Boolean(token)
+  }
+
+  const login = async ({
+    ifNotLeggedin = false,
+  }: LoginOptions) => {
+
+    if (ifNotLeggedin && isLoggedin()) {
+      return
+    }
+
     const { login } = await toolbox.prompt.ask({
       name: 'login',
       type: 'input',
