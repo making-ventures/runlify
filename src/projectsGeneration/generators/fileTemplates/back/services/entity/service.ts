@@ -344,7 +344,7 @@ ${pad3(
       entity.name
     )}Part;
   }`
-      : 'currentData as T'
+      : 'currentData as T & Autodefinable${pascalSingular(entity.name)}Part'
   };
 
   const all = async (
