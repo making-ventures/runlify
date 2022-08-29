@@ -156,7 +156,7 @@ import {Grid} from '@mui/material';
 import {yupResolver} from '@hookform/resolvers/yup';
 import get${pascalSingular(entity.name)}Validation from '../get${pascalSingular(entity.name)}Validation';
 import {hasPermission} from '../../../../utils/permissions';
-import {SaveContext} from '../../../../contexts/SaveContext';
+import {LoadingContext} from '../../../../contexts/LoadingContext';
 ${withFileRef ? 'import {FileInput} from \'../../../../uiLib/file/FileInput\';\n' : ''}
 ${options.skipWarningThisIsGenerated ? '' : `// ${generatedWarning}
 `}
@@ -191,7 +191,7 @@ ${hasHidden ? `  const {debug} = useDebug();
     .join('')}
       }), [])}
     >
-      <SaveContext>
+      <LoadingContext>
         <SimpleForm
           defaultValues=${initialValues.length === 0 ? '{{}}' : `{{
 ${initialValues.map(f => `${f.name}: ${getTsDefaultTypeValueExpression(f)},`).map(pad6).join('\n')}
@@ -213,7 +213,7 @@ ${pad1(getEditComponent(entity, allEntities, f, 'edit'))}
     .join('\n')}
           </Grid>
         </SimpleForm>
-      </SaveContext>
+      </LoadingContext>
     </Edit>
   );
 };

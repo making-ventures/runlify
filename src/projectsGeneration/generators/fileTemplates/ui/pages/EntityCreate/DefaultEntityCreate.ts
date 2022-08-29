@@ -80,7 +80,7 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import get${pascalSingular(entity.name)}Validation from '../get${pascalSingular(
     entity.name
   )}Validation';
-import {SaveContext} from '../../../../contexts/SaveContext';
+import {LoadingContext} from '../../../../contexts/LoadingContext';
 ${
   withFileRef
     ? "import {FileInput} from '../../../../uiLib/file/FileInput';\n"
@@ -119,7 +119,7 @@ ${
           .join('')}
       }), [])}
     >
-      <SaveContext>
+      <LoadingContext>
         <SimpleForm
           defaultValues=${
             initialValues.length === 0
@@ -150,7 +150,7 @@ ${pad1(getEditComponent(entity, allEntities, f, 'create'))}
   .join('\n')}
           </Grid>
         </SimpleForm>
-      </SaveContext>
+      </LoadingContext>
     </Create>
   );
 };
