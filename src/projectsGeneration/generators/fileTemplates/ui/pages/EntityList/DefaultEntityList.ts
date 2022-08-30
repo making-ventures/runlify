@@ -116,6 +116,7 @@ const Default${pascalSingular(
     entity.name
   )}Filter />}
       bulkActionButtons={<CustomBulkActionButton />}
+      sort={{field: 'id', order: 'desc'}}
       {...props}
     >
       <Datagrid rowClick='show'>
