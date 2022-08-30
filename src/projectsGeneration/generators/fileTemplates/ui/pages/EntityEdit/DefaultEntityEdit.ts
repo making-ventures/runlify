@@ -182,6 +182,7 @@ ${hasHidden ? `  const {debug} = useDebug();
 
   return (
     <Edit
+      redirect='show'
       {...props}
       transform={useCallback((data: any) => ({
         ...data,${fieldsToWorkWith
