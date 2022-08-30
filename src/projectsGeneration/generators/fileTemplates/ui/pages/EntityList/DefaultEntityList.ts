@@ -91,7 +91,7 @@ ${
     : `// ${generatedWarning}
 `
 }
-const CustomBulkActionButton = (props: BulkActionProps) => {
+const DefaultBulkActionButton = (props: BulkActionProps) => {
   const {permissions} = usePermissions<string[]>();
 
   return (
