@@ -115,7 +115,7 @@ const Default${pascalSingular(
       filters={<${pascalSingular(
     entity.name
   )}Filter />}
-      bulkActionButtons={<CustomBulkActionButton />}
+      bulkActionButtons={<DefaultBulkActionButton />}
       sort={{field: 'id', order: 'desc'}}
       {...props}
     >
