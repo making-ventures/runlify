@@ -160,7 +160,7 @@ import {LoadingContext} from '../../../../contexts/LoadingContext';
 ${withFileRef ? 'import {FileInput} from \'../../../../uiLib/file/FileInput\';\n' : ''}
 ${options.skipWarningThisIsGenerated ? '' : `// ${generatedWarning}
 `}
-const CustomToolbar = (props: ToolbarProps) => {
+const DefaultToolbar = (props: ToolbarProps) => {
   const {permissions} = usePermissions<string[]>();
 
   return (
@@ -198,7 +198,7 @@ ${hasHidden ? `  const {debug} = useDebug();
 ${initialValues.map(f => `${f.name}: ${getTsDefaultTypeValueExpression(f)},`).map(pad6).join('\n')}
           }}`}
           resolver={resolver}
-          toolbar={<CustomToolbar />}
+          toolbar={<DefaultToolbar />}
         >
           <Grid container spacing={2}>
 ${fieldsToWorkWith.length === 0 ? '            <div />' : fieldsToWorkWith
