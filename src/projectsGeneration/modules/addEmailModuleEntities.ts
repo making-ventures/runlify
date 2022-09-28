@@ -64,7 +64,7 @@ const addEmailModuleEntities = (system: SystemMetaBuilder) => {
   mailingMessages.addField('subject').setType('string');
   mailingMessages.addLinkField('mailingMessageStatuses', 'mailingMessageStatusId').setType('string').setRequired();
   mailingMessages.addLinkField('messageTemplateLangVariants', 'messageTemplateLangVariantId').setType('int');
-  mailingMessages.addUniqueConstraint(['mailingCampaignId', 'to', 'localsHash']);
+  mailingMessages.addUniqueConstraint(['mailingCampaignId', 'to', 'uniqueKey']);
 };
 
 export default addEmailModuleEntities;
