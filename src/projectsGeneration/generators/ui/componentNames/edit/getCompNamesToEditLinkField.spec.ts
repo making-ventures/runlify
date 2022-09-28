@@ -14,7 +14,7 @@ describe('getCompNamesToEditLinkField', () => {
         new LinkFieldBuilder('cards', 'cardId', 'ru').build(),
         new Map([['cards', cards.build()]])
       )
-    ).toEqual(['ReferenceInput', 'SelectInput'])
+    ).toEqual(['ReferenceInput', 'AutocompleteInput'])
   })
 
   it('generates AutocompleteInput and ReferenceInput for link to entity with string id which is also title field', () => {

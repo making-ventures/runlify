@@ -11,13 +11,13 @@ Check out the documentation at https://github.com/infinitered/gluegun/tree/maste
 To package your CLI up for NPM, do this:
 
 ```shell
-$ npm login
-$ npm whoami
-$ npm test
+npm login
+npm whoami
+yarn test
 
-$ npm run build
+yarn run build
 
-$ npm publish
+npm publish
 ```
 
 # License
