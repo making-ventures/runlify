@@ -1,6 +1,60 @@
 import SystemMetaBuilder from '../../projectsGeneration/builders/SystemMetaBuilder';
 
 const addEmailModuleEntities = (system: SystemMetaBuilder) => {
+  // messageTypes
+  const messageTypes = system.addCatalog('messageTypes');
+  messageTypes.setTitles({
+    en: 'Message types',
+    ru: 'Типы сообщений',
+  });
+  messageTypes.setNeedFor('Типы сообщений');
+  messageTypes.getKey().setType('string');
+  messageTypes.addField('title', undefined, {isTitleField: true}).setType('string').setRequired();
+  messageTypes.addField('description').setType('string');
+  messageTypes.addPredefinedElements([
+    {
+      id: 'plain',
+      title: 'Plain',
+    },
+  ]);
+
+  // templateStyles
+  const templateStyles = system.addCatalog('templateStyles');
+  templateStyles.setTitles({
+    en: 'Template styles',
+    ru: 'Стили шаблонов',
+  });
+  templateStyles.setNeedFor('Стили шаблонов');
+  templateStyles.addField('title', undefined, {isTitleField: true}).setType('string').setRequired();
+  templateStyles.addField('style').setType('string').setRequired();
+
+  // messageTemplates
+  const messageTemplates = system.addCatalog('messageTemplates');
+  messageTemplates.setTitles({
+    en: 'Message templates',
+    ru: 'Шаблоны сообщений',
+  });
+  messageTemplates.setNeedFor('Шаблоны сообщений');
+  messageTemplates.addField('title', undefined, {isTitleField: true}).setType('string').setRequired();
+  messageTemplates.addField('secretData').setType('bool').setRequired();
+  messageTemplates.addLinkField('messageTypes', 'messageTypeId').setType('string').setRequired();
+  messageTemplates.addLinkField('templateStyles', 'templateStyleId').setType('int');
+
+  // messageTemplateLangVariants
+  const messageTemplateLangVariants = system.addCatalog('messageTemplateLangVariants');
+  messageTemplateLangVariants.setTitles({
+    en: 'Message template lang variant',
+    ru: 'Языковой вариант шаблона сообщения',
+  });
+  messageTemplateLangVariants.setNeedFor('Языковой вариант шаблона сообщения');
+  messageTemplateLangVariants.addField('title', undefined, {isTitleField: true}).setType('string');
+  messageTemplateLangVariants.addField('subjectTemplate').setType('string').setRequired();
+  messageTemplateLangVariants.addField('bodyTemplate').setType('string').setRequired();
+  messageTemplateLangVariants.addLinkField('messageTemplates', 'messageTemplateId').setRequired();
+  messageTemplateLangVariants.addLinkField('languages', 'languageId').setType('string').setRequired();
+  messageTemplateLangVariants.addField('additionalStyle').setType('string');
+  messageTemplateLangVariants.addUniqueConstraint(['messageTemplateId', 'languageId']);
+
   // mailingMessageStatuses
   const mailingMessageStatuses = system.addCatalog('mailingMessageStatuses');
   mailingMessageStatuses.setTitles({
@@ -48,8 +102,7 @@ const addEmailModuleEntities = (system: SystemMetaBuilder) => {
     ru: 'Сообщения рассылки',
   });
   mailingMessages.addLinkField('mailingCampaigns', 'mailingCampaignId').setRequired();
-  mailingMessages.addField('template').setType('string').setRequired();
-  mailingMessages.addLinkField('messageTemplates', 'newTemplateId').setType('int');
+  mailingMessages.addLinkField('messageTemplates', 'templateId').setType('int').setRequired();
   mailingMessages.addLinkField('languages', 'languageId').setType('string').setRequired();
   mailingMessages.addField('to').setType('string').setRequired();
   mailingMessages.addField('locals').setType('string').setRequired();
@@ -63,7 +116,7 @@ const addEmailModuleEntities = (system: SystemMetaBuilder) => {
   mailingMessages.addField('uniqueKey').setType('string');
   mailingMessages.addField('subject').setType('string');
   mailingMessages.addLinkField('mailingMessageStatuses', 'mailingMessageStatusId').setType('string').setRequired();
-  mailingMessages.addLinkField('messageTemplateLangVariants', 'messageTemplateLangVariantId').setType('int');
+  mailingMessages.addLinkField('messageTemplateLangVariants', 'messageTemplateLangVariantId').setType('int').setRequired();
   mailingMessages.addUniqueConstraint(['mailingCampaignId', 'to', 'uniqueKey']);
 };
 

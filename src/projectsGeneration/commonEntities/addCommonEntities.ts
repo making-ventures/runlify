@@ -5,12 +5,12 @@ import addRefreshTokens from './addRefreshTokens';
 import addCommonCommands from './addCommonCommands';
 import addLanguages from './addLanguages';
 import addManagers from './addManagers';
-import addMessageTemplates from './addMessageTemplates';
 import addRoles from './addRoles';
 import addUsers from './addUsers';
 import addAutogeneration from './addAutogeneration';
 import addTenants from './addTenants';
 import addAggregateTrackings from './addAggregateTrackings';
+import { addEmailModuleEntities } from '../modules';
 
 const addCommonEntities = (system: SystemMetaBuilder) => {
   addLanguages(system);
@@ -20,10 +20,12 @@ const addCommonEntities = (system: SystemMetaBuilder) => {
   addAuditLogs(system);
   addRoles(system);
   addCommonCommands(system);
-  addMessageTemplates(system);
   addAutogeneration(system);
   addRefreshTokens(system);
   addAggregateTrackings(system);
+
+  // Modules
+  addEmailModuleEntities(system);
 };
 
 export default addCommonEntities;
