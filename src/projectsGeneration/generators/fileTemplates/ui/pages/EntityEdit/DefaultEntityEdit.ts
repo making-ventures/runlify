@@ -70,7 +70,7 @@ export const getEditComponent = (entity: Entity, allEntities: Map<string, Entity
     return `<ReferenceInput${additionalProps.map(p => `\n  ${p}`)}
   source='${field.name}'
   reference='${field.externalEntity}'
-  sort={{id: '${entity.sortField}', order: '${entity.sortOrder}'}}
+  sort={{field: '${entity.sortField}', order: '${entity.sortOrder}'}}
   ${getFieldLabel(entity, field)}
 >
   <AutocompleteInput
