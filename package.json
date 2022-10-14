@@ -1,6 +1,6 @@
 {
   "name": "runlify",
-  "version": "0.0.163",
+  "version": "0.0.164",
   "description": "runlify CLI",
   "private": false,
   "main": "build/index.js",
@@ -36,12 +36,12 @@
     "fs-jetpack": "^4.3.1",
     "gluegun": "latest",
     "graphql": "^16.6.0",
-    "graphql-scalars": "^1.18.0",
+    "graphql-scalars": "^1.19.0",
     "markdown-table": "2.0.0",
     "nconf": "^0.12.0",
     "path": "^0.12.7",
     "ramda": "^0.28.0",
-    "winston": "^3.8.1"
+    "winston": "^3.8.2"
   },
   "devDependencies": {
     "@types/cross-spawn": "^6.0.2",
@@ -63,7 +63,7 @@
     "pretty-quick": "^3.1.0",
     "ts-jest": "^26.5.3",
     "ts-node": "^10.9.1",
-    "typescript": "^4.8.2"
+    "typescript": "^4.8.4"
   },
   "jest": {
     "preset": "ts-jest",
