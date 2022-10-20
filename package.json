@@ -1,6 +1,6 @@
 {
   "name": "runlify",
-  "version": "0.0.165",
+  "version": "0.0.166",
   "description": "runlify CLI",
   "private": false,
   "main": "build/index.js",
@@ -48,7 +48,7 @@
     "@types/jest": "^26.0.20",
     "@types/nconf": "^0.10.3",
     "@types/node": "^12.7.11",
-    "@types/ramda": "^0.28.16",
+    "@types/ramda": "^0.28.17",
     "@typescript-eslint/eslint-plugin": "^4.17.0",
     "@typescript-eslint/parser": "^4.17.0",
     "copyfiles": "^2.4.1",
