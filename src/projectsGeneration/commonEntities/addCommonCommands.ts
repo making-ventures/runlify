@@ -51,7 +51,7 @@ const addCommonCommands = (system: SystemMetaBuilder) => {
   );
   system.addCommnad(
     'back',
-    'prisma:migrate',
+    'prisma:newMigration',
     'runlify start env=migration prisma migrate dev --preview-feature',
     'Создания новой миграции базы данных',
   );
