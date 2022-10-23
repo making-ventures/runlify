@@ -37,7 +37,7 @@ variables:
 
 check:
   stage: check
-  image: registry.gitlab.com/making.ventures/images/node-with-tools
+  image: registry.gitlab.com/making.ventures/images/node-with-tools-private
   before_script:
     - yarn
   script:
