@@ -28,6 +28,34 @@ const addEmailModuleEntities = (system: SystemMetaBuilder) => {
   templateStyles.addField('title', undefined, {isTitleField: true}).setType('string').setRequired();
   templateStyles.addField('style').setType('string').setRequired();
 
+  // mailingCampaignStatuses
+  const mailingCampaignStatuses = system.addCatalog('mailingCampaignStatuses');
+  mailingCampaignStatuses.setTitles({
+    en: 'Mailing campaign statuses',
+    ru: 'Статусы рассылок',
+  });
+  mailingCampaignStatuses.setNeedFor('Статусы рассылок');
+  mailingCampaignStatuses.getKey().setType('string');
+  mailingCampaignStatuses.addField('title', undefined, {isTitleField: true}).setType('string').setRequired();
+  mailingCampaignStatuses.addPredefinedElements([
+    {
+      id: 'draft',
+      title: 'Draft',
+    },
+    {
+      id: 'prearing',
+      title: 'Prearing',
+    },
+    {
+      id: 'sending',
+      title: 'Sending',
+    },
+    {
+      id: 'finished',
+      title: 'Finished',
+    },
+  ]);
+
   // messageTemplates
   const messageTemplates = system.addCatalog('messageTemplates');
   messageTemplates.setTitles({
@@ -94,6 +122,9 @@ const addEmailModuleEntities = (system: SystemMetaBuilder) => {
   mailingCampaigns.addField('title', undefined, {isTitleField: true}).setType('string').setRequired();
   mailingCampaigns.addLinkField('mailingTypes', 'mailingTypeId').setType('string').setRequired();
   mailingCampaigns.addField('priority').setType('int').setRequired();
+  mailingCampaigns.addField('date').setType('date');
+  mailingCampaigns.addLinkField('mailingCampaignStatuses', 'mailingCampaignStatusId').setType('string');
+  mailingCampaigns.addLinkField('messageTemplates', 'messageTemplatId');
 
   // mailingMessages
   const mailingMessages = system.addCatalog('mailingMessages');
