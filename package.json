@@ -33,7 +33,7 @@
     "change-case": "^4.1.2",
     "cross-spawn": "^7.0.3",
     "fs-extra": "^10.1.0",
-    "fs-jetpack": "^5.0.0",
+    "fs-jetpack": "^5.1.0",
     "gluegun": "latest",
     "graphql": "^16.6.0",
     "graphql-scalars": "^1.19.0",
