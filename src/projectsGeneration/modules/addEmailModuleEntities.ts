@@ -124,7 +124,7 @@ const addEmailModuleEntities = (system: SystemMetaBuilder) => {
   mailingCampaigns.addField('priority').setType('int').setRequired();
   mailingCampaigns.addField('date').setType('date');
   mailingCampaigns.addLinkField('mailingCampaignStatuses', 'mailingCampaignStatusId').setType('string');
-  mailingCampaigns.addLinkField('messageTemplates', 'messageTemplatId');
+  mailingCampaigns.addLinkField('messageTemplates', 'messageTemplateId').setRequired();
 
   // mailingMessages
   const mailingMessages = system.addCatalog('mailingMessages');
