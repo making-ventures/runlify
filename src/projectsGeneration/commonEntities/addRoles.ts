@@ -46,6 +46,7 @@ const addRoles = (system: SystemMetaBuilder) => {
   rolesToPermissions.setNeedFor('Соединение, которым в роли наполняются разрешениями на те или иные операции');
   rolesToPermissions.addLinkField('roles', 'roleId').setType('string').setRequired();
   rolesToPermissions.addLinkField('permissions', 'permissionId').setType('string').setRequired();
+  rolesToPermissions.addField('expiresAt').setType('date');
   rolesToPermissions.addUniqueConstraint(['roleId', 'permissionId']);
 
   // managersToRoles
@@ -67,6 +68,7 @@ const addRoles = (system: SystemMetaBuilder) => {
   });
   managersToPermissions.setNeedFor('Соединение, которым менеджерам назначаются пермишны в обход ролей');
   managersToPermissions.addLinkField('managers', 'managerId').setRequired();
+  managersToPermissions.addField('expiresAt').setType('date');
   managersToPermissions.addLinkField('permissions', 'permissionId').setType('string').setRequired();
 
   // delegations
