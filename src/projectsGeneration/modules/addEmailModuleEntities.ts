@@ -43,8 +43,8 @@ const addEmailModuleEntities = (system: SystemMetaBuilder) => {
       title: 'Draft',
     },
     {
-      id: 'prearing',
-      title: 'Prearing',
+      id: 'preparing',
+      title: 'Preparing',
     },
     {
       id: 'sending',
