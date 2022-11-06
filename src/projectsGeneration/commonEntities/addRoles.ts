@@ -47,7 +47,7 @@ const addRoles = (system: SystemMetaBuilder) => {
   rolesToPermissions.addLinkField('roles', 'roleId').setType('string').setRequired();
   rolesToPermissions.addLinkField('permissions', 'permissionId').setType('string').setRequired();
   rolesToPermissions.addField('expiresAt').setType('date');
-  rolesToPermissions.addUniqueConstraint(['roleId', 'permissionId']);
+  rolesToPermissions.addUniqueConstraint(['roleId', 'permissionId', 'expiresAt']);
 
   // managersToRoles
   const managersToRoles = system.addManyToManyRelation('managersToRoles');
@@ -68,8 +68,8 @@ const addRoles = (system: SystemMetaBuilder) => {
   });
   managersToPermissions.setNeedFor('Соединение, которым менеджерам назначаются пермишны в обход ролей');
   managersToPermissions.addLinkField('managers', 'managerId').setRequired();
-  managersToPermissions.addField('expiresAt').setType('date');
   managersToPermissions.addLinkField('permissions', 'permissionId').setType('string').setRequired();
+  managersToPermissions.addField('expiresAt').setType('date');
 
   // delegations
   const delegations = system.addManyToManyRelation('delegations', 'Delegations');
