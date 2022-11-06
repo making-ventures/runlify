@@ -63,6 +63,7 @@ const addEmailModuleEntities = (system: SystemMetaBuilder) => {
     ru: 'Шаблоны сообщений',
   });
   messageTemplates.setNeedFor('Шаблоны сообщений');
+  messageTemplates.getKey().setType('string').setRequired();
   messageTemplates.addField('title', undefined, {isTitleField: true}).setType('string').setRequired();
   messageTemplates.addField('secretData').setType('bool').setRequired();
   messageTemplates.addLinkField('messageTypes', 'messageTypeId').setType('string').setRequired();
@@ -78,10 +79,13 @@ const addEmailModuleEntities = (system: SystemMetaBuilder) => {
   messageTemplateLangVariants.addField('title', undefined, {isTitleField: true}).setType('string');
   messageTemplateLangVariants.addField('subjectTemplate').setType('string').setRequired();
   messageTemplateLangVariants.addField('bodyTemplate').setType('string').setRequired();
-  messageTemplateLangVariants.addLinkField('messageTemplates', 'messageTemplateId').setRequired();
+  messageTemplateLangVariants.addLinkField('messageTemplates', 'messageTemplateId').setType('string').setRequired();
   messageTemplateLangVariants.addLinkField('languages', 'languageId').setType('string').setRequired();
   messageTemplateLangVariants.addField('additionalStyle').setType('string');
-  messageTemplateLangVariants.addUniqueConstraint(['messageTemplateId', 'languageId']);
+  messageTemplateLangVariants.addUniqueConstraint([
+    'messageTemplateId',
+    'languageId',
+  ]);
 
   // mailingMessageStatuses
   const mailingMessageStatuses = system.addCatalog('mailingMessageStatuses');
@@ -124,7 +128,7 @@ const addEmailModuleEntities = (system: SystemMetaBuilder) => {
   mailingCampaigns.addField('priority').setType('int').setRequired();
   mailingCampaigns.addField('date').setType('date');
   mailingCampaigns.addLinkField('mailingCampaignStatuses', 'mailingCampaignStatusId').setType('string');
-  mailingCampaigns.addLinkField('messageTemplates', 'messageTemplateId').setRequired();
+  mailingCampaigns.addLinkField('messageTemplates', 'messageTemplateId').setType('string').setRequired();
 
   // mailingMessages
   const mailingMessages = system.addCatalog('mailingMessages');
@@ -133,7 +137,7 @@ const addEmailModuleEntities = (system: SystemMetaBuilder) => {
     ru: 'Сообщения рассылки',
   });
   mailingMessages.addLinkField('mailingCampaigns', 'mailingCampaignId').setRequired();
-  mailingMessages.addLinkField('messageTemplates', 'templateId').setType('int').setRequired();
+  mailingMessages.addLinkField('messageTemplates', 'templateId').setType('string').setRequired();
   mailingMessages.addLinkField('languages', 'languageId').setType('string').setRequired();
   mailingMessages.addField('to').setType('string').setRequired();
   mailingMessages.addField('locals').setType('string').setRequired();
