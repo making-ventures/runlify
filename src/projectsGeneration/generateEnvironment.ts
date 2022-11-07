@@ -23,6 +23,7 @@ import { genPrismaSchemaForEntitiesWithClientAdnDb } from './generators/prisma/s
 import { write } from 'fs-jetpack'
 import { Entity } from './builders/buildedTypes'
 import { ProjectWideGenerationArgs } from './args'
+import { dockerfileTmpl } from './generators/fileTemplates/back/environment/dockerfileTmpl'
 
 export const generateEnvironment = async (
   projectWideGenerationArgs: ProjectWideGenerationArgs
@@ -135,6 +136,12 @@ export const generateEnvironment = async (
         gitlabCiTmpl(projectWideGenerationArgs)
       )
     }
+
+    // dockerfileTmpl
+    await write(
+      join(opts.detachedBackProject, 'Dockerfile'),
+      dockerfileTmpl(projectWideGenerationArgs)
+    )
 
     // UI
     const prjDetachedUiSrcDir = join(opts.detachedUiProject, 'src')
