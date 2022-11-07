@@ -3,16 +3,13 @@
 import { ProjectWideGenerationArgs } from '../../../../args'
 import { generatedWarning } from '../../../../utils'
 
-export const dockerfileTmpl = ({
+export const dockerfileTmplBack = ({
   system: { prefix },
   system,
   options,
-}: ProjectWideGenerationArgs) => `image: node:16
-${
-  options.skipWarningThisIsGenerated
+}: ProjectWideGenerationArgs) => `${options.skipWarningThisIsGenerated
     ? ''
-    : `
-# ${generatedWarning}
+    : `# ${generatedWarning}
 `
 }
 FROM registry.gitlab.com/making.ventures/images/node-with-tools AS builder
@@ -33,7 +30,7 @@ RUN npm run prisma:gen
 RUN npm run build
 
 # Actual image (this version of node required for email sending by email-templates, not booster)
-FROM registry.gitlab.com/making.ventures/images/node-base-private
+FROM ${options.backendBaseDockerimage}
 
 RUN mkdir -p /usr/src/app/back
 WORKDIR /usr/src/app/back
@@ -44,5 +41,4 @@ COPY --chown=node:node --from=builder /app /usr/src/app/back
 EXPOSE 3000
 
 CMD ["node", "dist/index.js"]
-
 `
