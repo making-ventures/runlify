@@ -86,6 +86,10 @@ export const defaultBootstrapEntityOptions = {
   genBackGitlabCi: true,
   genUiGitlabCi: true,
 
+  // dockerfile
+  adminBaseDockerimage: 'nginx:1.20-alpine',
+  backendBaseDockerimage: 'registry.gitlab.com/making.ventures/images/node-base-private',
+
   // chart
   genBackChartValues: true,
   genBackChartIngress: true,
