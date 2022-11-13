@@ -78,7 +78,7 @@ export const defaultBootstrapEntityOptions = {
   k8sAppsDomain: 'apps.making.ventures',
   k8sSubdomainPrefix: '',
   k8sImagePullSecrets: 'gitlab-registry',
-  ciDockerRegistry: 'registry.gitlab.com',
+  ciDockerRegistry: 'registry.service.making.ventures',
 
   // Back
 
