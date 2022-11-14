@@ -67,6 +67,7 @@ const addEmailModuleEntities = (system: SystemMetaBuilder) => {
   messageTemplates.addField('title', undefined, {isTitleField: true}).setType('string').setRequired();
   messageTemplates.addField('secretData').setType('bool').setRequired();
   messageTemplates.addLinkField('messageTypes', 'messageTypeId').setType('string').setRequired();
+  messageTemplates.addField('dataExample').setType('string');
   messageTemplates.addLinkField('templateStyles', 'templateStyleId').setType('int');
 
   // messageTemplateLangVariants
