@@ -18,7 +18,8 @@ export const uiChartValuesTmpl = ({
 
 dev: false
 
-dockerRegistry: ${options.ciDockerRegistry}/${options.projectsGroup}
+docker:
+  registry: ${options.ciDockerRegistry}/${options.projectsGroup}
 
 app:
   tag: :master

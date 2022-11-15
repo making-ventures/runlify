@@ -57,7 +57,7 @@ spec:
     {{- end }}
       containers:
       - name: ${options.k8sChartName || prefix}-ui
-        image: {{ $.Values.dockerRegistry }}/${
+        image: {{ $.Values.docker.registry }}/${
           options.projectPrefix || prefix
         }-ui{{ $.Values.app.tag }}
         ports:

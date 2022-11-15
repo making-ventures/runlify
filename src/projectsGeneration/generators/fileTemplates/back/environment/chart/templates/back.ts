@@ -60,7 +60,7 @@ spec:
     {{- end }}
       containers:
       - name: ${options.k8sChartName || prefix}-back
-        image: {{ $.Values.dockerRegistry }}/${
+        image: {{ $.Values.docker.registry }}/${
           options.projectPrefix || prefix
         }-back{{ $.Values.app.tag }}
         ports:
