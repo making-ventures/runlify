@@ -46,8 +46,7 @@ const addRoles = (system: SystemMetaBuilder) => {
   rolesToPermissions.setNeedFor('Соединение, которым в роли наполняются разрешениями на те или иные операции');
   rolesToPermissions.addLinkField('roles', 'roleId').setType('string').setRequired();
   rolesToPermissions.addLinkField('permissions', 'permissionId').setType('string').setRequired();
-  rolesToPermissions.addField('expiresAt').setType('date');
-  rolesToPermissions.addUniqueConstraint(['roleId', 'permissionId', 'expiresAt']);
+  rolesToPermissions.addUniqueConstraint(['roleId', 'permissionId']);
 
   // managersToRoles
   const managersToRoles = system.addManyToManyRelation('managersToRoles');
