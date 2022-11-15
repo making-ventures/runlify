@@ -40,6 +40,9 @@ const addAuditLogs = (system: SystemMetaBuilder) => {
     .addField('title', undefined, { isTitleField: true })
     .setType('string')
     .setRequired()
+  auditLogs.addField('success').setType('bool').setRequired()
+  auditLogs.addField('error').setType('string')
+
   auditLogs
     .addLinkField('entities', 'entityTypeId', 'Сущность')
     .setType('string')
