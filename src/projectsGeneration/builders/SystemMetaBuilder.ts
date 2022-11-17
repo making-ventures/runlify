@@ -78,7 +78,7 @@ class SystemMetaBuilder {
     )
     this.addConfigVar(
       'app.environment',
-      this.defOpts.projectName,
+      '',
       'Название окружения'
     )
 
