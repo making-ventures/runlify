@@ -67,14 +67,19 @@ class SystemMetaBuilder {
     this.setPrefix(prefix)
     this.setName(prefix)
     this.addConfigVar(
-      'appName',
+      'app.name',
       this.defOpts.projectPrefix,
       'Техническое название приложения'
     )
     this.addConfigVar(
-      'appTitle',
+      'app.title',
       this.defOpts.projectName,
       'Человеческое название приложения'
+    )
+    this.addConfigVar(
+      'app.environment',
+      this.defOpts.projectName,
+      'Название окружения'
     )
 
     this.addConfigVar(

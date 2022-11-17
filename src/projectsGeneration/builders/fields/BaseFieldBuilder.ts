@@ -42,6 +42,10 @@ export abstract class BaseFieldBuilder {
     )
   }
   setName(name: string) {
+    if (!/^[a-zA-Z]+$/.test(name)) {
+      throw new Error(`Name can contain only letters. Current name: "${name}"`);
+    }
+
     this.name = name
 
     return this

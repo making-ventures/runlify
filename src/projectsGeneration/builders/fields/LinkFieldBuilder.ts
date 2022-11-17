@@ -20,9 +20,22 @@ export class LinkFieldBuilder extends BaseFieldBuilder {
     title?: string
   ) {
     super(name, defaultLanguage, title)
+    this.checkName(name)
     this.entity = entity
     this.category = 'link'
     // this.setTitle(title);
+  }
+
+  checkName(name: string) {
+    if (!name.endsWith('Id')) {
+      throw new Error(`Link field name should wnd by 'Id'. Current name: "${name}"`);
+    }
+  }
+
+  setName(name: string) {
+    this.checkName(name)
+
+    return super.setName(name)
   }
 
   setType(type: TKeyFieldType) {
