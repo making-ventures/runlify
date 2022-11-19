@@ -69,13 +69,12 @@ const App = () => {
   const [dataProvider, setDataProvider] = useState<any | null>(null);
   const [authProvider, setAuthProvider] = useState<AuthProvider | null>(null);
   const [client, setClient] = useState<ApolloClient<NormalizedCacheObject> | null>(null);
-  const [authVersion, setAuthVersion] = useState(0);
   const translate = useTranslate();
 
   useEffect(() => {
     const fetchDataProvider = async () => {
       const config = await getConfig();
-      setAuthProvider(getAuthProvider(config.endpoint, () => setAuthVersion(prev => prev + 1)));
+      setAuthProvider(getAuthProvider(config.endpoint));
 
       const client = getApollo(config.endpoint);
       setClient(client);
@@ -84,7 +83,7 @@ const App = () => {
     };
 
     fetchDataProvider();
-  }, [authVersion]);
+  }, []);
 
   if (!dataProvider || !client || !authProvider) {
     return (
