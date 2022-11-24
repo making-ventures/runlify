@@ -1,7 +1,7 @@
 import { GluegunToolbox } from 'gluegun'
 
 interface LoginOptions {
-  ifNotLeggedin: boolean;
+  ifNotLoggedIn: boolean;
 }
 
 module.exports = async (toolbox: GluegunToolbox) => {
@@ -17,10 +17,10 @@ module.exports = async (toolbox: GluegunToolbox) => {
   }
 
   const login = async ({
-    ifNotLeggedin = false,
+    ifNotLoggedIn = false,
   }: LoginOptions) => {
 
-    if (ifNotLeggedin && isLoggedin()) {
+    if (ifNotLoggedIn && isLoggedin()) {
       return
     }
 

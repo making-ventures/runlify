@@ -10,7 +10,7 @@ module.exports = {
     } = toolbox;
 
     await login({
-      ifNotLeggedin: parameters.options.ifNotLeggedin,
+      ifNotLoggedIn: parameters.options.ifNotLoggedIn,
     })
   },
 }
