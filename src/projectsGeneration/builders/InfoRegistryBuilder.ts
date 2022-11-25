@@ -4,21 +4,25 @@ import { ScalarFieldBuilder } from './fields/ScalarFieldBuilder'
 import { LinkFieldBuilder } from './fields/LinkFieldBuilder'
 import { FieldBuilder } from './types'
 import { ViewLinkFieldBuilder } from './fields/ViewLinkFieldBuilder'
+import { defaultRegistryOptions, RegistryOptions } from './SumRegistryBuilder'
 
 export class InfoRegistryBuilder extends BaseSavableEntityBuilder {
   registrarDepended = false
   dimensions: FieldBuilder[] = []
   resources: FieldBuilder[] = []
   period: InfoRegistryPeriod = 'notPeriodic'
+  options: RegistryOptions
 
   constructor(
     name: string,
     registrarDepended: boolean,
     defaultLanguage: string,
-    title?: string
+    title?: string,
+    options?,
   ) {
     super(name, defaultLanguage, title)
 
+    this.options = options ?? defaultRegistryOptions
     this.registrarDepended = registrarDepended
 
     if (this.registrarDepended) {
@@ -27,7 +31,7 @@ export class InfoRegistryBuilder extends BaseSavableEntityBuilder {
         .setType('string')
         .setRequired()
       this.addDimension('registrarId')
-        .setType('int')
+      .setType(this.options.registrarIdType === 'string' ? 'string' : 'int')
         .setTitles({ ru: 'Ид регистратора', en: 'Registrar id' })
         .setRequired()
       this.addDimension('row')

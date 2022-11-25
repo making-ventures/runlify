@@ -7,7 +7,7 @@ import {
 import CatalogBuilder from './CatalogBuilder'
 import DocumentBuilder from './DocumentBuilder'
 import { InfoRegistryBuilder } from './InfoRegistryBuilder'
-import SumRegistryBuilder from './SumRegistryBuilder'
+import SumRegistryBuilder, { RegistryOptions } from './SumRegistryBuilder'
 import {
   Command,
   ConfigVar,
@@ -432,7 +432,7 @@ class SystemMetaBuilder {
     name: string,
     registrarDepended: boolean,
     title?: string,
-    options = this ? this.defOpts : ({} as any)
+    options?: RegistryOptions,
   ) {
     if (
       [...this.catalogs, ...this.documents].some((f) => f.entity.name === name)
@@ -446,10 +446,11 @@ class SystemMetaBuilder {
       name,
       registrarDepended,
       this.defaultLanguage,
-      title
+      title,
+      options,
     )
 
-    this.sumRegistries.push({ entity: sumRegistry, options })
+    this.sumRegistries.push({ entity: sumRegistry, options: this.defOpts })
 
     return sumRegistry
   }

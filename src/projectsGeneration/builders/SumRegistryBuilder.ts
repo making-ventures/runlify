@@ -5,19 +5,30 @@ import { LinkFieldBuilder } from './fields/LinkFieldBuilder'
 import { FieldBuilder } from './types'
 import { ViewLinkFieldBuilder } from './fields/ViewLinkFieldBuilder'
 
+export interface RegistryOptions {
+  registrarIdType?: 'int' | 'string';
+}
+
+export const defaultRegistryOptions: RegistryOptions = {
+  registrarIdType: 'int'
+}
+
 class SumRegistryBuilder extends BaseSavableEntityBuilder {
   registrarDepended = false
   dimensions: FieldBuilder[] = []
   resources: FieldBuilder[] = []
+  options: RegistryOptions
 
   constructor(
     name: string,
     registrarDepended: boolean,
     defaultLanguage: string,
-    title?: string
+    title?: string,
+    options?,
   ) {
     super(name, defaultLanguage, title)
 
+    this.options = options ?? defaultRegistryOptions
     this.registrarDepended = registrarDepended
 
     if (this.registrarDepended) {
@@ -28,7 +39,7 @@ class SumRegistryBuilder extends BaseSavableEntityBuilder {
         .setTitle('Дата', 'ru')
         .setRequired()
       this.addDimensionLinkField('entities', 'registrarTypeId')
-        .setType('string')
+        .setType(this.options.registrarIdType === 'string' ? 'string' : 'int')
         .setTitles({ ru: 'Тип регистратора', en: 'Registrar type' })
         .setRequired()
       this.addDimension('registrarId')
