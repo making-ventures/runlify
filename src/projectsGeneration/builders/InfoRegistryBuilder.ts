@@ -31,7 +31,7 @@ export class InfoRegistryBuilder extends BaseSavableEntityBuilder {
         .setType('string')
         .setRequired()
       this.addDimension('registrarId')
-      .setType(this.options.registrarIdType === 'string' ? 'string' : 'int')
+        .setType(this.options.registrarIdType === 'int' ? 'int' : 'string')
         .setTitles({ ru: 'Ид регистратора', en: 'Registrar id' })
         .setRequired()
       this.addDimension('row')

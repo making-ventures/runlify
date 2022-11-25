@@ -39,7 +39,7 @@ class SumRegistryBuilder extends BaseSavableEntityBuilder {
         .setTitle('Дата', 'ru')
         .setRequired()
       this.addDimensionLinkField('entities', 'registrarTypeId')
-        .setType(this.options.registrarIdType === 'string' ? 'string' : 'int')
+        .setType(this.options.registrarIdType === 'int' ? 'int' : 'string')
         .setTitles({ ru: 'Тип регистратора', en: 'Registrar type' })
         .setRequired()
       this.addDimension('registrarId')
