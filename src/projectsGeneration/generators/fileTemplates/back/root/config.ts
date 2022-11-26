@@ -29,6 +29,8 @@ if (exists(file)) {
   nconf.file({file});
 }
 
+export const isLocalEnv = envName === 'local';
+
 export const getFromNconf = (name: string): string | undefined => nconf.get(constantCase(name)) || nconf.get(name) || '';
 
 const envConfig = {
