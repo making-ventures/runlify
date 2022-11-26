@@ -41,7 +41,7 @@ check:
   before_script:
     - yarn
   script:
-    - ./check
+    - ./check.sh
   variables:
     DATABASE_URI: $TEST_DATABASE_URI
 
