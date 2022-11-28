@@ -75,7 +75,7 @@ const addCommonCommands = (system: SystemMetaBuilder) => {
   );
   system.addCommnad(
     'back',
-    'init',
+    'init:base',
     'yarn ts-node src/init/baseInit.ts',
     'Инициализации базы данных',
   );
