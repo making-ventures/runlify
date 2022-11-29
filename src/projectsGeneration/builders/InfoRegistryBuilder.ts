@@ -61,6 +61,14 @@ export class InfoRegistryBuilder extends BaseSavableEntityBuilder {
   }
 
   build(): InfoRegistry {
+    const uniqueConstraints: string[][] = [];
+    if (this.dimensions.length) {
+      uniqueConstraints.push(this.dimensions.map((d) => d.name))
+    }
+    if (this.uniqueConstraints.length) {
+      uniqueConstraints.push(...this.uniqueConstraints)
+    }
+
     return {
       type: 'infoRegistry',
       name: this.name,
@@ -76,10 +84,7 @@ export class InfoRegistryBuilder extends BaseSavableEntityBuilder {
       // keyField: this.getKey().build(),
       keyField: this.getKey().name,
       fields: this.getFileds().map((field) => field.build()),
-      uniqueConstraints: [
-        this.dimensions.map((d) => d.name),
-        ...this.uniqueConstraints,
-      ],
+      uniqueConstraints,
       materialUiIcon: this.materialUiIcon,
       forms: this.getForms().build(),
       predefinedElements: this.predefinedElements,
