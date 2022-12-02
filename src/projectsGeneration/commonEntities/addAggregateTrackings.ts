@@ -7,6 +7,7 @@ const addAggregateTrackings = (system: SystemMetaBuilder) => {
   aggregateTrackings.addDimensionLinkField('entities', 'entityTypeId', 'Тип сущности').setType('string').setRequired();
   aggregateTrackings.addDimension('entityId', 'Сущность').setType('string').setRequired();
   aggregateTrackings.addResource('lastAggregatesComputed', 'Агрегаты последний раз вычислены ').setType('datetime').setRequired();
+  aggregateTrackings.addResource('lastAggregatesScheduled', 'Последний раз было добавлено в очередь на обработку').setType('datetime');
   aggregateTrackings.addResource('lastEntityUpdate', 'Последнее обновление сущности').setType('datetime').setRequired();
   aggregateTrackings.addResource('aggregateVersion', 'Версия агрегата').setType('int').setRequired();
 };
