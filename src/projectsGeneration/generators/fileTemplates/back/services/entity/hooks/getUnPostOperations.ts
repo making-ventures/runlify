@@ -5,6 +5,8 @@ import {
   defaultBootstrapEntityOptions,
 } from '../../../../../../types'
 import { generatedWarning } from '../../../../../../utils'
+import { fieldTypeToTsType } from '../../../../../fieldTypeToTsType'
+import { getKeyField } from '../../../../../../metaUtils'
 
 export const getUnPostOperationsTmpl = (
   _prefix: string,
@@ -22,7 +24,7 @@ ${
 // ${generatedWarning}
 `
 }
-export const getUnPostOperations = async (ctx: ${contextName}, id: number): Promise<PrismaPromise<any>[]> => {
+export const getUnPostOperations = async (ctx: ${contextName}, id: ${fieldTypeToTsType(getKeyField(document).type)}): Promise<PrismaPromise<any>[]> => {
   const registries: any[] = [${document.registries
     .map((registry) => `\n    '${singular(registry)}',`)
     .join('')}

@@ -258,13 +258,13 @@ export interface Base${pascalPlural(entity.name)}Methods {
     entity.type === 'document'
       ? `
 
-  rePost: (id: number) =>
+  rePost: (id: ${fieldTypeToTsType(getKeyField(entity).type)}) =>
     Promise<void>;
   getRegistryEntries: (data: ${pascalSingular(entity.name)}) =>
     Promise<${pascalSingular(entity.name)}RegistryEntries>;
   getPostOperations: (data: ${pascalSingular(entity.name)}) =>
     Promise<PrismaPromise<any>[]>;
-  getUnPostOperations: (id: number) =>
+  getUnPostOperations: (id: ${fieldTypeToTsType(getKeyField(entity).type)}) =>
     Promise<PrismaPromise<any>[]>;`
       : ''
   }
@@ -358,9 +358,11 @@ ${pad3(
 
     const search = await elasticSearch(toElasticRequest(await runHooks.changeListFilter(ctx, params)));
 
-    const ids = search.hits.hits.map(el => BigInt((el._source as ${pascalSingular(
+    const ids = search.hits.hits.map(el => ${getKeyField(entity).type === 'bigint' ? `BigInt((el._source as ${pascalSingular(
       entity.name
-    )}).id));
+    )}).id)` : `(el._source as ${pascalSingular(
+      entity.name
+    )}).id`});
     const prismaReq = toPrismaRequest(params, {noId: false});
 
     return ctx.prisma.${camelSingular(entity.name)}.findMany(
@@ -514,7 +516,7 @@ ${
             ['catalog', 'document'].includes(entity.type)
               ? `{
             search: getSearchString(processedData),
-          }`
+          },`
               : '{}'
           }
         ),
@@ -574,7 +576,7 @@ ${
             ? `
       ctx.service('externalSearch').onEntityChange(Entity.${pascalSingular(
         entity.name
-      )}, result.id.toString()),`
+      )}),`
             : ''
         }${
           entity.type === 'document'
@@ -714,7 +716,7 @@ ${
         ? `
       ctx.service('externalSearch').onEntityChange(Entity.${pascalSingular(
         entity.name
-      )}, data.id.toString()),`
+      )}),`
         : ''
     }
       runHooks.afterUpdate(ctx, result as ${pascalSingular(entity.name)}),
@@ -766,7 +768,7 @@ ${
     ? `
     await ctx.service('externalSearch').onEntityChange(Entity.${pascalSingular(
       entity.name
-    )}, result.id.toString());
+    )});
 `
     : ''
 }
@@ -843,7 +845,7 @@ ${
       ? `
 
   const rePost = async (
-    id: number,
+    id: ${fieldTypeToTsType(getKeyField(entity).type)},
   ): Promise<void> => {
     const data = await get(id);
 
@@ -887,7 +889,7 @@ ${
     getPostOperations: async (data: ${pascalSingular(
       entity.name
     )}) => getPostOperations(ctx, await augmentByDefault(data)),
-    getUnPostOperations: (id: number) => getUnPostOperations(ctx, id),`
+    getUnPostOperations: (id: ${fieldTypeToTsType(getKeyField(entity).type)}) => getUnPostOperations(ctx, id),`
         : ''
     }
   };

@@ -100,6 +100,12 @@ export const defaultBootstrapEntityOptions = {
   // Environment
   corePrismaGetter: true,
   coreIndex: true,
+
+  // Users
+  usersEnabled: true,
+
+  // Tenants
+  tenantsAvailable: false,
 }
 
 export type BootstrapEntityOptions = typeof defaultBootstrapEntityOptions

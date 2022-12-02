@@ -30,11 +30,11 @@ import {json, raw} from 'body-parser';
 import restRouter from './rest/restRouter';
 import helmet from 'helmet';
 import {collectDefaultMetrics, register} from 'prom-client';
+import {initAdmPassport} from './adm/config/passport';${options.usersEnabled ? `
 import {initAppPassport} from './app/config/passport';
-import {initAdmPassport} from './adm/config/passport';
 import appAuthRouter from './app/authRouter';
+import getAppServer from './app/getAppServer';` : ''}
 import admAuthRouter from './adm/authRouter';
-import getAppServer from './app/getAppServer';
 import {graphqlUploadExpress} from 'graphql-upload';
 import {flattenGraphqlToPermission} from './adm/graph/permissionsToGraphql';
 import defaultContainer from './adm/services/defaultContainer';
@@ -52,8 +52,8 @@ exitHook(async () => {
 });
 
 const app = express();
-
-initAppPassport();
+${options.usersEnabled ? `
+initAppPassport();` : ''}
 initAdmPassport();
 
 const production = process.env.NODE_ENV === 'production';
@@ -71,8 +71,8 @@ app.use(
   ) as RequestHandler,
 );
 app.use(passport.initialize() as RequestHandler);
-
-app.use('/app/rest', appAuthRouter);
+${options.usersEnabled ? `
+app.use('/app/rest', appAuthRouter);` : ''}
 app.use('/adm/rest', admAuthRouter);
 
 collectDefaultMetrics();
@@ -98,11 +98,11 @@ const start = async () => {
 
   app.use('/app/graph', passport.authenticate('appJwt', {session: false}));
   app.use('/app/graph', graphqlUploadExpress({maxFiles: 10, maxFileSize: 50 * 1024 * 1024}) as RequestHandler);
-
+${options.usersEnabled ? `
   const appServer = getAppServer();
   await appServer.start();
   appServer.applyMiddleware({app, path: '/app/graph'});
-
+` : ''}
   const authPlugin: ApolloServerPlugin = {
     requestDidStart: async (requestContext: GraphQLRequestContext<{context: Context}>) => {
       const {
