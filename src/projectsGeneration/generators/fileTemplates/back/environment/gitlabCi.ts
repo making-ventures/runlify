@@ -39,7 +39,7 @@ check:
   stage: check
   image: registry.gitlab.com/making.ventures/images/node-with-tools
   before_script:
-    - yarn
+    - yarn install --frozen-lockfile
   script:
     - ./check.sh
   variables:
