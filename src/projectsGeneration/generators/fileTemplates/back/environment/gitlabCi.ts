@@ -161,7 +161,6 @@ ${
     - .deploy-worker
   variables:
     KUBE_CONFIG: \${KUBE_WORKERS01_CONFIG}
-    APP_NAME: workers
     BACK_ENABLED: "false"
     INGRESS_ENABLED: "false"
     METRICS_ENABLED: "false"
@@ -190,7 +189,6 @@ ${
     - .deploy-worker
   variables:
     KUBE_CONFIG: \${KUBE_WORKERS01_CONFIG}
-    APP_NAME: workers
     BACK_ENABLED: "false"
     INGRESS_ENABLED: "false"
     METRICS_ENABLED: "false"
@@ -211,6 +209,7 @@ ${
         (v) => `\n    ${constantCase(v.name)}: \${DEV_${constantCase(v.name)}}`
       )
       .join('')}
+    APP_ENVIRONMENT: dev
   only:
     - master
 
@@ -229,6 +228,7 @@ ${
         (v) => `\n    ${constantCase(v.name)}: \${PROD_${constantCase(v.name)}}`
       )
       .join('')}
+    APP_ENVIRONMENT: prod
   only:
     - release
     - /^release-.*$/
@@ -236,10 +236,12 @@ ${
 .deploy-back:
   variables:
     DEPLOY_KIND: "back"
+    APP_NAME: back
 
 .deploy-worker:
   variables:
     DEPLOY_KIND: "worker"
+    APP_NAME: worker
 
 .deploy-telegramBot:
   variables:
