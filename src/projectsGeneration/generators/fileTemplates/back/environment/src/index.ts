@@ -6,7 +6,7 @@ import { generatedWarning } from '../../../../../utils'
 
 export const environmentIndexTmpl = (
   options: BootstrapEntityOptions = defaultBootstrapEntityOptions
-) => `import exitHook from 'exit-hook';
+) => `import {exitHook} from './utils/exitHook';
 import {ApolloServer, AuthenticationError} from 'apollo-server-express';
 import {
   ApolloServerPlugin,
