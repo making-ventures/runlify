@@ -161,7 +161,7 @@ class SystemMetaBuilder {
     this.addConfigVar('kafka.brokers', 'localhost:29092;localhost:29094', 'Список kafka блокеров');
     this.addConfigVar('kafka.username', '', 'Username доступа в kafka');
     this.addConfigVar('kafka.password', '', 'Пароль доступа в kafka');
-    this.addConfigVar('kafka.enabled', 'false', 'Включние кафки');
+    this.addConfigVar('kafka.enabled', 'true', 'Включние кафки');
     this.addConfigVar('kafka.queue.maxAttemptsSize', '10', 'Максимальное количество попыток обработки ошибки на сообщение');
     this.addConfigVar('kafka.queue.defaultRetryTime', '20000', 'Время паузы после первой ошибки, например 20000 мс, потом оно увеличывается экспоненциально с мультипликатором 1.5');
     this.addConfigVar('kafka.queue.waitingInterruptTime', '60000', 'Время паузы в очереди ожидания, когда она прошла все сообщения, это чтобы она не крутила сообщения покругу без остановки ');
