@@ -31,7 +31,6 @@ const addManagers = (system: SystemMetaBuilder) => {
   managerLogins.setNeedFor('Аккаунты (информация по логинам) пользователей бек-офиса (админы, менеджеры)');
   managerLogins.addField('login').setType('string').setRequired();
   managerLogins.addField('passwordHash').setType('string').setRequired();
-  managerLogins.addField('role').setType('string').setRequired();
   managerLogins.addField('emailVerified').setType('bool').setRequired();
   managerLogins.addField('initialPasswordChanged').setType('bool').setRequired();
   managerLogins.addField('locked').setType('bool').setRequired();
