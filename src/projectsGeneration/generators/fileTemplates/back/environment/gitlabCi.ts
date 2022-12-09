@@ -236,12 +236,10 @@ ${
 .deploy-back:
   variables:
     DEPLOY_KIND: "back"
-    APP_NAME: back
 
 .deploy-worker:
   variables:
     DEPLOY_KIND: "worker"
-    APP_NAME: worker
 
 .deploy-telegramBot:
   variables:
