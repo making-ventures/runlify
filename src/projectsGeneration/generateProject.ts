@@ -133,7 +133,7 @@ export const generateBackSrc = async (args: ProjectWideGenerationArgs) => {
 
   await Promise.all([
     write(
-      join(args.options.detachedBackProject, 'src', 'config.ts'),
+      join(args.options.detachedBackProject, 'src', 'config', 'index.ts'),
       configTmpl(args)
     ),
     generateHelpService(args, true),
@@ -666,7 +666,7 @@ const generateProject = async (
   if (opts.genRootConfig) {
     const generatedResources = configTmpl(args)
 
-    await write(join(prjDetachedBackSrcDir, 'config.ts'), generatedResources)
+    await write(join(prjDetachedBackSrcDir, 'config', 'index.ts'), generatedResources)
   }
 
   // src/restRouter.ts
