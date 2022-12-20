@@ -1,6 +1,6 @@
 import { camelCase } from 'change-case'
-import { ProjectWideGenerationArgs } from '../../../../args'
-import { generatedWarning } from '../../../../utils'
+import { ProjectWideGenerationArgs } from '../../../../../args'
+import { generatedWarning } from '../../../../../utils'
 
 export const configTmpl = ({
   system,
