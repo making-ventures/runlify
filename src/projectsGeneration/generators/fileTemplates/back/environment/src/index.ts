@@ -7,22 +7,8 @@ import { generatedWarning } from '../../../../../utils'
 export const environmentIndexTmpl = (
   options: BootstrapEntityOptions = defaultBootstrapEntityOptions
 ) => `import {exitHook} from './utils/exitHook';
-import {ApolloServer, AuthenticationError} from 'apollo-admServer-express';
-import {
-  ApolloServerPlugin,
-  GraphQLRequestContext,
-  GraphQLRequestContextDidResolveOperation,
-} from 'apollo-admServer-plugin-base';
-import {
-  SelectionNode,
-} from 'graphql';
 import log from './log';
-import schema from './graph/schema';
-import {
-  createContext,
-  createUsersAwareContext,
-} from './adm/services/context';
-import {Context} from './adm/services/types';
+import {createContext} from './adm/services/context';
 import express, {RequestHandler} from 'express';
 import cors from 'cors';
 import passport from 'passport';
@@ -36,7 +22,6 @@ import appAuthRouter from './app/authRouter';
 import getAppServer from './app/getAppServer';` : ''}
 import admAuthRouter from './adm/authRouter';
 import {graphqlUploadExpress} from 'graphql-upload';
-import {flattenGraphqlToPermission} from './adm/graph/permissionsToGraphql';
 import defaultContainer from './adm/services/defaultContainer';
 import healthRouter from './rest/healthRouter';
 import expressPlayground from 'graphql-playground-middleware-express';
@@ -90,9 +75,6 @@ app.get('/metrics', async (_req, res) => {
 app.use('/rest', restRouter);
 
 app.use('/health', healthRouter);
-
-// eslint-disable-next-line @typescript-eslint/no-empty-function
-const noop = (_arg: any) => {};
 
 const start = async () => {
   const context = await createContext(defaultContainer);
