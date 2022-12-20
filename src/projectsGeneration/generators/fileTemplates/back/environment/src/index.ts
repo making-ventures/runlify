@@ -7,12 +7,12 @@ import { generatedWarning } from '../../../../../utils'
 export const environmentIndexTmpl = (
   options: BootstrapEntityOptions = defaultBootstrapEntityOptions
 ) => `import {exitHook} from './utils/exitHook';
-import {ApolloServer, AuthenticationError} from 'apollo-server-express';
+import {ApolloServer, AuthenticationError} from 'apollo-admServer-express';
 import {
   ApolloServerPlugin,
   GraphQLRequestContext,
   GraphQLRequestContextDidResolveOperation,
-} from 'apollo-server-plugin-base';
+} from 'apollo-admServer-plugin-base';
 import {
   SelectionNode,
 } from 'graphql';
@@ -40,6 +40,7 @@ import {flattenGraphqlToPermission} from './adm/graph/permissionsToGraphql';
 import defaultContainer from './adm/services/defaultContainer';
 import healthRouter from './rest/healthRouter';
 import expressPlayground from 'graphql-playground-middleware-express';
+import getAdmServer from './adm/getAdmServer';
 ${
   options.skipWarningThisIsGenerated
     ? ''
@@ -103,93 +104,18 @@ ${options.usersEnabled ? `
   await appServer.start();
   appServer.applyMiddleware({app, path: '/app/graph'});
 ` : ''}
-  const authPlugin: ApolloServerPlugin = {
-    requestDidStart: async (requestContext: GraphQLRequestContext<{context: Context}>) => {
-      const {
-        context: {context},
-
-        // request: {
-        //   variables: requestVariables,
-        // },
-      } = requestContext;
-
-      // log.info('requestVariables');
-      // log.info(requestVariables);
-
-      return {
-        didResolveOperation: async (
-          resolutionContext: GraphQLRequestContextDidResolveOperation<{context: Context}>,
-        ) => {
-          // const {getManagerId} = context;
-
-          resolutionContext.operation.selectionSet.selections.forEach((selection: SelectionNode) => {
-            if (selection.kind === 'Field') {
-              const {name: {value: operationName}} = selection;
-              noop(operationName);
-              noop(typeof context);
-              // noop(getManagerId);
-              noop(flattenGraphqlToPermission);
-              noop(AuthenticationError);
-
-              // log.info(typeof getManagerId);
-              // log.info(getManagerId());
-
-              // log.info(getPermissions());
-
-              // log.info(Object.keys(context));
-
-              // log.info(operationName);
-              // log.info(\`operationName: \${operationName}\`);
-
-              // const permission = flattenGraphqlToPermission[operationName];
-              // log.info(\`permission: \${permission}\`);
-              // log.info(\`allActionSources: \${flattenGraphqlToPermission.allActionSources}\`);
-
-              // log.info(typeof AuthenticationError);
-
-              // if (!permission) {
-              //   throw new AuthenticationError(\`There is no permission for "\${operationName}"\`);
-              // }
-
-              // if (!getPermissions().includes(permission)) {
-              //   throw new AuthenticationError(\`Operation "\${operationName}" not permitted\`);
-              // }
-
-              // log.info(selection);
-            } else {
-              throw new Error('Not expected');
-            }
-          });
-        },
-      };
-    },
-  };
-
-  const server = new ApolloServer({
-    context: async ({req}) => ({
-      context: await createUsersAwareContext(
-        {
-          userId: null,
-          managerId: (req.user as any).id,
-        },
-        defaultContainer,
-      ),
-    }),
-    introspection: true,
-    plugins: [authPlugin as any],
-    schema,
-  });
+  const admServer = getAdmServer();
 
   const admGraphPath = '/adm/graph';
   app.use(admGraphPath, passport.authenticate('admJwt', {session: false}));
   app.use(admGraphPath, graphqlUploadExpress({maxFiles: 10, maxFileSize: 50 * 1024 * 1024}) as RequestHandler);
-  await server.start();
-  server.applyMiddleware({app, path: admGraphPath});
+  await admServer.start();
+  admServer.applyMiddleware({app, path: admGraphPath});
 
   context.service('stats').updateGauges();
 
   const port = 3000;
-  const graphEndpoint = \`http://localhost:\${port}\${server.graphqlPath}\`;
+  const graphEndpoint = \`http://localhost:\${port}\${admServer.graphqlPath}\`;
 
   if (!production) {
     app.get(
