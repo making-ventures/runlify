@@ -68,7 +68,18 @@
   },
   "jest": {
     "preset": "ts-jest",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "modulePathIgnorePatterns": [
+      "<rootDir>/dist/"
+    ],
+    "setupFilesAfterEnv": [
+      "jest-extended/all"
+    ],
+    "testTimeout": 180000,
+    "setupFiles": [
+      "./src/businessTests/runBeforeTest.ts"
+    ],
+    "globalTeardown": "./src/businessTests/runAfterAllTests.ts"
   },
   "prettier": {
     "semi": false,
