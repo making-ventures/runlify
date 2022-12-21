@@ -14,7 +14,7 @@ export const joinPrismaFieldParts = (parts: Array<string | undefined>) =>
 export const genPrismaScalarField = (field: ScalarField): string[] => {
   const withoutPadding = joinPrismaFieldParts([
     field.name,
-    `${fieldTypeToPrismaType(field.type)}${field.required ? '' : '?'}`,
+    `${fieldTypeToPrismaType(field)}${field.required ? '' : '?'}`,
     field.type === 'date' ? '	@db.Date' : '',
     genPrismaDefault(field),
   ])

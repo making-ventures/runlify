@@ -1,7 +1,7 @@
-import { FiledType } from '../../builders/buildedTypes'
+import { Field, StringField } from '../../builders/buildedTypes'
 
-export const fieldTypeToPrismaType = (type: FiledType): string => {
-  switch (type) {
+export const fieldTypeToPrismaType = (field: Field): string => {
+  switch (field.type) {
     case 'int':
       return 'Int'
     case 'bigint':
@@ -9,6 +9,9 @@ export const fieldTypeToPrismaType = (type: FiledType): string => {
     case 'float':
       return 'Float'
     case 'string':
+      if ((field as StringField).stringType === 'json') {
+        return 'Json'
+      }
       return 'String'
     case 'bool':
       return 'Boolean'
@@ -17,6 +20,6 @@ export const fieldTypeToPrismaType = (type: FiledType): string => {
     case 'date':
       return 'DateTime'
     default:
-      throw new Error(`Unexpected "${type}" type`)
+      throw new Error(`Unexpected "${(field as any).type}" type`)
   }
 }
