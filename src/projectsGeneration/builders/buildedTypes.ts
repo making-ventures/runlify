@@ -47,6 +47,7 @@ export type FiledType =
   | 'bool'
   | 'datetime'
   | 'date'
+
 export type Meaning = 'img'
 
 export enum TsTypes {
