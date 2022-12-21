@@ -4,11 +4,11 @@ import {
   GraphQLInt,
   GraphQLString,
 } from 'graphql'
-import { GraphQLDateTime, GraphQLDate, GraphQLBigInt } from 'graphql-scalars'
-import { FiledType } from '../../builders/buildedTypes'
+import { GraphQLDateTime, GraphQLDate, GraphQLBigInt, GraphQLJSON } from 'graphql-scalars'
+import { Field } from '../../builders/buildedTypes'
 
-export const fieldTypeToGraphScalar = (type: FiledType) => {
-  switch (type) {
+export const fieldTypeToGraphScalar = (field: Field) => {
+  switch (field.type) {
     case 'int':
       return GraphQLInt
     case 'bigint':
@@ -16,6 +16,9 @@ export const fieldTypeToGraphScalar = (type: FiledType) => {
     case 'float':
       return GraphQLFloat
     case 'string':
+      if ('stringType' in field && field.stringType == 'json') {
+        return GraphQLJSON
+      }
       return GraphQLString
     case 'bool':
       return GraphQLBoolean
@@ -24,6 +27,6 @@ export const fieldTypeToGraphScalar = (type: FiledType) => {
     case 'date':
       return GraphQLDate
     default:
-      throw new Error(`Unexpected "${type}" type`)
+      throw new Error(`Unexpected "${(field as any).type}" type`)
   }
 }

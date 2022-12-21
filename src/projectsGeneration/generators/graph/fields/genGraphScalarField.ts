@@ -11,16 +11,16 @@ export const genGraphScalarField = (
     return {
       [field.name]: {
         type: field.required
-          ? new GraphQLNonNull(fieldTypeToGraphScalar(field.type))
-          : fieldTypeToGraphScalar(field.type),
+          ? new GraphQLNonNull(fieldTypeToGraphScalar(field))
+          : fieldTypeToGraphScalar(field),
       },
     }
   } else {
     return {
       [field.name]: {
         type: field.requiredOnInput
-          ? new GraphQLNonNull(fieldTypeToGraphScalar(field.type))
-          : fieldTypeToGraphScalar(field.type),
+          ? new GraphQLNonNull(fieldTypeToGraphScalar(field))
+          : fieldTypeToGraphScalar(field),
       },
     }
   }

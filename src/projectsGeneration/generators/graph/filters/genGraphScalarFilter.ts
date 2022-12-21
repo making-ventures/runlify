@@ -10,7 +10,7 @@ export const genGraphScalarFilter = (
   fields = {
     ...fields,
     [field.name]: {
-      type: fieldTypeToGraphScalar(field.type),
+      type: fieldTypeToGraphScalar(field),
     },
   }
 
@@ -18,7 +18,7 @@ export const genGraphScalarFilter = (
     fields = {
       ...fields,
       [`${field.name}_in`]: {
-        type: new GraphQLList(fieldTypeToGraphScalar(field.type)),
+        type: new GraphQLList(fieldTypeToGraphScalar(field)),
       },
     }
   }
@@ -27,16 +27,16 @@ export const genGraphScalarFilter = (
     fields = {
       ...fields,
       [`${field.name}_lte`]: {
-        type: fieldTypeToGraphScalar(field.type),
+        type: fieldTypeToGraphScalar(field),
       },
       [`${field.name}_gte`]: {
-        type: fieldTypeToGraphScalar(field.type),
+        type: fieldTypeToGraphScalar(field),
       },
       [`${field.name}_lt`]: {
-        type: fieldTypeToGraphScalar(field.type),
+        type: fieldTypeToGraphScalar(field),
       },
       [`${field.name}_gt`]: {
-        type: fieldTypeToGraphScalar(field.type),
+        type: fieldTypeToGraphScalar(field),
       },
     }
   }
