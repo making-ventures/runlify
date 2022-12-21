@@ -145,7 +145,13 @@ export type BaseStringField = ScalarBaseField & {
   type: 'string'
 }
 
-export type StringType = 'plain' | 'multiline' | 'richEdit' | 'markdown';
+export enum StringType {
+  Plain = 'plain',
+  Multiline = 'multiline',
+  RichEdit = 'richEdit',
+  Markdown = 'markdown',
+  Json = 'json',
+}
 
 export type PlainStringField = BaseStringField & {
   stringType: 'plain'
@@ -163,11 +169,16 @@ export type RichEditStringField = BaseStringField & {
   stringType: 'richEdit'
 }
 
+export type JsonStringField = BaseStringField & {
+  stringType: 'json'
+}
+
 export type StringField =
   | PlainStringField
   | MultilineStringField
   | MarkdownStringField
   | RichEditStringField
+  | JsonStringField
 
 export type FloatField = ScalarBaseField & {
   type: 'float'

@@ -5,3 +5,4 @@ set -v
 
 # yarn lint
 yarn build
+yarn test

@@ -83,7 +83,7 @@ describe('genPrismaEntity', () => {
     cards.addField('name').setType('string').setRequired()
     cards.addField('lastDigits').setType('int').setRequired()
     cards.addField('active').setType('bool')
-    cards.addLinkField('users', 'user').setType('int').setRequired()
+    cards.addLinkField('users', 'userId').setType('int').setRequired()
 
     expect(genPrismaEntity(cards.build(), [])).toBe(`model Card {
 	id	Int	@default(autoincrement())	@id

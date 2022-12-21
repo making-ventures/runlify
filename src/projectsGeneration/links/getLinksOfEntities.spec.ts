@@ -24,6 +24,8 @@ describe('getLinksOfEntities', () => {
         externalEntityName: 'someEntity',
         fromField: {
           category: 'link',
+          defaultBackendValueExpression: undefined,
+          defaultDbValue: undefined,
           defaultValueExpression: undefined,
           externalEntity: 'someEntity',
           hidden: false,
@@ -54,7 +56,7 @@ describe('getLinksOfEntities', () => {
   test('one entity with two links', () => {
     const cards = new CatalogBuilder('cards', 'ru')
     cards.addLinkField('someEntity', 'someId').setType('bigint').setRequired()
-    cards.addLinkField('someEntity2', 'someId2').setType('bigint').setRequired()
+    cards.addLinkField('someEntity2', 'some2Id').setType('bigint').setRequired()
     cards.addField('lastDigits').setType('int').setRequired()
     cards.addField('active').setType('bool')
     expect(getLinksOfEntities([cards.build()])).toEqual([
@@ -63,6 +65,8 @@ describe('getLinksOfEntities', () => {
         externalEntityName: 'someEntity',
         fromField: {
           category: 'link',
+          defaultBackendValueExpression: undefined,
+          defaultDbValue: undefined,
           defaultValueExpression: undefined,
           hidden: false,
           externalEntity: 'someEntity',
@@ -92,12 +96,13 @@ describe('getLinksOfEntities', () => {
         externalEntityName: 'someEntity2',
         fromField: {
           category: 'link',
+          defaultBackendValueExpression: undefined,
+          defaultDbValue: undefined,
           defaultValueExpression: undefined,
           externalEntity: 'someEntity2',
-
           hidden: false,
           linkCategory: 'entity',
-          name: 'someId2',
+          name: 'some2Id',
           needFor: '',
           required: true,
           requiredOnInput: true,
@@ -108,7 +113,7 @@ describe('getLinksOfEntities', () => {
           showInFilter: true,
           showInWidget: true,
           title: {
-            ru: 'Some id2',
+            ru: 'Some2',
           },
           type: 'bigint',
           updatable: true,
@@ -145,6 +150,7 @@ describe('getLinksOfEntities', () => {
         externalEntityName: 'secondEntities',
         fromField: {
           category: 'link',
+          defaultBackendValueExpression: undefined,
           defaultDbValue: undefined,
           defaultValueExpression: undefined,
           externalEntity: 'secondEntities',
@@ -175,6 +181,7 @@ describe('getLinksOfEntities', () => {
         externalEntityName: 'firstEntities',
         fromField: {
           category: 'link',
+          defaultBackendValueExpression: undefined,
           defaultDbValue: undefined,
           defaultValueExpression: undefined,
           externalEntity: 'firstEntities',

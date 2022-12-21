@@ -13,7 +13,7 @@ export abstract class BaseFieldBuilder {
   type: FiledType = 'int'
   meaning?: Meaning
   name = 'notSet'
-  stringType: StringType = 'plain'
+  stringType: StringType = StringType.Plain
   entity = ''
   title: Record<string, string> = {}
   translationKey = ''
@@ -91,7 +91,7 @@ export abstract class BaseFieldBuilder {
 
     this.stringType = stringType
 
-    if (stringType === 'markdown') {
+    if ([StringType.Markdown, StringType.Json].includes(stringType)) {
       this.showInList = false
       this.showInFilter = false
       this.showInWidget = false
