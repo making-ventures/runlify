@@ -11,6 +11,7 @@ num2=$(echo -e "$namber" | awk -F"." '{print $2}')
 num3=$(echo -e "$namber" | awk -F"." '{print $3}')
 num3=$(($num3+1))
 new_number="$num1.$num2.$num3"
+echo new_number $new_number
 sed -i "s/version\":.*/version\": \"$new_number\",/g" package.json
 
 git add .
