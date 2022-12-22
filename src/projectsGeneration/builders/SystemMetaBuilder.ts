@@ -169,8 +169,8 @@ class SystemMetaBuilder {
     this.addConfigVar('kafka.queue.waitingInterruptTime', '60000', 'Время паузы в очереди ожидания, когда она прошла все сообщения, это чтобы она не крутила сообщения покругу без остановки ');
     this.addConfigVar('kafka.queue.stackSize', '3', 'Количество сообщений, обрабатываемых параллельно');
     this.addConfigVar('kafka.queue.supportedVersion', '1;2', 'Поддерживаемые версии сообщения');
-    this.addConfigVar('kafka.queue.autoCommitInterval', '10000', 'Потребитель будет фиксировать смещения по истечении заданного периода, например, пяти секунд. Значение в миллисекундах  ');
-    this.addConfigVar('kafka.queue.autoCommitThreshold', '1000', 'Потребитель будет фиксировать смещения после разрешения заданного количества сообщений, например тысячи сообщений');
+    // this.addConfigVar('kafka.queue.autoCommitInterval', '10000', 'Потребитель будет фиксировать смещения по истечении заданного периода, например, пяти секунд. Значение в миллисекундах  ');
+    // this.addConfigVar('kafka.queue.autoCommitThreshold', '1000', 'Потребитель будет фиксировать смещения после разрешения заданного количества сообщений, например тысячи сообщений');
     this.addConfigVar('kafka.queue.acks', '1', '`-1`(all) все несинхронизированные реплики должны подтвердить (по умолчанию), `0` нет подтверждений, `1` только ждет подтверждения лидера');
     this.addConfigVar('kafka.ssl.rejectUnauthorized', 'false', 'Запрещать невалидный ssl сертификат');
 
