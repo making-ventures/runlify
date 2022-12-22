@@ -167,7 +167,7 @@ class SystemMetaBuilder {
     this.addConfigVar('kafka.queue.maxAttemptsSize', '10', 'Максимальное количество попыток обработки ошибки на сообщение');
     this.addConfigVar('kafka.queue.defaultRetryTime', '20000', 'Время паузы после первой ошибки, например 20000 мс, потом оно увеличывается экспоненциально с мультипликатором 1.5');
     this.addConfigVar('kafka.queue.waitingInterruptTime', '60000', 'Время паузы в очереди ожидания, когда она прошла все сообщения, это чтобы она не крутила сообщения покругу без остановки ');
-    this.addConfigVar('kafka.queue.stackSize', '100', 'Количество сообщений, обрабатываемых параллельно');
+    this.addConfigVar('kafka.queue.stackSize', '3', 'Количество сообщений, обрабатываемых параллельно');
     this.addConfigVar('kafka.queue.supportedVersion', '1;2', 'Поддерживаемые версии сообщения');
     this.addConfigVar('kafka.queue.autoCommitInterval', '10000', 'Потребитель будет фиксировать смещения по истечении заданного периода, например, пяти секунд. Значение в миллисекундах  ');
     this.addConfigVar('kafka.queue.autoCommitThreshold', '1000', 'Потребитель будет фиксировать смещения после разрешения заданного количества сообщений, например тысячи сообщений');
