@@ -28,7 +28,10 @@ metadata:
     prometheus.io/scrape: 'true'
 spec:
   ports:
-  - port: 3000
+  - name: http
+    port: 3000
+    protocol: TCP
+    targetPort: 3000
   selector:
     app: ${options.k8sChartName || prefix}-back
 ---

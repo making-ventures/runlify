@@ -25,7 +25,10 @@ metadata:
     deployKind: {{ $.Values.global.deployKind }}
 spec:
   ports:
-  - port: 80
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 80
   selector:
     app: ${options.k8sChartName || prefix}-ui
 ---
