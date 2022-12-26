@@ -277,7 +277,7 @@ class SystemMetaBuilder {
     name: string,
     type: T,
     required: boolean,
-    def: ConfigValue<T>,
+    def: ConfigValue<T> | undefined,
     needFor: string,
     scopes: ConfigVarScope[] = ['back', 'worker', 'telegramBot']
   ) {
@@ -290,6 +290,7 @@ class SystemMetaBuilder {
         {
           name,
           type,
+          required,
           default: def,
           needFor,
           scopes,
