@@ -38,6 +38,7 @@ export type ConfigValue<T extends FieldType> = T extends 'string'
 export interface ConfigVar<T extends FieldType = 'string'> {
   name: string
   type: T,
+  required: boolean,
   default: ConfigValue<T>
   needFor: string
   scopes: ConfigVarScope[]

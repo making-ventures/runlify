@@ -31,6 +31,7 @@ import TelegramBotBuilder from './TelegramBotBuilder'
 export const defaultConfigVar: Omit<ConfigVar, 'name' | 'type'> = {
   needFor: '',
   default: '',
+  required: true,
   scopes: ['back', 'worker', 'telegramBot'],
 }
 
@@ -71,18 +72,21 @@ class SystemMetaBuilder {
     this.addConfigVar(
       'app.name',
       'string',
+      true,
       this.defOpts.projectPrefix,
       'Техническое название приложения'
     )
     this.addConfigVar(
       'app.title',
       'string',
+      true,
       this.defOpts.projectName,
       'Человеческое название приложения'
     )
     this.addConfigVar(
       'app.environment',
       'string',
+      true,
       'dev',
       'Название окружения'
     )
@@ -90,6 +94,7 @@ class SystemMetaBuilder {
     this.addConfigVar(
       'database.uri',
       'string',
+      true,
       'postgresql://postgres:password@localhost:5432',
       'Строка подключения к основной базе данных'
     )
@@ -97,12 +102,14 @@ class SystemMetaBuilder {
     this.addConfigVar(
       'adm.jwt.secret',
       'string',
+      true,
       'admSecret',
       'Секрет для подписи JWT-токенов приложения админки'
     )
     this.addConfigVar(
       'app.jwt.secret',
       'string',
+      true,
       'appSecret',
       'Секрет для подписи JWT-токенов приложения пользователей'
     )
@@ -110,12 +117,14 @@ class SystemMetaBuilder {
     this.addConfigVar(
       's3.accessKeyId',
       'string',
+      true,
       '',
       'Идентификатор доступа для авторизации в S3'
     )
     this.addConfigVar(
       's3.secretAccessKey',
       'string',
+      true,
       '',
       'Секретный ключ для авторизации в S3'
     )
@@ -123,18 +132,21 @@ class SystemMetaBuilder {
     this.addConfigVar(
       'admin.recaptcha.secretKey',
       'string',
+      true,
       '',
       'Секретный токен рекапчи приложения админки'
     )
     this.addConfigVar(
       'admin.recaptcha.requiredScore',
       'float',
+      true,
       0.7,
       'Требуемый уровень доверия к пользователю'
     )
     this.addConfigVar(
       'admin.recaptcha.publicKey',
       'string',
+      true,
       '',
       'Публичный токен рекапчи приложения админки',
       ['admin-app']
@@ -143,18 +155,21 @@ class SystemMetaBuilder {
     this.addConfigVar(
       'customer.recaptcha.secretKey',
       'string',
+      true,
       '',
       'Секретный токен рекапчи приложения пользователя'
     )
     this.addConfigVar(
       'customer.recaptcha.requiredScore',
       'string',
+      true,
       '0.7',
       'Требуемый уровень доверия к пользователю'
     )
     this.addConfigVar(
       'customer.recaptcha.publicKey',
       'string',
+      true,
       '',
       'Публичный токен рекапчи приложения пользователя',
       ['cutomer-app']
@@ -163,6 +178,7 @@ class SystemMetaBuilder {
     this.addConfigVar(
       'loki.url',
       'string',
+      true,
       '',
       'Урл для доступа в Loki. Используется для запроса бизнес-логов'
     )
@@ -170,6 +186,7 @@ class SystemMetaBuilder {
     this.addConfigVar(
       'logs.format',
       'string',
+      true,
       'plain',
       'Формат логов (plain | json)'
     )
@@ -178,32 +195,33 @@ class SystemMetaBuilder {
       'graphql.playground.enabled',
       'bool',
       true,
+      true,
       'Включение graphql playground (true | false)'
     )
 
 
     // kafka
-    this.addConfigVar('kafka.brokers', 'string', 'localhost:29092;localhost:29094', 'Список kafka блокеров');
-    this.addConfigVar('kafka.username', 'string', '', 'Username доступа в kafka');
-    this.addConfigVar('kafka.password', 'string', '', 'Пароль доступа в kafka');
-    this.addConfigVar('kafka.enabled', 'bool', false, 'Включние кафки');
-    this.addConfigVar('kafka.queue.maxAttemptsSize', 'int', 10, 'Максимальное количество попыток обработки ошибки на сообщение');
-    this.addConfigVar('kafka.queue.defaultRetryTime', 'int', 20000, 'Время паузы после первой ошибки, например 20000 мс, потом оно увеличывается экспоненциально с мультипликатором 1.5');
-    this.addConfigVar('kafka.queue.waitingInterruptTime', 'int', 60000, 'Время паузы в очереди ожидания, когда она прошла все сообщения, это чтобы она не крутила сообщения покругу без остановки ');
-    this.addConfigVar('kafka.queue.stackSize', 'int', 3, 'Количество сообщений, обрабатываемых параллельно');
-    this.addConfigVar('kafka.queue.supportedVersion', 'string', '1;2', 'Поддерживаемые версии сообщения');
-    // this.addConfigVar('kafka.queue.autoCommitInterval', 'int', 10000, 'Потребитель будет фиксировать смещения по истечении заданного периода, например, пяти секунд. Значение в миллисекундах  ');
-    // this.addConfigVar('kafka.queue.autoCommitThreshold', 'int', 1000, 'Потребитель будет фиксировать смещения после разрешения заданного количества сообщений, например тысячи сообщений');
-    this.addConfigVar('kafka.queue.acks', 'int', 1, '`-1`(all) все несинхронизированные реплики должны подтвердить (по умолчанию), `0` нет подтверждений, `1` только ждет подтверждения лидера');
-    this.addConfigVar('kafka.ssl.rejectUnauthorized', 'bool', false, 'Запрещать невалидный ssl сертификат');
+    this.addConfigVar('kafka.brokers', 'string', true, 'localhost:29092;localhost:29094', 'Список kafka блокеров');
+    this.addConfigVar('kafka.username', 'string', true, '', 'Username доступа в kafka');
+    this.addConfigVar('kafka.password', 'string', true, '', 'Пароль доступа в kafka');
+    this.addConfigVar('kafka.enabled', 'bool', true, false, 'Включние кафки');
+    this.addConfigVar('kafka.queue.maxAttemptsSize', 'int', true, 10, 'Максимальное количество попыток обработки ошибки на сообщение');
+    this.addConfigVar('kafka.queue.defaultRetryTime', 'int', true, 20000, 'Время паузы после первой ошибки, например 20000 мс, потом оно увеличывается экспоненциально с мультипликатором 1.5');
+    this.addConfigVar('kafka.queue.waitingInterruptTime', 'int', true, 60000, 'Время паузы в очереди ожидания, когда она прошла все сообщения, это чтобы она не крутила сообщения покругу без остановки ');
+    this.addConfigVar('kafka.queue.stackSize', 'int', true, 3, 'Количество сообщений, обрабатываемых параллельно');
+    this.addConfigVar('kafka.queue.supportedVersion', 'string', true, '1;2', 'Поддерживаемые версии сообщения');
+    // this.addConfigVar('kafka.queue.autoCommitInterval', 'int', true, 10000, 'Потребитель будет фиксировать смещения по истечении заданного периода, например, пяти секунд. Значение в миллисекундах  ');
+    // this.addConfigVar('kafka.queue.autoCommitThreshold', 'int', true, 1000, 'Потребитель будет фиксировать смещения после разрешения заданного количества сообщений, например тысячи сообщений');
+    this.addConfigVar('kafka.queue.acks', 'int', true, 1, '`-1`(all) все несинхронизированные реплики должны подтвердить (по умолчанию), `0` нет подтверждений, `1` только ждет подтверждения лидера');
+    this.addConfigVar('kafka.ssl.rejectUnauthorized', 'bool', true, false, 'Запрещать невалидный ssl сертификат');
 
 
     // es
-    this.addConfigVar('es.cloudId', 'string', '', 'Идентификатор аккаунта в облачном сервисе ElasticSearch');
-    this.addConfigVar('es.username', 'string', '', 'Пользователь для авторизации в облачном сервисе ElasticSearch');
-    this.addConfigVar('es.password', 'string', '', 'Пароль для авторизации в облачном сервисе ElasticSearch');
-    this.addConfigVar('es.node', 'string', 'http://localhost:9200', 'Нода эластика');
-    this.addConfigVar('es.tls.rejectUnauthorized', 'bool', false, 'Запрещать невалидный ssl сертификат');
+    this.addConfigVar('es.cloudId', 'string', true, '', 'Идентификатор аккаунта в облачном сервисе ElasticSearch');
+    this.addConfigVar('es.username', 'string', true, '', 'Пользователь для авторизации в облачном сервисе ElasticSearch');
+    this.addConfigVar('es.password', 'string', true, '', 'Пароль для авторизации в облачном сервисе ElasticSearch');
+    this.addConfigVar('es.node', 'string', true, 'http://localhost:9200', 'Нода эластика');
+    this.addConfigVar('es.tls.rejectUnauthorized', 'bool', true, false, 'Запрещать невалидный ssl сертификат');
 
     this.addDeployEnvironment('stage', 'stage')
     this.addDeployEnvironment('prod', 'stage')
@@ -258,6 +276,7 @@ class SystemMetaBuilder {
   addConfigVar<T extends FieldType>(
     name: string,
     type: T,
+    required: boolean,
     def: ConfigValue<T>,
     needFor: string,
     scopes: ConfigVarScope[] = ['back', 'worker', 'telegramBot']
