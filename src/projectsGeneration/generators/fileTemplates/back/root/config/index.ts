@@ -1,6 +1,28 @@
 import { camelCase } from 'change-case'
+import { FieldType } from '../../../../../../types'
 import { ProjectWideGenerationArgs } from '../../../../../args'
 import { generatedWarning } from '../../../../../utils'
+
+const getUtilGetterForType = (type: FieldType) => {
+  switch (type) {
+    case 'string':
+      return 'getStringConfig';
+    case 'int':
+      return 'getIntConfig';
+    case 'bigint':
+      return 'getBigIntConfig';
+    case 'float':
+      return 'getFloatConfig';
+    case 'bool':
+      return 'getBooleanConfig';
+    case 'datetime':
+      return 'getDateTimeConfig';
+    case 'date':
+      return 'getDateConfig';
+    default:
+      throw new Error(`Unknown ""${type} type`)
+  }
+}
 
 export const configTmpl = ({
   system,
@@ -8,6 +30,7 @@ export const configTmpl = ({
 }: ProjectWideGenerationArgs) => `import {constantCase} from 'change-case';
 import nconf from 'nconf';
 import {exists, read} from 'fs-jetpack';
+import getConfigUtils from './getConfigUtils';
 ${
   options.skipWarningThisIsGenerated
     ? ''
@@ -31,12 +54,22 @@ if (exists(file)) {
 
 export const isLocalEnv = envName === 'local';
 
-export const getFromNconf = (name: string): string | undefined => nconf.get(constantCase(name)) || nconf.get(name) || '';
+export const getFromNconf = <T extends boolean>(name: string, required: T): ValueBasedOnRequired<T, string> => {
+  const value = nconf.get(constantCase(name)) || nconf.get(name);
+
+  if (required && value === undefined) {
+    throw new Error(\`Config var "\${name}" is required\`);
+  }
+
+  return value;
+};
+
+const utils = getConfigUtils(getFromNconf);
 
 const envConfig = {
   ${system.configVars
     .filter((v) => v.scopes.includes('back'))
-    .map((v) => `${camelCase(v.name)}: getFromNconf('${v.name}'),`).join(`
+    .map((v) => `${camelCase(v.name)}: utils.${getUtilGetterForType(v.type)}('${v.name}', ${v.required}),`).join(`
   `)}
 };
 
