@@ -201,27 +201,27 @@ class SystemMetaBuilder {
 
 
     // kafka
-    this.addConfigVar('kafka.brokers', 'string', true, 'localhost:29092;localhost:29094', 'Список kafka блокеров');
-    this.addConfigVar('kafka.username', 'string', true, '', 'Username доступа в kafka');
-    this.addConfigVar('kafka.password', 'string', true, '', 'Пароль доступа в kafka');
-    this.addConfigVar('kafka.enabled', 'bool', true, false, 'Включние кафки');
-    this.addConfigVar('kafka.queue.maxAttemptsSize', 'int', true, 10, 'Максимальное количество попыток обработки ошибки на сообщение');
-    this.addConfigVar('kafka.queue.defaultRetryTime', 'int', true, 20000, 'Время паузы после первой ошибки, например 20000 мс, потом оно увеличывается экспоненциально с мультипликатором 1.5');
-    this.addConfigVar('kafka.queue.waitingInterruptTime', 'int', true, 60000, 'Время паузы в очереди ожидания, когда она прошла все сообщения, это чтобы она не крутила сообщения покругу без остановки ');
-    this.addConfigVar('kafka.queue.stackSize', 'int', true, 3, 'Количество сообщений, обрабатываемых параллельно');
-    this.addConfigVar('kafka.queue.supportedVersion', 'string', true, '1;2', 'Поддерживаемые версии сообщения');
-    // this.addConfigVar('kafka.queue.autoCommitInterval', 'int', true, 10000, 'Потребитель будет фиксировать смещения по истечении заданного периода, например, пяти секунд. Значение в миллисекундах  ');
-    // this.addConfigVar('kafka.queue.autoCommitThreshold', 'int', true, 1000, 'Потребитель будет фиксировать смещения после разрешения заданного количества сообщений, например тысячи сообщений');
-    this.addConfigVar('kafka.queue.acks', 'int', true, 1, '`-1`(all) все несинхронизированные реплики должны подтвердить (по умолчанию), `0` нет подтверждений, `1` только ждет подтверждения лидера');
-    this.addConfigVar('kafka.ssl.rejectUnauthorized', 'bool', true, false, 'Запрещать невалидный ssl сертификат');
+    this.addConfigVar('kafka.brokers', 'string', false, 'localhost:29092;localhost:29094', 'Список kafka блокеров');
+    this.addConfigVar('kafka.username', 'string', false, '', 'Username доступа в kafka');
+    this.addConfigVar('kafka.password', 'string', false, '', 'Пароль доступа в kafka');
+    this.addConfigVar('kafka.enabled', 'bool', false, false, 'Включние кафки');
+    this.addConfigVar('kafka.queue.maxAttemptsSize', 'int', false, 10, 'Максимальное количество попыток обработки ошибки на сообщение');
+    this.addConfigVar('kafka.queue.defaultRetryTime', 'int', false, 20000, 'Время паузы после первой ошибки, например 20000 мс, потом оно увеличывается экспоненциально с мультипликатором 1.5');
+    this.addConfigVar('kafka.queue.waitingInterruptTime', 'int', false, 60000, 'Время паузы в очереди ожидания, когда она прошла все сообщения, это чтобы она не крутила сообщения покругу без остановки ');
+    this.addConfigVar('kafka.queue.stackSize', 'int', false, 3, 'Количество сообщений, обрабатываемых параллельно');
+    this.addConfigVar('kafka.queue.supportedVersion', 'string', false, '1;2', 'Поддерживаемые версии сообщения');
+    // this.addConfigVar('kafka.queue.autoCommitInterval', 'int', false, 10000, 'Потребитель будет фиксировать смещения по истечении заданного периода, например, пяти секунд. Значение в миллисекундах  ');
+    // this.addConfigVar('kafka.queue.autoCommitThreshold', 'int', false, 1000, 'Потребитель будет фиксировать смещения после разрешения заданного количества сообщений, например тысячи сообщений');
+    this.addConfigVar('kafka.queue.acks', 'int', false, 1, '`-1`(all) все несинхронизированные реплики должны подтвердить (по умолчанию), `0` нет подтверждений, `1` только ждет подтверждения лидера');
+    this.addConfigVar('kafka.ssl.rejectUnauthorized', 'bool', false, false, 'Запрещать невалидный ssl сертификат');
 
 
     // es
-    this.addConfigVar('es.cloudId', 'string', true, '', 'Идентификатор аккаунта в облачном сервисе ElasticSearch');
-    this.addConfigVar('es.username', 'string', true, '', 'Пользователь для авторизации в облачном сервисе ElasticSearch');
-    this.addConfigVar('es.password', 'string', true, '', 'Пароль для авторизации в облачном сервисе ElasticSearch');
-    this.addConfigVar('es.node', 'string', true, 'http://localhost:9200', 'Нода эластика');
-    this.addConfigVar('es.tls.rejectUnauthorized', 'bool', true, false, 'Запрещать невалидный ssl сертификат');
+    this.addConfigVar('es.cloudId', 'string', false, '', 'Идентификатор аккаунта в облачном сервисе ElasticSearch');
+    this.addConfigVar('es.username', 'string', false, '', 'Пользователь для авторизации в облачном сервисе ElasticSearch');
+    this.addConfigVar('es.password', 'string', false, '', 'Пароль для авторизации в облачном сервисе ElasticSearch');
+    this.addConfigVar('es.node', 'string', false, 'http://localhost:9200', 'Нода эластика');
+    this.addConfigVar('es.tls.rejectUnauthorized', 'bool', false, false, 'Запрещать невалидный ssl сертификат');
 
     this.addDeployEnvironment('stage', 'stage')
     this.addDeployEnvironment('prod', 'stage')
