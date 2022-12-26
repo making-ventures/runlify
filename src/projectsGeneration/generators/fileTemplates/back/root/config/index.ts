@@ -27,7 +27,8 @@ const getUtilGetterForType = (type: FieldType) => {
 export const configTmpl = ({
   system,
   options,
-}: ProjectWideGenerationArgs) => `import {constantCase} from 'change-case';
+}: ProjectWideGenerationArgs) => `/* eslint-disable max-len */
+import {constantCase} from 'change-case';
 import nconf from 'nconf';
 import {exists, read} from 'fs-jetpack';
 import getConfigUtils from './getConfigUtils';
