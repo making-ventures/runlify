@@ -1,7 +1,7 @@
-import { FiledType } from '../../../../builders/buildedTypes'
+import { FieldType } from '../../../../builders/buildedTypes'
 import { EditComponentName } from '../types'
 
-export const getCompNameToEditScalar = (type: FiledType): EditComponentName => {
+export const getCompNameToEditScalar = (type: FieldType): EditComponentName => {
   switch (type) {
     case 'string':
       return 'TextInput'

@@ -17,9 +17,28 @@ export type ConfigVarScope =
 // {id: 'learningReact', title: 'Учебный React', gitSshTemplate: 'git@gitlab.com:js-learning/react-template.git', educational: true},
 // {id: 'learningFigma', title: 'Учебный Figma', gitSshTemplate: 'git@gitlab.com:js-learning/nodets-template.git', educational: true},
 
-export interface ConfigVar {
+export type ConfigValue<T extends FieldType> = T extends 'string'
+    ?
+      string
+    :
+      T extends 'int' | 'float'
+      ?
+        number
+      :
+        T extends 'bigint'
+        ?
+          bigint
+        :
+          T extends 'bool'
+          ?
+            boolean
+          :
+            Date
+
+export interface ConfigVar<T extends FieldType = 'string'> {
   name: string
-  default: string
+  type: T,
+  default: ConfigValue<T>
   needFor: string
   scopes: ConfigVarScope[]
 }
@@ -39,7 +58,7 @@ export interface Command {
 }
 
 export type TKeyFieldType = 'string' | 'int' | 'bigint'
-export type FiledType =
+export type FieldType =
   | 'string'
   | 'int'
   | 'bigint'

@@ -1,6 +1,6 @@
-import { FiledType, TsTypes } from '../builders/buildedTypes'
+import { FieldType, TsTypes } from '../builders/buildedTypes'
 
-export const fieldTypeToTsType = (type: FiledType) => {
+export const fieldTypeToTsType = (type: FieldType) => {
   switch (type) {
     case 'int':
       return TsTypes.Number

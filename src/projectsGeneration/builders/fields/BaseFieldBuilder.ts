@@ -2,7 +2,7 @@ import * as R from 'ramda'
 import { sentence } from '../../../utils/cases'
 import {
   Meaning,
-  FiledType,
+  FieldType,
   DefaultDbValue,
   StringType,
 } from '../buildedTypes'
@@ -10,7 +10,7 @@ import {
 export abstract class BaseFieldBuilder {
   defaultLanguage: string
   category: 'trivial' | 'link' = 'trivial'
-  type: FiledType = 'int'
+  type: FieldType = 'int'
   meaning?: Meaning
   name = 'notSet'
   stringType: StringType = StringType.Plain
@@ -71,7 +71,7 @@ export abstract class BaseFieldBuilder {
 
     return this
   }
-  setType(type: FiledType) {
+  setType(type: FieldType) {
     this.type = type
 
     if (['bool'].includes(type)) {
