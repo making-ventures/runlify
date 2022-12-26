@@ -54,6 +54,9 @@ if (exists(file)) {
 
 export const isLocalEnv = envName === 'local';
 
+type ValueBasedOnRequired<Req extends boolean, Val extends number | string | boolean | Date | bigint>
+  = Req extends true ? Val : Val | undefined
+
 export const getFromNconf = <T extends boolean>(name: string, required: T): ValueBasedOnRequired<T, string> => {
   const value = nconf.get(constantCase(name)) || nconf.get(name);
 
