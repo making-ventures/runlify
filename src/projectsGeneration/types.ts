@@ -106,6 +106,10 @@ export const defaultBootstrapEntityOptions = {
 
   // Tenants
   tenantsAvailable: false,
+
+  themesEnabled: true,
+  localesEnabled: true,
+  mainColorOfAppTitile: true,
 }
 
 export type BootstrapEntityOptions = typeof defaultBootstrapEntityOptions

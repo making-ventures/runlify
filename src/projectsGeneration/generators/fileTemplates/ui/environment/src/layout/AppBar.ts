@@ -7,10 +7,10 @@ import { generatedWarning } from '../../../../../../utils'
 export const uiLayoutAppBarTmpl = (
   options: BootstrapEntityOptions = defaultBootstrapEntityOptions
 ) => `import * as React from 'react';
-import {AppBar as RaAppBar, ToggleThemeButton, LocalesMenuButton} from 'react-admin';
+import {AppBar as RaAppBar${options.themesEnabled ? `, ToggleThemeButton` : ''}${options.themesEnabled ? (`, LocalesMenuButton`) : ''}} from 'react-admin';
 import {Box, Typography} from '@mui/material';
-import {Link} from 'react-router-dom';
-import {darkTheme, lightTheme} from './themes';
+import {Link} from 'react-router-dom';${options.themesEnabled ? (`
+import {darkTheme, lightTheme} from './themes';`) : ''}
 import UserMenu from './UserMenu/UserMenu';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import {Theme} from '@mui/system';
@@ -47,7 +47,7 @@ const AppBar = (props: any) => {
       <Box flex={1} />
       {matches && (
         <Typography
-          sx={{color: 'primary.main'}}
+          sx={{color: ${options.mainColorOfAppTitile ? `'primary.main'` : `'text.main'`}}}
           color='inherit'
           id='react-admin-title'
           variant='h6'
@@ -60,11 +60,11 @@ const AppBar = (props: any) => {
           </Link>
         </Typography>
       )}
-      <Box flex={1} />
+      <Box flex={1} />${options.themesEnabled ? (`
       <ToggleThemeButton
         lightTheme={lightTheme}
         darkTheme={darkTheme}
-      />
+      />`) : ''}${options.localesEnabled ? (`
       {matches && (
         <LocalesMenuButton
           languages={[
@@ -72,7 +72,7 @@ const AppBar = (props: any) => {
             {locale: 'en', name: 'English'},
           ]}
         />
-      )}
+      )}`) : ''}
     </RaAppBar>
   );
 };
