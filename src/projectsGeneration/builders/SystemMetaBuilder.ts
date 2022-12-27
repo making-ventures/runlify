@@ -79,7 +79,7 @@ class SystemMetaBuilder {
     this.addConfigVar(
       'app.title',
       'string',
-      true,
+      false,
       this.defOpts.projectName,
       'Человеческое название приложения'
     )
@@ -102,14 +102,14 @@ class SystemMetaBuilder {
     this.addConfigVar(
       'adm.jwt.secret',
       'string',
-      true,
+      false,
       'admSecret',
       'Секрет для подписи JWT-токенов приложения админки'
     )
     this.addConfigVar(
       'app.jwt.secret',
       'string',
-      true,
+      false,
       'appSecret',
       'Секрет для подписи JWT-токенов приложения пользователей'
     )
@@ -117,14 +117,14 @@ class SystemMetaBuilder {
     this.addConfigVar(
       's3.accessKeyId',
       'string',
-      true,
+      false,
       '',
       'Идентификатор доступа для авторизации в S3'
     )
     this.addConfigVar(
       's3.secretAccessKey',
       'string',
-      true,
+      false,
       '',
       'Секретный ключ для авторизации в S3'
     )
@@ -132,21 +132,21 @@ class SystemMetaBuilder {
     this.addConfigVar(
       'admin.recaptcha.secretKey',
       'string',
-      true,
+      false,
       '',
       'Секретный токен рекапчи приложения админки'
     )
     this.addConfigVar(
       'admin.recaptcha.requiredScore',
       'float',
-      true,
+      false,
       0.7,
       'Требуемый уровень доверия к пользователю'
     )
     this.addConfigVar(
       'admin.recaptcha.publicKey',
       'string',
-      true,
+      false,
       '',
       'Публичный токен рекапчи приложения админки',
       ['admin-app']
@@ -155,21 +155,21 @@ class SystemMetaBuilder {
     this.addConfigVar(
       'customer.recaptcha.secretKey',
       'string',
-      true,
+      false,
       '',
       'Секретный токен рекапчи приложения пользователя'
     )
     this.addConfigVar(
       'customer.recaptcha.requiredScore',
       'string',
-      true,
+      false,
       '0.7',
       'Требуемый уровень доверия к пользователю'
     )
     this.addConfigVar(
       'customer.recaptcha.publicKey',
       'string',
-      true,
+      false,
       '',
       'Публичный токен рекапчи приложения пользователя',
       ['cutomer-app']
@@ -178,7 +178,7 @@ class SystemMetaBuilder {
     this.addConfigVar(
       'loki.url',
       'string',
-      true,
+      false,
       '',
       'Урл для доступа в Loki. Используется для запроса бизнес-логов'
     )
@@ -186,7 +186,7 @@ class SystemMetaBuilder {
     this.addConfigVar(
       'logs.format',
       'string',
-      true,
+      false,
       'plain',
       'Формат логов (plain | json)'
     )
@@ -194,7 +194,7 @@ class SystemMetaBuilder {
     this.addConfigVar(
       'graphql.playground.enabled',
       'bool',
-      true,
+      false,
       true,
       'Включение graphql playground (true | false)'
     )
