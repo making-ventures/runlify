@@ -23,13 +23,13 @@ const getFieldValidation = (field: Field): string | null => {
     case 'string':
       return "Yup.string().required(t('validation.required')).typeError(t('validation.required'))"
     case 'date':
-      return "Yup.string().required().typeError(t('validation.required'))"
+      return "Yup.string().required(t('validation.required')).typeError(t('validation.required'))"
     case 'datetime':
       return "Yup.date().required(t('validation.required')).typeError(t('validation.required'))"
     case 'float':
     case 'int':
     case 'bigint':
-      return "Yup.number().required().typeError(t('validation.required'))"
+      return "Yup.number().required(t('validation.required')).typeError(t('validation.required'))"
     default:
       return null
   }
