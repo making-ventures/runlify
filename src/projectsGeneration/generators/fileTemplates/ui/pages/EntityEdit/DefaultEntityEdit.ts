@@ -45,7 +45,7 @@ export const getTrivialEditComponent = (entity: Entity, field: Field, additional
   return `<${getCompNameToEditScalar(field.type)}${additionalProps.map(p => `\n  ${p}`).join('')}
   fullWidth
   sx={{m: 1}}
-  source='${field.name}'${field.required ? '' : '\n  defaultValue={null}'}
+  source='${field.name}'${field.required ? '' : '\n  defaultValue={null}'}${field.required ? `\n  required` : ''}
   ${getFieldLabel(entity, field)}
 />`;
 };
@@ -80,7 +80,8 @@ export const getEditComponent = (entity: Entity, allEntities: Map<string, Entity
     ${getFieldLabel(entity, field)}
     optionText='${linkedField.name}'
     defaultValue={null}
-    parse={val => val || null}
+    parse={val => val || null}${field.required ? `
+    isRequired` : ''}
   />
 </ReferenceInput>`;
   } else {
