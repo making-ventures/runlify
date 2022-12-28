@@ -7,7 +7,7 @@ import {
 import { getCompNamesToEditField } from '../../../../ui/componentNames/edit/getCompNamesToEditField'
 import { EntityWideGenerationArgs } from '../../../../../args'
 import { generatedWarning, pad1, pad6 } from '../../../../../utils'
-import { getKeyField, isImageFileRef, isMarkdownField } from '../../../../../metaUtils'
+import { getKeyField, isImageFileRef, isMarkdownField, isMultilineField } from '../../../../../metaUtils'
 
 export const uiDefaultCreateTmpl = ({
   allEntities,
@@ -137,7 +137,7 @@ ${initialValues
           <Grid container spacing={2}>
 ${fieldsToWorkWith
   .map((f) => {
-    const comp = `<Grid item ${isMarkdownField(f) ? 'xs={12} sm={12} md={12} lg={12}': 'xs={12} sm={6} md={3} lg={2}'}>
+    const comp = `<Grid item ${(isMarkdownField(f) || isMultilineField(f)) ? 'xs={12} sm={12} md={12} lg={12}': 'xs={12} sm={6} md={3} lg={2}'}>
 ${pad1(getEditComponent(entity, allEntities, f, 'create'))}
 </Grid>`
 

@@ -47,3 +47,7 @@ export const isImageFileRef = (f: Field) =>
   'fileType' in f && f.fileType === 'image';
 
 export const isMarkdownField = (f: Field) => f.type === 'string' && 'stringType' in f && f.stringType === 'markdown';
+
+export const isMultilineField = (f: Field) => f.type === 'string' && 'stringType' in f && f.stringType === 'multiline';
+
+export const isRequiredField = (f: Field) => f.required;

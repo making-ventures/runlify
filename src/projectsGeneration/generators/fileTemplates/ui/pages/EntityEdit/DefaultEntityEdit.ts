@@ -8,7 +8,7 @@ import {Entity, Field} from '../../../../../builders/buildedTypes';
 import {getCompNameToEditScalar} from '../../../../ui/componentNames/edit/getCompNameToEditScalar';
 import {EntityWideGenerationArgs} from '../../../../../args';
 import { generatedWarning, pad6, pad1 } from '../../../../../utils'
-import {getFieldByName, isImageFileRef, isMarkdownField} from '../../../../../metaUtils';
+import {getFieldByName, isImageFileRef, isMarkdownField, isMultilineField} from '../../../../../metaUtils';
 import {getFieldLabel} from '../../../../ui/getShowComponent';
 
 // 'string' | 'int' | 'bigint' | 'float' | 'bool' | 'datetime' | 'date'
@@ -85,6 +85,11 @@ export const getEditComponent = (entity: Entity, allEntities: Map<string, Entity
 </ReferenceInput>`;
   } else {
     if (isMarkdownField(field)) {
+      additionalProps.push('multiline');
+      additionalProps.push('maxRows={24}');
+    }
+
+    if (isMultilineField(field)) {
       additionalProps.push('multiline');
       additionalProps.push('maxRows={24}');
     }
@@ -203,7 +208,7 @@ ${initialValues.map(f => `${f.name}: ${getTsDefaultTypeValueExpression(f)},`).ma
           <Grid container spacing={2}>
 ${fieldsToWorkWith.length === 0 ? '            <div />' : fieldsToWorkWith
     .map(f => {
-      const comp = `<Grid item ${isMarkdownField(f) ? 'xs={12} sm={12} md={12} lg={12}': 'xs={12} sm={6} md={3} lg={2}'}>
+      const comp = `<Grid item ${(isMarkdownField(f) || isMultilineField(f)) ? 'xs={12} sm={12} md={12} lg={12}': 'xs={12} sm={6} md={3} lg={2}'}>
 ${pad1(getEditComponent(entity, allEntities, f, 'edit'))}
 </Grid>`;
 
