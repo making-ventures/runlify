@@ -10,7 +10,7 @@ const addAuditLogs = (system: SystemMetaBuilder) => {
   auditLogActionTypes.setNeedFor('Учета типов событий аудита')
   auditLogActionTypes.getKey().setType('string')
   auditLogActionTypes
-    .addField('title', undefined, { isTitleField: true })
+    .addField('title', 'Название', {isTitleField: true})
     .setType('string')
   auditLogActionTypes.setAuditable(false)
   auditLogActionTypes.addPredefinedElements([
@@ -35,13 +35,13 @@ const addAuditLogs = (system: SystemMetaBuilder) => {
     ru: 'Аудит',
   })
   auditLogs.setNeedFor('Аудит системы')
-  auditLogs.addField('date').setType('datetime').setRequired()
+  auditLogs.addField('date', 'Дата').setType('datetime').setRequired()
   auditLogs
-    .addField('title', undefined, { isTitleField: true })
+    .addField('title', 'Название', {isTitleField: true})
     .setType('string')
     .setRequired()
-  auditLogs.addField('success').setType('bool') // make required
-  auditLogs.addField('error').setType('string')
+  auditLogs.addField('success', 'Успешно').setType('bool').setRequired()
+  auditLogs.addField('error', 'Ошибка').setType('string')
 
   auditLogs
     .addLinkField('entities', 'entityTypeId', 'Сущность')
@@ -52,11 +52,11 @@ const addAuditLogs = (system: SystemMetaBuilder) => {
     .addLinkField('auditLogActionTypes', 'actionTypeId', 'Тип операции')
     .setType('string')
     .setRequired()
-  auditLogs.addLinkField('managers', 'managerId')
-  auditLogs.addLinkField('users', 'userId')
-  auditLogs.addField('foreign').setType('bool')
-  auditLogs.addField('foreignEntityType').setType('string')
-  auditLogs.addField('foreignEntityId').setType('string')
+  auditLogs.addLinkField('managers', 'managerId', 'Менеджер')
+  auditLogs.addLinkField('users', 'userId', 'Пользователь')
+  auditLogs.addField('foreign', 'Внешняя сущность').setType('bool')
+  auditLogs.addField('foreignEntityType', 'Тип внешней сущности ').setType('string')
+  auditLogs.addField('foreignEntityId', 'ID внешней сущности').setType('string')
   auditLogs.addField('actionData').setType('string')
   auditLogs.setAuditable(false)
 
@@ -69,7 +69,7 @@ const addAuditLogs = (system: SystemMetaBuilder) => {
   entities.setNeedFor('Список всех сущностей проекта')
   entities.getKey().setType('string')
   entities
-    .addField('title', undefined, { isTitleField: true })
+    .addField('title', undefined, {isTitleField: true})
     .setType('string')
   entities.setAuditable(false)
 }

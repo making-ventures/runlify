@@ -9,9 +9,9 @@ const addRoles = (system: SystemMetaBuilder) => {
   });
   roles.setNeedFor('Роли, определющие права на те или иные операции');
   roles.getKey().setType('string');
-  roles.addField('title', undefined, {isTitleField: true}).setType('string');
-  roles.addField('hasAllPermissions').setType('bool').setRequired();
-  roles.addField('allTenantsAvailable').setType('bool').setRequired();
+  roles.addField('title', 'Название', {isTitleField: true}).setType('string');
+  roles.addField('hasAllPermissions', 'Доступны все разрешения').setType('bool').setRequired();
+  roles.addField('allTenantsAvailable', 'Доступны все арендаторы').setType('bool').setRequired();
   roles.addPredefinedElements([
     {
       id: 'admin',
