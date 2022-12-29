@@ -69,7 +69,7 @@ const addAuditLogs = (system: SystemMetaBuilder) => {
   entities.setNeedFor('Список всех сущностей проекта')
   entities.getKey().setType('string')
   entities
-    .addField('title', undefined, {isTitleField: true})
+    .addField('title', 'Название', {isTitleField: true})
     .setType('string')
   entities.setAuditable(false)
 }
