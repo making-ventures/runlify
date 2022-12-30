@@ -40,7 +40,7 @@ const addAuditLogs = (system: SystemMetaBuilder) => {
     .addField('title', 'Название', {isTitleField: true})
     .setType('string')
     .setRequired()
-  auditLogs.addField('success', 'Успешно').setType('bool').setRequired()
+  auditLogs.addField('success', 'Успешно').setType('bool')
   auditLogs.addField('error', 'Ошибка').setType('string')
 
   auditLogs
