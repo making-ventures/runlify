@@ -46,6 +46,7 @@ class RestApiBuilder extends BaseBuilder {
 
   build(): RestApi {
     return {
+      ...super.build(),
       type: 'restApi',
       name: this.name,
       title: this.title,

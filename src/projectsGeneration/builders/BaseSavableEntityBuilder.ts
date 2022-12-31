@@ -2,7 +2,7 @@
 import { ScalarFieldBuilder } from './fields/ScalarFieldBuilder'
 import { IdFieldBuilder } from './fields/IdFieldBuilder'
 import { LinkFieldBuilder } from './fields/LinkFieldBuilder'
-import { EtityType, TKeyFieldType, Entity, Multitenancy } from './buildedTypes'
+import { EtityType, TKeyFieldType, Multitenancy } from './buildedTypes'
 import CatalogBuilder from './CatalogBuilder'
 import BaseBuilder from './BaseBuilder'
 import { FormsBuilder } from './ui/FormsBuilder'
@@ -296,7 +296,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
     return this
   }
 
-  abstract build(): Entity
+  // todo: realize recurring build method
 
   initFormas(): BaseSavableEntityBuilder {
     if (!this.forms) {

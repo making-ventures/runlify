@@ -2,6 +2,7 @@ import { camelSingular, pascalSingular } from '../../../../utils/cases'
 import { ProjectWideGenerationArgs } from '../../../args'
 import { generatedWarning, pad1 } from '../../../utils'
 
+// todo: can delete
 export const Entities = ({
   entities,
   options,

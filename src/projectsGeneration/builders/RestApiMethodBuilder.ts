@@ -55,11 +55,8 @@ class RestApiMethodBuilder extends BaseBuilder {
 
   build(): RestApiMethod {
     return {
+      ...super.build(),
       type: 'restApiMethod',
-      name: this.name,
-      title: this.title,
-      needFor: this.needFor,
-      materialUiIcon: this.materialUiIcon,
       path: this.path,
       note: this.note,
       httpMethod: this.httpMethod,

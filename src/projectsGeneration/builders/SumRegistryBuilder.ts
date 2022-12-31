@@ -82,12 +82,10 @@ class SumRegistryBuilder extends BaseSavableEntityBuilder {
     }
 
     return {
+      ...super.build(),
       type: 'sumRegistry',
-      name: this.name,
       registrarDepended: this.registrarDepended,
-      title: this.title,
       singleKey: this.singleKey,
-      needFor: this.needFor,
       // titleField: this.titleField.build(),
       titleField: this.titleField.name,
       // linkFields: this.getLinkFileds().map(f => f.build()),
@@ -97,7 +95,6 @@ class SumRegistryBuilder extends BaseSavableEntityBuilder {
       keyField: this.getKey().name,
       fields: this.getFileds().map((field) => field.build()),
       uniqueConstraints,
-      materialUiIcon: this.materialUiIcon,
       forms: this.getForms().build(),
       predefinedElements: this.predefinedElements,
       devPerefinedElements: this.devPerefinedElements,

@@ -242,6 +242,7 @@ export type BaseEntity = {
   title: Record<string, string>
   needFor: Record<string, string>
   materialUiIcon: string
+  previewFeatures: PreviewFeature[]
 }
 
 export type BaseSavableEntity = BaseEntity & {
@@ -376,3 +377,5 @@ export type System = {
 }
 
 export type EtityType = 'catalog' | 'document' | 'infoRegistry' | 'sumRegistry'
+
+export type PreviewFeature = 'classService'

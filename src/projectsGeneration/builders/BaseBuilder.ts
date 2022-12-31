@@ -1,5 +1,6 @@
 import * as R from 'ramda'
 import materialUiIcons from './materialUiIcons'
+import { BaseEntity, PreviewFeature } from './buildedTypes'
 
 class BaseBuilder {
   defaultLanguage: string
@@ -7,11 +8,16 @@ class BaseBuilder {
   title: Record<string, string> = {}
   needFor: Record<string, string> = {}
   materialUiIcon = 'Brightness1Outlined'
+  previewFeatures: PreviewFeature[] = []
 
   constructor(name: string, defaultLanguage: string, title?: string) {
     this.defaultLanguage = defaultLanguage
     this.setName(name)
     this.setTitle(title ? title : name)
+  }
+
+  build (): BaseEntity {
+    return R.pick<BaseBuilder, keyof BaseEntity>(['name', 'title', 'needFor', 'materialUiIcon', 'previewFeatures'], this);
   }
 
   setName(name: string) {
@@ -53,6 +59,14 @@ class BaseBuilder {
     this.materialUiIcon = materialUiIcon
 
     return this
+  }
+
+  setPreviewFeature(
+    previewFeatures: PreviewFeature,
+  ) {
+    this.previewFeatures.push(previewFeatures)
+
+    return this;
   }
 }
 
