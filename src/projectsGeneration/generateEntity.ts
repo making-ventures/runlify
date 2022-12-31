@@ -55,6 +55,9 @@ import { EntityWideGenerationArgs } from './args'
 import { initUserHooksTmpl } from './generators/fileTemplates/back/services/entity/initUserHooks'
 import { initBuiltInHooksTmpl } from './generators/fileTemplates/back/services/entity/initBuiltInHooks'
 import { tenantIdRequiredHooksTmpl } from './generators/fileTemplates/back/services/entity/hooks/tenantIdRequiredHooks'
+import { configTmpl } from './generators/fileTemplates/back/services/entity/config'
+import { prismaServiceBaseClassTmpl } from './generators/fileTemplates/back/services/entity/class'
+import { prismaServiceClassTmpl } from './generators/fileTemplates/back/services/entity/additionalClass'
 
 export const generateEntity = async (
   entityWideGenerationArgs: EntityWideGenerationArgs
@@ -80,12 +83,28 @@ export const generateEntity = async (
 
   // Prisma service
   if (options.genPrismaServices && !options.typesOnly) {
-    const generatedService = prismaServiceTmpl(entityWideGenerationArgs)
-
     const serviceName = `${pascalPlural(entity.name)}Service`
     const serviceDir = join(prjBackSrcPrefixedDir, 'services', serviceName)
+    const oldServicePath = join(serviceDir, `${serviceName}.ts`)
+    const configPath = join(serviceDir, `config.ts`)
+    const baseClassPath = join(serviceDir, `Base${serviceName}Class.ts`)
+    const classPath = join(serviceDir, `${serviceName}Class.ts`)
 
-    await write(join(serviceDir, `${serviceName}.ts`), generatedService)
+    if (entityWideGenerationArgs.entity.previewFeatures.includes('classService')) {
+      const config = configTmpl(entityWideGenerationArgs)
+      const baseClassService = prismaServiceBaseClassTmpl(entityWideGenerationArgs)
+      const classService = prismaServiceClassTmpl(entityWideGenerationArgs)
+      await write(configPath, config)
+      await write(baseClassPath, baseClassService)
+      await writeFileIfNotExists(classPath, classService)
+      // await remove(oldServicePath)
+    } else {
+      const generatedService = prismaServiceTmpl(entityWideGenerationArgs)
+
+      await write(oldServicePath, generatedService)
+      // await remove(configPath)
+      // await remove(baseClassPath)
+    }
 
     await writeFileIfNotExists(
       join(serviceDir, 'additionalMethods.ts'),

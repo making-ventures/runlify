@@ -8,11 +8,8 @@ class ReportBuilder extends BaseBuilder {
 
   build(): Report {
     return {
+      ...super.build(),
       type: 'report',
-      name: this.name,
-      title: this.title,
-      needFor: this.needFor,
-      materialUiIcon: this.materialUiIcon,
     }
   }
 

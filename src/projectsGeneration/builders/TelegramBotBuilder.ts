@@ -8,11 +8,8 @@ class TelegramBotBuilder extends BaseBuilder {
 
   build(): TelegramBot {
     return {
+      ...super.build(),
       type: 'telegramBot',
-      name: this.name,
-      title: this.title,
-      needFor: this.needFor,
-      materialUiIcon: this.materialUiIcon,
     }
   }
 }

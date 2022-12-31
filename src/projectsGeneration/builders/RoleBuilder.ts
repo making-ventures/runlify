@@ -10,11 +10,8 @@ class RoleBuilder extends BaseBuilder {
 
   build(): Role {
     return {
+      ...super.build(),
       type: 'role',
-      name: this.name,
-      title: this.title,
-      needFor: this.needFor,
-      materialUiIcon: this.materialUiIcon,
     }
   }
 }

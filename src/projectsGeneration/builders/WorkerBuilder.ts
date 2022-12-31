@@ -11,10 +11,7 @@ class WorkerBuilder extends BaseBuilder {
 
   build(): Worker {
     return {
-      name: this.name,
-      title: this.title,
-      needFor: this.needFor,
-      materialUiIcon: this.materialUiIcon,
+      ...super.build(),
       requests: this.requests,
       limits: this.limits,
     }

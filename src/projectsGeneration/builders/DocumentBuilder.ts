@@ -35,11 +35,9 @@ class DocumentBuilder extends BaseSavableEntityBuilder {
 
   build(): Document {
     return {
+      ...super.build(),
       type: 'document',
-      name: this.name,
-      title: this.title,
       singleKey: this.singleKey,
-      needFor: this.needFor,
       // titleField: this.titleField.build(),
       titleField: this.titleField.name,
       // linkFields: this.getLinkFileds().map(f => f.build()),
@@ -50,7 +48,6 @@ class DocumentBuilder extends BaseSavableEntityBuilder {
       registries: this.registries,
       deletable: this.deletable,
       editable: this.editable,
-      materialUiIcon: this.materialUiIcon,
       forms: this.getForms().build(),
       documentation: this.documentation.build(),
       predefinedElements: this.predefinedElements,
