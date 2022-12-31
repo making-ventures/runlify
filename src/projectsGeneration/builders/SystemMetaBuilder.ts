@@ -199,12 +199,11 @@ class SystemMetaBuilder {
       'Включение graphql playground (true | false)'
     )
 
-
     // kafka
+    this.addConfigVar('kafka.enabled', 'bool', false, false, 'Кафка включена');
     this.addConfigVar('kafka.brokers', 'string', false, 'localhost:29092;localhost:29094', 'Список kafka блокеров');
     this.addConfigVar('kafka.username', 'string', false, '', 'Username доступа в kafka');
     this.addConfigVar('kafka.password', 'string', false, '', 'Пароль доступа в kafka');
-    this.addConfigVar('kafka.enabled', 'bool', false, false, 'Включние кафки');
     this.addConfigVar('kafka.queue.maxAttemptsSize', 'int', false, 10, 'Максимальное количество попыток обработки ошибки на сообщение');
     this.addConfigVar('kafka.queue.defaultRetryTime', 'int', false, 20000, 'Время паузы после первой ошибки, например 20000 мс, потом оно увеличывается экспоненциально с мультипликатором 1.5');
     this.addConfigVar('kafka.queue.waitingInterruptTime', 'int', false, 60000, 'Время паузы в очереди ожидания, когда она прошла все сообщения, это чтобы она не крутила сообщения покругу без остановки ');
@@ -215,8 +214,8 @@ class SystemMetaBuilder {
     this.addConfigVar('kafka.queue.acks', 'int', false, 1, '`-1`(all) все несинхронизированные реплики должны подтвердить (по умолчанию), `0` нет подтверждений, `1` только ждет подтверждения лидера');
     this.addConfigVar('kafka.ssl.rejectUnauthorized', 'bool', false, false, 'Запрещать невалидный ssl сертификат');
 
-
     // es
+    this.addConfigVar('es.enabled', 'bool', false, false, 'Эластик включен');
     this.addConfigVar('es.cloudId', 'string', false, '', 'Идентификатор аккаунта в облачном сервисе ElasticSearch');
     this.addConfigVar('es.username', 'string', false, '', 'Пользователь для авторизации в облачном сервисе ElasticSearch');
     this.addConfigVar('es.password', 'string', false, '', 'Пароль для авторизации в облачном сервисе ElasticSearch');
