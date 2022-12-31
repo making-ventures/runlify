@@ -301,6 +301,19 @@ class SystemMetaBuilder {
     return this
   }
 
+  setConfigVarDefaultValue<T extends FieldType>(
+    name: string,
+    def: ConfigValue<T> | undefined,
+  ) {
+    if (!this.configVars.some((v) => v.name === name)) {
+      throw new Error(`There is no "${name}" config var`)
+    }
+
+    this.configVars = this.configVars.map(el => el.name === name ? {...el, default: def} as ConfigVar : el)
+
+    return this
+  }
+
   setDefaultValueForConfigVar(name: string, def: string) {
     const variable = this.configVars.find((v) => v.name === name)
 
