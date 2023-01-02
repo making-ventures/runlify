@@ -38,7 +38,7 @@ export const prismaServiceTmpl = ({
 
   const getDefaultValues = () =>
     getDefaultableFields().map(
-      (f) => `${f.name}: ${f.defaultBackendValueExpression}`
+      (f) => `${f.name}: ${f.defaultBackendValueExpression?.replace('this.', '')}`
     )
 
   const searchableFields = entity.fields.filter((f) => f.searchable)
