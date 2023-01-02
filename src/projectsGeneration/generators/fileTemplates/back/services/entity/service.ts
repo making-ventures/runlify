@@ -327,7 +327,7 @@ export const get${pascalPlural(entity.name)}Service = (ctx: ${contextName}) => {
     const defaultFieldConstructors = {
 ${pad3(
   getDefaultableFields()
-    .map((f) => `${f.name}: async () => ${f.defaultBackendValueExpression}`)
+    .map((f) => `${f.name}: async () => ${f.defaultBackendValueExpression?.replace('this.', '')}`)
     .map(addComma)
     .join('\n')
 )}
