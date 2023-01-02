@@ -331,7 +331,7 @@ ${pad3(
     .map(addComma)
     .join('\n')
 )}
-    }; // new
+    };
 
     const pairedConstructors = R.toPairs(defaultFieldConstructors);
 
