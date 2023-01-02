@@ -271,7 +271,7 @@ class SumRegistryBuilder extends BaseSavableEntityBuilder {
           .setRequired()
           .setNotUpdatableByUser(
             undefined,
-            "await this.ctx.service('profile').getRequiredTenantId()"
+            "await +this.ctx.service('profile').getRequiredTenantId()"
           )
       }
     }
