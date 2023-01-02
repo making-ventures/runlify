@@ -38,7 +38,7 @@ export const prismaServiceTmpl = ({
 
   const getDefaultValues = () =>
     getDefaultableFields().map(
-      (f) => `${f.name}: ${f.defaultBackendValueExpression?.replace('this.', '')}`
+      (f) => `${f.name}: ${f.defaultBackendValueExpression?.replaceAll('this.', '')}`
     )
 
   const searchableFields = entity.fields.filter((f) => f.searchable)
@@ -327,11 +327,11 @@ export const get${pascalPlural(entity.name)}Service = (ctx: ${contextName}) => {
     const defaultFieldConstructors = {
 ${pad3(
   getDefaultableFields()
-    .map((f) => `${f.name}: async () => ${f.defaultBackendValueExpression?.replace('this.', '')}`)
+    .map((f) => `${f.name}: async () => ${f.defaultBackendValueExpression?.replaceAll('this.', '')}`)
     .map(addComma)
     .join('\n')
 )}
-    };
+    }; new
 
     const pairedConstructors = R.toPairs(defaultFieldConstructors);
 
