@@ -385,7 +385,7 @@ class SystemMetaBuilder {
     }
 
     const catalog = new CatalogBuilder(name, this.defaultLanguage, title)
-    catalog.setPreviewFeature('classService');
+    // catalog.setPreviewFeature('classService');
 
     this.catalogs.push({ entity: catalog, options })
 
