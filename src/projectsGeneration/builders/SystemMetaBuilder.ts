@@ -385,6 +385,7 @@ class SystemMetaBuilder {
     }
 
     const catalog = new CatalogBuilder(name, this.defaultLanguage, title)
+    // catalog.setPreviewFeature('classService');
 
     this.catalogs.push({ entity: catalog, options })
 
@@ -468,6 +469,7 @@ class SystemMetaBuilder {
     }
 
     const document = new DocumentBuilder(name, this.defaultLanguage, title)
+    document.setPreviewFeature('classService');
 
     this.documents.push({ entity: document, options })
 
