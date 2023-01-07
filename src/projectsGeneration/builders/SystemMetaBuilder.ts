@@ -385,9 +385,9 @@ class SystemMetaBuilder {
     }
 
     const catalog = new CatalogBuilder(name, this.defaultLanguage, title)
-    if (['aloyal'].includes(options.projectPrefix)) {
-      catalog.setPreviewFeature('classService');
-    }
+    // if (['aloyal'].includes(options.projectPrefix)) {
+    catalog.setPreviewFeature('classService');
+    // }
 
     this.catalogs.push({ entity: catalog, options })
 
