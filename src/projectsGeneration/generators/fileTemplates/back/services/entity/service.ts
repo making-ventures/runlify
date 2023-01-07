@@ -321,9 +321,9 @@ export const get${pascalPlural(entity.name)}Service = (ctx: ${contextName}) => {
 
   const augmentByDefault = async <T>(
     currentData: Record<string, any>,
-  ): Promise<T & Autodefinable${pascalSingular(entity.name)}Part> => ${
+  ): Promise<T & Autodefinable${pascalSingular(entity.name)}Part> =>${
     getDefaultableFields().length
-      ? `{
+      ? ` {
     const defaultFieldConstructors = {
 ${pad3(
   getDefaultableFields()
