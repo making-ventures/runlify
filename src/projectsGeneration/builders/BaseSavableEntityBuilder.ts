@@ -348,7 +348,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
           .setRequired()
           .setNotUpdatableByUser(
             undefined,
-            "await this.ctx.service('profile').getRequiredTenantId()"
+            "await ctx.service('profile').getRequiredTenantId()"
           )
       }
     }

@@ -274,7 +274,7 @@ export class InfoRegistryBuilder extends BaseSavableEntityBuilder {
           .setRequired()
           .setNotUpdatableByUser(
             undefined,
-            "await this.ctx.service('profile').getRequiredTenantId()"
+            "await ctx.service('profile').getRequiredTenantId()"
           )
       }
     }
