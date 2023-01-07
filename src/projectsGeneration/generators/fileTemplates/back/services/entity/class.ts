@@ -7,7 +7,7 @@ import {
 } from '../../../../../../utils/cases'
 import { singular } from 'pluralize'
 import { EntityWideGenerationArgs } from '../../../../../args'
-import { generatedWarning } from '../../../../../utils'
+import { addComma, generatedWarning, pad3 } from '../../../../../utils'
 import { Document } from '../../../../../builders'
 
 export const prismaServiceBaseClassTmpl = ({
@@ -70,7 +70,8 @@ export interface ${pascalSingular(document.name)}RegistryEntries {${
 import {${contextName}} from '../types';
 import initUserHooks from './initUserHooks';
 import initBuiltInHooks from './initBuiltInHooks';
-import {${extendedType}} from '../utils/class/${extendedType}';
+import {${extendedType}} from '../utils/class/${extendedType}';${getDefaultableFields().length ? `
+import * as R from 'ramda';` : ''}
 import config from './config';
 import {DefinedFieldsInRecord, DefinedRecord, PartialFieldsInRecord} from '../../../types/utils';${registriesImports}
 ${
@@ -173,6 +174,38 @@ export class ${pascal(entity.name)}Service extends ${extendedType}<
     initBuiltInHooks(this);
     initUserHooks(this);
   }
+
+  augmentByDefault = async <T>(
+    currentData: Record<string, any>,
+  ): Promise<T & Autodefinable${pascalSingular(entity.name)}Part> => ${
+    getDefaultableFields().length
+      ? `{
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const ctx = this.ctx;
+
+    const defaultFieldConstructors = {
+${pad3(
+        getDefaultableFields()
+          .map((f) => `${f.name}: async () => ${f.defaultBackendValueExpression}`)
+          .map(addComma)
+          .join('\n')
+      )}
+    };
+
+    const pairedConstructors = R.toPairs(defaultFieldConstructors);
+
+    const resultedPairs: R.KeyValuePair<string, any>[] = [];
+    for (const [key, constructor] of pairedConstructors) {
+      resultedPairs.push([key, key in currentData && currentData[key] ? currentData[key] : await constructor()]);
+    }
+
+    return R.mergeLeft(currentData, R.fromPairs(resultedPairs)) as T & Autodefinable${pascalSingular(
+        entity.name
+      )}Part;
+  }`
+      : `currentData as T & Autodefinable${pascalSingular(entity.name)}Part`
+  };
 }
 `
 };
