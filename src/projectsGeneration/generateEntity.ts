@@ -26,7 +26,7 @@ import { uiEntityShowDefaultMainTabTmpl } from './generators/fileTemplates/ui/pa
 import { uiEntityShowDependencyTabTmpl } from './generators/fileTemplates/ui/pages/EntityShow/DependencyTab'
 import { uiDefaultActionTmpl } from './generators/fileTemplates/ui/pages/EntityShow/DefaultActions'
 import { writeFileIfNotExists } from './utils'
-import { write, read, remove, exists, renameAsync } from 'fs-jetpack'
+import { write, exists, renameAsync } from 'fs-jetpack'
 import { uiAdditionalTabsTmpl } from './generators/fileTemplates/ui/pages/EntityShow/additionalTabs'
 import { backAdditionalResolversTmpl } from './generators/fileTemplates/back/graph/additionalResolvers'
 import { backEntityPermissionToGraphqlTmpl } from './generators/fileTemplates/back/graph/entityPermissionToGraphqlTmpl'
@@ -53,6 +53,7 @@ import { initBuiltInHooksTmpl } from './generators/fileTemplates/back/services/e
 import { tenantIdRequiredHooksTmpl } from './generators/fileTemplates/back/services/entity/hooks/tenantIdRequiredHooks'
 import { configTmpl } from './generators/fileTemplates/back/services/entity/config'
 import { prismaServiceBaseClassTmpl } from './generators/fileTemplates/back/services/entity/class'
+import { prismaAdditionalServiceClassTmpl } from './generators/fileTemplates/back/services/entity/additionalClass'
 
 export const generateEntity = async (
   entityWideGenerationArgs: EntityWideGenerationArgs
@@ -81,42 +82,14 @@ export const generateEntity = async (
     const serviceDir = join(prjBackSrcPrefixedDir, 'services', serviceName)
     const servicePath = join(serviceDir, `${serviceName}.ts`)
     const configPath = join(serviceDir, `config.ts`)
-    const aditionalsMethodsClassPath = join(serviceDir, `${serviceName}Class.ts`)
+    const additionalServicePath = join(serviceDir, `Additional${serviceName}.ts`)
 
     if (entityWideGenerationArgs.entity.previewFeatures.includes('classService')) {
-      if (exists(aditionalsMethodsClassPath)) { // todo: delete after migration
-        let additionalsClassText = await read(aditionalsMethodsClassPath);
-        const searchString = `export class ${serviceName}Class extends Base${serviceName}Class {`;
+      const additionalClassService = prismaAdditionalServiceClassTmpl(entityWideGenerationArgs)
+      await writeFileIfNotExists(additionalServicePath, additionalClassService)
 
-        let importsText = '';
-        let first = true;
-        while (additionalsClassText?.indexOf('import') === 0) {
-          // delete just first import
-          const indexEndOfString = additionalsClassText.indexOf('\n');
-          if (!first) {
-            importsText += additionalsClassText?.slice(0, indexEndOfString + 1)
-          }
-          additionalsClassText = additionalsClassText?.slice(indexEndOfString + 1);
-          first = false;
-        }
-
-        const index = additionalsClassText?.indexOf(searchString);
-
-        let beforeFromAdditionalMethods = additionalsClassText?.slice(0, index)?.trim()
-
-        let codeFromAdditionalMethods = '';
-        if (index) {
-          codeFromAdditionalMethods = additionalsClassText?.slice(index + searchString.length, additionalsClassText?.lastIndexOf('}') - 1)?.trim() ?? ''
-        }
-
-        const generatedClassService = prismaServiceBaseClassTmpl(entityWideGenerationArgs, importsText, beforeFromAdditionalMethods, codeFromAdditionalMethods)
-        await write(servicePath, generatedClassService)
-        await remove(aditionalsMethodsClassPath);
-      } else {
-        const generatedClassService = prismaServiceBaseClassTmpl(entityWideGenerationArgs)
-        // await write(servicePath, generatedClassService) // todo: uncomment for migration
-        await writeFileIfNotExists(servicePath, generatedClassService)
-      }
+      const generatedClassService = prismaServiceBaseClassTmpl(entityWideGenerationArgs)
+      await write(servicePath, generatedClassService)
 
       const config = configTmpl(
         entityWideGenerationArgs,
@@ -124,22 +97,14 @@ export const generateEntity = async (
         allInfoRegistries,
       )
       await write(configPath, config)
-      await remove(join(serviceDir, `Base${serviceName}Class.ts`));
 
       if (exists(join(serviceDir, 'additionalMethods.ts'))) {
         await renameAsync(join(serviceDir, 'additionalMethods.ts'), 'additionalMethods.ts_')
       }
-
-      // await write(
-      //   join(serviceDir, 'additionalMethods.ts'),
-      //   backAdditionalMethodsTmpl(entityWideGenerationArgs)
-      // )
     } else {
       const generatedService = prismaServiceTmpl(entityWideGenerationArgs)
 
       await write(servicePath, generatedService)
-      // await remove(configPath)
-      // await remove(baseClassPath)
     }
 
     await writeFileIfNotExists(
