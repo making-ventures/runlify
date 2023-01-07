@@ -517,7 +517,7 @@ ${
               ? `{
             search: getSearchString(processedData),
           },`
-              : '{}'
+              : '{},'
           }
         ),
       },
@@ -531,7 +531,7 @@ ${
             ? `{
           search: getSearchString(processedData),
         }`
-            : '{}'
+            : '{},'
         },
       ),
     });`
