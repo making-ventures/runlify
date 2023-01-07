@@ -471,9 +471,9 @@ class SystemMetaBuilder {
     }
 
     const document = new DocumentBuilder(name, this.defaultLanguage, title)
-    if (['aloyal'].includes(options.projectPrefix)) {
+    // if (['aloyal'].includes(options.projectPrefix)) {
       document.setPreviewFeature('classService');
-    }
+    // }
 
     this.documents.push({ entity: document, options })
 
