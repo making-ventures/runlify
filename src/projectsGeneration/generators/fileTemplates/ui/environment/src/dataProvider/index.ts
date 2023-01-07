@@ -19,6 +19,7 @@ import {mapping} from '../adm/entityMapping';
 import sch from '../generated/graphql.schema.json';
 import {ApolloClient} from '@apollo/client';
 import getCustomMethods from './getCustomMethods';
+import {DataProvider} from './types';
 ${
   options.skipWarningThisIsGenerated
     ? ''
@@ -80,7 +81,7 @@ const customBuildQuery = (introspection: IntrospectionResult) =>
     return builtQuery;
   };
 
-export default async (client: ApolloClient<unknown>) => {
+export default async (client: ApolloClient<unknown>): Promise<DataProvider> => {
   const baseDataProvider = await buildGraphQLProvider({
     buildQuery: customBuildQuery,
     client: client as any,
