@@ -9,7 +9,7 @@ export const genGraphFilterType = (entity: Entity) => {
   return new GraphQLInputObjectType({
     name: `${pascalSingular(entity.name)}Filter`,
     fields: {
-      q: { type: GraphQLString },
+      ...(entity.searchEnabled ? {q: { type: GraphQLString }} : {}),
       ...genGraphIdPluralFilter(getKeyField(entity)),
       ...entity.fields
         .filter((f) => !f.hidden)
