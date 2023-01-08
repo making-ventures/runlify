@@ -24,8 +24,7 @@ metadata:
     clusterName: {{ $.Values.global.clusterName }}
     env: {{ $.Values.global.env }}
     deployKind: {{ $.Values.global.deployKind }}
-  annotations:
-    prometheus.io/scrape: 'true'
+    prometheus: enable
 spec:
   ports:
   - name: http
