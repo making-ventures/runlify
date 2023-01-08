@@ -45,6 +45,11 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
   setExternalSearch(externalSearch?: boolean) {
     this.externalSearch = externalSearch ?? true
 
+    const filed = this.getFileds().find((f) => f.name === 'search')
+    if (filed) {
+      this.delField('search')
+    }
+
     return this
   }
 
