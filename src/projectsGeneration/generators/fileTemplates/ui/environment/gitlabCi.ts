@@ -57,7 +57,8 @@ build:
       --cache-dir=$CI_PROJECT_DIR/.cache_images
       --context \${CI_PROJECT_DIR}
       --dockerfile \${CI_PROJECT_DIR}/Dockerfile
-      --destination \${CI_REGISTRY_IMAGE}:$CI_COMMIT_REF_SLUG
+      --destination \${CI_REGISTRY_IMAGE}:\${CI_COMMIT_REF_SLUG}
+      --destination \${CI_REGISTRY_IMAGE}:\${CI_COMMIT_REF_SLUG}-\${CI_COMMIT_SHA}
       --single-snapshot
   only:
     - master
