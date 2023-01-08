@@ -18,7 +18,7 @@ export const uiDefaultFilterTmpl = ({
     // .filter(f => f.showInList) // todo: delete in generation
     .filter((f) => f.name !== 'id' && f.name !== 'photoId')
 
-  const hasSearch = entity.type === 'catalog' || entity.type === 'document'
+  const hasSearch = entity.type === 'catalog' || entity.type === 'document' && entity.searchEnabled
 
   const fieldsToImport = fields.map((f) => getEntityField(entity, f.name))
   const dateFieldsToImport = fieldsToImport.filter((f) =>
