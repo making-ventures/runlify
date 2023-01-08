@@ -259,6 +259,7 @@ export type BaseSavableEntity = BaseEntity & {
   devPerefinedElements: Record<string, any>[]
   auditable: boolean
   externalSearch: boolean
+  searchEnabled: boolean
   sortField: string
   sortOrder: 'ASC' | 'DESC'
   multitenancy: Multitenancy

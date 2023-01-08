@@ -88,6 +88,7 @@ export class InfoRegistryBuilder extends BaseSavableEntityBuilder {
       devPerefinedElements: this.devPerefinedElements,
       auditable: this.auditable,
       externalSearch: this.externalSearch,
+      searchEnabled: this.searchEnabled,
       period: this.period,
       sortField: this.sortField,
       sortOrder: this.sortOrder,

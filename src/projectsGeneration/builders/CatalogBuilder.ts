@@ -33,6 +33,7 @@ class CatalogBuilder extends BaseSavableEntityBuilder {
       devPerefinedElements: this.devPerefinedElements,
       auditable: this.auditable,
       externalSearch: this.externalSearch,
+      searchEnabled: this.searchEnabled,
       sortField: this.sortField,
       sortOrder: this.sortOrder,
       multitenancy: this.multitenancy,

@@ -27,6 +27,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
   forms?: FormsBuilder
   predefinedElements: Record<string, any>[] = []
   devPerefinedElements: Record<string, any>[] = []
+  searchEnabled = true
   externalSearch = false
   multitenancy: Multitenancy = 'none'
   commonElementsVisibleToAll = false
@@ -45,8 +46,14 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
   setExternalSearch(externalSearch?: boolean) {
     this.externalSearch = externalSearch ?? true
 
+    return this
+  }
+
+  setSearchEnabled(searchEnabled?: boolean) {
+    this.searchEnabled = searchEnabled ?? true
+
     const filed = this.getFileds().find((f) => f.name === 'search')
-    if (filed) {
+    if (!searchEnabled && filed) {
       this.delField('search')
     }
 
