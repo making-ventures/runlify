@@ -8,7 +8,7 @@ import {Entity, Field} from '../../../../../builders/buildedTypes';
 import {getCompNameToEditScalar} from '../../../../ui/componentNames/edit/getCompNameToEditScalar';
 import {EntityWideGenerationArgs} from '../../../../../args';
 import { generatedWarning, pad6, pad1 } from '../../../../../utils'
-import {getFieldByName, isImageFileRef, isMarkdownField, isMultilineField} from '../../../../../metaUtils';
+import {isImageFileRef, isMarkdownField, isMultilineField} from '../../../../../metaUtils';
 import {getFieldLabel} from '../../../../ui/getShowComponent';
 
 // 'string' | 'int' | 'bigint' | 'float' | 'bool' | 'datetime' | 'date'
@@ -65,8 +65,6 @@ export const getEditComponent = (entity: Entity, allEntities: Map<string, Entity
       }
     }
 
-    const linkedField = getFieldByName(linkedEntity, linkedEntity.titleField);
-
     return `<ReferenceInput${additionalProps.map(p => `\n  ${p}`)}
   source='${field.name}'
   reference='${field.externalEntity}'
@@ -78,7 +76,6 @@ export const getEditComponent = (entity: Entity, allEntities: Map<string, Entity
     sx={{m: 1}}
     size='small'
     ${getFieldLabel(entity, field)}
-    optionText='${linkedField.name}'
     defaultValue={null}
     parse={val => val || null}${field.required ? `
     isRequired` : ''}
