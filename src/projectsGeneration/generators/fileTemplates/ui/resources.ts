@@ -48,7 +48,7 @@ ${entities.map(
         options={{label: translate('${plural(entity.type)}.${
     entity.name
   }.title')}}
-        recordRepresentation=${entity.titleField}
+        recordRepresentation="${entity.titleField}"
       />,`
 ).join(`
 `)}
