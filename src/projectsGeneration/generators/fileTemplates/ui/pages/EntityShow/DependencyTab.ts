@@ -84,7 +84,9 @@ const ${pascal(entity.name)}${pascal(
       target='${toLink.fromField.name}'
       pagination={<Pagination />}
     >
-      <Datagrid>
+      <Datagrid
+        bulkActionButtons={false}
+      >
 ${linkedEntity.fields
   .filter((f) => !f.hidden)
   .filter((f) => !isMarkdownField(f))
