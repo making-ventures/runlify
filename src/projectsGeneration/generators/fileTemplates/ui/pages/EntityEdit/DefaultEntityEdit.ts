@@ -197,6 +197,7 @@ ${hasHidden ? `  const {debug} = useDebug();
         ${f.name}: data.${f.name} || null,`)
     .join('')}
       }), [])}
+      mutationMode='pessimistic'
     >
       <LoadingContext>
         <SimpleForm
