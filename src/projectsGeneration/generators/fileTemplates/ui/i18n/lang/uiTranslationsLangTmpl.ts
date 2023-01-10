@@ -3,7 +3,7 @@ import { generatedWarning } from '../../../../../utils'
 
 const uiTranslationsLangTmpl = (
   { options, system: { defaultLanguage } }: ProjectWideGenerationArgs,
-  entities: { name: string; title: Record<string, string> }[],
+  entities: { name: string; title: Record<string, {singular: string, plural?: string}> }[],
   lang: string,
   postfix: string
 ) => `/* eslint-disable max-len */
@@ -22,7 +22,7 @@ ${entities
     (entity) =>
       `  ${entity.name}: {
     title: '${
-      entity.title[lang] ? entity.title[lang] : entity.title[defaultLanguage]
+      entity.title.plural[lang] ? entity.title.plural[lang] : entity.title.plural[defaultLanguage]
     }',
   },`
   )

@@ -375,7 +375,10 @@ class SystemMetaBuilder {
 
   addCatalog(
     name: string,
-    title?: string,
+    title?: {
+      singular?: string,
+      plural?: string,
+    },
     options = this ? this.defOpts : ({} as any)
   ) {
     if (
@@ -434,7 +437,10 @@ class SystemMetaBuilder {
 
   addManyToManyRelation(
     name: string,
-    title?: string,
+    title?: {
+      singular?: string,
+      plural?: string,
+    },
     options = this ? this.defOpts : ({} as any)
   ) {
     if (
@@ -459,7 +465,10 @@ class SystemMetaBuilder {
 
   addDocument(
     name: string,
-    title?: string,
+    title?: {
+      singular?: string,
+      plural?: string,
+    },
     options = this ? this.defOpts : ({} as any)
   ) {
     if (
@@ -501,7 +510,10 @@ class SystemMetaBuilder {
   addInfoRegistry(
     name: string,
     registrarDepended: boolean,
-    title?: string,
+    title?: {
+      singular?: string,
+      plural?: string,
+    },
     options = this ? this.defOpts : ({} as any)
   ) {
     if (
@@ -527,7 +539,10 @@ class SystemMetaBuilder {
   addSumRegistry(
     name: string,
     registrarDepended: boolean,
-    title?: string,
+    title?: {
+      singular?: string,
+      plural?: string,
+    },
     options?: RegistryOptions,
   ) {
     if (

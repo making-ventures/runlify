@@ -2,7 +2,7 @@ import { Catalog } from './buildedTypes'
 import BaseSavableEntityBuilder from './BaseSavableEntityBuilder'
 
 class CatalogBuilder extends BaseSavableEntityBuilder {
-  constructor(name: string, defaultLanguage: string, title?: string) {
+  constructor(name: string, defaultLanguage: string, title?: {singular?: string, plural?: string}) {
     super(name, defaultLanguage, title)
 
     this.addField('search')
@@ -17,6 +17,7 @@ class CatalogBuilder extends BaseSavableEntityBuilder {
   build(): Catalog {
     return {
       ...super.build(),
+      title: this.title,
       type: 'catalog',
       singleKey: this.singleKey,
       // titleField: this.titleField.build(),
@@ -41,8 +42,8 @@ class CatalogBuilder extends BaseSavableEntityBuilder {
     }
   }
 
-  static fromObject(obj: any, defaultLanguage: string): CatalogBuilder {
-    const builder = new CatalogBuilder(obj.name, defaultLanguage)
+  static fromObject(obj: any, defaultLanguage: string, title?: {singular?: string, plural?: string}): CatalogBuilder {
+    const builder = new CatalogBuilder(obj.name, defaultLanguage, title)
 
     obj.fields.forEach((filed: any) => {
       if (filed.name !== 'id') {

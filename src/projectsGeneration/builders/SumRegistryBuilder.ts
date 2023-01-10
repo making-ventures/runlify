@@ -23,7 +23,7 @@ class SumRegistryBuilder extends BaseSavableEntityBuilder {
     name: string,
     registrarDepended: boolean,
     defaultLanguage: string,
-    title?: string,
+    title?: {singular?: string, plural?: string},
     options?,
   ) {
     super(name, defaultLanguage, title)
@@ -83,6 +83,7 @@ class SumRegistryBuilder extends BaseSavableEntityBuilder {
 
     return {
       ...super.build(),
+      title: this.title,
       type: 'sumRegistry',
       registrarDepended: this.registrarDepended,
       singleKey: this.singleKey,
@@ -280,12 +281,14 @@ class SumRegistryBuilder extends BaseSavableEntityBuilder {
 
   static fromObject(
     obj: SumRegistry,
-    defaultLanguage: string
+    defaultLanguage: string,
+    title?: {singular?: string, plural?: string},
   ): SumRegistryBuilder {
     const builder = new SumRegistryBuilder(
       obj.name,
       obj.registrarDepended,
-      defaultLanguage
+      defaultLanguage,
+      title,
     )
 
     obj.fields.forEach((filed: any) => {

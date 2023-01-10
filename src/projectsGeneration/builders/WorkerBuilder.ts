@@ -6,7 +6,7 @@ class WorkerBuilder extends BaseBuilder {
   limits: MemoryAndCpu = { memory: '64Mi', cpu: '0.15' }
 
   constructor(name: string, defaultLanguage: string, title?: string) {
-    super(name, defaultLanguage, title)
+    super(name, defaultLanguage, {singular: title, plural: title})
   }
 
   build(): Worker {

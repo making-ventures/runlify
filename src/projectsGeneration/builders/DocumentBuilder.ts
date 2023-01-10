@@ -7,7 +7,7 @@ class DocumentBuilder extends BaseSavableEntityBuilder {
   documentation: DocumentationOfDocumentBuilder =
     new DocumentationOfDocumentBuilder(() => this)
 
-  constructor(name: string, defaultLanguage: string, title?: string) {
+  constructor(name: string, defaultLanguage: string, title?: {singular?: string, plural?: string}) {
     super(name, defaultLanguage, title)
 
     // this
@@ -36,6 +36,7 @@ class DocumentBuilder extends BaseSavableEntityBuilder {
   build(): Document {
     return {
       ...super.build(),
+      title: this.title,
       type: 'document',
       singleKey: this.singleKey,
       // titleField: this.titleField.build(),
@@ -66,8 +67,8 @@ class DocumentBuilder extends BaseSavableEntityBuilder {
     this.registries.push(registry)
   }
 
-  static fromObject(obj: any, defaultLanguage: string): DocumentBuilder {
-    const builder = new DocumentBuilder(obj.name, defaultLanguage)
+  static fromObject(obj: any, defaultLanguage: string, title?: {singular?: string, plural?: string}): DocumentBuilder {
+    const builder = new DocumentBuilder(obj.name, defaultLanguage, title)
 
     obj.fields.forEach((filed: any) => {
       if (filed.name !== 'id') {

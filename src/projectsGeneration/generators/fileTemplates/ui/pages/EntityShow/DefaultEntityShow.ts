@@ -2,7 +2,24 @@
 import { plural } from 'pluralize'
 import { pascal, pascalSingular } from '../../../../../../utils/cases'
 import { EntityWideGenerationArgs } from '../../../../../args'
+import { Entity } from '../../../../../builders'
 import { pad4, generatedWarning } from '../../../../../utils'
+
+const getEntityTitle = (entity: Entity) => {
+  switch (entity.type) {
+    case 'catalog':
+      return 'CatalogTitle';
+    case 'document':
+      return 'DocumentTitle';
+    case 'sumRegistry':
+      return 'SumRegistryTitle';
+    case 'infoRegistry':
+      return 'InfoRegistryTitle';
+    
+    default:
+      throw new Error(`Unknown entity type ${(entity as any).type}`);
+  }
+}
 
 export const uiDefaultShowTmpl = ({
   allEntities,
@@ -49,6 +66,7 @@ ${linkedTabCompImports.join(`
 import MainTab from './MainTab';
 import {additionalTabs} from './additionalTabs';
 import DefaultActions from './DefaultActions';
+import ${getEntityTitle(entity)} from '../../../../raUiLib/${getEntityTitle(entity)}';
 ${
   options.skipWarningThisIsGenerated
     ? ''
@@ -62,7 +80,7 @@ const Default${pascalSingular(
   const translate = useTranslate();
 
   return (
-    <Show actions={<DefaultActions />} {...props}>
+    <Show actions={<DefaultActions />} title={<${getEntityTitle(entity)} />} {...props}>
       <TabbedShowLayout>
         <MainTab label={translate('app.mainTab')} />
         {additionalTabs.map(({Tab, label}, i) => <Tab label={label} key={i} />)}${

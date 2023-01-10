@@ -5,8 +5,14 @@ export const addAutogeneration = (system: SystemMetaBuilder) => {
   // autogenerationRules
   const autogenerationRules = system.addCatalog('autogenerationRules')
   autogenerationRules.setTitles({
-    en: 'Autogeneration Rules',
-    ru: 'Правила автогенерации',
+    en: {
+      singular: 'Autogeneration Rule',
+      plural: 'Autogeneration Rules',
+    },
+    ru: {
+      singular: 'Правила автогенерации',
+      plural: 'Правило автогенерации',
+    },
   })
   autogenerationRules.setNeedFor('Правила автогенерации сущностей')
   autogenerationRules.getKey().setType('string')
@@ -54,11 +60,16 @@ export const addAutogeneration = (system: SystemMetaBuilder) => {
   // autogenerationHistoryEntries
   const autogenerationHistoryEntries = system.addCatalog(
     'autogenerationHistoryEntries',
-    'Autogeneration History'
   )
   autogenerationHistoryEntries.setTitles({
-    en: 'Autogeneration History',
-    ru: 'История автогенерации',
+    en: {
+      singular: 'Autogeneration History',
+      plural: 'Autogeneration History',
+    },
+    ru: {
+      singular: 'История автогенерации',
+      plural: 'Истории автогенерации',
+    },
   })
   autogenerationHistoryEntries.setNeedFor(
     'История применения правил автогенерации к сущностям'

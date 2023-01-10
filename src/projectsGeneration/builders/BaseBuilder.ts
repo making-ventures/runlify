@@ -5,19 +5,19 @@ import { BaseEntity, PreviewFeature } from './buildedTypes'
 class BaseBuilder {
   defaultLanguage: string
   name = 'notSet'
-  title: Record<string, string> = {}
+  title: Record<string, {singular: string}> = {}
   needFor: Record<string, string> = {}
   materialUiIcon = 'Brightness1Outlined'
   previewFeatures: PreviewFeature[] = []
 
-  constructor(name: string, defaultLanguage: string, title?: string) {
+  constructor(name: string, defaultLanguage: string, title?: {singular?: string, plural?: string}) {
     this.defaultLanguage = defaultLanguage
     this.setName(name)
-    this.setTitle(title ? title : name)
+    this.setTitle({plural: title?.plural ?? name, singular: title?.singular ?? title?.plural ?? name})
   }
 
   build (): BaseEntity {
-    return R.pick<BaseBuilder, keyof BaseEntity>(['name', 'title', 'needFor', 'materialUiIcon', 'previewFeatures'], this);
+    return R.pick<BaseBuilder, keyof BaseBuilder>(['name', 'title', 'needFor', 'materialUiIcon', 'previewFeatures'], this);
   }
 
   setName(name: string) {
@@ -33,18 +33,21 @@ class BaseBuilder {
     return this
   }
 
-  setTitle(title: string, language?: string) {
+  setTitle(title: {plural: string, singular: string}, language?: string) {
     const resultedLangiage = language ? language : this.defaultLanguage
     this.title[resultedLangiage] = title
 
     return this
   }
 
-  setTitles(title: Record<string, string>) {
+  setTitles(title: Record<string, {singular: string, plural: string}>) {
     this.title = R.fromPairs(
       R.toPairs(title).map(([key, value]) => [
         key,
-        value.replaceAll("'", "\\'"),
+        {
+          singular: value.singular.replaceAll("'", "\\'"),
+          plural: value.plural.replaceAll("'", "\\'"),
+        },
       ])
     )
 

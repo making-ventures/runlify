@@ -17,7 +17,7 @@ export class InfoRegistryBuilder extends BaseSavableEntityBuilder {
     name: string,
     registrarDepended: boolean,
     defaultLanguage: string,
-    title?: string,
+    title?: {singular?: string, plural?: string},
     options?,
   ) {
     super(name, defaultLanguage, title)
@@ -71,6 +71,7 @@ export class InfoRegistryBuilder extends BaseSavableEntityBuilder {
 
     return {
       ...super.build(),
+      title: this.title,
       type: 'infoRegistry',
       registrarDepended: this.registrarDepended,
       singleKey: this.singleKey,
@@ -283,12 +284,14 @@ export class InfoRegistryBuilder extends BaseSavableEntityBuilder {
 
   static fromObject(
     obj: InfoRegistry,
-    defaultLanguage: string
+    defaultLanguage: string,
+    title?: {singular?: string, plural?: string},
   ): InfoRegistryBuilder {
     const builder = new InfoRegistryBuilder(
       obj.name,
       obj.registrarDepended,
-      defaultLanguage
+      defaultLanguage,
+      title,
     )
 
     obj.fields.forEach((filed: any) => {

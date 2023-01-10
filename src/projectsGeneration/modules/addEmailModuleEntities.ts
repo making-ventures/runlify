@@ -4,8 +4,14 @@ const addEmailModuleEntities = (system: SystemMetaBuilder) => {
   // messageTypes
   const messageTypes = system.addCatalog('messageTypes');
   messageTypes.setTitles({
-    en: 'Message types',
-    ru: 'Типы сообщений',
+    en: {
+      singular: 'Message type',
+      plural: 'Message types',
+    },
+    ru: {
+      singular: 'Тип сообщений',
+      plural: 'Типы сообщений',
+    },
   });
   messageTypes.setNeedFor('Типы сообщений');
   messageTypes.getKey().setType('string');
@@ -21,8 +27,14 @@ const addEmailModuleEntities = (system: SystemMetaBuilder) => {
   // templateStyles
   const templateStyles = system.addCatalog('templateStyles');
   templateStyles.setTitles({
-    en: 'Template styles',
-    ru: 'Стили шаблонов',
+    en: {
+      singular: 'Template style',
+      plural: 'Template styles',
+    },
+    ru: {
+      singular: 'Стили шаблона',
+      plural: 'Стили шаблонов',
+    },
   });
   templateStyles.setNeedFor('Стили шаблонов');
   templateStyles.addField('title', undefined, {isTitleField: true}).setType('string').setRequired();
@@ -31,8 +43,14 @@ const addEmailModuleEntities = (system: SystemMetaBuilder) => {
   // mailingCampaignStatuses
   const mailingCampaignStatuses = system.addCatalog('mailingCampaignStatuses');
   mailingCampaignStatuses.setTitles({
-    en: 'Mailing campaign statuses',
-    ru: 'Статусы рассылок',
+    en: {
+      singular: 'Mailing campaign statuse',
+      plural: 'Mailing campaign statuses',
+    },
+    ru: {
+      singular: 'Статус рассылок',
+      plural: 'Статус рассылок',
+    },
   });
   mailingCampaignStatuses.setNeedFor('Статусы рассылок');
   mailingCampaignStatuses.getKey().setType('string');
@@ -59,8 +77,14 @@ const addEmailModuleEntities = (system: SystemMetaBuilder) => {
   // messageTemplates
   const messageTemplates = system.addCatalog('messageTemplates');
   messageTemplates.setTitles({
-    en: 'Message templates',
-    ru: 'Шаблоны сообщений',
+    en: {
+      singular: 'Message template',
+      plural: 'Message templates',
+    },
+    ru: {
+      singular: 'Шаблон сообщения',
+      plural: 'Шаблоны сообщений',
+    },
   });
   messageTemplates.setNeedFor('Шаблоны сообщений');
   messageTemplates.getKey().setType('string').setRequired();
@@ -73,8 +97,14 @@ const addEmailModuleEntities = (system: SystemMetaBuilder) => {
   // messageTemplateLangVariants
   const messageTemplateLangVariants = system.addCatalog('messageTemplateLangVariants');
   messageTemplateLangVariants.setTitles({
-    en: 'Message template lang variant',
-    ru: 'Языковой вариант шаблона сообщения',
+    en: {
+      singular: 'Message template lang variant',
+      plural: 'Message template lang variants',
+    },
+    ru: {
+      singular: 'Языковой вариант шаблона сообщения',
+      plural: 'Языковые варианты шаблонов сообщений',
+    },
   });
   messageTemplateLangVariants.setNeedFor('Языковой вариант шаблона сообщения');
   messageTemplateLangVariants.addField('title', undefined, {isTitleField: true}).setType('string');
@@ -91,8 +121,14 @@ const addEmailModuleEntities = (system: SystemMetaBuilder) => {
   // mailingMessageStatuses
   const mailingMessageStatuses = system.addCatalog('mailingMessageStatuses');
   mailingMessageStatuses.setTitles({
-    en: 'Mailing message statuses',
-    ru: 'Статусы сообщений массовой рассылки',
+    en: {
+      singular: 'Mailing message statuse',
+      plural: 'Mailing message statuses',
+    },
+    ru: {
+      singular: 'Статус сообщений массовой рассылки',
+      plural: 'Статусы сообщений массовой рассылки',
+    },
   });
   mailingMessageStatuses.getKey().setType('string').setRequired();
   mailingMessageStatuses.addField('title', undefined, {isTitleField: true}).setType('string');
@@ -109,8 +145,14 @@ const addEmailModuleEntities = (system: SystemMetaBuilder) => {
   // mailingTypes
   const mailingTypes = system.addCatalog('mailingTypes');
   mailingTypes.setTitles({
-    en: 'Mailing types',
-    ru: 'Типы рассылок',
+    en: {
+      singular: 'Mailing type',
+      plural: 'Mailing types',
+    },
+    ru: {
+      singular: 'Тип рассылок',
+      plural: 'Типы рассылок',
+    },
   });
   mailingTypes.getKey().setType('string');
   mailingTypes.addField('title', undefined, {isTitleField: true}).setType('string').setRequired();
@@ -121,8 +163,14 @@ const addEmailModuleEntities = (system: SystemMetaBuilder) => {
   // mailingCampaigns
   const mailingCampaigns = system.addCatalog('mailingCampaigns');
   mailingCampaigns.setTitles({
-    en: 'Mailing campaigns',
-    ru: 'Рассылки',
+    en: {
+      singular: 'Mailing campaign',
+      plural: 'Mailing campaigns',
+    },
+    ru: {
+      singular: 'Рассылка',
+      plural: 'Рассылки',
+    },
   });
   mailingCampaigns.addField('title', undefined, {isTitleField: true}).setType('string').setRequired();
   mailingCampaigns.addLinkField('mailingTypes', 'mailingTypeId').setType('string').setRequired();
@@ -134,8 +182,14 @@ const addEmailModuleEntities = (system: SystemMetaBuilder) => {
   // mailingMessages
   const mailingMessages = system.addCatalog('mailingMessages');
   mailingMessages.setTitles({
-    en: 'Mailing messages',
-    ru: 'Сообщения рассылки',
+    en: {
+      singular: 'Mailing message',
+      plural: 'Mailing messages',
+    },
+    ru: {
+      singular: 'Сообщение рассылки',
+      plural: 'Сообщения рассылки',
+    },
   });
   mailingMessages.addLinkField('mailingCampaigns', 'mailingCampaignId').setRequired();
   mailingMessages.addLinkField('messageTemplates', 'templateId').setType('string').setRequired();

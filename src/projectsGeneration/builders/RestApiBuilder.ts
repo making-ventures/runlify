@@ -13,7 +13,7 @@ class RestApiBuilder extends BaseBuilder {
     defaultLanguage: string,
     title?: string
   ) {
-    super(name, defaultLanguage, title)
+    super(name, defaultLanguage, {singular: title, plural: title})
     this.path = path
   }
 

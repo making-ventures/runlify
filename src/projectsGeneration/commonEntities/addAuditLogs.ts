@@ -4,8 +4,14 @@ const addAuditLogs = (system: SystemMetaBuilder) => {
   // auditLogActionTypes
   const auditLogActionTypes = system.addCatalog('auditLogActionTypes')
   auditLogActionTypes.setTitles({
-    en: 'Audit action types',
-    ru: 'Типы событий аудита',
+    en: {
+      singular: 'Audit action type',
+      plural: 'Audit action types',
+    },
+    ru: {
+      singular: 'Тип события аудита',
+      plural: 'Типы событий аудита',
+    },
   })
   auditLogActionTypes.setNeedFor('Учета типов событий аудита')
   auditLogActionTypes.getKey().setType('string')
@@ -31,8 +37,14 @@ const addAuditLogs = (system: SystemMetaBuilder) => {
   // auditLogs
   const auditLogs = system.addCatalog('auditLogs')
   auditLogs.setTitles({
-    en: 'Audit',
-    ru: 'Аудит',
+    en: {
+      singular: 'Audit log',
+      plural: 'Audit logs',
+    },
+    ru: {
+      singular: 'Аудит',
+      plural: 'Аудиты',
+    },
   })
   auditLogs.setNeedFor('Аудит системы')
   auditLogs.addField('date', 'Дата').setType('datetime').setRequired()
@@ -63,8 +75,14 @@ const addAuditLogs = (system: SystemMetaBuilder) => {
   // entities
   const entities = system.addCatalog('entities')
   entities.setTitles({
-    en: 'Entities',
-    ru: 'Сущности',
+    en: {
+      singular: 'Entity',
+      plural: 'Entities',
+    },
+    ru: {
+      singular: 'Сущность',
+      plural: 'Сущности',
+    },
   })
   entities.setNeedFor('Список всех сущностей проекта')
   entities.getKey().setType('string')

@@ -31,8 +31,9 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
   externalSearch = false
   multitenancy: Multitenancy = 'none'
   commonElementsVisibleToAll = false
-
-  constructor(name: string, defaultLanguage: string, title?: string) {
+  title: Record<string, {singular: string, plural: string}> = {}
+  
+  constructor(name: string, defaultLanguage: string, title?: {singular?: string, plural?: string}) {
     super(name, defaultLanguage, title)
 
     this.id = new IdFieldBuilder('id', defaultLanguage)

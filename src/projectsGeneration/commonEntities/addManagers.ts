@@ -4,8 +4,14 @@ const addManagers = (system: SystemMetaBuilder) => {
   // managers
   const managers = system.addCatalog('managers');
   managers.setTitles({
-    en: 'Managers',
-    ru: 'Менеджеры',
+    en: {
+      singular: 'Manager',
+      plural: 'Managers',
+    },
+    ru: {
+      singular: 'Менеджер',
+      plural: 'Менеджеры',
+    },
   });
   managers.setNeedFor('Менеджерские (административные) аккаунты');
   managers.addField('title', undefined, {isTitleField: true}).setType('string');
@@ -25,8 +31,14 @@ const addManagers = (system: SystemMetaBuilder) => {
   // managerLogins
   const managerLogins = system.addCatalog('managerLogins');
   managerLogins.setTitles({
-    en: 'Manager logins',
-    ru: 'Логины менеджеров',
+    en: {
+      singular: 'Manager login',
+      plural: 'Manager logins',
+    },
+    ru: {
+      singular: 'Логин менеджера',
+      plural: 'Логины менеджеров',
+    },
   });
   managerLogins.setNeedFor('Аккаунты (информация по логинам) пользователей бек-офиса (админы, менеджеры)');
   managerLogins.addField('login').setType('string').setRequired();
@@ -38,10 +50,16 @@ const addManagers = (system: SystemMetaBuilder) => {
   managerLogins.addUniqueConstraint(['login']);
 
   // units
-  const units = system.addCatalog('units', 'Units');
+  const units = system.addCatalog('units');
   units.setTitles({
-    en: 'Units',
-    ru: 'Подразделения',
+    en: {
+      singular: 'Unit',
+      plural: 'Units',
+    },
+    ru: {
+      singular: 'Подразделение',
+      plural: 'Подразделения',
+    },
   });
   units.addField('title', undefined, {isTitleField: true}).setType('string').setRequired();
   units.addLinkField('units', 'parentId').setType('int');

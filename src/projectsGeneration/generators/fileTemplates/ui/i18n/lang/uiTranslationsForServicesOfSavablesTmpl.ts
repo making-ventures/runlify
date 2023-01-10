@@ -24,7 +24,7 @@ ${entities
     (entity) =>
       `  ${entity.name}: {
     title: '${
-      entity.title[lang] ? entity.title[lang] : entity.title[defaultLanguage]
+      entity.title.plural[lang] ? entity.title.plural[lang] : entity.title.plural[defaultLanguage]
     }',
     fields: ${
       entity.fields.length > 0
@@ -33,7 +33,7 @@ ${entity.fields
   .map(
     (field) =>
       `      ${field.name}: '${
-        field.title[lang] ? field.title[lang] : field.title[defaultLanguage]
+        field.title.plural[lang] ? field.title.plural[lang] : field.title.plural[defaultLanguage]
       }',`
   )
   .join('\n')}

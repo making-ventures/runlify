@@ -11,8 +11,8 @@ export const uiGetDefaultMenuTmpl = ({
   options = defaultBootstrapEntityOptions,
 }: ProjectWideGenerationArgs) => {
   const entitiesToShow = entities.sort((a, b) =>
-    a.title[system.defaultLanguage].localeCompare(
-      b.title[system.defaultLanguage],
+    a.title.plural[system.defaultLanguage].localeCompare(
+      b.title.plural[system.defaultLanguage],
       'en'
     )
   )
@@ -23,7 +23,7 @@ export const uiGetDefaultMenuTmpl = ({
   const catalogs = entitiesToShow.filter((m) => m.type === 'catalog')
 
   const renderEntity = (entity: Entity) => `    {
-      label: '${plural(entity.type)}.${entity.name}.title',
+      label: '${plural(entity.type)}.${entity.name}.title.plural',
       link: '/${entity.name}',
       icon: 'DetailsOutlined',
       debugOnly: true,

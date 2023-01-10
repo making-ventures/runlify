@@ -239,7 +239,7 @@ export type Multitenancy = 'none' | 'optional' | 'required'
 
 export type BaseEntity = {
   name: string
-  title: Record<string, string>
+  title: Record<string, {singular: string}>
   needFor: Record<string, string>
   materialUiIcon: string
   previewFeatures: PreviewFeature[]
@@ -264,6 +264,7 @@ export type BaseSavableEntity = BaseEntity & {
   sortOrder: 'ASC' | 'DESC'
   multitenancy: Multitenancy
   commonElementsVisibleToAll: boolean
+  title: Record<string, {singular: string, plural: string}>
 }
 
 export type Report = BaseEntity & {

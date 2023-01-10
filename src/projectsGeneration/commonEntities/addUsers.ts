@@ -4,8 +4,14 @@ const addUsers = (system: SystemMetaBuilder) => {
   // users
   const users = system.addCatalog('users');
   users.setTitles({
-    en: 'Users',
-    ru: 'Пользователи',
+    en: {
+      singular: 'User',
+      plural: 'Users',
+    },
+    ru: {
+      singular: 'Пользовател',
+      plural: 'Пользователи',
+    },
   });
   users.addField('title', undefined, {isTitleField: true}).setType('string');
   users.addField('lastname').setType('string').setRequired();
@@ -16,8 +22,14 @@ const addUsers = (system: SystemMetaBuilder) => {
   // appLogins
   const appLogins = system.addCatalog('appLogins');
   appLogins.setTitles({
-    en: 'Logins of users',
-    ru: 'Логины пользователей',
+    en: {
+      singular: 'Login of user',
+      plural: 'Logins of users',
+    },
+    ru: {
+      singular: 'Логин пользователей',
+      plural: 'Логины пользователей',
+    },
   });
   appLogins.setNeedFor('Аккаунты (информация по логинам) обычных пользователей (не админов)');
   appLogins.addField('login').setType('string').setRequired();
