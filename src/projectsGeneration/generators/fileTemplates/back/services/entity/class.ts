@@ -28,13 +28,18 @@ export const prismaServiceBaseClassTmpl = ({
       .filter((f) => f.defaultBackendValueExpression)
       .filter((f) => !f.hidden)
 
+  let isExternalSearch = entity.externalSearch;
+
   let extendedType = 'BaseService';
-  if (entity.externalSearch) {
+  if (isExternalSearch) {
     extendedType = 'ElasticBaseSearch';
   }
 
   if (['document'].includes(entity.type)) {
     extendedType = 'DocumentBaseService';
+    if (isExternalSearch) {
+      extendedType = 'ElasticDocumentBaseService';
+    }
   }
 
   const isDocument = entity.type === 'document';
@@ -173,7 +178,7 @@ export class ${pascal(entity.name)}Service extends ${extendedType}<
   ${pascalSingular(entity.name)}RegistryEntries` : ''}
 > {
   constructor(public ctx: Context) {
-    super(ctx, ctx.prisma.${camelSingular(entity.name)}, config);
+    super(ctx, ctx.prisma.${camelSingular(entity.name)},${isExternalSearch ? ` ctx.prisma.external${pascal(entity.name)}SearchTracking,`: ''} config);
     initBuiltInHooks(this);
     initUserHooks(this);
   }
