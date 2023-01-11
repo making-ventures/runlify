@@ -22,7 +22,7 @@ ${entities
     (entity) =>
       `  ${entity.name}: {
     title: '${
-      entity.title[lang].plural ? entity.title[lang].plural : entity.title[defaultLanguage].plural
+      JSON.stringify(entity.title, null, 1)
     }',
   },`
   )
