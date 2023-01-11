@@ -33,8 +33,8 @@ class BaseBuilder {
     return this
   }
 
-  setTitle(title: {plural: string, singular: string}, language?: string) {
-    const resultedLangiage = language ? language : this.defaultLanguage
+  setTitle(title: {plural: string, singular: string}, _language?: string) {
+    // const resultedLangiage = language ? language : this.defaultLanguage
     this.title['ru'] = title
 
     return this
