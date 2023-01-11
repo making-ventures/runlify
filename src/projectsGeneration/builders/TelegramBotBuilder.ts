@@ -3,7 +3,7 @@ import BaseBuilder from './BaseBuilder'
 
 class TelegramBotBuilder extends BaseBuilder {
   constructor(name: string, defaultLanguage: string, title?: string) {
-    super(name, defaultLanguage, {singular: title, plural: title})
+    super(name, defaultLanguage, {singular: title})
   }
 
   build(): TelegramBot {

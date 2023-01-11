@@ -10,10 +10,10 @@ class BaseBuilder {
   materialUiIcon = 'Brightness1Outlined'
   previewFeatures: PreviewFeature[] = []
 
-  constructor(name: string, defaultLanguage: string, title?: {singular?: string, plural?: string}) {
+  constructor(name: string, defaultLanguage: string, title?: {singular?: string}) {
     this.defaultLanguage = defaultLanguage
     this.setName(name)
-    this.setTitle({plural: title?.plural ?? name, singular: title?.singular ?? title?.plural ?? name})
+    this.setTitle({singular: title?.singular ?? name})
   }
 
   build (): BaseEntity {
@@ -33,9 +33,9 @@ class BaseBuilder {
     return this
   }
 
-  setTitle(title: {plural: string, singular: string}, _language?: string) {
-    // const resultedLangiage = language ? language : this.defaultLanguage
-    this.title['ru'] = title
+  setTitle(title: {singular: string}, language?: string) {
+    const resultedLangiage = language ? language : this.defaultLanguage
+    this.title[resultedLangiage] = title
 
     return this
   }

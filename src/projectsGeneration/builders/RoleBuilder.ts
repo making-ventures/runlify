@@ -5,7 +5,7 @@ class RoleBuilder extends BaseBuilder {
   registries: string[] = []
 
   constructor(name: string, defaultLanguage: string, title?: string) {
-    super(name, defaultLanguage, {singular: title, plural: title})
+    super(name, defaultLanguage, {singular: title})
   }
 
   build(): Role {

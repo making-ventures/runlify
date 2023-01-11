@@ -24,7 +24,8 @@ ${entities
     (entity) =>
       `  ${entity.name}: {
     title: {
-      ${JSON.stringify(entity.title, null, 1)}
+      plural: '${entity.title[lang]?.plural ? entity.title[lang].plural : entity.title[defaultLanguage].plural}',
+      singular: '${entity.title[lang]?.singular ? entity.title[lang].singular : entity.title[defaultLanguage].singular}',
     },
     fields: ${
       entity.fields.length > 0

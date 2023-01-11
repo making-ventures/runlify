@@ -35,6 +35,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
   
   constructor(name: string, defaultLanguage: string, title?: {singular?: string, plural?: string}) {
     super(name, defaultLanguage, title)
+    this.setTitle({plural: title?.plural ?? name, singular: title?.singular ?? title?.plural ?? name})
 
     this.id = new IdFieldBuilder('id', defaultLanguage)
       .setTitle('Id', 'en')
@@ -42,6 +43,14 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
     this.titleField = new IdFieldBuilder('id', defaultLanguage)
 
     this.setTitleFieldByName(this.getKey().name)
+  }
+
+
+  setTitle(title: {plural: string, singular: string}, language?: string) {
+    const resultedLangiage = language ? language : this.defaultLanguage
+    this.title[resultedLangiage] = title
+
+    return this
   }
 
   setExternalSearch(externalSearch?: boolean) {

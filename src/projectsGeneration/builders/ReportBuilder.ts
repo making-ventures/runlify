@@ -3,7 +3,7 @@ import { Report } from './buildedTypes'
 
 class ReportBuilder extends BaseBuilder {
   constructor(name: string, defaultLanguage: string, title?: string) {
-    super(name, defaultLanguage, {singular: title, plural: title})
+    super(name, defaultLanguage, {singular: title})
   }
 
   build(): Report {
