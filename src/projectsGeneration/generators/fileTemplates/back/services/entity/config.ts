@@ -5,7 +5,7 @@ import { Document, Entity, InfoRegistry, SumRegistry } from '../../../../../buil
 import { EntityWideGenerationArgs } from '../../../../../args'
 import { getKeyField } from '../../../../../metaUtils'
 import * as R from 'ramda'
-import { camelSingular } from '../../../../../../utils/cases'
+import { camelSingular, pascalSingular } from '../../../../../../utils/cases'
 import { generatedWarning, pad } from '../../../../../utils'
 
 const arrToStr = (val: any) => R.trim(pad(1)(JSON.stringify(val, undefined, '  ').replaceAll('"', '\'')));
@@ -63,6 +63,7 @@ export const configTmpl = ({
   }
 
   return `/* eslint-disable quote-props,comma-dangle,@typescript-eslint/ban-types */
+import Entity from '../../../types/Entity';
 import {${configType}} from '../types';
 ${options.skipWarningThisIsGenerated ? '' : `
 // ${generatedWarning}`}
@@ -76,7 +77,7 @@ const config: ${configType} = {
   dateFields: ${getStrNames(dateFields)},
   otherFields: ${getStrNames(notDateFields)},
   forbiddenForUserFields: ${getStrNames(forbiddenForUserFields)},
-  entityTypeId: '${camelSingular(entity.name)}',${isDocument ? `
+  entityTypeId: Entity.${pascalSingular(entity.name)},${isDocument ? `
   registries: ${arrToStr(entity.registries.map((registry) => singular(registry)))},
   registrarDependedRegistries: ${arrToStr(docRegistries.filter((r) => r.registrarDepended).map((r) => singular(r.name)))},`
     : ''}

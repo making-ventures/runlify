@@ -29,6 +29,9 @@ export const prismaServiceBaseClassTmpl = ({
       .filter((f) => !f.hidden)
 
   let extendedType = 'BaseService';
+  if (entity.externalSearch) {
+    extendedType = 'ElasticBaseSearch';
+  }
 
   if (['document'].includes(entity.type)) {
     extendedType = 'DocumentBaseService';
