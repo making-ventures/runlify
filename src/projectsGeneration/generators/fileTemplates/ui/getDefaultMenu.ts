@@ -11,8 +11,8 @@ export const uiGetDefaultMenuTmpl = ({
   options = defaultBootstrapEntityOptions,
 }: ProjectWideGenerationArgs) => {
   const entitiesToShow = entities.sort((a, b) =>
-    a.title[system.defaultLanguage].plural.localeCompare(
-      b.title[system.defaultLanguage].plural,
+    a.title['ru'].plural.localeCompare(
+      b.title['ru'].plural,
       'en'
     )
   )
