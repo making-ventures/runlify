@@ -47,7 +47,7 @@ ${entities.map(
         }.all') ? Loadable${pascalSingular(entity.name)}List : undefined}
         options={{label: translate('${plural(entity.type)}.${
     entity.name
-  }.title')}}
+  }.title.singular')}}
         recordRepresentation='${entity.titleField}'
       />,`
 ).join(`

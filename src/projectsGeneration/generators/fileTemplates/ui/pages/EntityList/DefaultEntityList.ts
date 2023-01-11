@@ -110,7 +110,7 @@ const Default${pascalSingular(
     <List
       title={translate('${plural(entity.type)}.${
     entity.name
-  }.title')}
+  }.title.plural')}
       exporter={false}
       filters={<${pascalSingular(
     entity.name
