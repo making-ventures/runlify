@@ -22,7 +22,7 @@ ${entities
     (entity) =>
       `  ${entity.name}: {
     title: '${
-      entity.title.plural[lang] ? entity.title.plural[lang] : entity.title.plural[defaultLanguage]
+      entity.title[lang].plural ? entity.title[lang].plural : entity.title[defaultLanguage].plural
     }',
   },`
   )
