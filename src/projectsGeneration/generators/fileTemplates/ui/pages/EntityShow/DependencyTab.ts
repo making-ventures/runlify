@@ -86,6 +86,7 @@ const ${pascal(entity.name)}${pascal(
     >
       <Datagrid
         bulkActionButtons={false}
+        rowClick='show'
       >
 ${linkedEntity.fields
   .filter((f) => !f.hidden)
