@@ -407,6 +407,16 @@ class SystemMetaBuilder {
     return catalog.entity
   }
 
+  getInfoRegistriesByName(name: string) {
+    const infoRegistry = this.infoRegistries.find((c) => c.entity.name === name)
+
+    if (!infoRegistry) {
+      throw new Error(`There is no "${name}" infoRegistry`)
+    }
+
+    return infoRegistry.entity
+  }
+
   addRestApi(name: string, path: string, title?: string) {
     if (this.restApis.some((f) => f.name === name)) {
       throw new Error(`There is already rest api with name "${name}"`)
