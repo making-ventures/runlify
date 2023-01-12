@@ -29,8 +29,8 @@ const ${
   get: '${pascalSingular(entity.name)}',
   all: 'all${pascalPlural(entity.name)}',
   create: 'create${pascalSingular(entity.name)}',
-  update: 'remove${pascalSingular(entity.name)}',
-  delete: 'update${pascalSingular(entity.name)}',
+  update: 'update${pascalSingular(entity.name)}',
+  delete: 'remove${pascalSingular(entity.name)}',
 };
 
 export default ${entity.name}BasePermissionToGraphql;
