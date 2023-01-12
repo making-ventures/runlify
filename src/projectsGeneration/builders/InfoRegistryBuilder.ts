@@ -282,6 +282,18 @@ export class InfoRegistryBuilder extends BaseSavableEntityBuilder {
     }
   }
 
+  delDimension(name: string) {
+    this.dimensions = this.dimensions.filter((f) => f.name !== name)
+
+    return this
+  }
+
+  delResource(name: string) {
+    this.resources = this.resources.filter((f) => f.name !== name)
+
+    return this
+  }
+
   static fromObject(
     obj: InfoRegistry,
     defaultLanguage: string,
