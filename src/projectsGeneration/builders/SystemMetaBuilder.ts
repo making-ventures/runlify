@@ -407,7 +407,7 @@ class SystemMetaBuilder {
     return catalog.entity
   }
 
-  getInfoRegistriesByName(name: string) {
+  getInfoRegistryByName(name: string) {
     const infoRegistry = this.infoRegistries.find((c) => c.entity.name === name)
 
     if (!infoRegistry) {
