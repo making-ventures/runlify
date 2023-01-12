@@ -35,14 +35,22 @@ export const prismaServiceBaseClassTmpl = ({
     extendedType = 'ElasticBaseSearch';
   }
 
-  if (['document'].includes(entity.type)) {
+  if (entity.type === 'document') {
     extendedType = 'DocumentBaseService';
     if (isExternalSearch) {
       extendedType = 'ElasticDocumentBaseService';
     }
   }
 
-  const isDocument = entity.type === 'document';
+  if (entity.type === 'sumRegistry') {
+    extendedType = 'SumRegistryService';
+    if (isExternalSearch) {
+      extendedType = 'ElasticSumRegistryService';
+    }
+  }
+
+
+    const isDocument = entity.type === 'document';
   let registriesImports = '';
   let registries = '';
 
