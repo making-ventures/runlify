@@ -73,7 +73,8 @@ export interface ${pascalSingular(document.name)}RegistryEntries {${
   MutationUpdate${pascalSingular(entity.name)}Args,
   MutationRemove${pascalSingular(entity.name)}Args,
   QueryAll${pascalPlural(entity.name)}Args,
-  ${pascalSingular(entity.name)},
+  ${pascalSingular(entity.name)},${isExternalSearch ? `
+  External${pascal(entity.name)}SearchTracking,` : ''}
 } from '../../../generated/graphql';
 import {${contextName}} from '../types';
 import initUserHooks from './initUserHooks';
@@ -174,7 +175,8 @@ export class ${pascal(entity.name)}Service extends ${extendedType}<
   QueryAll${pascalPlural(entity.name)}Args,
   Autodefinable${pascalSingular(entity.name)}Keys,
   ForbidenForUser${pascalSingular(entity.name)}Keys,
-  RequiredDbNotUser${pascalSingular(entity.name)}Keys${isDocument ? `,
+  RequiredDbNotUser${pascalSingular(entity.name)}Keys${isExternalSearch ? `,
+  External${pascal(entity.name)}SearchTracking` : ''}${isDocument ? `,
   ${pascalSingular(entity.name)}RegistryEntries` : ''}
 > {
   constructor(public ctx: Context) {
