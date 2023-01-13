@@ -265,6 +265,7 @@ export type BaseSavableEntity = BaseEntity & {
   multitenancy: Multitenancy
   commonElementsVisibleToAll: boolean
   title: Record<string, {singular: string, plural: string}>
+  externalSearchName: string | undefined
 }
 
 export type Report = BaseEntity & {

@@ -34,6 +34,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
   multitenancy: Multitenancy = 'none'
   commonElementsVisibleToAll = false
   title: Record<string, {singular: string, plural: string}> = {}
+  externalSearchName: string | undefined = undefined;
 
   constructor(name: string, defaultLanguage: string, title?: {singular?: string, plural?: string}) {
     super(name, defaultLanguage, title)
@@ -63,13 +64,14 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
         // throw new Error('setExternalSearch need system argument');
         return this; // todo: add system to constructor or revert throw back
       }
+      this.externalSearchName = `external${pascal(this.name)}SearchTrackings`;
       // externalSearchTrackings
-      const externalSearchTrackings = system.addInfoRegistry(`external${pascal(this.name)}SearchTrackings`, false, {plural: `External ${this.name} search tracking`, singular: `External ${this.name} search tracking`})
+      const externalSearchTrackings = system.addInfoRegistry(this.externalSearchName, false, {plural: `External ${this.name} search tracking`, singular: `External ${this.name} search tracking`})
       externalSearchTrackings.setPreviewFeature('classService')
       // externalSearchTrackings.setSearchEnabled(false)
       externalSearchTrackings.setNeedFor(`Данные на основе которых можно понять, какие ${this.name} нужно обновить во внешней базе для поиска`)
       // externalSearchTrackings.addDimensionLinkField('passengers', 'passengerId').setType('string').setRequired()
-      externalSearchTrackings.addDimension('entityId').setType(this.getKey().type).setRequired()
+      externalSearchTrackings.addDimensionLinkField(this.name, 'entityId').setType(this.getKey().type).setRequired()
       externalSearchTrackings.addResource('lastUpdated').setType('datetime').setRequired()
       externalSearchTrackings.addResource('lastSynced').setType('datetime').setRequired()
     }

@@ -60,6 +60,7 @@ class DocumentBuilder extends BaseSavableEntityBuilder {
       sortOrder: this.sortOrder,
       multitenancy: this.multitenancy,
       commonElementsVisibleToAll: this.commonElementsVisibleToAll,
+      externalSearchName: this.externalSearchName,
     }
   }
 
