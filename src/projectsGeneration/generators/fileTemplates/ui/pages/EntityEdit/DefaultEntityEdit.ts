@@ -77,7 +77,7 @@ export const getEditComponent = (entity: Entity, allEntities: Map<string, Entity
     size='small'
     ${getFieldLabel(entity, field)}
     defaultValue={null}
-    parse={val => val || null}${field.required ? `
+    parse={val => val || null}${field.required && type !== 'filter' ? `
     isRequired` : ''}
     noOptionsText='ra.message.noOptions'
   />

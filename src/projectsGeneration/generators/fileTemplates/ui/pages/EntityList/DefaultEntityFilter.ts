@@ -42,7 +42,6 @@ export const uiDefaultFilterTmpl = ({
 import {
   ${R.uniq(reactAdminImports).map(addComma).join(`
   `)}
-  useTranslate,
 } from 'react-admin';${
     dateFieldsExceptDocumentDateToImport.some((f) => f.type === 'datetime')
       ? `
@@ -62,8 +61,6 @@ ${
 `
 }
 const Default${pascalSingular(entity.name)}Filter: FC<any> = (props) => {
-  const translate = useTranslate();
-
   return (
     <Filter {...props}>${
       hasSearch
