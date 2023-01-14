@@ -64,7 +64,6 @@ import React, {FC} from 'react';
 import {
   ${R.uniq(reactAdminImports).map((s) => s + ',').join(`
   `)}
-  useTranslate,
 } from 'react-admin';${
     dateFieldsToImport.some((f) => ['date', 'datetime'].includes(f.type))
       ? `
@@ -104,13 +103,11 @@ const DefaultBulkActionButton = (props: BulkActionProps) => {
 const Default${pascalSingular(
     entity.name
   )}List: FC<ListProps> = (props: ListProps) => {
-  const translate = useTranslate();
-
   return (
     <List
-      title={translate('${plural(entity.type)}.${
+      title='${plural(entity.type)}.${
     entity.name
-  }.title.plural')}
+  }.title.plural'
       exporter={false}
       filters={<${pascalSingular(
     entity.name
