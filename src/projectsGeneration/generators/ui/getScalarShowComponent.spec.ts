@@ -11,7 +11,7 @@ describe('getScalarShowComponent', () => {
         new ScalarFieldBuilder('someField', 'ru').setType('string').build()
       )
     ).toBe(
-      "<TextField source='someField' label={translate('catalogs.cards.fields.someField')} />"
+      "<TextField source='someField' label='catalogs.cards.fields.someField' />"
     )
   })
 
@@ -22,7 +22,7 @@ describe('getScalarShowComponent', () => {
         new ScalarFieldBuilder('someField', 'ru').setType('int').build()
       )
     ).toBe(
-      "<NumberField source='someField' label={translate('catalogs.cards.fields.someField')} />"
+      "<NumberField source='someField' label='catalogs.cards.fields.someField' />"
     )
   })
 
@@ -33,7 +33,7 @@ describe('getScalarShowComponent', () => {
         new ScalarFieldBuilder('someField', 'ru').setType('float').build()
       )
     ).toBe(
-      "<NumberField source='someField' label={translate('catalogs.cards.fields.someField')} />"
+      "<NumberField source='someField' label='catalogs.cards.fields.someField' />"
     )
   })
 
@@ -44,7 +44,7 @@ describe('getScalarShowComponent', () => {
         new ScalarFieldBuilder('someField', 'ru').setType('bool').build()
       )
     ).toBe(
-      "<BooleanField source='someField' label={translate('catalogs.cards.fields.someField')} />"
+      "<BooleanField source='someField' label='catalogs.cards.fields.someField' />"
     )
   })
 
@@ -55,7 +55,7 @@ describe('getScalarShowComponent', () => {
         new ScalarFieldBuilder('someField', 'ru').setType('datetime').build()
       )
     ).toBe(
-      "<DateField source='someField' label={translate('catalogs.cards.fields.someField')} showTime />"
+      "<DateField source='someField' label='catalogs.cards.fields.someField' showTime />"
     )
   })
 })
