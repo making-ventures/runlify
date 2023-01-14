@@ -79,6 +79,7 @@ export const getEditComponent = (entity: Entity, allEntities: Map<string, Entity
     defaultValue={null}
     parse={val => val || null}${field.required ? `
     isRequired` : ''}
+    noOptionsText={'ra.message.noOptions'}
   />
 </ReferenceInput>`;
   } else {
