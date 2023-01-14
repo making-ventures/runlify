@@ -41,7 +41,7 @@ export const getTsDefaultTypeValueExpression = (field: Field): string | undefine
   }
 };
 
-export const getTrivialEditComponent = (entity: Entity, field: Field, additionalProps: string[] = []) => {
+export const getTrivialEditComponent = (entity: Entity, field: Field, type: 'create' | 'edit' | 'filter', additionalProps: string[] = []) => {
   return `<${getCompNameToEditScalar(field.type)}${additionalProps.map(p => `\n  ${p}`).join('')}
   fullWidth
   sx={{m: 1}}
@@ -54,7 +54,7 @@ export const getEditComponent = (entity: Entity, allEntities: Map<string, Entity
   if (field.category === 'link') {
     const linkedEntity = allEntities.get(field.externalEntity);
     if (!linkedEntity) {
-      return getTrivialEditComponent(entity, field, additionalProps);
+      return getTrivialEditComponent(entity, field, type, additionalProps);
     }
 
     if (isImageFileRef(field)) {
@@ -93,7 +93,7 @@ export const getEditComponent = (entity: Entity, allEntities: Map<string, Entity
       additionalProps.push('maxRows={24}');
     }
 
-    return getTrivialEditComponent(entity, field, additionalProps);
+    return getTrivialEditComponent(entity, field, type, additionalProps);
   }
 };
 
