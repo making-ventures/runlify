@@ -130,8 +130,8 @@ const addAuditLogs = (system: SystemMetaBuilder) => {
     .setType('string')
   auditLogs.addField('actionData')
     .setTitles({
-      en: 'Action aata',
-      ru: 'Action data', // ПЕРЕВЕСТИИИИИ!
+      en: 'Action data',
+      ru: 'Данные о действии',
     })
     .setType('string')
   auditLogs.setAuditable(false)
