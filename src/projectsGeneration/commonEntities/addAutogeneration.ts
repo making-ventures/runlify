@@ -21,20 +21,36 @@ export const addAutogeneration = (system: SystemMetaBuilder) => {
     .setType('string')
     .setRequired()
     .setTitle('Название правила')
+    .setTitles({
+      en: 'Title',
+      ru: 'Название правила',
+    })
   autogenerationRules
     .addField('version')
     .setType('date')
     .setTitle('Дата последнего изменения правила')
+    .setTitles({
+      en: 'Version',
+      ru: 'Дата последнего изменения правила',
+    })
   autogenerationRules
     .addField('originalEntityType')
     .setType('string')
     .setRequired()
     .setTitle('На основе какой сущности производится генерация')
+    .setTitles({
+      en: 'Original entity type',
+      ru: 'На основе какой сущности производится генерация',
+    })
   autogenerationRules
     .addField('generatingEntityType')
     .setType('string')
     .setRequired()
     .setTitle('Какую сущность генерируем')
+    .setTitles({
+      en: 'Generating entity type',
+      ru: 'Какую сущность генерируем',
+    })
   autogenerationRules
     .addField('originalEntityFilter')
     .setType('string')
@@ -42,6 +58,10 @@ export const addAutogeneration = (system: SystemMetaBuilder) => {
     .setTitle(
       'Объект с информацией, как отобрать среди первоначальных сущностей те, по которым следует произвести генерацию'
     )
+    .setTitles({
+      en: 'Original entity filter',
+      ru: 'Объект с информацией, как отобрать среди первоначальных сущностей те, по которым следует произвести генерацию',
+    })
   autogenerationRules
     .addField('generatingEntityConstructionRules')
     .setType('string')
@@ -49,6 +69,10 @@ export const addAutogeneration = (system: SystemMetaBuilder) => {
     .setTitle(
       'Объект с информацией, как заполнить поля генерируемой сущности. На основе полей исходной сущности, констант или выражений'
     )
+    .setTitles({
+      en: 'Generating entity construction rules',
+      ru: 'Объект с информацией, как заполнить поля генерируемой сущности. На основе полей исходной сущности, констант или выражений',
+    })
   autogenerationRules
     .addField('ignoreVersionOnHistory')
     .setType('bool')
@@ -56,6 +80,10 @@ export const addAutogeneration = (system: SystemMetaBuilder) => {
     .setTitle(
       'Нужно ли учитывать версию при поиске сущностей ещё не обработанных правилом'
     )
+    .setTitles({
+      en: 'Ignore version on history',
+      ru: 'Нужно ли учитывать версию при поиске сущностей ещё не обработанных правилом',
+    })
 
   // autogenerationHistoryEntries
   const autogenerationHistoryEntries = system.addCatalog(
@@ -79,35 +107,63 @@ export const addAutogeneration = (system: SystemMetaBuilder) => {
     .setType('datetime')
     .setRequired()
     .setTitle('Дату проверки')
+    .setTitles({
+      en: 'Date',
+      ru: 'Дату проверки',
+    })
   autogenerationHistoryEntries
     .addField('originalEntityType')
     .setType('string')
     .setRequired()
     .setTitle('Тип сущности, на которой запускалось правило')
+    .setTitles({
+      en: 'Original entity type',
+      ru: 'Тип сущности, на которой запускалось правило',
+    })
   autogenerationHistoryEntries
     .addField('originalEntityId')
     .setType('string')
     .setRequired()
     .setTitle('Идентификатор сущности, на котором запускалось правило')
+    .setTitles({
+      en: 'Original entity Id',
+      ru: 'Идентификатор сущности, на котором запускалось правило',
+    })
   autogenerationHistoryEntries
     .addLinkField('autogenerationRules', 'autogenerationRuleId')
     .setType('string')
     .setRequired()
     .setTitle('Правило автогенерации, которое запускалось')
+    .setTitles({
+      en: 'Autogeneration rule',
+      ru: 'Правило автогенерации, которое запускалось',
+    })
   autogenerationHistoryEntries
     .addField('version')
     .setType('date')
     .setRequired()
     .setTitle('Версия запускаемого правила')
+    .setTitles({
+      en: 'Version',
+      ru: 'Версия запускаемого правила',
+    })
   autogenerationHistoryEntries
     .addField('errorOccurred')
     .setType('bool')
     .setRequired()
     .setTitle('Произошла ли ошибка')
+    .setTitles({
+      en: 'Error occurred',
+      ru: 'Произошла ли ошибка',
+    })
   autogenerationHistoryEntries
     .addField('error')
     .setType('string')
     .setTitle('Текст ошибки')
+    .setTitles({
+      en: 'error',
+      ru: 'Текст ошибки',
+    })
 }
 
 export default addAutogeneration
