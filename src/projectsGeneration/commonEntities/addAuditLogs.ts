@@ -17,6 +17,10 @@ const addAuditLogs = (system: SystemMetaBuilder) => {
   auditLogActionTypes.getKey().setType('string')
   auditLogActionTypes
     .addField('title', 'Название', {isTitleField: true})
+    .setTitles({
+      en: 'Title',
+      ru: 'Название',
+    })
     .setType('string')
   auditLogActionTypes.setAuditable(false)
   auditLogActionTypes.addPredefinedElements([
@@ -47,29 +51,89 @@ const addAuditLogs = (system: SystemMetaBuilder) => {
     },
   })
   auditLogs.setNeedFor('Аудит системы')
-  auditLogs.addField('date', 'Дата').setType('datetime').setRequired()
+  auditLogs.addField('date', 'Дата')
+  .setTitles({
+    en: 'Date',
+    ru: 'Дата',
+  })
+  .setType('datetime').setRequired()
   auditLogs
     .addField('title', 'Название', {isTitleField: true})
+    .setTitles({
+      en: 'Title',
+      ru: 'Название',
+    })
     .setType('string')
     .setRequired()
-  auditLogs.addField('success', 'Успешно').setType('bool')
-  auditLogs.addField('error', 'Ошибка').setType('string')
-
+  auditLogs.addField('success', 'Успешно')
+    .setTitles({
+      en: 'Success',
+      ru: 'Успешно',
+    })
+    .setType('bool')
+  auditLogs.addField('error', 'Ошибка')
+    .setTitles({
+      en: 'Error',
+      ru: 'Ошибка',
+    })
+    .setType('string')
   auditLogs
     .addLinkField('entities', 'entityTypeId', 'Сущность')
+    .setTitles({
+      en: 'Entity type',
+      ru: 'Сущность',
+    })
     .setType('string')
     .setRequired()
-  auditLogs.addField('entityId', 'ID сущности').setType('string').setRequired()
+  auditLogs.addField('entityId', 'ID сущности')
+    .setTitles({
+      en: 'Entity Id',
+      ru: 'ID сущности',
+    })
+    .setType('string')
+    .setRequired()
   auditLogs
     .addLinkField('auditLogActionTypes', 'actionTypeId', 'Тип операции')
+    .setTitles({
+      en: 'Action Type',
+      ru: 'Тип операции',
+    })
     .setType('string')
     .setRequired()
   auditLogs.addLinkField('managers', 'managerId', 'Менеджер')
+    .setTitles({
+      en: 'Manager',
+      ru: 'Менеджер',
+    })
   auditLogs.addLinkField('users', 'userId', 'Пользователь')
-  auditLogs.addField('foreign', 'Внешняя сущность').setType('bool')
-  auditLogs.addField('foreignEntityType', 'Тип внешней сущности ').setType('string')
-  auditLogs.addField('foreignEntityId', 'ID внешней сущности').setType('string')
-  auditLogs.addField('actionData').setType('string')
+    .setTitles({
+      en: 'User',
+      ru: 'Пользователь',
+    })
+  auditLogs.addField('foreign', 'Внешняя сущность')
+    .setTitles({
+      en: 'Foreign',
+      ru: 'Внешняя сущность',
+    })
+    .setType('bool')
+  auditLogs.addField('foreignEntityType', 'Тип внешней сущности ')
+    .setTitles({
+      en: 'Foreign entity type',
+      ru: 'Тип внешней сущности',
+    })
+    .setType('string')
+  auditLogs.addField('foreignEntityId', 'ID внешней сущности')
+    .setTitles({
+      en: 'Foreign entity Id',
+      ru: 'ID внешней сущности',
+    })
+    .setType('string')
+  auditLogs.addField('actionData')
+    .setTitles({
+      en: 'Action aata',
+      ru: 'Action data', // ПЕРЕВЕСТИИИИИ!
+    })
+    .setType('string')
   auditLogs.setAuditable(false)
 
   // entities
@@ -88,6 +152,10 @@ const addAuditLogs = (system: SystemMetaBuilder) => {
   entities.getKey().setType('string')
   entities
     .addField('title', 'Название', {isTitleField: true})
+    .setTitles({
+      en: 'Title',
+      ru: 'Название',
+    })
     .setType('string')
   entities.setAuditable(false)
 }
