@@ -7,7 +7,7 @@ import {
   LinkField,
   ScalarField,
 } from '../../builders/buildedTypes'
-import { getFieldByName, isImageFileRef } from '../../metaUtils'
+import { isImageFileRef } from '../../metaUtils'
 import { getCompNameToShowScalar } from './componentNames/show/getCompNameToShowScalar'
 
 export const getFieldLabel = (entity: Entity, field: Field) => {
@@ -51,11 +51,7 @@ export const getLinkShowComponent = (
   return `<ReferenceField source='${field.name}' ${getFieldLabel(
     entity,
     field
-  )} reference='${field.externalEntity}' link='show'>
-  <${getCompNameToShowScalar(
-    getFieldByName(linkedEntity, linkedEntity.titleField)
-  )} source='${getFieldByName(linkedEntity, linkedEntity.titleField).name}' />
-</ReferenceField>`
+  )} reference='${field.externalEntity}' link='show' />`
 }
 
 export const getShowComponent = (

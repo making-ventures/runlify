@@ -15,9 +15,7 @@ describe('getLinkShowComponent', () => {
         new LinkFieldBuilder('cards', 'cardId', 'ru').build()
       )
     )
-      .toBe(`<ReferenceField source='cardId' label={translate('catalogs.cards.fields.cardId')} reference='cards' link='show'>
-  <TextField source='id' />
-</ReferenceField>`)
+      .toBe(`<ReferenceField source='cardId' label={translate('catalogs.cards.fields.cardId')} reference='cards' link='show' />`)
   })
 
   test('int link, title is id of linked entity', () => {
@@ -31,9 +29,7 @@ describe('getLinkShowComponent', () => {
         new LinkFieldBuilder('cards', 'cardId', 'ru').build()
       )
     )
-      .toBe(`<ReferenceField source='cardId' label={translate('catalogs.cards.fields.cardId')} reference='cards' link='show'>
-  <NumberField source='id' />
-</ReferenceField>`)
+      .toBe(`<ReferenceField source='cardId' label={translate('catalogs.cards.fields.cardId')} reference='cards' link='show' />`)
   })
 
   test('string link, title is int field of linked entity', () => {
@@ -50,9 +46,7 @@ describe('getLinkShowComponent', () => {
         new LinkFieldBuilder('cards', 'cardId', 'ru').build()
       )
     )
-      .toBe(`<ReferenceField source='cardId' label={translate('catalogs.cards.fields.cardId')} reference='cards' link='show'>
-  <NumberField source='someField' />
-</ReferenceField>`)
+      .toBe(`<ReferenceField source='cardId' label={translate('catalogs.cards.fields.cardId')} reference='cards' link='show' />`)
   })
 
   test('int link, title is string field of linked entity', () => {
@@ -69,8 +63,6 @@ describe('getLinkShowComponent', () => {
         new LinkFieldBuilder('cards', 'cardId', 'ru').build()
       )
     )
-      .toBe(`<ReferenceField source='cardId' label={translate('catalogs.cards.fields.cardId')} reference='cards' link='show'>
-  <TextField source='someField' />
-</ReferenceField>`)
+      .toBe(`<ReferenceField source='cardId' label={translate('catalogs.cards.fields.cardId')} reference='cards' link='show' />`)
   })
 })
