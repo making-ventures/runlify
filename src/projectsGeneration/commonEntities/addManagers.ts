@@ -161,7 +161,7 @@ const addManagers = (system: SystemMetaBuilder) => {
   units.addLinkField('units', 'parentId')
   .setTitles({
       en: 'Parent id',
-      ru: 'Parent id', // утончить 
+      ru: 'Родительское подразделение',
     })
     .setType('int');
 };
