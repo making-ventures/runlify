@@ -32,9 +32,26 @@ const addUsers = (system: SystemMetaBuilder) => {
     },
   });
   appLogins.setNeedFor('Аккаунты (информация по логинам) обычных пользователей (не админов)');
-  appLogins.addField('login').setType('string').setRequired();
-  appLogins.addField('passwordHash').setType('string').setRequired();
-  appLogins.addLinkField('users', 'userId').setType('int').setRequired();
+  appLogins.addField('login')
+    .setTitles({
+      en: 'Login',
+      ru: 'Логин',
+    })
+    .setType('string')
+    .setRequired();
+  appLogins.addField('passwordHash').setTitles({
+      en: 'Password',
+      ru: 'Пароль',
+    })
+    .setType('string')
+    .setRequired();
+  appLogins.addLinkField('users', 'userId')
+    .setTitles({
+      en: 'User',
+      ru: 'Пользователь',
+    })
+    .setType('int')
+    .setRequired();
   appLogins.addUniqueConstraint(['login']);
 };
 
