@@ -32,7 +32,6 @@ import React, {FC} from 'react';
 import {
   ${R.uniq(reactAdminImports.map((el) => `${el},`)).join(`
   `)}
-  useTranslate,
   Labeled,
 } from 'react-admin';${
     dateFieldsToImport.some((f) => ['date', 'datetime'].includes(f.type))
@@ -49,8 +48,6 @@ ${
 `
 }
 const DefaultMainTab: FC<Omit<TabProps, 'children'>> = (props) => {
-  const translate = useTranslate();
-
   return (<Tab {...props}>
     <Grid container spacing={2}>
 ${entity.fields
