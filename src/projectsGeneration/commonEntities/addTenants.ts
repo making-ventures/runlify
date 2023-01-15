@@ -12,8 +12,20 @@ const addTenants = (system: SystemMetaBuilder) => {
       plural: 'Тенанты',
     },
   });
-  tenants.addField('title', undefined, {isTitleField: true}).setType('string');
-  tenants.addField('utcOffset').setType('int').setRequired().setDefaultDbValue('0');
+  tenants.addField('title', undefined, {isTitleField: true})
+    .setTitles({
+      en: 'Title',
+      ru: 'Название',
+    })
+    .setType('string');
+  tenants.addField('utcOffset')
+    .setTitles({
+      en: 'UTC offset',
+      ru: 'Смещение по UTC',
+    })
+    .setType('int')
+    .setRequired()
+    .setDefaultDbValue('0');
 };
 
 export default addTenants;
