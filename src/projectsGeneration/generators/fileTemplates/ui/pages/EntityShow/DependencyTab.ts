@@ -58,7 +58,6 @@ import React, {FC} from 'react';
 import {
   ${R.uniq(reactAdminImports).map(addComma).join(`
   `)}
-  useTranslate,
 } from 'react-admin';${
     dateFieldsToImport.some((f) => ['date', 'datetime'].includes(f.type))
       ? `
@@ -75,8 +74,6 @@ ${
 const ${pascal(entity.name)}${pascal(
     toLink.fromField.name
   )}Tab: FC<Omit<TabProps, 'children'>> = (props) => {
-  const translate = useTranslate();
-
   return (<Tab {...props}>
     <ReferenceManyField
       label={false}
