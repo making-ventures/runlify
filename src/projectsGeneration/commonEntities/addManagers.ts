@@ -14,17 +14,72 @@ const addManagers = (system: SystemMetaBuilder) => {
     },
   });
   managers.setNeedFor('Менеджерские (административные) аккаунты');
-  managers.addField('title', undefined, {isTitleField: true}).setType('string');
-  managers.addField('lastName', 'Фамилия').setType('string').setRequired();
-  managers.addField('firstName', 'Имя').setType('string').setRequired();
-  managers.addLinkField('languages', 'languageId', 'Язык').setType('string');
-  managers.addField('email', 'Email').setType('string').setRequired(true);
-  managers.addField('phone', 'Телефон').setType('string');
+  managers.addField('title', undefined, {isTitleField: true})
+    .setTitles({
+      en: 'Title',
+      ru: 'Название',
+    })
+    .setType('string');
+  managers.addField('lastName', 'Фамилия')
+  .setTitles({
+      en: 'Lastname',
+      ru: 'Фамилия',
+    })
+    .setType('string')
+    .setRequired();
+  managers.addField('firstName', 'Имя')
+    .setTitles({
+      en: 'Firstname',
+      ru: 'Имя',
+    })
+    .setType('string')
+    .setRequired();
+  managers.addLinkField('languages', 'languageId', 'Язык')
+    .setTitles({
+      en: 'Language',
+      ru: 'Язык',
+    })
+    .setType('string');
+  managers.addField('email', 'Email')
+    .setTitles({
+      en: 'Email',
+      ru: 'Email',
+    })
+    .setType('string')
+    .setRequired(true);
+  managers.addField('phone', 'Телефон').setTitles({
+      en: 'Phone',
+      ru: 'Телефон',
+    })
+    .setType('string');
   managers.addImageField('photoId', 'Фото');
-  managers.addField('telegramLogin', 'Логин в Telegram').setType('string');
-  managers.addLinkField('units', 'unitId', 'Подразделение');
-  managers.addField('headOfUnit', 'Глава подразделения').setType('bool').setDefaultValueExpression('false').setRequired();
-  managers.addField('active', 'Активный').setType('bool').setDefaultValueExpression('true').setRequired();
+  managers.addField('telegramLogin', 'Логин в Telegram')
+    .setTitles({
+      en: 'Telegram login',
+      ru: 'Логин в Telegram',
+    })
+    .setType('string');
+  managers.addLinkField('units', 'unitId', 'Подразделение')
+  .setTitles({
+    en: 'Units',
+    ru: 'Подразделение',
+  });
+  managers.addField('headOfUnit', 'Глава подразделения')
+    .setTitles({
+      en: 'Head of unit',
+      ru: 'Глава подразделения',
+    })
+    .setType('bool')
+    .setDefaultValueExpression('false')
+    .setRequired();
+  managers.addField('active', 'Активный')
+  .setTitles({
+      en: 'Active',
+      ru: 'Активный',
+    })
+    .setType('bool')
+    .setDefaultValueExpression('true')
+    .setRequired();
   managers.addUniqueConstraint(['email']);
   managers.setMultitenancy('optional', false);
 
@@ -41,12 +96,47 @@ const addManagers = (system: SystemMetaBuilder) => {
     },
   });
   managerLogins.setNeedFor('Аккаунты (информация по логинам) пользователей бек-офиса (админы, менеджеры)');
-  managerLogins.addField('login').setType('string').setRequired();
-  managerLogins.addField('passwordHash').setType('string').setRequired();
-  managerLogins.addField('emailVerified').setType('bool').setRequired();
-  managerLogins.addField('initialPasswordChanged').setType('bool').setRequired();
-  managerLogins.addField('locked').setType('bool').setRequired();
-  managerLogins.addLinkField('managers', 'managerId').setRequired();
+  managerLogins.addField('login')
+    .setTitles({
+      en: 'Login',
+      ru: 'Логин',
+    })
+    .setType('string')
+    .setRequired();
+  managerLogins.addField('passwordHash')
+    .setTitles({
+      en: 'Password hash',
+      ru: 'Хэш пароля',
+    })
+    .setType('string')
+    .setRequired();
+  managerLogins.addField('emailVerified')
+    .setTitles({
+      en: 'Email verified',
+      ru: 'Email подтвержден',
+    })
+    .setType('bool')
+    .setRequired();
+  managerLogins.addField('initialPasswordChanged')
+    .setTitles({
+      en: 'Initial password changed',
+      ru: 'Исходный пароль изменен',
+    })
+    .setType('bool')
+    .setRequired();
+  managerLogins.addField('locked')
+    .setTitles({
+      en: 'Locked',
+      ru: 'Заблокирован',
+    })
+    .setType('bool')
+    .setRequired();
+  managerLogins.addLinkField('managers', 'managerId')
+    .setTitles({
+      en: 'Managers',
+      ru: 'Менеджеры',
+    })
+    .setRequired();
   managerLogins.addUniqueConstraint(['login']);
 
   // units
@@ -61,8 +151,19 @@ const addManagers = (system: SystemMetaBuilder) => {
       plural: 'Подразделения',
     },
   });
-  units.addField('title', undefined, {isTitleField: true}).setType('string').setRequired();
-  units.addLinkField('units', 'parentId').setType('int');
+  units.addField('title', undefined, {isTitleField: true})
+    .setTitles({
+      en: 'Title',
+      ru: 'Название',
+    })
+    .setType('string')
+    .setRequired();
+  units.addLinkField('units', 'parentId')
+  .setTitles({
+      en: 'Parent id',
+      ru: 'Родительское подразделение',
+    })
+    .setType('int');
 };
 
 export default addManagers;
