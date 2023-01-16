@@ -41,7 +41,7 @@ ${entities.map((entity) => {
         resultToValue={result => result?._all${pascalPlural(
           entity.name
         )}Meta?.count}
-        title={translate('${plural(entity.type)}.${entity.name}.title')}
+        title={translate('${plural(entity.type)}.${entity.name}.title.plural')}
         to='/${entity.name}'
       />`
 }).join(`
