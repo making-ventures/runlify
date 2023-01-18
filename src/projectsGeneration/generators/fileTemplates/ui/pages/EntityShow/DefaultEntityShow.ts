@@ -93,7 +93,7 @@ ${linksWithEntities
         link.fromField.name
       )}Tab label={translate('${plural(entity.type)}.${
         entity.name
-      }.title')} path='${entity.name}-${link.fromField.name}' />`
+      }.title.plural')} path='${entity.name}-${link.fromField.name}' />`
   )
   .map(pad4)
   .join('\n')}`
