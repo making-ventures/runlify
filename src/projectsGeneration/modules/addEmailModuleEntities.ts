@@ -32,7 +32,7 @@ const addEmailModuleEntities = (system: SystemMetaBuilder) => {
       plural: 'Template styles',
     },
     ru: {
-      singular: 'Стили шаблона',
+      singular: 'Стиль шаблона',
       plural: 'Стили шаблонов',
     },
   });
