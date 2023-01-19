@@ -10,10 +10,10 @@ export const addFilesCatalog = (system: SystemMetaBuilder): CatalogBuilder => {
     ru: {singular: 'Файл', plural: 'Файлы'},
   })
   files.addField('originalName', undefined, {isTitleField: true}).setType('string').setRequired()
-  files.addField('url').setType('string').setRequired()
+  files.addField('url').setType('string').setRequired().setShowInList(false)
   files.addField('mimetype').setType('string').setRequired() // contentType
-  files.addField('s3Key').setType('string').setRequired()
-  files.addField('eTag').setType('string').setRequired()
+  files.addField('s3Key').setType('string').setRequired().setShowInList(false)
+  files.addField('eTag').setType('string').setRequired().setShowInList(false)
 
   return files
 }
