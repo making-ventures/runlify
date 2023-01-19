@@ -31,7 +31,6 @@ export abstract class BaseFieldBuilder {
   updatableByUser = true
   showInList = true
   showInFilter = true
-  showInWidget = true
   showInCreate = true
   showInEdit = true
   constructor(name: string, defaultLanguage: string, title?: string) {
@@ -94,7 +93,7 @@ export abstract class BaseFieldBuilder {
     if ([StringType.Markdown, StringType.Json].includes(stringType)) {
       this.showInList = false
       this.showInFilter = false
-      this.showInWidget = false
+      this.showInList = false
     }
 
     return this
@@ -113,6 +112,31 @@ export abstract class BaseFieldBuilder {
 
     return this
   }
+
+  setShowInList(value = true) {
+    this.showInList = value
+
+    return this
+  }
+
+  setShowInFilter(value = true) {
+    this.showInFilter = value
+
+    return this
+  }
+
+  setShowInCreate(value = true) {
+    this.showInCreate = value
+
+    return this
+  }
+
+  setShowInEdit(value = true) {
+    this.showInEdit = value
+
+    return this
+  }
+
   setHidden(value = true) {
     this.hidden = value
 

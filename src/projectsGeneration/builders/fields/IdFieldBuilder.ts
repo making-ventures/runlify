@@ -50,7 +50,6 @@ export class IdFieldBuilder extends BaseFieldBuilder {
         showInCreate: this.showInCreate,
         showInEdit: this.showInEdit,
         showInFilter: this.showInFilter,
-        showInWidget: this.showInWidget,
         defaultDbValue: this.defaultDbValue,
       }
     } else if (this.type === 'string') {
@@ -64,7 +63,6 @@ export class IdFieldBuilder extends BaseFieldBuilder {
         showInCreate: this.showInCreate,
         showInEdit: this.showInEdit,
         showInFilter: this.showInFilter,
-        showInWidget: this.showInWidget,
         defaultDbValue: this.defaultDbValue,
         stringType: this.stringType,
       }

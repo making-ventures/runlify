@@ -9,7 +9,7 @@ export const uiListWidgetTmpl = ({
 }: EntityWideGenerationArgs) => {
   const fields = entity.fields
     .filter((f) => !f.hidden)
-    .filter(f => f.showInWidget)
+    .filter(f => f.showInList)
     .map(
       (f) => `<div>
   {\`${sentence(f.name)}: \${props.${f.name}}\`}

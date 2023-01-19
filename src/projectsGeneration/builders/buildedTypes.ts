@@ -94,7 +94,6 @@ type BaseField = {
   showInCreate: boolean
   showInEdit: boolean
   showInFilter: boolean
-  showInWidget: boolean
   defaultDbValue: DefaultDbValue
   defaultValueExpression?: string
   defaultBackendValueExpression?: string
