@@ -199,7 +199,7 @@ class SystemMetaBuilder {
       'Включение graphql playground (true | false)'
     )
 
-    this.addConfigVar('bootstrap.enabled', 'bool', true, true, 'Подготавливать окружеине при запуске');
+    this.addConfigVar('bootstrap.enabled', 'bool', false, true, 'Подготавливать окружеине при запуске');
 
     // kafka
     this.addConfigVar('kafka.enabled', 'bool', false, false, 'Кафка включена');
