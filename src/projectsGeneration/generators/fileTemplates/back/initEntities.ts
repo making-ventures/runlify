@@ -23,7 +23,7 @@ ${entities
   .map(
     (entity) => `await ctx.service('entities').upsert({
   id: Entity.${pascalSingular(entity.name)},
-  title: '${entity.title[defaultLanguage]}',
+  title: '${entity.title[defaultLanguage].plural}',
 });`
   )
   .map(pad1)
