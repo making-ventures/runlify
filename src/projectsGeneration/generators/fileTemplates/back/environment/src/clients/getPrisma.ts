@@ -19,10 +19,10 @@ ${
 }
 let prisma: PrismaClient | null = null;
 
-export const getPrisma = async (appName = 'someBack_Prisma') => {
+export const getPrisma = async () => {
   const {databaseMainWriteUri} = await getConfig();
 
-  log.info(appName, typeof addParamsToDatabaseUri);
+  log.info(typeof addParamsToDatabaseUri);
 
   // const url = addParamsToDatabaseUri(databaseMainWriteUri, {
   //   application_name: appName,

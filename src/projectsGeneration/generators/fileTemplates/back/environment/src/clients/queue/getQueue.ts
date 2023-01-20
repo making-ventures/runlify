@@ -19,11 +19,11 @@ ${
 }
 let queue: WorkerUtils | null = null;
 
-const getQueue = async (appName = 'someBack_Queue') => {
+const getQueue = async () => {
   if (!queue) {
     const {databaseMainWriteUri} = await getConfig();
 
-    log.info(appName, typeof addParamsToDatabaseUri);
+    log.info(typeof addParamsToDatabaseUri);
 
     // const url = addParamsToDatabaseUri(databaseMainWriteUri, {
     //   application_name: appName,

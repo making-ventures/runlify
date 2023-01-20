@@ -32,6 +32,7 @@ import {constantCase} from 'change-case';
 import nconf from 'nconf';
 import {exists, read} from 'fs-jetpack';
 import getConfigUtils from './getConfigUtils';
+import {ValueBasedOnRequired} from './types';
 ${
   options.skipWarningThisIsGenerated
     ? ''
@@ -52,9 +53,6 @@ const file = \`./config/\${envName}.json\`;
 if (exists(file)) {
   nconf.file({file});
 }
-
-type ValueBasedOnRequired<Req extends boolean, Val extends number | string | boolean | Date | bigint>
-  = Req extends true ? Val : Val | undefined
 
 export const getFromNconf = <T extends boolean>(name: string, required?: T): ValueBasedOnRequired<T, string> => {
   const value = nconf.get(constantCase(name)) || nconf.get(name);
