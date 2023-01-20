@@ -25,7 +25,7 @@ const getQueue = async (appName = 'someBack_Queue') => {
 
     log.info(appName, typeof addParamsToDatabaseUri);
 
-    // const url = addParamsToDatabaseUri(databaseUri, {
+    // const url = addParamsToDatabaseUri(databaseMainWriteUri, {
     //   application_name: appName,
     //   ...(process.env.NODE_ENV === 'production' ? {} : {connection_limit: '1'}),
     // });

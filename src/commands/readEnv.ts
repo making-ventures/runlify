@@ -18,7 +18,7 @@ module.exports = {
     info(process.env.SOME)
     info('DATABASE_URI')
     info(process.env.DATABASE_URI)
-    info('database.uri')
-    info(process.env['database.uri'])
+    info('database.main.write.uri')
+    info(process.env['database.main.write.uri'])
   },
 }
