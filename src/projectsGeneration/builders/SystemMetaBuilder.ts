@@ -107,6 +107,13 @@ class SystemMetaBuilder {
       'Строка подключения к основной базе только для чтения'
     )
     this.addConfigVar(
+      'database.main.readOnly.enabled',
+      'bool',
+      true,
+      false,
+      'Включена ли работа с запросами на чтение через отдельное подключение'
+    )
+    this.addConfigVar(
       'database.main.migration.uri',
       'string',
       false,
