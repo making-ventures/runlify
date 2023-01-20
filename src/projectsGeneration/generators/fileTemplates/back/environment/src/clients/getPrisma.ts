@@ -19,7 +19,7 @@ ${
 }
 let prisma: PrismaClient | null = null;
 
-export const getPrisma = async () => {
+export const getPrisma = async (connectionType: 'write' | 'readOnly') => {
   const {
     databaseMainWriteUri,
     databaseMainReadOnlyUri,
