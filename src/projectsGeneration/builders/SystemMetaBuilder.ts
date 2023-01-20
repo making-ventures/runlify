@@ -91,12 +91,27 @@ class SystemMetaBuilder {
       'Название окружения'
     )
 
+    // Main database
     this.addConfigVar(
-      'database.uri',
+      'database.main.write.uri',
       'string',
       true,
       'postgresql://postgres:password@localhost:5432',
-      'Строка подключения к основной базе данных'
+      'Строка подключения к основной базе данных записи'
+    )
+    this.addConfigVar(
+      'database.main.readOnly.uri',
+      'string',
+      false,
+      'postgresql://postgres:password@localhost:5432',
+      'Строка подключения к основной базе только для чтения'
+    )
+    this.addConfigVar(
+      'database.main.migration.uri',
+      'string',
+      false,
+      'postgresql://postgres:password@localhost:5432',
+      'Строка подключения к основной базе для миграций (должна быть прямой строкой к бд минуя pgbouncer, если он используется)'
     )
 
     this.addConfigVar(
