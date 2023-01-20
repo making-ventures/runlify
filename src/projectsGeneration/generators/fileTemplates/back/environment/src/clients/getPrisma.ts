@@ -20,7 +20,27 @@ ${
 let prisma: PrismaClient | null = null;
 
 export const getPrisma = async () => {
-  const {databaseMainWriteUri} = await getConfig();
+  const {
+    databaseMainWriteUri,
+    databaseMainReadOnlyUri,
+    databaseMainReadOnlyEnabled,
+  } = await getConfig();
+
+  let uri: string;
+
+  if (connectionType === 'write') {
+    uri = databaseMainWriteUri;
+  } else {
+    if (!databaseMainReadOnlyEnabled) {
+      throw new Error('Read only database connection cannot be used with the database.main.readOnly.enabled is not true');
+    }
+
+    if (!databaseMainReadOnlyUri) {
+      throw new Error('database.main.readOnly.uri must be set');
+    }
+
+    uri = databaseMainReadOnlyUri;
+  }
 
   log.info(typeof addParamsToDatabaseUri);
 
@@ -33,7 +53,7 @@ export const getPrisma = async () => {
     prisma = new PrismaClient({
       datasources: {
         db: {
-          url: databaseMainWriteUri,
+          url: uri,
         },
       },
     });
