@@ -20,22 +20,20 @@ ${
 let prisma: PrismaClient | null = null;
 
 export const getPrisma = async (appName = 'someBack_Prisma') => {
-  const config = await getConfig();
+  const {databaseMainWriteUri} = await getConfig();
 
   log.info(appName, typeof addParamsToDatabaseUri);
 
-  // const url = addParamsToDatabaseUri(config.databaseUri, {
+  // const url = addParamsToDatabaseUri(databaseMainWriteUri, {
   //   application_name: appName,
   //   ...(process.env.NODE_ENV === 'production' ? {} : {connection_limit: '1'}),
   // });
-
-  const url = config.databaseUri;
 
   if (!prisma) {
     prisma = new PrismaClient({
       datasources: {
         db: {
-          url,
+          url: databaseMainWriteUri,
         },
       },
     });
