@@ -32,7 +32,14 @@ export const getPrisma = async (connectionType: 'write' | 'readOnly') => {
     uri = databaseMainWriteUri;
   } else {
     if (!databaseMainReadOnlyEnabled) {
-      throw new Error('Read only database connection cannot be used with the database.main.readOnly.enabled is not true');
+      return new Proxy({}, {
+        get() {
+          throw new Error('Read only database connection cannot be used with the database.main.readOnly.enabled is not true');
+        },
+        apply: () => {
+          throw new Error('Read only database connection cannot be used with the database.main.readOnly.enabled is not true');
+        },
+      });
     }
 
     if (!databaseMainReadOnlyUri) {
