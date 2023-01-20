@@ -15,7 +15,6 @@ import passport from 'passport';
 import {json, raw} from 'body-parser';
 import restRouter from './rest/restRouter';
 import helmet from 'helmet';
-import {collectDefaultMetrics, register} from 'prom-client';
 import {initAdmPassport} from './adm/config/passport';${options.usersEnabled ? `
 import {initAppPassport} from './app/config/passport';
 import appAuthRouter from './app/authRouter';
@@ -26,6 +25,7 @@ import defaultContainer from './adm/services/defaultContainer';
 import healthRouter from './rest/healthRouter';
 import expressPlayground from 'graphql-playground-middleware-express';
 import getAdmServer from './adm/getAdmServer';
+import getMetricsHandler from './rest/getMetricsHandler';
 ${
   options.skipWarningThisIsGenerated
     ? ''
@@ -61,23 +61,14 @@ ${options.usersEnabled ? `
 app.use('/app/rest', appAuthRouter);` : ''}
 app.use('/adm/rest', admAuthRouter);
 
-collectDefaultMetrics();
-
-app.get('/metrics', async (_req, res) => {
-  try {
-    res.set('Content-Type', register.contentType);
-    res.end(await register.metrics());
-  } catch (error: any) {
-    res.status(500).end(error);
-  }
-});
-
 app.use('/rest', restRouter);
 
 app.use('/health', healthRouter);
 
 const start = async () => {
-  const context = await createContext(defaultContainer);
+  const ctx = await createContext(defaultContainer);
+
+  app.get('/metrics', getMetricsHandler(ctx));
 
   app.use('/app/graph', passport.authenticate('appJwt', {session: false}));
   app.use('/app/graph', graphqlUploadExpress({maxFiles: 10, maxFileSize: 50 * 1024 * 1024}) as RequestHandler);
@@ -94,7 +85,7 @@ ${options.usersEnabled ? `
   await admServer.start();
   admServer.applyMiddleware({app, path: admGraphPath});
 
-  context.service('stats').updateGauges();
+  ctx.service('stats').updateGauges();
 
   const port = 3000;
   const graphEndpoint = \`http://localhost:\${port}\${admServer.graphqlPath}\`;
