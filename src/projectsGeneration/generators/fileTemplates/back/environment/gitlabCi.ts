@@ -43,7 +43,7 @@ check:
   script:
     - ./check.sh
   variables:
-    DATABASE_URI: $TEST_DATABASE_URI
+    DATABASE_MAIN_WRITE_URI: $TEST_DATABASE_MAIN_WRITE_URI
 
 build:
   stage: build

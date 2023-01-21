@@ -14,7 +14,7 @@ export const genPrismaSchemaForEntitiesWithClientAdnDb = ({
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URI")
+  url      = env("DATABASE_MAIN_WRITE_URI")
 }
 
 ${joined}`
