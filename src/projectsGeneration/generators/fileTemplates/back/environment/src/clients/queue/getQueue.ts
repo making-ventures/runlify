@@ -30,14 +30,15 @@ const getQueue = async () => {
     //   ...(process.env.NODE_ENV === 'production' ? {} : {connection_limit: '1'}),
     // });
 
-    const wrkerUtils = await makeWorkerUtils({
+    const workerUtils = await makeWorkerUtils({
       connectionString: databaseMainWriteUri,
+      noPreparedStatements: true,
     });
 
     if (queue) {
-      wrkerUtils.release();
+      workerUtils.release();
     } else {
-      queue = wrkerUtils;
+      queue = workerUtils;
     }
   }
 

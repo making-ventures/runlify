@@ -32,14 +32,28 @@ export const getPrisma = async (connectionType: 'write' | 'readOnly') => {
     uri = databaseMainWriteUri;
   } else {
     if (!databaseMainReadOnlyEnabled) {
-      return new Proxy({}, {
-        get() {
-          throw new Error('Read only database connection cannot be used with the database.main.readOnly.enabled is not true');
+      return new Promise(
+        (resolve) => {
+          const msg = 'Read only database connection cannot be used with the database.main.readOnly.enabled is not true';
+          resolve(new Proxy({} as any, {
+            get(_target: PrismaClient, property: string | symbol) {
+              if (property === 'then') {
+                return undefined;
+              }
+
+              log.error(\`get: \${property.toString()}\`);
+
+              log.error(msg);
+              throw new Error(msg);
+            },
+            apply: () => {
+              log.error('apply');
+              log.error(msg);
+              throw new Error(msg);
+            },
+          }) as PrismaClient);
         },
-        apply: () => {
-          throw new Error('Read only database connection cannot be used with the database.main.readOnly.enabled is not true');
-        },
-      }) as PrismaClient;
+      );
     }
 
     if (!databaseMainReadOnlyUri) {
