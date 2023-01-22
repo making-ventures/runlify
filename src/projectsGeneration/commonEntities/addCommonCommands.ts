@@ -40,7 +40,7 @@ const addCommonCommands = (system: SystemMetaBuilder) => {
   system.addCommnad(
     'back',
     'test',
-    'jest --maxWorkers 8',
+    'jest --maxWorkers 2',
     'Запуска тестов',
   );
   system.addCommnad(
