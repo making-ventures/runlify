@@ -41,16 +41,28 @@ export const getTsDefaultTypeValueExpression = (field: Field): string | undefine
   }
 };
 
-export const getTrivialEditComponent = (entity: Entity, field: Field, type: 'create' | 'edit' | 'filter', additionalProps: string[] = []) => {
+export const getTrivialEditComponent = (
+  entity: Entity,
+  field: Field,
+  type: 'create' | 'edit' | 'filter',
+  additionalProps: string[] = [],
+  postfix?: {source: string, label: string}
+) => {
   return `<${getCompNameToEditScalar(field.type)}${additionalProps.map(p => `\n  ${p}`).join('')}
   fullWidth
   sx={{m: 1}}
-  source='${field.name}'${field.required ? '' : '\n  defaultValue={null}'}${field.required && type !== 'filter' && field.type !== 'bool' ? `\n  required` : ''}
-  ${getFieldLabel(entity, field)}
+  source='${field.name}${postfix ? postfix.source : ''}'${field.required ? '' : '\n  defaultValue={null}'}${field.required && type !== 'filter' && field.type !== 'bool' ? `\n  required` : ''}
+  ${getFieldLabel(entity, field, postfix?.label)}
 />`;
 };
 
-export const getEditComponent = (entity: Entity, allEntities: Map<string, Entity>, field: Field, type: 'create' | 'edit' | 'filter', additionalProps: string[] = []) => {
+export const getEditComponent = (
+  entity: Entity,
+  allEntities: Map<string, Entity>,
+  field: Field, type: 'create' | 'edit' | 'filter',
+  additionalProps: string[] = [],
+  postfix?: {source: string, label: string},
+) => {
   if (field.category === 'link') {
     const linkedEntity = allEntities.get(field.externalEntity);
     if (!linkedEntity) {
@@ -93,7 +105,7 @@ export const getEditComponent = (entity: Entity, allEntities: Map<string, Entity
       additionalProps.push('maxRows={24}');
     }
 
-    return getTrivialEditComponent(entity, field, type, additionalProps);
+    return getTrivialEditComponent(entity, field, type, additionalProps, postfix);
   }
 };
 

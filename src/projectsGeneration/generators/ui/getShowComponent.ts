@@ -10,11 +10,9 @@ import {
 import { isImageFileRef } from '../../metaUtils'
 import { getCompNameToShowScalar } from './componentNames/show/getCompNameToShowScalar'
 
-export const getFieldLabel = (entity: Entity, field: Field) => {
-  return `label='${plural(entity.type)}.${entity.name}.fields.${
-    field.name
-  }'`
-}
+export const getFieldLabel = (entity: Entity, field: Field, postfix?: string) => postfix
+  ? `label=\`t('${plural(entity.type)}.${entity.name}.fields.${field.name}')\``
+  : `label='${plural(entity.type)}.${entity.name}.fields.${field.name}'`
 
 export const getScalarShowComponent = (entity: Entity, field: ScalarField) => {
   return `<${getCompNameToShowScalar(field)} source='${
