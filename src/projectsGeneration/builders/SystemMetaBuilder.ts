@@ -20,7 +20,7 @@ import {
   ProjectCategory,
   System,
 } from './buildedTypes'
-import { addFilesCatalog } from '../defaultCatalogs/files'
+import { addFilesCatalog } from '../defaultCatalogs'
 import * as R from 'ramda'
 import ReportBuilder from './ReportBuilder'
 import RestApiBuilder from './RestApiBuilder'
@@ -635,6 +635,18 @@ class SystemMetaBuilder {
       entity: el.entity.build(),
       options: el.options,
     }))
+  }
+
+  getExternalSearchFields(): Array<CatalogBuilder | DocumentBuilder | InfoRegistryBuilder | SumRegistryBuilder> {
+    return [
+      this.catalogs,
+      this.documents,
+      this.infoRegistries,
+      this.sumRegistries,
+    ]
+      .flat()
+      .map(e => e.entity)
+      .filter((e) => e.externalSearch)
   }
 
   setMemory(request: string, limit?: string) {
