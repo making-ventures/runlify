@@ -7,7 +7,7 @@ import {
 } from '../../../../../../utils/cases'
 import { singular } from 'pluralize'
 import { EntityWideGenerationArgs } from '../../../../../args'
-import { addComma, generatedWarning, pad3 } from '../../../../../utils'
+import { addComma, generatedWarning, pad } from '../../../../../utils'
 import { Document } from '../../../../../builders'
 
 export const prismaServiceBaseClassTmpl = ({
@@ -29,28 +29,36 @@ export const prismaServiceBaseClassTmpl = ({
       .filter((f) => !f.hidden)
 
   let isExternalSearch = entity.externalSearch;
+  const isDocument = entity.type === 'document';
+  const isSumRegistry = entity.type === 'sumRegistry';
+  const isInfoRegistry = entity.type === 'infoRegistry';
 
   let extendedType = 'BaseService';
   if (isExternalSearch) {
     extendedType = 'ElasticBaseSearch';
   }
 
-  if (entity.type === 'document') {
+  if (isDocument) {
     extendedType = 'DocumentBaseService';
     if (isExternalSearch) {
       extendedType = 'ElasticDocumentBaseService';
     }
   }
 
-  if (entity.type === 'sumRegistry') {
+  if (isSumRegistry) {
     extendedType = 'SumRegistryService';
     if (isExternalSearch) {
       extendedType = 'ElasticSumRegistryService';
     }
   }
 
+  if (isInfoRegistry) {
+    extendedType = 'InfoRegistryService';
+    if (isExternalSearch) {
+      extendedType = 'ElasticInfoRegistryService';
+    }
+  }
 
-    const isDocument = entity.type === 'document';
   let registriesImports = '';
   let registries = '';
 
@@ -190,40 +198,32 @@ export class ${pascal(entity.name)}Service extends ${extendedType}<
   constructor(public ctx: Context) {
     super(ctx, ctx.prisma.${camelSingular(entity.name)},${isExternalSearch ? ` ctx.prisma.external${pascal(entity.name)}SearchTracking,`: ''} config);
     initBuiltInHooks(this);
-    initUserHooks(this);
+    initUserHooks(this);${getDefaultableFields().length > 0 ? `
+
+    this.augmentByDefault = async <T>(
+      currentData: Record<string, any>,
+    ): Promise<T & Autodefinable${pascalSingular(entity.name)}Part> => {
+      const defaultFieldConstructors = {
+${pad(4)(
+          getDefaultableFields()
+            .map((f) => `${f.name}: async () => ${f.defaultBackendValueExpression}`)
+            .map(addComma)
+            .join('\n')
+        )}
+      };
+
+      const pairedConstructors = R.toPairs(defaultFieldConstructors);
+
+      const resultedPairs: R.KeyValuePair<string, any>[] = [];
+      for (const [key, constructor] of pairedConstructors) {
+        resultedPairs.push([key, key in currentData && currentData[key] ? currentData[key] : await constructor()]);
+      }
+
+      return R.mergeLeft(currentData, R.fromPairs(resultedPairs)) as T & Autodefinable${pascalSingular(
+          entity.name
+        )}Part;
+    };` : ''}
   }
-
-  augmentByDefault = async <T>(
-    currentData: Record<string, any>,
-  ): Promise<T & Autodefinable${pascalSingular(entity.name)}Part> => ${
-    getDefaultableFields().length
-      ? `{
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const ctx = this.ctx;
-
-    const defaultFieldConstructors = {
-${pad3(
-        getDefaultableFields()
-          .map((f) => `${f.name}: async () => ${f.defaultBackendValueExpression}`)
-          .map(addComma)
-          .join('\n')
-      )}
-    };
-
-    const pairedConstructors = R.toPairs(defaultFieldConstructors);
-
-    const resultedPairs: R.KeyValuePair<string, any>[] = [];
-    for (const [key, constructor] of pairedConstructors) {
-      resultedPairs.push([key, key in currentData && currentData[key] ? currentData[key] : await constructor()]);
-    }
-
-    return R.mergeLeft(currentData, R.fromPairs(resultedPairs)) as T & Autodefinable${pascalSingular(
-        entity.name
-      )}Part;
-  }`
-      : `currentData as T & Autodefinable${pascalSingular(entity.name)}Part`
-  };
 }
 `
 };

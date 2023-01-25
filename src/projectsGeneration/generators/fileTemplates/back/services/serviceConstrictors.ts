@@ -8,9 +8,9 @@ const graphServiceConstrictorsTmpl = ({
   options,
 }: ProjectWideGenerationArgs) => `${entities.map(
   (m) =>
-    `import {${m.previewFeatures.includes('classService') ? 'Additional' : 'get'}${pascal(m.name)}Service} from './${pascal(
+    `import {Additional${pascal(m.name)}Service} from './${pascal(
       m.name
-    )}Service/${m.previewFeatures.includes('classService') ? 'Additional' : ''}${pascal(m.name)}Service';`
+    )}Service/Additional${pascal(m.name)}Service';`
 ).join(`
 `)}
 import {getHelpService} from './HelpService/HelpService';
@@ -25,9 +25,7 @@ ${
 }
 export const baseServiceConstrictors: BaseServiceConstrictors = {
   help: getHelpService,
-  ${entities.map((m) => m.previewFeatures.includes('classService') ?
-  `${m.name}: (ctx) => new Additional${pascal(m.name)}Service(ctx),` :
-  `${m.name}: get${pascal(m.name)}Service,`).join('\n  ')}
+  ${entities.map((m) => `${m.name}: (ctx) => new Additional${pascal(m.name)}Service(ctx),`).join('\n  ')}
 };
 
 const serviceConstrictors: ServiceConstrictors = {
