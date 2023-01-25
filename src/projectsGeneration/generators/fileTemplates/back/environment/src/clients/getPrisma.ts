@@ -39,6 +39,10 @@ export const getPrisma = async (connectionType: 'write' | 'readOnly') => {
             return undefined;
           }
 
+          if (property === '$disconnect') {
+            return () => log.info('noop $disconnect');
+          }
+
           log.error(\`get: \${property.toString()}\`);
 
           log.error(msg);
