@@ -58,7 +58,7 @@ const addCommonCommands = (system: SystemMetaBuilder) => {
   system.addCommnad(
     'back',
     'prisma:deploy',
-    'prisma migrate deploy --preview-feature',
+    'prisma migrate deploy --schema prisma/deployConnection.prisma',
     'Мигрирования базы данных',
   );
   system.addCommnad(
