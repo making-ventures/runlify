@@ -347,8 +347,16 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
     this.predefinedElements.push(...fields)
   }
 
+  setPredefinedElements(fields: Record<string, any>[]) {
+    this.predefinedElements = fields
+  }
+
   addDevPredefinedElements(fields: Record<string, any>[]) {
     this.devPerefinedElements.push(...fields)
+  }
+
+  setDevPredefinedElements(fields: Record<string, any>[]) {
+    this.devPerefinedElements = fields
   }
 
   setMultitenancy(
