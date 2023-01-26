@@ -412,6 +412,7 @@ class SystemMetaBuilder {
     }
 
     const catalog = new CatalogBuilder(name, this.defaultLanguage, title)
+    catalog.setPreviewFeature('classService');
 
     this.catalogs.push({ entity: catalog, options })
 
@@ -483,7 +484,9 @@ class SystemMetaBuilder {
     }
 
     const catalog = new CatalogBuilder(name, this.defaultLanguage, title)
-
+    if (['rlw'].includes(options.projectPrefix)) {
+      catalog.setPreviewFeature('classService');
+    }
     this.catalogs.push({ entity: catalog, options })
 
     return catalog
@@ -511,6 +514,7 @@ class SystemMetaBuilder {
     }
 
     const document = new DocumentBuilder(name, this.defaultLanguage, title)
+    document.setPreviewFeature('classService');
 
     this.documents.push({ entity: document, options })
 
@@ -558,6 +562,9 @@ class SystemMetaBuilder {
       this.defaultLanguage,
       title
     )
+    if (['rlw'].includes(options.projectPrefix)) {
+      infoRegistry.setPreviewFeature('classService');
+    }
 
     this.infoRegistries.push({ entity: infoRegistry, options })
 
@@ -588,6 +595,10 @@ class SystemMetaBuilder {
       title,
       options,
     )
+
+    if (['rlw'].includes(this.defOpts.projectPrefix)) {
+      sumRegistry.setPreviewFeature('classService');
+    }
 
     this.sumRegistries.push({ entity: sumRegistry, options: this.defOpts })
 

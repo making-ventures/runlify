@@ -8,9 +8,9 @@ const graphServiceConstrictorsTmpl = ({
   options,
 }: ProjectWideGenerationArgs) => `${entities.map(
   (m) =>
-    `import {Additional${pascal(m.name)}Service} from './${pascal(
+    `import {${m.previewFeatures.includes('classService') ? 'Additional' : 'get'}${pascal(m.name)}Service} from './${pascal(
       m.name
-    )}Service/Additional${pascal(m.name)}Service';`
+    )}Service/${m.previewFeatures.includes('classService') ? 'Additional' : ''}${pascal(m.name)}Service';`
 ).join(`
 `)}
 import {getHelpService} from './HelpService/HelpService';

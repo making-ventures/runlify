@@ -8,10 +8,11 @@ const graphBaseServicesTmpl = ({
   options,
 }: ProjectWideGenerationArgs) => `${entities.map(
   (m) =>
-    `import {Additional${pascal(m.name)}Service} from './${pascal(
+    `import {${m.previewFeatures.includes('classService') ? 'Additional' : ''}${pascal(m.name)}Service} from './${pascal(
       m.name
-    )}Service/Additional${pascal(m.name)}Service';`
-).join('\n')}
+    )}Service/${m.previewFeatures.includes('classService') ? 'Additional' : ''}${pascal(m.name)}Service';`
+).join(`
+`)}
 import {HelpService} from './HelpService/HelpService';
 ${
   options.skipWarningThisIsGenerated
@@ -22,7 +23,8 @@ ${
 }
 export interface BaseServices {
   help: HelpService;
-  ${entities.map((m) => `${m.name}: Additional${pascal(m.name)}Service;`).join('\n')}
+  ${entities.map((m) => `${m.name}: ${m.previewFeatures.includes('classService') ? 'Additional' : ''}${pascal(m.name)}Service;`).join(`
+  `)}
 }
 `
 
