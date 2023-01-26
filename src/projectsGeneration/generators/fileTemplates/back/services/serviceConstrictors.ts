@@ -25,9 +25,7 @@ ${
 }
 export const baseServiceConstrictors: BaseServiceConstrictors = {
   help: getHelpService,
-  ${entities.map((m) => m.previewFeatures.includes('classService') ?
-  `${m.name}: (ctx) => new Additional${pascal(m.name)}Service(ctx),` :
-  `${m.name}: get${pascal(m.name)}Service,`).join('\n  ')}
+  ${entities.map((m) => `${m.name}: (ctx) => new Additional${pascal(m.name)}Service(ctx),`).join('\n  ')}
 };
 
 const serviceConstrictors: ServiceConstrictors = {

@@ -35,8 +35,14 @@ export const configTmpl = ({
   )
 
   const isDocument = entity.type === 'document';
+  const isInfoRegistry = entity.type === 'infoRegistry';
 
-  const configType = isDocument ? 'DocumentConfig' : 'ServiceConfig';
+  let configType = 'ServiceConfig';
+  if (isDocument) {
+    configType = 'DocumentConfig'
+  } else if (isInfoRegistry) {
+    configType = 'InfoRegistryConfig'
+  }
 
   let docRegistries: Array<SumRegistry | InfoRegistry> = [];
   if (isDocument) {
@@ -88,8 +94,9 @@ const config: ${configType} = {
   registrarDependedRegistries: ${arrToStr(registrarDependedRegistries.map((r) => singular(r.name)))},`
     : ''}${externalSearchDeps.length > 0 ? `
   externalSearchDeps: {
-    ${externalSearchDeps.map(([key, val]) => `'${key}': '${val}',`).join('\n')}
-  }` : ''}
+${externalSearchDeps.map(([key, val]) => `'${key}': '${val}',`).map(pad(2)).join('\n')}
+  },` : ''}${isInfoRegistry ? `
+  period: '${entity.period}',` : ''}
 };
 
 export default config;
