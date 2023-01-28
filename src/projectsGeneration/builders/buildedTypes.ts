@@ -380,4 +380,4 @@ export type System = {
 
 export type EtityType = 'catalog' | 'document' | 'infoRegistry' | 'sumRegistry'
 
-export type PreviewFeature = 'classService'
+export type PreviewFeature = never;
