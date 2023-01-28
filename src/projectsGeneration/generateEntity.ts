@@ -26,7 +26,7 @@ import { uiEntityShowDefaultMainTabTmpl } from './generators/fileTemplates/ui/pa
 import { uiEntityShowDependencyTabTmpl } from './generators/fileTemplates/ui/pages/EntityShow/DependencyTab'
 import { uiDefaultActionTmpl } from './generators/fileTemplates/ui/pages/EntityShow/DefaultActions'
 import { writeFileIfNotExists } from './utils'
-import { write, exists, renameAsync, remove } from 'fs-jetpack'
+import { write } from 'fs-jetpack'
 import { uiAdditionalTabsTmpl } from './generators/fileTemplates/ui/pages/EntityShow/additionalTabs'
 import { backAdditionalResolversTmpl } from './generators/fileTemplates/back/graph/additionalResolvers'
 import { backEntityPermissionToGraphqlTmpl } from './generators/fileTemplates/back/graph/entityPermissionToGraphqlTmpl'
@@ -95,15 +95,6 @@ export const generateEntity = async (
       allInfoRegistries,
     )
     await write(configPath, config)
-
-    if (exists(join(serviceDir, 'additionalMethods.ts'))) {
-      await renameAsync(join(serviceDir, 'additionalMethods.ts'), 'additionalMethods.ts_')
-    }
-
-    // todo: delete after regen
-    if (exists(join(serviceDir, 'additionalMethods.ts_'))) {
-      await remove(join(serviceDir, 'additionalMethods.ts_'))
-    }
 
     await writeFileIfNotExists(
       join(serviceDir, 'initUserHooks.ts'),
