@@ -222,6 +222,7 @@ class SystemMetaBuilder {
     )
 
     this.addConfigVar('bootstrap.enabled', 'bool', false, false, 'Подготавливать окружеине при запуске');
+    this.addConfigVar('authorization.backendChecks.enabled', 'bool', false, false, 'Проверка авторизации на бекенде включены');
 
     // kafka
     this.addConfigVar('kafka.enabled', 'bool', false, false, 'Кафка включена');
