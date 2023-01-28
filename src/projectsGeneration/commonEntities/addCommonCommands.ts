@@ -82,7 +82,7 @@ const addCommonCommands = (system: SystemMetaBuilder) => {
   system.addCommnad(
     'back',
     'init:permissions',
-    'yarn ts-node:withContext src/init/permissions/initPermissions.ts',
+    'yarn ts-node:withContext src/init/roles/initRoles.ts',
     'Инициализации системы ролевой модели',
   );
   system.addCommnad(
