@@ -15,7 +15,6 @@ export const addElasticSearch = (system: SystemMetaBuilder) => {
     const registrarDepended = field.name === 'spendings';
 
     const externalSearchTrackings = system.addInfoRegistry(field.externalSearchName, false, {plural: `External ${field.name} search tracking`, singular: `External ${field.name} search tracking`})
-    externalSearchTrackings.setPreviewFeature('classService')
     externalSearchTrackings
       .setNeedFor(`Данные на основе которых можно понять, какие ${field.name} нужно обновить во внешней базе для поиска`)
     if (registrarDepended) {
