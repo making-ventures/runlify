@@ -107,7 +107,8 @@ ${options.usersEnabled ? `
 };
 
 start().catch(error => {
-  log.error(error);
+  // eslint-disable-next-line no-console
+  console.error(error);
 
   throw error;
 });
