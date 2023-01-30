@@ -19,15 +19,17 @@ ${
 `
 }
 const initEntities = async (ctx: ${contextName}) => {
+  await ctx.service('entities').createMany([
 ${entities
   .map(
-    (entity) => `await ctx.service('entities').upsert({
+    (entity) => `{
   id: Entity.${pascalSingular(entity.name)},
   title: '${entity.title[defaultLanguage].plural}',
-});`
+}`
   )
   .map(pad1)
-  .join('\n')}
+  .join(',\n')}
+  ]);
 };
 
 export default initEntities;

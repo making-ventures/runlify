@@ -31,18 +31,20 @@ ${
 `
 }
 const init${pascal(entity.name)} = async (ctx: ${contextName}) => {
+  await ctx.service('${entity.name}').createMany([
 ${entity.predefinedElements
   .map(
-    (el) => `await ctx.service('${entity.name}').upsert({
+    (el) => `{
   id: ${pascal(singular(entity.name))}.${pascal(el.id)},
 ${R.toPairs(R.omit(['id'], el))
   .map((item) => `${item[0]}: ${toTsValue(item[1])},`)
   .map(pad1)
   .join('\n')}
-});`
+}`
   )
   .map(pad1)
-  .join('\n')}
+  .join(',\n')}
+  ]);
 };
 
 export default init${pascal(entity.name)};
