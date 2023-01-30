@@ -22,7 +22,7 @@ const initEntities = async (ctx: ${contextName}) => {
   await ctx.service('entities').createMany([
 ${entities
   .map(
-    (entity) => ` {
+    (entity) => `  {
     id: Entity.${pascalSingular(entity.name)},
     title: '${entity.title[defaultLanguage].plural}',
   },`
