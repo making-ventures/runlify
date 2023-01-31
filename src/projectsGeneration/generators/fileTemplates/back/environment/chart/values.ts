@@ -58,9 +58,6 @@ back:
     memory: "${system.back.limits.memory}"
     cpu: "${system.back.limits.cpu}"
 
-ingress:
-  enabled: true
-
 metrics:
   enabled: true
 
@@ -111,6 +108,7 @@ database:
   uri: ''
 
 ingress:
+  enabled: true
   annotations:
     nginx.ingress.kubernetes.io/limit-connections: "100"
     nginx.ingress.kubernetes.io/limit-rps: "300"
