@@ -19,6 +19,12 @@ class DeploymentBuilder extends BaseBuilder {
     }
   }
 
+  setReplicas(replicas: number) {
+    this.replicas = replicas
+
+    return this
+  }
+
   setMemory(request: string, limit?: string) {
     this.requests.memory = request
 
