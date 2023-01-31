@@ -39,7 +39,7 @@ kind: Deployment
 metadata:
   name: ${options.k8sChartName || prefix}-back
 spec:
-  replicas: {{ $.Values.app.replicas }}
+  replicas: {{ $.Values.back.replicas }}
   strategy:
     type: RollingUpdate
     rollingUpdate:

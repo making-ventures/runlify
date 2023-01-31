@@ -51,6 +51,7 @@ deployment:
 
 back:
   enabled: true
+  replicas: ${system.back.replicas}
   requests:
     memory: "${system.back.requests.memory}"
     cpu: "${system.back.requests.cpu}"
