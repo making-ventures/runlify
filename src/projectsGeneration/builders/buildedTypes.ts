@@ -315,10 +315,15 @@ export type MemoryAndCpu = {
   cpu: string
 }
 
-export type Worker = BaseEntity & {
+export type BaseDeployment = {
+  replicas: number
   requests: MemoryAndCpu
   limits: MemoryAndCpu
 }
+
+export type Back = BaseDeployment
+
+export type Worker = BaseDeployment & BaseEntity
 
 export type InfoRegistryPeriod =
   | 'notPeriodic'
@@ -347,11 +352,6 @@ export type Entity = Document | Catalog | InfoRegistry | SumRegistry
 export interface DeployEnvironment {
   name: string
   clusterName: string
-}
-
-export type Back = {
-  requests: MemoryAndCpu
-  limits: MemoryAndCpu
 }
 
 export type System = {

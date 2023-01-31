@@ -1,7 +1,8 @@
 import { MemoryAndCpu, Worker } from './buildedTypes'
 import BaseBuilder from './BaseBuilder'
 
-class WorkerBuilder extends BaseBuilder {
+class DeploymentBuilder extends BaseBuilder {
+  replicas: number = 1
   requests: MemoryAndCpu = { memory: '64Mi', cpu: '0.15' }
   limits: MemoryAndCpu = { memory: '64Mi', cpu: '0.15' }
 
@@ -12,6 +13,7 @@ class WorkerBuilder extends BaseBuilder {
   build(): Worker {
     return {
       ...super.build(),
+      replicas: this.replicas,
       requests: this.requests,
       limits: this.limits,
     }
@@ -42,4 +44,4 @@ class WorkerBuilder extends BaseBuilder {
   }
 }
 
-export default WorkerBuilder
+export default DeploymentBuilder

@@ -16,7 +16,6 @@ import {
   DeployEnvironment,
   FieldType,
   Glossary,
-  MemoryAndCpu,
   ProjectCategory,
   System,
 } from './buildedTypes'
@@ -24,7 +23,7 @@ import { addFilesCatalog } from '../defaultCatalogs'
 import * as R from 'ramda'
 import ReportBuilder from './ReportBuilder'
 import RestApiBuilder from './RestApiBuilder'
-import WorkerBuilder from './WorkerBuilder'
+import DeploymentBuilder from './DeploymentBuilder'
 import RoleBuilder from './RoleBuilder'
 import TelegramBotBuilder from './TelegramBotBuilder'
 
@@ -48,7 +47,7 @@ class SystemMetaBuilder {
   telegramBots: TelegramBotBuilder[] = []
   languages: string[] = []
   restApis: RestApiBuilder[] = []
-  workers: WorkerBuilder[] = []
+  workers: DeploymentBuilder[] = []
   roles: RoleBuilder[] = []
   defaultLanguage: string
   defOpts: BootstrapEntityOptions
@@ -57,8 +56,10 @@ class SystemMetaBuilder {
   prefix = 'notSet'
   needFor = 'notSet'
 
-  requests: MemoryAndCpu = { memory: '128Mi', cpu: '0.15' }
-  limits: MemoryAndCpu = { memory: '256Mi', cpu: '1' }
+  back: DeploymentBuilder
+
+  // requests: MemoryAndCpu = { memory: '128Mi', cpu: '0.15' }
+  // limits: MemoryAndCpu = { memory: '256Mi', cpu: '1' }
 
   // space = '';
   constructor(
@@ -69,6 +70,9 @@ class SystemMetaBuilder {
     this.defOpts = defOpts
     this.setPrefix(prefix)
     this.setName(prefix)
+    this.back = new DeploymentBuilder('back', defaultLanguage);
+
+
     this.addConfigVar(
       'app.name',
       'string',
@@ -460,7 +464,7 @@ class SystemMetaBuilder {
       throw new Error(`There is already rest api with name "${name}"`)
     }
 
-    const worker = new WorkerBuilder(name, this.defaultLanguage, title)
+    const worker = new DeploymentBuilder(name, this.defaultLanguage, title)
 
     this.workers.push(worker)
 
@@ -643,29 +647,29 @@ class SystemMetaBuilder {
       .filter((e) => e.externalSearch)
   }
 
-  setMemory(request: string, limit?: string) {
-    this.requests.memory = request
+  // setMemory(request: string, limit?: string) {
+  //   this.requests.memory = request
 
-    if (limit) {
-      this.limits.memory = limit
-    } else {
-      this.limits.memory = request
-    }
+  //   if (limit) {
+  //     this.limits.memory = limit
+  //   } else {
+  //     this.limits.memory = request
+  //   }
 
-    return this
-  }
+  //   return this
+  // }
 
-  setCpu(request: string, limit?: string) {
-    this.requests.cpu = request
+  // setCpu(request: string, limit?: string) {
+  //   this.requests.cpu = request
 
-    if (limit) {
-      this.limits.cpu = limit
-    } else {
-      this.limits.cpu = request
-    }
+  //   if (limit) {
+  //     this.limits.cpu = limit
+  //   } else {
+  //     this.limits.cpu = request
+  //   }
 
-    return this
-  }
+  //   return this
+  // }
 
   build(): System {
     const sortByName = <T extends { entity: { name: string } }>(entries: T[]) =>
@@ -703,10 +707,7 @@ class SystemMetaBuilder {
         worker.build()
       ),
       roles: R.sortBy(R.prop('name'), this.roles).map((role) => role.build()),
-      back: {
-        requests: this.requests,
-        limits: this.limits,
-      },
+      back: this.back.build(),
     }
   }
 

@@ -10,7 +10,8 @@ export const uiChartValuesTmpl = ({
     : `
 # ${generatedWarning}
 `
-}global:
+}
+global:
   env: noName
   clusterName: noName
   deployKind: noName

@@ -12,7 +12,8 @@ export const chartValuesTmpl = ({
     : `
 # ${generatedWarning}
 `
-}global:
+}
+global:
   env: noName
   clusterName: noName
   deployKind: noName
