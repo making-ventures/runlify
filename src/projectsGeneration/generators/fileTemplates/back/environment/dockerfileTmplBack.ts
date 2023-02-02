@@ -26,7 +26,8 @@ RUN rm -rf /root/.cache/prisma/
 RUN rm -fr node_modules && yarn install --frozen-lockfile
 COPY . .
 
-RUN npm run prisma:gen
+RUN npm run prisma:gen${options.sharding ? `
+RUN npm run shards:gen` : ''}
 RUN npm run build
 
 # Actual image (this version of node required for email sending by email-templates, not booster)
