@@ -241,7 +241,7 @@ class SystemMetaBuilder {
     // this.addConfigVar('kafka.queue.autoCommitInterval', 'int', false, 10000, 'Потребитель будет фиксировать смещения по истечении заданного периода, например, пяти секунд. Значение в миллисекундах  ');
     // this.addConfigVar('kafka.queue.autoCommitThreshold', 'int', false, 1000, 'Потребитель будет фиксировать смещения после разрешения заданного количества сообщений, например тысячи сообщений');
     this.addConfigVar('kafka.queue.acks', 'int', false, 1, '`-1`(all) все несинхронизированные реплики должны подтвердить (по умолчанию), `0` нет подтверждений, `1` только ждет подтверждения лидера');
-    this.addConfigVar('kafka.ssl.enabled', 'bool', false, true, 'Включена работа по ssl');
+    this.addConfigVar('kafka.ssl.enabled', 'bool', true, true, 'Включена работа по ssl');
     this.addConfigVar('kafka.ssl.rejectUnauthorized', 'bool', false, false, 'Запрещать невалидный ssl сертификат');
 
     // es
