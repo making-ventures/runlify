@@ -94,6 +94,13 @@ class SystemMetaBuilder {
       'dev',
       'Название окружения'
     )
+    this.addConfigVar(
+      'app.ui.url',
+      'string',
+      false,
+      'http://localhost:4000',
+      'Урл интерфейса конечного пользователя (без конечного слеша)'
+    )
 
     // Main database
     this.addConfigVar(
@@ -139,7 +146,7 @@ class SystemMetaBuilder {
       'appSecret',
       'Секрет для подписи JWT-токенов приложения пользователей'
     )
-
+    
     this.addConfigVar(
       's3.accessKeyId',
       'string',
@@ -155,6 +162,13 @@ class SystemMetaBuilder {
       'Секретный ключ для авторизации в S3'
     )
 
+    this.addConfigVar(
+      'admin.ui.url',
+      'string',
+      false,
+      'http://localhost:8080',
+      'Урл административного интерфейса (без конечного слеша)'
+    )
     this.addConfigVar(
       'admin.recaptcha.secretKey',
       'string',

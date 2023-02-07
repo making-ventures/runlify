@@ -47,7 +47,7 @@ const addAuditLogs = (system: SystemMetaBuilder) => {
     },
     ru: {
       singular: 'Аудит',
-      plural: 'Аудиты',
+      plural: 'Аудит',
     },
   })
   auditLogs.setNeedFor('Аудит системы')
