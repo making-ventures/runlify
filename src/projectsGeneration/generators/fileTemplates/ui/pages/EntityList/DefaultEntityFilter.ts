@@ -5,8 +5,6 @@ import { getCompNamesToEditField } from '../../../../ui/componentNames/edit/getC
 import { EntityWideGenerationArgs } from '../../../../../args'
 import { getEntityField } from '../../../../../builders/utils/accessFunctions'
 import { addComma, pad3, generatedWarning } from '../../../../../utils'
-import { getFieldLabel } from '../../../../ui/getShowComponent'
-import { Field } from '../../../../../builders/buildedTypes'
 
 export const uiDefaultFilterTmpl = ({
   allEntities,
@@ -65,14 +63,8 @@ const Default${pascalSingular(entity.name)}Filter: FC<any> = (props) => {
     <Filter {...props}>${
       hasSearch
         ? `
-      <TextInput${
-        entity.fields.some((f) => f.name === 'search')
-          ? `\n        ${getFieldLabel(
-              entity,
-              entity.fields.find((f) => f.name === 'search') as Field
-            )}`
-          : ''
-      }
+      <TextInput
+        label='ra.action.search'
         source='q'
         alwaysOn
         sx={{m: 1}}
