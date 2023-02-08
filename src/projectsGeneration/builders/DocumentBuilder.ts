@@ -61,6 +61,7 @@ class DocumentBuilder extends BaseSavableEntityBuilder {
       multitenancy: this.multitenancy,
       commonElementsVisibleToAll: this.commonElementsVisibleToAll,
       externalSearchName: this.externalSearchName,
+      shardUniqKeys: this.shardUniqKeys,
     }
   }
 

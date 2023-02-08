@@ -2,7 +2,7 @@
 /* eslint-disable no-tabs */
 import * as R from 'ramda'
 import { pascalSingular } from '../../../../utils/cases'
-import { Entity } from '../../../builders/buildedTypes'
+import { Entity } from '../../../builders'
 import { getLinksFromExternalEntities } from '../../../links/getLinksFromExternalEntities'
 import { LinkedEntities } from '../../../types'
 import { genPrismaField } from './fields/genPrismaField'
@@ -10,13 +10,15 @@ import { genPrismaFieldFromExternalEntity } from './fields/genPrismaFieldFromExt
 
 export const genPrismaEntity = (
   entity: Entity,
-  links: LinkedEntities[]
+  links: LinkedEntities[],
+  forShards = false,
 ): string => {
   const fields = [
-    ...R.flatten(entity.fields.map((field) => genPrismaField(entity, field))),
-    ...getLinksFromExternalEntities(entity, links)
+    ...R.flatten(entity.fields.map((field) => genPrismaField(entity, field, forShards))),
+    ...forShards ? [] : getLinksFromExternalEntities(entity, links)
       .filter((el) => el.fromField.linkCategory === 'entity')
-      .map((link) => genPrismaFieldFromExternalEntity(link)),
+      .map((link) => genPrismaFieldFromExternalEntity(link))
+      .filter((l) => l),
   ]
 
   return `model ${pascalSingular(entity.name)} {

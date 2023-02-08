@@ -265,6 +265,7 @@ export type BaseSavableEntity = BaseEntity & {
   commonElementsVisibleToAll: boolean
   title: Record<string, {singular: string, plural: string}>
   externalSearchName: string | undefined
+  shardUniqKeys: string[] | null
 }
 
 export type Report = BaseEntity & {
