@@ -210,7 +210,6 @@ ${
         (v) => `\n    ${constantCase(v.name)}: \${DEV_${constantCase(v.name)}}`
       )
       .join('')}
-    APP_ENVIRONMENT: dev
   only:
     - master
 
@@ -229,7 +228,6 @@ ${
         (v) => `\n    ${constantCase(v.name)}: \${PROD_${constantCase(v.name)}}`
       )
       .join('')}
-    APP_ENVIRONMENT: prod
   only:
     - release
     - /^release-.*$/
