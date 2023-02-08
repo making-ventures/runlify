@@ -1,14 +1,15 @@
 /* eslint-disable max-len */
 /* eslint-disable no-tabs */
 import { pascalSingular } from '../../../../../utils/cases'
-import { Entity, LinkField } from '../../../../builders/buildedTypes'
+import { Entity, LinkField } from '../../../../builders'
 import { fieldIdTypeToPrismaType } from '../../fieldIdTypeToPrismaType'
 import { genPrismaDefault } from './genPrismaDefault'
 import { joinPrismaFieldParts } from './genPrismaScalarField'
 
 export const genPrismaLinkFields = (
   entity: Entity,
-  field: LinkField
+  field: LinkField,
+  forShards = false,
 ): string[] => {
   const trivialFieldName = field.name.endsWith('Id')
     ? field.name
@@ -32,7 +33,7 @@ export const genPrismaLinkFields = (
 
   const result = [`	${trivialField}`]
 
-  if (field.linkCategory === 'entity') {
+  if (field.linkCategory === 'entity' && !forShards) {
     result.push(`	${linkField}`)
   }
 

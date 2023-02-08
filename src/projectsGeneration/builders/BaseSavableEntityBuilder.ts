@@ -34,6 +34,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
   commonElementsVisibleToAll = false
   title: Record<string, {singular: string, plural: string}> = {}
   externalSearchName: string | undefined = undefined;
+  shardUniqKeys: string[] | null = null;
 
   constructor(name: string, defaultLanguage: string, title?: {singular?: string, plural?: string}) {
     super(name, defaultLanguage, title)
@@ -391,6 +392,10 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
           )
       }
     }
+  }
+
+  setSharded (uniqKeys: string[]) {
+    this.shardUniqKeys = uniqKeys;
   }
 }
 

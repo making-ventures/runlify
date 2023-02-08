@@ -4,12 +4,21 @@ import { genPrismaSchemaForEntities } from './genPrismaSchemaForEntities'
 export const genPrismaSchemaForEntitiesWithClientAdnDb = ({
   entities,
   allLinks,
-}: ProjectWideGenerationArgs) => {
-  const joined = genPrismaSchemaForEntities(entities, allLinks)
+}: ProjectWideGenerationArgs,
+  forShards = false,
+) => {
+  let ent = entities
+
+  if (forShards) {
+    ent = ent.filter(e => e.shardUniqKeys)
+  }
+
+  const joined = genPrismaSchemaForEntities(ent, allLinks, forShards)
 
   return `generator client {
   provider = "prisma-client-js"
-  previewFeatures = ["fieldReference", "metrics", "extendedWhereUnique"]
+  previewFeatures = ["fieldReference", "metrics", "extendedWhereUnique"]${forShards ? `
+  output   = "./build"`: ''}
 }
 
 datasource db {

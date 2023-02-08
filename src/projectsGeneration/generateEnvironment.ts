@@ -21,7 +21,7 @@ import { uiSpacesContextTmpl } from './generators/fileTemplates/ui/environment/s
 import { uiLayoutAppBarTmpl } from './generators/fileTemplates/ui/environment/src/layout/AppBar'
 import { genPrismaSchemaForEntitiesWithClientAdnDb } from './generators/prisma/scheme/genPrismaSchemaForEntitiesWithClientAdnDb'
 import { write } from 'fs-jetpack'
-import { Entity } from './builders/buildedTypes'
+import { Entity } from './builders'
 import { ProjectWideGenerationArgs } from './args'
 import { dockerfileTmplUI } from './generators/fileTemplates/back/environment/dockerfileTmplUI'
 import { dockerfileTmplBack } from './generators/fileTemplates/back/environment/dockerfileTmplBack'
@@ -87,6 +87,15 @@ export const generateEnvironment = async (
       )
 
       await write(join(prismaFolderDir, 'schema.prisma'), prismaSchema)
+
+      if (opts.sharding) {
+        const prismaSchema = genPrismaSchemaForEntitiesWithClientAdnDb(
+          projectWideGenerationArgs,
+          true,
+        )
+
+        await write(join(prismaFolderDir, 'shards', 'schema.prisma'), prismaSchema)
+      }
     }
 
     // chart
