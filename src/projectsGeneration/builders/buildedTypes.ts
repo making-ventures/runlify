@@ -266,6 +266,7 @@ export type BaseSavableEntity = BaseEntity & {
   title: Record<string, {singular: string, plural: string}>
   externalSearchName: string | undefined
   shardUniqKeys: string[] | null
+  isExternalSearch: boolean;
 }
 
 export type Report = BaseEntity & {

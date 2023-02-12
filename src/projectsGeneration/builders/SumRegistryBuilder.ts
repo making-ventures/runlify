@@ -7,6 +7,7 @@ import { ViewLinkFieldBuilder } from './fields/ViewLinkFieldBuilder'
 
 export interface RegistryOptions {
   registrarIdType?: 'int' | 'string';
+  sharded?: boolean;
 }
 
 export const defaultRegistryOptions: RegistryOptions = {
@@ -38,7 +39,13 @@ class SumRegistryBuilder extends BaseSavableEntityBuilder {
         .setTitle('Date', 'en')
         .setTitle('Дата', 'ru')
         .setRequired()
-      this.addDimensionLinkField('entities', 'registrarTypeId')
+      let registrarTypeId;
+      if (this.options.sharded) {
+        registrarTypeId = this.addDimensionViewLinkField('entities', 'registrarTypeId')
+      } else {
+        registrarTypeId = this.addDimensionLinkField('entities', 'registrarTypeId')
+      }
+      registrarTypeId
         .setType('string')
         .setTitles({ ru: 'Тип регистратора', en: 'Registrar type' })
         .setRequired()
@@ -108,6 +115,7 @@ class SumRegistryBuilder extends BaseSavableEntityBuilder {
       commonElementsVisibleToAll: this.commonElementsVisibleToAll,
       externalSearchName: this.externalSearchName,
       shardUniqKeys: this.shardUniqKeys,
+      isExternalSearch: this.isExternalSearch,
     }
   }
 

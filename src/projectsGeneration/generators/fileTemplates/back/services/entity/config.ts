@@ -34,14 +34,24 @@ export const configTmpl = ({
     (f) => !['date', 'datetime'].includes(f.type)
   )
 
-  const isDocument = entity.type === 'document';
-  const isInfoRegistry = entity.type === 'infoRegistry';
+  const isSharded = !!entity.shardUniqKeys
+  const isDocument = entity.type === 'document'
+  const isInfoRegistry = entity.type === 'infoRegistry'
 
-  let configType = 'ServiceConfig';
+  let configType = 'ServiceConfig'
+  if (isSharded) {
+    configType = 'ServiceShardConfig'
+  }
   if (isDocument) {
     configType = 'DocumentConfig'
+    if (isSharded) {
+      configType = 'DocumentShardConfig'
+    }
   } else if (isInfoRegistry) {
     configType = 'InfoRegistryConfig'
+    if (isSharded) {
+      configType = 'InfoRegistryShardConfig'
+    }
   }
 
   let docRegistries: Array<SumRegistry | InfoRegistry> = [];
@@ -96,7 +106,8 @@ const config: ${configType} = {
   externalSearchDeps: {
 ${externalSearchDeps.map(([key, val]) => `'${key}': '${val}',`).map(pad(2)).join('\n')}
   },` : ''}${isInfoRegistry ? `
-  period: '${entity.period}',` : ''}
+  period: '${entity.period}',` : ''}${isSharded ? `
+  uniqKeys: ${arrToStr(entity.shardUniqKeys)},` : ''}
 };
 
 export default config;

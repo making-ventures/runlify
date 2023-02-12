@@ -39,6 +39,7 @@ WORKDIR /usr/src/app/back
 USER node
 COPY --chown=node:node --from=builder /app /usr/src/app/back
 
+ENV PROD_PORT=3000
 EXPOSE 3000
 
 CMD ["node", "dist/index.js"]
