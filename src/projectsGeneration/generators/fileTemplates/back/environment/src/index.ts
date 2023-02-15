@@ -33,9 +33,7 @@ ${
 // ${generatedWarning}
 `
 }
-exitHook(async () => {
-  createContext().then(ctx => ctx.close());
-});
+exitHook(() => createContext().then(ctx => ctx.close()));
 
 const app = express();
 ${options.usersEnabled ? `
