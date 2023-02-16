@@ -7,7 +7,7 @@ import { generatedWarning } from '../../../../utils'
 // import {fieldTypeToTsType} from '../../../fieldTypeToTsType';
 
 const getFieldValidation = (field: Field): string | null => {
-  if (field.required) {
+  if (field.requiredOnInput) {
     switch (field.type) {
       case 'string':
         return "Yup.string().required(t('validation.required')).typeError(t('validation.required'))"
@@ -58,7 +58,7 @@ export const uiGetEntityValidationTmpl = ({
   entity,
 }: EntityWideGenerationArgs) => {
   const validations = entity.fields
-    .filter((f) => f.requiredOnInput)
+    // .filter((f) => f.requiredOnInput)
     .map((field) => ({ field, validation: getFieldValidation(field) }))
     .filter(({ validation }) => validation)
   const hasValidations = validations.length > 0
