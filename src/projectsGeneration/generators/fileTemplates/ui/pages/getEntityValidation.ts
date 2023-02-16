@@ -16,7 +16,19 @@ const getFieldValidation = (field: Field): string | null => {
       case 'datetime':
         return "Yup.date().required(t('validation.required')).typeError(t('validation.required'))"
       case 'int':
-        return "Yup.number().required(t('validation.required')).integer(t('validation.onlyIntegers')).max(2147483647, t('validation.maxValue', {max: 2147483647})).typeError(t('validation.required'))"
+        if (field.category === 'scalar') {
+          return `Yup
+  .number()
+  .required(t('validation.required'))
+  .integer(t('validation.onlyIntegers'))
+  .max(2147483647, t('validation.maxValue', {max: 2147483647}))
+  .typeError(t('validation.required'))`
+        } else {
+          return `Yup
+  .number()
+  .required(t('validation.required'))
+  .typeError(t('validation.required'))`
+        }
       case 'float':
       case 'bigint':
         return "Yup.number().required(t('validation.required')).typeError(t('validation.required'))"
@@ -26,7 +38,15 @@ const getFieldValidation = (field: Field): string | null => {
   } else {
     switch (field.type) {
       case 'int':
-        return "Yup.number().integer(t('validation.onlyIntegers')).max(2147483647, t('validation.maxValue', {max: 2147483647})).nullable()"
+        if (field.category === 'scalar') {
+          return `Yup
+  .number()
+  .integer(t('validation.onlyIntegers'))
+  .max(2147483647, t('validation.maxValue', {max: 2147483647}))
+  .nullable()`
+        } else {
+          return null
+        }
       default:
         return null
     }
