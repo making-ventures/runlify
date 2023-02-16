@@ -7,31 +7,29 @@ import { generatedWarning } from '../../../../utils'
 // import {fieldTypeToTsType} from '../../../fieldTypeToTsType';
 
 const getFieldValidation = (field: Field): string | null => {
-  if (!field.required) {
-    return null
-  }
-
-  // if (field.category === 'id') {
-  //   return null
-  // }
-
-  // if (!field.requiredOnInput && field.requiredOnInput !== null) {
-  //   return null;
-  // }
-
-  switch (field.type) {
-    case 'string':
-      return "Yup.string().required(t('validation.required')).typeError(t('validation.required'))"
-    case 'date':
-      return "Yup.string().required(t('validation.required')).typeError(t('validation.required'))"
-    case 'datetime':
-      return "Yup.date().required(t('validation.required')).typeError(t('validation.required'))"
-    case 'float':
-    case 'int':
-    case 'bigint':
-      return "Yup.number().required(t('validation.required')).typeError(t('validation.required'))"
-    default:
-      return null
+  if (field.required) {
+    switch (field.type) {
+      case 'string':
+        return "Yup.string().required(t('validation.required')).typeError(t('validation.required'))"
+      case 'date':
+        return "Yup.string().required(t('validation.required')).typeError(t('validation.required'))"
+      case 'datetime':
+        return "Yup.date().required(t('validation.required')).typeError(t('validation.required'))"
+      case 'int':
+        return "Yup.number().required(t('validation.required')).integer(t('validation.onlyIntegers')).max(2147483647, t('validation.maxValue', {max: 2147483647})).typeError(t('validation.required'))"
+      case 'float':
+      case 'bigint':
+        return "Yup.number().required(t('validation.required')).typeError(t('validation.required'))"
+      default:
+        return null
+    }
+  } else {
+    switch (field.type) {
+      case 'int':
+        return "Yup.number().integer(t('validation.onlyIntegers')).max(2147483647, t('validation.maxValue', {max: 2147483647})).nullable()"
+      default:
+        return null
+    }
   }
 }
 
