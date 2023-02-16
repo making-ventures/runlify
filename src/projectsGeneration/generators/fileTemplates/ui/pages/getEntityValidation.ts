@@ -18,16 +18,16 @@ const getFieldValidation = (field: Field): string | null => {
       case 'int':
         if (field.category === 'scalar') {
           return `Yup
-  .number()
-  .required(t('validation.required'))
-  .integer(t('validation.onlyIntegers'))
-  .max(2147483647, t('validation.maxValue', {max: 2147483647}))
-  .typeError(t('validation.required'))`
+    .number()
+    .required(t('validation.required'))
+    .integer(t('validation.onlyIntegers'))
+    .max(2147483647, t('validation.maxValue', {max: 2147483647}))
+    .typeError(t('validation.required'))`
         } else {
           return `Yup
-  .number()
-  .required(t('validation.required'))
-  .typeError(t('validation.required'))`
+    .number()
+    .required(t('validation.required'))
+    .typeError(t('validation.required'))`
         }
       case 'float':
       case 'bigint':
@@ -40,10 +40,10 @@ const getFieldValidation = (field: Field): string | null => {
       case 'int':
         if (field.category === 'scalar') {
           return `Yup
-  .number()
-  .integer(t('validation.onlyIntegers'))
-  .max(2147483647, t('validation.maxValue', {max: 2147483647}))
-  .nullable()`
+    .number()
+    .integer(t('validation.onlyIntegers'))
+    .max(2147483647, t('validation.maxValue', {max: 2147483647}))
+    .nullable()`
         } else {
           return null
         }
