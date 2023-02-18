@@ -109,7 +109,6 @@ const Default${pascalSingular(
       title='${plural(entity.type)}.${
     entity.name
   }.title.plural'
-      exporter={true}
       filters={<${pascalSingular(
     entity.name
   )}Filter />}
