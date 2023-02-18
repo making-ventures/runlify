@@ -79,6 +79,7 @@ import ${pascalSingular(entity.name)}Filter from './${pascalSingular(
     entity.name
   )}Filter';
 import {hasPermission} from '../../../../utils/permissions';
+import ListActions from '../../../../raUiLib/ListActions';
 ${
   withFileRef
     ? "import ImageViewField from '../../../../uiLib/file/ImageViewField';\n"
@@ -108,10 +109,11 @@ const Default${pascalSingular(
       title='${plural(entity.type)}.${
     entity.name
   }.title.plural'
-      exporter={false}
+      exporter={true}
       filters={<${pascalSingular(
     entity.name
   )}Filter />}
+      actions={<ListActions />}
       bulkActionButtons={<DefaultBulkActionButton />}
       sort={{field: 'id', order: 'desc'}}
       {...props}
