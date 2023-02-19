@@ -13,8 +13,7 @@ describe('floatValudationToYupAssertions', () => {
       })
     ).toIncludeSameMembers([
       'number()',
-      `required(t('validation.required'))`,
-      `typeError(t('validation.required'))`,
+      `required()`,
     ])
   })
 })

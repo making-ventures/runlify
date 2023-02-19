@@ -13,8 +13,7 @@ describe('stringValudationToYupAssertions', () => {
       })
     ).toIncludeSameMembers([
       'string()',
-      `required(t('validation.required'))`,
-      `typeError(t('validation.required'))`,
+      `required()`,
     ])
   })
 })

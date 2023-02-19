@@ -13,11 +13,10 @@ describe('intValudationToYupAssertions', () => {
       })
     ).toIncludeSameMembers([
       'number()',
-      `required(t('validation.required'))`,
+      `required()`,
       `integer(t('validation.onlyIntegers'))`,
       `max(2147483647, t('validation.maxValue', {max: 2147483647}))`,
       `min(-2147483648, t('validation.minValue', {min: -2147483648}))`,
-      `typeError(t('validation.required'))`,
     ])
   })
 })

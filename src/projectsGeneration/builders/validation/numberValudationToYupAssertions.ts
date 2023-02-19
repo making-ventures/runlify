@@ -10,7 +10,7 @@ const numberValudationToYupAssertions = (validation: NumberValidation): string[]
   assertions.push(...baseValudationToYupAssertions(validation))
 
   // .number()
-  // .required(t('validation.required'))
+  // .required()
   // .integer(t('validation.onlyIntegers'))
   // .max(2147483647, t('validation.maxValue', {max: 2147483647}))
   // .typeError(t('validation.required')),
