@@ -393,7 +393,7 @@ export const generateFrontSrcEntityTranslationsDocs = async (
   for (const lang of args.system.languages) {
     const filePath = join(
       args.options.detachedUiProject,
-      `src/i18n/${lang}/${lang}Docs.ts`
+      `src/i18n/${lang.id}/${lang.id}Docs.ts`
     )
 
     await write(filePath, uiTranslationsLangDocsTmpl(args, lang.id))
@@ -408,7 +408,7 @@ export const generateFrontSrcEntityTranslationsCatalogs = async (
   for (const lang of args.system.languages) {
     const filePath = join(
       args.options.detachedUiProject,
-      `src/i18n/${lang}/${lang}Catalogs.ts`
+      `src/i18n/${lang.id}/${lang.id}Catalogs.ts`
     )
 
     await write(filePath, uiTranslationsLangCatalogsTmpl(args, lang.id))
@@ -423,7 +423,7 @@ export const generateFrontSrcEntityTranslationsInfoRegistries = async (
   for (const lang of args.system.languages) {
     const filePath = join(
       args.options.detachedUiProject,
-      `src/i18n/${lang}/${lang}InfoRegistries.ts`
+      `src/i18n/${lang.id}/${lang.id}InfoRegistries.ts`
     )
 
     await write(filePath, uiTranslationsLangInfoRegistriesTmpl(args, lang.id))
@@ -438,7 +438,7 @@ export const generateFrontSrcEntityTranslationsSumRegistries = async (
   for (const lang of args.system.languages) {
     const filePath = join(
       args.options.detachedUiProject,
-      `src/i18n/${lang}/${lang}SumRegistries.ts`
+      `src/i18n/${lang.id}/${lang.id}SumRegistries.ts`
     )
 
     await write(filePath, uiTranslationsLangSumRegistriesTmpl(args, lang.id))
