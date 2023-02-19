@@ -32,7 +32,7 @@ const i18nProvider = polyglotI18nProvider(
   },
   'ru',
   [${languages.map(({id, title}) => `
-    {locale: '${id}', name: '${title}'}`).join(',')}
+    {locale: '${id}', name: '${title}'},`).join('')}
   ],
 );
 
