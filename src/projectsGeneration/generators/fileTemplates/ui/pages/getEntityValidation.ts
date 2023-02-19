@@ -61,23 +61,14 @@ export const uiGetEntityValidationTmpl = ({
     .filter(({ validation }) => validation)
   const hasValidations = validations.length > 0
 
-  return `import * as Yup from 'yup';
-import GetValidation from '../../../types/GetValidation';${
-    hasValidations
-      ? `
-import {Translate} from 'react-admin';`
-      : ''
-  }
-${
+  return `import * as Yup from 'yup';${
   options.skipWarningThisIsGenerated
     ? ''
     : `
 // ${generatedWarning}
 `
 }
-const get${pascalSingular(entity.name)}Validation: GetValidation = ${
-    hasValidations ? '(t: Translate)' : '()'
-  } => ${
+const get${pascalSingular(entity.name)}Validation = () => ${
     hasValidations
       ? `Yup.object({
 ${validations
