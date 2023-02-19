@@ -11,6 +11,8 @@ export const uiI18nProviderTmpl = (
 ) => `import polyglotI18nProvider from 'ra-i18n-polyglot';
 import defaultMessages from '../i18n/${defaultLanguage}';
 import log from '../utils/log';
+import {ValidationMessages} from '../i18n/types';
+import initYupLocale from './initYupLocale';
 ${
   options.skipWarningThisIsGenerated
     ? ''
@@ -22,11 +24,21 @@ const i18nProvider = polyglotI18nProvider(
   locale => {
     switch (locale) {${languages.filter(({id}) => id !== defaultLanguage).map(({id}) => `
     case '${id}':
-      return import('../i18n/${id}').then(messages => messages.default);`).join('')}
+      return import('../i18n/${id}')
+        .then(messages => {
+          initYupLocale(messages.default.validation as ValidationMessages);
+
+          return messages.default;
+        });`).join('')}
     case '${defaultLanguage}':
+      initYupLocale(defaultMessages.validation as ValidationMessages);
+
       return defaultMessages;
     default:
       log.error(\`Unknown locale: "\${locale}"\`);
+
+      initYupLocale(defaultMessages.validation as ValidationMessages);
+
       return defaultMessages;
     }
   },
