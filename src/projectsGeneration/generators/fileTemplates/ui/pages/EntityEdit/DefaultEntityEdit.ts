@@ -129,7 +129,6 @@ export const uiDefaultEditTmpl = ({
   const notDateFieldsToImport = fieldsToImport
     .filter(f => !['datetime', 'date'].includes(f.type));
   const reactAdminImports: string[] = [
-    'useTranslate',
     'Edit',
     'SimpleForm',
     'EditProps',
@@ -192,9 +191,7 @@ const DefaultToolbar = (props: ToolbarProps) => {
 
 const Default${pascalSingular(entity.name)}Edit: FC<EditProps> = (props: EditProps) => {
 ${hasHidden ? `  const {debug} = useDebug();
-` : ''}  const translate = useTranslate();
-
-  const resolver = useMemo(() => yupResolver(get${pascalSingular(entity.name)}Validation(translate)), [translate]);
+` : ''}  const resolver = useMemo(() => yupResolver(get${pascalSingular(entity.name)}Validation()), []);
 
   return (
     <Edit

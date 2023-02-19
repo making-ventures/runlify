@@ -29,7 +29,6 @@ export const uiDefaultCreateTmpl = ({
     (f) => !['datetime', 'date'].includes(f.type)
   )
   const reactAdminImports: string[] = [
-    'useTranslate',
     'Create',
     'SimpleForm',
     'CreateProps',
@@ -100,11 +99,9 @@ ${
     ? `  const {debug} = useDebug();
 `
     : ''
-}  const translate = useTranslate();
-
-  const resolver = useMemo(() => yupResolver(get${pascalSingular(
+}  const resolver = useMemo(() => yupResolver(get${pascalSingular(
     entity.name
-  )}Validation(translate)), [translate]);
+  )}Validation()), []);
 
   return (
     <Create
