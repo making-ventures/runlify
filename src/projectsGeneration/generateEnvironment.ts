@@ -17,6 +17,7 @@ import { uiChartFrontTmpl } from './generators/fileTemplates/ui/environment/char
 import { uiAppTmpl } from './generators/fileTemplates/ui/environment/src/App'
 import { uiLayoutMenuTmpl } from './generators/fileTemplates/ui/environment/src/layout/Menu'
 import { uiDataProviderTmpl } from './generators/fileTemplates/ui/environment/src/dataProvider'
+import { uiI18nProviderTmpl } from './generators/fileTemplates/ui/environment/src/i18nProvider'
 import { uiSpacesContextTmpl } from './generators/fileTemplates/ui/environment/src/contexts/SpacesContext'
 import { uiLayoutAppBarTmpl } from './generators/fileTemplates/ui/environment/src/layout/AppBar'
 import { genPrismaSchemaForEntitiesWithClientAdnDb } from './generators/prisma/scheme/genPrismaSchemaForEntitiesWithClientAdnDb'
@@ -186,6 +187,13 @@ export const generateEnvironment = async (
     await write(
       join(uiDataProviderFolder, 'index.ts'),
       uiDataProviderTmpl(entities, opts)
+    )
+
+    // src/i18nProvider/index.ts
+    const uiI18nProviderFolder = join(prjDetachedUiSrcDir, 'i18nProvider')
+    await write(
+      join(uiI18nProviderFolder, 'index.ts'),
+      uiI18nProviderTmpl(projectWideGenerationArgs, opts)
     )
 
     // chart

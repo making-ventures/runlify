@@ -22,7 +22,7 @@ ${
 `
 }
 const AppBar = (props: any) => {
-  const matches = useMediaQuery((theme: Theme) => theme.breakpoints.up('sm'));
+  const wide = useMediaQuery((theme: Theme) => theme.breakpoints.up('sm'));
 
   return (
     <RaAppBar
@@ -45,7 +45,7 @@ const AppBar = (props: any) => {
         id='react-admin-title'
       />
       <Box flex={1} />
-      {matches && (
+      {wide && (
         <Typography
           sx={{color: ${options.mainColorOfAppTitile ? `'primary.main'` : `'text.main'`}}}
           color='inherit'
@@ -65,14 +65,7 @@ const AppBar = (props: any) => {
         lightTheme={lightTheme}
         darkTheme={darkTheme}
       />`) : ''}${options.localesEnabled ? (`
-      {matches && (
-        <LocalesMenuButton
-          languages={[
-            {locale: 'ru', name: 'Russian'},
-            {locale: 'en', name: 'English'},
-          ]}
-        />
-      )}`) : ''}
+      {wide && <LocalesMenuButton />}`) : ''}
     </RaAppBar>
   );
 };
