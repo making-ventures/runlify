@@ -14,6 +14,7 @@ export const addFilesCatalog = (system: SystemMetaBuilder): CatalogBuilder => {
   files.addField('mimetype').setType('string').setRequired() // contentType
   files.addField('s3Key').setType('string').setRequired().setShowInList(false)
   files.addField('eTag').setType('string').setRequired().setShowInList(false)
+  files.addField('bytes').setType('int').setShowInList(false)
 
   return files
 }
