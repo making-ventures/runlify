@@ -21,7 +21,7 @@ ${
 const i18nProvider = polyglotI18nProvider(locale => {
   switch (locale) {
   case 'en':
-    return import('./i18n/en').then(messages => messages.default);
+    return import('../i18n/en').then(messages => messages.default);
   case 'ru':
     return defaultMessages;
   default:
