@@ -19,8 +19,7 @@ ${
 `
 }
 const i18nProvider = polyglotI18nProvider(locale => {
-  switch (locale) {
-${languages.filter(lang => lang !== defaultLanguage).map(lang => `
+  switch (locale) {${languages.filter(lang => lang !== defaultLanguage).map(lang => `
   case '${lang}':
     return import('../i18n/${lang}').then(messages => messages.default);`)}
   case '${defaultLanguage}':
