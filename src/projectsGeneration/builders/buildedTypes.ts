@@ -355,6 +355,11 @@ export interface DeployEnvironment {
   clusterName: string
 }
 
+export type Language = {
+  id: string
+  title: string
+}
+
 export type System = {
   name: string
   prefix: string
@@ -364,7 +369,7 @@ export type System = {
   documents: Document[]
   infoRegistries: InfoRegistry[]
   sumRegistries: SumRegistry[]
-  languages: string[]
+  languages: Language[]
   defaultLanguage: string
   roles: Role[]
 

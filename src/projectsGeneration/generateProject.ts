@@ -396,7 +396,7 @@ export const generateFrontSrcEntityTranslationsDocs = async (
       `src/i18n/${lang}/${lang}Docs.ts`
     )
 
-    await write(filePath, uiTranslationsLangDocsTmpl(args, lang))
+    await write(filePath, uiTranslationsLangDocsTmpl(args, lang.id))
   }
 }
 
@@ -411,7 +411,7 @@ export const generateFrontSrcEntityTranslationsCatalogs = async (
       `src/i18n/${lang}/${lang}Catalogs.ts`
     )
 
-    await write(filePath, uiTranslationsLangCatalogsTmpl(args, lang))
+    await write(filePath, uiTranslationsLangCatalogsTmpl(args, lang.id))
   }
 }
 
@@ -426,7 +426,7 @@ export const generateFrontSrcEntityTranslationsInfoRegistries = async (
       `src/i18n/${lang}/${lang}InfoRegistries.ts`
     )
 
-    await write(filePath, uiTranslationsLangInfoRegistriesTmpl(args, lang))
+    await write(filePath, uiTranslationsLangInfoRegistriesTmpl(args, lang.id))
   }
 }
 
@@ -441,7 +441,7 @@ export const generateFrontSrcEntityTranslationsSumRegistries = async (
       `src/i18n/${lang}/${lang}SumRegistries.ts`
     )
 
-    await write(filePath, uiTranslationsLangSumRegistriesTmpl(args, lang))
+    await write(filePath, uiTranslationsLangSumRegistriesTmpl(args, lang.id))
   }
 }
 
@@ -456,7 +456,7 @@ export const generateFrontSrcEntityTranslationsReports = async (
       `src/i18n/${lang}/${lang}Reports.ts`
     )
 
-    await write(filePath, uiTranslationsLangReportsTmpl(args, lang))
+    await write(filePath, uiTranslationsLangReportsTmpl(args, lang.id))
   }
 }
 

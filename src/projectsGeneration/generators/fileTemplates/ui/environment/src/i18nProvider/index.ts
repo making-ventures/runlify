@@ -18,17 +18,23 @@ ${
 // ${generatedWarning}
 `
 }
-const i18nProvider = polyglotI18nProvider(locale => {
-  switch (locale) {${languages.filter(lang => lang !== defaultLanguage).map(lang => `
-  case '${lang}':
-    return import('../i18n/${lang}').then(messages => messages.default);`)}
-  case '${defaultLanguage}':
-    return defaultMessages;
-  default:
-    log.error(\`Unknown locale: "\${locale}"\`);
-    return defaultMessages;
-  }
-}, 'ru');
+const i18nProvider = polyglotI18nProvider(
+  locale => {
+    switch (locale) {${languages.filter(({id}) => id !== defaultLanguage).map(({id}) => `
+    case '${id}':
+      return import('../i18n/${id}').then(messages => messages.default);`)}
+    case '${defaultLanguage}':
+      return defaultMessages;
+    default:
+      log.error(\`Unknown locale: "\${locale}"\`);
+      return defaultMessages;
+    }
+  },
+  'ru',
+  [${languages.map(({id, title}) => `
+    {locale: '${id}', name: '${title}'},`)}
+  ],
+);
 
 export default i18nProvider;
 `

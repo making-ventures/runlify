@@ -6,7 +6,11 @@ class DeploymentBuilder extends BaseBuilder {
   requests: MemoryAndCpu = { memory: '64Mi', cpu: '0.15' }
   limits: MemoryAndCpu = { memory: '64Mi', cpu: '0.15' }
 
-  constructor(name: string, defaultLanguage: string, title?: string) {
+  constructor(
+    name: string, 
+    defaultLanguage: string,
+    title?: string
+  ) {
     super(name, defaultLanguage, {singular: title})
   }
 

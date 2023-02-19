@@ -16,6 +16,7 @@ import {
   DeployEnvironment,
   FieldType,
   Glossary,
+  Language,
   ProjectCategory,
   System,
 } from './buildedTypes'
@@ -45,7 +46,7 @@ class SystemMetaBuilder {
   commands: Command[] = []
   deployEnvironments: DeployEnvironment[] = []
   telegramBots: TelegramBotBuilder[] = []
-  languages: string[] = []
+  languages: Language[] = []
   restApis: RestApiBuilder[] = []
   workers: DeploymentBuilder[] = []
   roles: RoleBuilder[] = []
@@ -269,9 +270,9 @@ class SystemMetaBuilder {
 
     this.addDeployEnvironment('stage', 'stage')
     this.addDeployEnvironment('prod', 'stage')
-    this.addLanguage('en')
-    this.addLanguage('ru')
-    if (defaultLanguage !== 'defaultLanguage') {
+    this.addLanguage('en', 'English')
+    this.addLanguage('ru', 'Russian')
+    if (!['en', 'ru'].includes(defaultLanguage)) {
       this.addLanguage(defaultLanguage)
     }
 
@@ -377,18 +378,18 @@ class SystemMetaBuilder {
     return this
   }
 
-  addLanguage(language: string) {
-    if (!this.languages.includes(language)) {
-      this.languages.push(language)
+  addLanguage(id: string, title?: string) {
+    if (!this.languages.map(({id}) => id).includes(id)) {
+      this.languages.push({id, title: title ?? id})
     }
   }
 
-  setDefailtLanguage(language: string) {
-    if (!this.languages.includes(language)) {
-      throw new Error(`There is no "${language}" langiage`)
+  setDefailtLanguage(id: string) {
+    if (!this.languages.map(({id}) => id).includes(id)) {
+      throw new Error(`There is no "${id}" langiage`)
     }
 
-    this.defaultLanguage = language
+    this.defaultLanguage = id
   }
 
   addDeployEnvironment(name: string, clusterName: string) {
