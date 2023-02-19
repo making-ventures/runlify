@@ -453,7 +453,7 @@ export const generateFrontSrcEntityTranslationsReports = async (
   for (const lang of args.system.languages) {
     const filePath = join(
       args.options.detachedUiProject,
-      `src/i18n/${lang}/${lang}Reports.ts`
+      `src/i18n/${lang.id}/${lang.id}Reports.ts`
     )
 
     await write(filePath, uiTranslationsLangReportsTmpl(args, lang.id))
