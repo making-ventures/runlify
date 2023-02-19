@@ -22,7 +22,7 @@ const i18nProvider = polyglotI18nProvider(
   locale => {
     switch (locale) {${languages.filter(({id}) => id !== defaultLanguage).map(({id}) => `
     case '${id}':
-      return import('../i18n/${id}').then(messages => messages.default);`)}
+      return import('../i18n/${id}').then(messages => messages.default);`).join('')}
     case '${defaultLanguage}':
       return defaultMessages;
     default:
