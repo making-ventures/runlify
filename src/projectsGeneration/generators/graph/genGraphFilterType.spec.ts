@@ -36,6 +36,7 @@ describe('genGraphFilterType', () => {
   boxId: Int
   boxId_in: [Int]
   active: Boolean
+  active_defined: Boolean
 }
 
 """
@@ -74,6 +75,7 @@ scalar DateTime`)
   boxId: BigInt
   boxId_in: [BigInt]
   active: Boolean
+  active_defined: Boolean
 }
 
 """

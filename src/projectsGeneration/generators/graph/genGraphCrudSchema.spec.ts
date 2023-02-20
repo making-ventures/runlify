@@ -45,6 +45,7 @@ input CardFilter {
   registered_lt: DateTime
   registered_gt: DateTime
   active: Boolean
+  active_defined: Boolean
 }
 
 type ListMetadata {
@@ -108,6 +109,7 @@ input CardFilter {
   registered_lt: DateTime
   registered_gt: DateTime
   active: Boolean
+  active_defined: Boolean
 }
 
 type ListMetadata {
@@ -192,6 +194,7 @@ input CardFilter {
   lastDigits_lt: Int
   lastDigits_gt: Int
   active: Boolean
+  active_defined: Boolean
 }
 
 type ListMetadata {
@@ -234,6 +237,7 @@ input CardFilter {
   boxId: Int
   boxId_in: [Int]
   active: Boolean
+  active_defined: Boolean
 }
 
 type ListMetadata {
@@ -281,6 +285,7 @@ input CardFilter {
   boxId: BigInt
   boxId_in: [BigInt]
   active: Boolean
+  active_defined: Boolean
 }
 
 type ListMetadata {
@@ -323,6 +328,7 @@ input CardFilter {
   boxId: String
   boxId_in: [String]
   active: Boolean
+  active_defined: Boolean
 }
 
 type ListMetadata {
@@ -365,6 +371,7 @@ input CardFilter {
   boxId: String
   boxId_in: [String]
   active: Boolean
+  active_defined: Boolean
 }
 
 type ListMetadata {
@@ -414,6 +421,7 @@ input CardFilter {
   lastDigits_lt: Int
   lastDigits_gt: Int
   active: Boolean
+  active_defined: Boolean
 }
 
 type ListMetadata {

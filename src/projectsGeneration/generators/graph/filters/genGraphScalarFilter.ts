@@ -1,4 +1,4 @@
-import { GraphQLList, GraphQLType } from 'graphql'
+import { GraphQLBoolean, GraphQLList, GraphQLType } from 'graphql'
 import { ScalarField } from '../../../builders/buildedTypes'
 import { fieldTypeToGraphScalar } from '../fieldTypeToGraphScalar'
 
@@ -37,6 +37,15 @@ export const genGraphScalarFilter = (
       },
       [`${field.name}_gt`]: {
         type: fieldTypeToGraphScalar(field),
+      },
+    }
+  }
+
+  if (!field.required) {
+    fields = {
+      ...fields,
+      [`${field.name}_defined`]: {
+        type: GraphQLBoolean,
       },
     }
   }
