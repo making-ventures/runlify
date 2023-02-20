@@ -7,7 +7,7 @@ import { generatedWarning } from '../../../../../../utils'
 export const uiLayoutAppBarTmpl = (
   options: BootstrapEntityOptions = defaultBootstrapEntityOptions
 ) => `import * as React from 'react';
-import {AppBar as RaAppBar${options.themesEnabled ? `, ToggleThemeButton` : ''}, LocalesMenuButton} from 'react-admin';
+import {AppBar as RaAppBar${options.themesEnabled ? `, ToggleThemeButton` : ''}, LocalesMenuButton, useI18nProvider} from 'react-admin';
 import {Box, Typography} from '@mui/material';
 import {Link} from 'react-router-dom';${options.themesEnabled ? (`
 import {darkTheme, lightTheme} from './themes';`) : ''}
@@ -23,6 +23,7 @@ ${
 }
 const AppBar = (props: any) => {
   const wide = useMediaQuery((theme: Theme) => theme.breakpoints.up('sm'));
+  const {locales} = useI18nProvider();
 
   return (
     <RaAppBar
