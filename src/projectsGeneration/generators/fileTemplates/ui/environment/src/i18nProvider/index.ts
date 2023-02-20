@@ -24,7 +24,7 @@ ${
 }
 const locales: Locale[] = [${languages.map(({id, title}) => `
   {locale: '${id}', name: '${title}'},`).join('')}
-],;
+];
 
 const i18nProvider: I18nProvider = ({
   ...polyglotI18nProvider(
