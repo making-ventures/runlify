@@ -96,6 +96,6 @@ export interface BigIntValidation extends NumberValidation {
 
 // .number()
 // .required()
-// .integer(t('validation.onlyIntegers'))
+// .integer()
 // .max(2147483647, t('validation.maxValue', {max: 2147483647}))
 // .typeError(t('validation.required')),

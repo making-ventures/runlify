@@ -16,7 +16,7 @@ const intValudationToYupAssertions = (validation: IntValidation): string[] => {
     assertions.push(`max(${max}, t('validation.maxValue', {max: ${max}}))`)
   }
 
-  assertions.push(`integer(t('validation.onlyIntegers'))`)
+  assertions.push(`integer()`)
 
   return assertions;
 }

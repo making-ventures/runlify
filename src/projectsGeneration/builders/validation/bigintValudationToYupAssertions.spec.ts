@@ -14,7 +14,7 @@ describe('bigintValudationToYupAssertions', () => {
     ).toIncludeSameMembers([
       'number()',
       `required()`,
-      `integer(t('validation.onlyIntegers'))`,
+      `integer()`,
     ])
   })
 })
