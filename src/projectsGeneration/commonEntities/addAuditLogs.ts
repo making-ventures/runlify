@@ -105,6 +105,7 @@ const addAuditLogs = (system: SystemMetaBuilder) => {
       en: 'Manager',
       ru: 'Менеджер',
     })
+  auditLogs.addField('managerLogin', 'Логин').setType('string');
   auditLogs.addLinkField('users', 'userId', 'Пользователь')
     .setTitles({
       en: 'User',
