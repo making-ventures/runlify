@@ -384,6 +384,10 @@ class SystemMetaBuilder {
     }
   }
 
+  deleteLanguage(id: string) {
+    this.languages = this.languages.filter(lang => lang.id !== id)
+  }
+
   setDefailtLanguage(id: string) {
     if (!this.languages.map(({id}) => id).includes(id)) {
       throw new Error(`There is no "${id}" langiage`)
