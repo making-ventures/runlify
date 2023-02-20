@@ -108,7 +108,6 @@ export const defaultBootstrapEntityOptions = {
   tenantsAvailable: false,
 
   themesEnabled: true,
-  localesEnabled: true,
   mainColorOfAppTitile: true,
   sharding: false,
 }

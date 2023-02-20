@@ -64,8 +64,8 @@ const AppBar = (props: any) => {
       <ToggleThemeButton
         lightTheme={lightTheme}
         darkTheme={darkTheme}
-      />`) : ''}${options.localesEnabled ? (`
-      {wide && <LocalesMenuButton />}`) : ''}
+      />`) : ''}$
+      {wide && <LocalesMenuButton />}
     </RaAppBar>
   );
 };
