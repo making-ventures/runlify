@@ -162,6 +162,20 @@ class SystemMetaBuilder {
       '',
       'Секретный ключ для авторизации в S3'
     )
+    this.addConfigVar(
+      's3.bucket.emailFiles',
+      'string', 
+      false, 
+      '', 
+      'Имя бакета для хранения файлов, отправленных на почту',
+    );
+    this.addConfigVar(
+      's3.bucket.tmpFilesToDownload',
+      'string',
+      false,
+      '',
+      'Имя бакета для хранения временных файлов, созданных для скачивания пользователями',
+    );
 
     this.addConfigVar(
       'admin.ui.url',
