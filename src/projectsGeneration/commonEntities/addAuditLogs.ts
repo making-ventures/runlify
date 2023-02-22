@@ -1,4 +1,4 @@
-import { StringType } from '../../types'
+import { StringType } from '../builders/buildedTypes'
 import SystemMetaBuilder from '../builders/SystemMetaBuilder'
 
 const addAuditLogs = (system: SystemMetaBuilder) => {
