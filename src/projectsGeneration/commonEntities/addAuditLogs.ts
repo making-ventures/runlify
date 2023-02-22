@@ -1,3 +1,4 @@
+import { StringType } from '../../types'
 import SystemMetaBuilder from '../builders/SystemMetaBuilder'
 
 const addAuditLogs = (system: SystemMetaBuilder) => {
@@ -135,6 +136,7 @@ const addAuditLogs = (system: SystemMetaBuilder) => {
       ru: 'Данные о действии',
     })
     .setType('string')
+    .setStringType(StringType.Json)
   auditLogs.setAuditable(false)
 
   // entities
