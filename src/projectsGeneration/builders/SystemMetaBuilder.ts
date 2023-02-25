@@ -178,15 +178,15 @@ class SystemMetaBuilder {
     )
     this.addConfigVar(
       's3.bucket.emailFiles',
-      'string', 
-      false, 
-      '', 
+      'string',
+      true,
+      '',
       'Имя бакета для хранения файлов, отправленных на почту',
     );
     this.addConfigVar(
       's3.bucket.tmpFilesToDownload',
       'string',
-      false,
+      true,
       '',
       'Имя бакета для хранения временных файлов, созданных для скачивания пользователями',
     );
