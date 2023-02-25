@@ -149,16 +149,30 @@ class SystemMetaBuilder {
     )
     
     this.addConfigVar(
+      's3.endpoint',
+      'string',
+      true,
+      '',
+      'Идентификатор доступа для авторизации в S3'
+    )
+    this.addConfigVar(
+      's3.region',
+      'string',
+      true,
+      '',
+      'Идентификатор доступа для авторизации в S3'
+    )
+    this.addConfigVar(
       's3.accessKeyId',
       'string',
-      false,
+      true,
       '',
       'Идентификатор доступа для авторизации в S3'
     )
     this.addConfigVar(
       's3.secretAccessKey',
       'string',
-      false,
+      true,
       '',
       'Секретный ключ для авторизации в S3'
     )
