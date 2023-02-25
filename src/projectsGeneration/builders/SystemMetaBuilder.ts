@@ -152,14 +152,14 @@ class SystemMetaBuilder {
       's3.endpoint',
       'string',
       true,
-      '',
+      'eu-central-1',
       'Идентификатор доступа для авторизации в S3'
     )
     this.addConfigVar(
       's3.region',
       'string',
       true,
-      '',
+      's3.eu-central-1.wasabisys.com',
       'Идентификатор доступа для авторизации в S3'
     )
     this.addConfigVar(
