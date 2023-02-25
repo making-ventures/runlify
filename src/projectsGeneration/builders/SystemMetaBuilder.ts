@@ -147,7 +147,7 @@ class SystemMetaBuilder {
       'appSecret',
       'Секрет для подписи JWT-токенов приложения пользователей'
     )
-    
+
     this.addConfigVar(
       's3.endpoint',
       'string',
