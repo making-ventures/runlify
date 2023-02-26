@@ -147,32 +147,46 @@ class SystemMetaBuilder {
       'appSecret',
       'Секрет для подписи JWT-токенов приложения пользователей'
     )
-    
+
+    this.addConfigVar(
+      's3.endpoint',
+      'string',
+      true,
+      'eu-central-1',
+      'Идентификатор доступа для авторизации в S3'
+    )
+    this.addConfigVar(
+      's3.region',
+      'string',
+      true,
+      's3.eu-central-1.wasabisys.com',
+      'Идентификатор доступа для авторизации в S3'
+    )
     this.addConfigVar(
       's3.accessKeyId',
       'string',
-      false,
+      true,
       '',
       'Идентификатор доступа для авторизации в S3'
     )
     this.addConfigVar(
       's3.secretAccessKey',
       'string',
-      false,
+      true,
       '',
       'Секретный ключ для авторизации в S3'
     )
     this.addConfigVar(
       's3.bucket.emailFiles',
-      'string', 
-      false, 
-      '', 
+      'string',
+      true,
+      '',
       'Имя бакета для хранения файлов, отправленных на почту',
     );
     this.addConfigVar(
       's3.bucket.tmpFilesToDownload',
       'string',
-      false,
+      true,
       '',
       'Имя бакета для хранения временных файлов, созданных для скачивания пользователями',
     );
