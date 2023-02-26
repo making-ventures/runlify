@@ -9,8 +9,8 @@ const addAggregateTrackings = (system: SystemMetaBuilder) => {
       plural: 'Aggregate Trackings',
     },
     ru: {
-      singular: 'Общее отслеживание',
-      plural: 'Общие отслеживания',
+      singular: 'Отслеживание агрегата',
+      plural: 'Отслеживание агрегатов',
     },
   });
   aggregateTrackings.setNeedFor('Данные на основе которых можно понять, для каких сущностей нужно пересчитать агрегаты');

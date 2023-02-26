@@ -32,8 +32,8 @@ const addRefreshTokens = (system: SystemMetaBuilder) => {
       plural: 'Ui refresh tokens',
     },
     ru: {
-      singular: 'Токен обновления пользовательского интерфейса',
-      plural: 'Токены обновления пользовательского интерфейса',
+      singular: 'UI Токен обновления',
+      plural: 'UI Токены обновления',
     },
   });
   uiRefreshTokens.setNeedFor('Хранилище рефреш токенов для админа');
