@@ -2,7 +2,17 @@ import SystemMetaBuilder from '../builders/SystemMetaBuilder';
 
 const addAggregateTrackings = (system: SystemMetaBuilder) => {
   // aggregateTrackings
-  const aggregateTrackings = system.addInfoRegistry('aggregateTrackings', false, {singular: 'Aggregate Tracking', plural: 'Aggregate Trackings'});
+  const aggregateTrackings = system.addInfoRegistry('aggregateTrackings', false);
+  aggregateTrackings.setTitles({
+    en: {
+      singular: 'Aggregate Tracking',
+      plural: 'Aggregate Trackings',
+    },
+    ru: {
+      singular: 'Отслеживание агрегата',
+      plural: 'Отслеживание агрегатов',
+    },
+  });
   aggregateTrackings.setNeedFor('Данные на основе которых можно понять, для каких сущностей нужно пересчитать агрегаты');
   aggregateTrackings.addDimensionLinkField('entities', 'entityTypeId')
     .setTitles({

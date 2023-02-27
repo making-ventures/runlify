@@ -25,7 +25,17 @@ const addRefreshTokens = (system: SystemMetaBuilder) => {
   .setType('string')
   .setRequired();
 
-  const uiRefreshTokens = system.addCatalog('admRefreshTokens', {singular: 'Ui refresh token', plural: 'Ui refresh tokens'});
+  const uiRefreshTokens = system.addCatalog('admRefreshTokens');
+  uiRefreshTokens.setTitles({
+    en: {
+      singular: 'Ui refresh token',
+      plural: 'Ui refresh tokens',
+    },
+    ru: {
+      singular: 'UI Токен обновления',
+      plural: 'UI Токены обновления',
+    },
+  });
   uiRefreshTokens.setNeedFor('Хранилище рефреш токенов для админа');
   uiRefreshTokens.addField('create')
     .setTitles({
