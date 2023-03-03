@@ -97,6 +97,7 @@ export class InfoRegistryBuilder extends BaseSavableEntityBuilder {
       commonElementsVisibleToAll: this.commonElementsVisibleToAll,
       externalSearchName: this.externalSearchName,
       shardUniqKeys: this.shardUniqKeys,
+      isExternalSearch: this.isExternalSearch,
     }
   }
 

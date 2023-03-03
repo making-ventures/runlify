@@ -9,6 +9,7 @@ import { FormsBuilder } from './ui/FormsBuilder'
 import { FieldBuilder } from './types'
 import { ViewLinkFieldBuilder } from './fields/ViewLinkFieldBuilder'
 import { pascal } from '../../utils/cases'
+import * as R from 'ramda'
 
 abstract class BaseSavableEntityBuilder extends BaseBuilder {
   id: IdFieldBuilder
@@ -35,6 +36,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
   title: Record<string, {singular: string, plural: string}> = {}
   externalSearchName: string | undefined = undefined;
   shardUniqKeys: string[] | null = null;
+  isExternalSearch = false;
 
   constructor(name: string, defaultLanguage: string, title?: {singular?: string, plural?: string}) {
     super(name, defaultLanguage, title)
@@ -394,8 +396,18 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
     }
   }
 
-  setSharded (uniqKeys: string[]) {
+  setSharded (uniqKeys: string[] = []) {
     this.shardUniqKeys = uniqKeys;
+    if (!R.isEmpty(uniqKeys) && !R.equals(uniqKeys, ['id'])) {
+      this.uniqueConstraints.push(uniqKeys);
+    }
+
+    return this;
+  }
+
+  setIsExternalTable () {
+    this.isExternalSearch = true;
+    return this;
   }
 }
 

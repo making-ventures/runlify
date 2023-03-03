@@ -1,29 +1,34 @@
 import SystemMetaBuilder from '../builders/SystemMetaBuilder';
 
 export const addElasticSearch = (system: SystemMetaBuilder) => {
-  const externalSearchFields = system.getExternalSearchFields();
+  const externalSearchEntities = system.getExternalSearchEntities();
 
-  for (const field of externalSearchFields) {
-    if (!field.externalSearchName) {
+  for (const externalSearchEntity of externalSearchEntities) {
+    if (!externalSearchEntity.externalSearchName) {
       continue;
     }
 
-    if (field.getKey().type !== 'string') {
-      throw new Error(`Entity ${field.name} with external search have to be with string type in id field`);
+    if (externalSearchEntity.getKey().type !== 'string') {
+      throw new Error(`Entity ${externalSearchEntity.name} with external search have to be with string type in id field`);
     }
 
-    const registrarDepended = field.name === 'spendings';
+    const registrarDepended = externalSearchEntity.name === 'spendings';
 
-    const externalSearchTrackings = system.addInfoRegistry(field.externalSearchName, false, {plural: `External ${field.name} search tracking`, singular: `External ${field.name} search tracking`})
+    const externalSearchTrackings = system.addInfoRegistry(externalSearchEntity.externalSearchName, false, {plural: `External ${externalSearchEntity.name} search tracking`, singular: `External ${externalSearchEntity.name} search tracking`})
     externalSearchTrackings
-      .setNeedFor(`Данные на основе которых можно понять, какие ${field.name} нужно обновить во внешней базе для поиска`)
+      .setNeedFor(`Данные на основе которых можно понять, какие ${externalSearchEntity.name} нужно обновить во внешней базе для поиска`)
+    if (externalSearchEntity.shardUniqKeys) {
+      externalSearchTrackings.setSharded();
+      externalSearchTrackings.getKey().setType(externalSearchEntity.getKey().type)
+    }
+    externalSearchTrackings.setIsExternalTable();
     if (registrarDepended) {
-      externalSearchTrackings.addDimensionLinkField('entities', 'registrarTypeId')
+      externalSearchTrackings.addDimensionViewLinkField('entities', 'registrarTypeId')
         .setTitles({ ru: 'Тип регистратора', en: 'Registrar type' })
         .setType('string')
         .setRequired()
       externalSearchTrackings.addDimension('registrarId')
-        .setType('string') // todo: fix
+        .setType('string') // todo: I will use it from
         .setTitles({ ru: 'Ид регистратора', en: 'Registrar id' })
         .setRequired()
       externalSearchTrackings.addDimension('row')
@@ -37,7 +42,7 @@ export const addElasticSearch = (system: SystemMetaBuilder) => {
           en: 'Entity id',
           ru: 'ИД сущности',
         })
-        .setType(field.getKey().type)
+        .setType(externalSearchEntity.getKey().type)
         .setRequired()
     }
     externalSearchTrackings

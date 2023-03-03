@@ -62,6 +62,7 @@ class DocumentBuilder extends BaseSavableEntityBuilder {
       commonElementsVisibleToAll: this.commonElementsVisibleToAll,
       externalSearchName: this.externalSearchName,
       shardUniqKeys: this.shardUniqKeys,
+      isExternalSearch: this.isExternalSearch,
     }
   }
 
@@ -93,6 +94,23 @@ class DocumentBuilder extends BaseSavableEntityBuilder {
     }
 
     return builder
+  }
+
+  setSharded(uniqKeys: string[] = []) {
+    this.addField('repostRequired', 'Обозначение что нужно обновить проводки')
+      .setType('bool')
+      .setDefaultDbValue('true')
+      .setDefaultValueExpression('true')
+      .setHidden()
+      .setRequired()
+    this.addField('deleteRequired', 'Используется для определения что нужно удалить документ, так как мы удаляем из')
+      .setType('bool')
+      .setDefaultDbValue('false')
+      .setDefaultValueExpression('false')
+      .setHidden()
+      .setRequired()
+    super.setSharded(uniqKeys)
+    return this
   }
 }
 

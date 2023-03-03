@@ -688,7 +688,7 @@ class SystemMetaBuilder {
     }))
   }
 
-  getExternalSearchFields(): Array<CatalogBuilder | DocumentBuilder | InfoRegistryBuilder | SumRegistryBuilder> {
+  getExternalSearchEntities(): Array<CatalogBuilder | DocumentBuilder | InfoRegistryBuilder | SumRegistryBuilder> {
     return [
       this.catalogs,
       this.documents,
