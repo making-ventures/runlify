@@ -7,7 +7,7 @@ export const gitlabCiTmpl = ({
   system: { prefix },
   system,
   options,
-}: ProjectWideGenerationArgs) => `image: node:16
+}: ProjectWideGenerationArgs) => `image: node:18
 ${
   options.skipWarningThisIsGenerated
     ? ''
