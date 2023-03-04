@@ -15,8 +15,18 @@ export const addElasticSearch = (system: SystemMetaBuilder) => {
     const registrarDepended = externalSearchEntity.name === 'spendings';
 
     const externalSearchTrackings = system.addInfoRegistry(externalSearchEntity.externalSearchName, false, {plural: `External ${externalSearchEntity.name} search tracking`, singular: `External ${externalSearchEntity.name} search tracking`})
+    externalSearchTrackings.setTitles({
+      en: {
+        singular: `External '${externalSearchEntity.title.en.singular ?? externalSearchEntity.name}' search tracking`,
+        plural: `External '${externalSearchEntity.title.en.plural ?? externalSearchEntity.name}' search tracking`,
+      },
+      ru: {
+        singular: `Отслеживание '${externalSearchEntity.title.ru.singular ?? externalSearchEntity.name}' для внешнего поиска`,
+        plural: `Отслеживание '${externalSearchEntity.title.ru.plural ?? externalSearchEntity.name}' для внешнего поиска`,
+      },
+    })
     externalSearchTrackings
-      .setNeedFor(`Данные на основе которых можно понять, какие ${externalSearchEntity.name} нужно обновить во внешней базе для поиска`)
+      .setNeedFor(`Данные на основе которых можно понять, какие ${externalSearchEntity.title.plural} нужно обновить во внешней базе для поиска`)
     if (externalSearchEntity.shardUniqKeys) {
       externalSearchTrackings.setSharded();
       externalSearchTrackings.getKey().setType(externalSearchEntity.getKey().type)
