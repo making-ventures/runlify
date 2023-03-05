@@ -122,7 +122,6 @@ ${
 }`.replace(/\n\n/gu, '\n')
   )
   .join('\n')}
-
 ${system.deployEnvironments
   .map((e) =>
     `deploy-${e.name}-previous:
