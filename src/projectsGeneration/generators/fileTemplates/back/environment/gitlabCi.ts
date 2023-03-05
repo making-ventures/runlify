@@ -17,10 +17,11 @@ ${
 }
 stages:
   - check
+  - previous-image
   - build
   - latest-image
-  ${system.deployEnvironments.map((e) => `- deploy-${e.name}`).join(`
-  `)}
+  - deploy
+  - deploy-previous
 
 cache:
   paths:
@@ -44,6 +45,18 @@ check:
     - ./check.sh
   variables:
     DATABASE_MAIN_WRITE_URI: $TEST_DATABASE_MAIN_WRITE_URI
+
+tag-previous-with-sha:
+  extends: .tag-image
+  stage: previous-image
+  only:
+    - master
+    - release
+    - /^release-.*$/
+  allow_failure: true # Firt run won't be able to create previous image
+  variables:
+    TAG_ORIGIN: :\${CI_COMMIT_REF_SLUG}
+    TAG_DESTINATION: :\${CI_COMMIT_REF_SLUG}-previous-for-\${CI_COMMIT_SHA}
 
 build:
   stage: build
@@ -71,7 +84,7 @@ build:
       )
       .map((e) => `\n    - ${e.name}`)}
 
-master-to-latest:
+tag-latest:
   extends: .tag-image
   stage: latest-image
   only:
@@ -204,7 +217,7 @@ ${
     DEV: "true"
     HOST: "making.ventures"
     ROOT_ENABLED: "false"
-    TAG: ":latest"${system.configVars
+    TAG: ":\${CI_COMMIT_REF_SLUG}-\${CI_COMMIT_SHA}"${system.configVars
       .filter((v) => v.scopes.includes('back'))
       .map(
         (v) => `\n    ${constantCase(v.name)}: \${DEV_${constantCase(v.name)}}`
@@ -215,14 +228,14 @@ ${
 
 .deploy-prod:
   extends: .deploy
-  stage: deploy-prod
+  stage: deploy
   when: manual
   variables:
     ENV: "prod"
     DEV: "false"
     HOST: "making.ventures"
     ROOT_ENABLED: "true"
-    TAG: ":release"${system.configVars
+    TAG: ":\${CI_COMMIT_REF_SLUG}-\${CI_COMMIT_SHA}"${system.configVars
       .filter((v) => v.scopes.includes('back'))
       .map(
         (v) => `\n    ${constantCase(v.name)}: \${PROD_${constantCase(v.name)}}`
