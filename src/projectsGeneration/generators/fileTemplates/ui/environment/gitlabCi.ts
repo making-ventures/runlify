@@ -130,6 +130,7 @@ ${system.deployEnvironments
     `deploy-${e.name}-previous:
   extends: .deploy-${e.name === 'prod' || e.name === 'demo' ? 'prod' : 'dev'}
   stage: deploy-previous
+  when: manual
   variables:
     ENV: "${e.name}"
     CLUSTER_NAME: "${e.clusterName}01"

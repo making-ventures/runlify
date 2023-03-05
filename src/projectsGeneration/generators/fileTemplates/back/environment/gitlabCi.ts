@@ -163,6 +163,7 @@ ${system.deployEnvironments
     e.name === 'prod' || e.name === 'demo' ? 'prod' : 'dev'
   }-back
   stage: deploy-previous
+  when: manual
   variables:
     ENV: "${e.name}"
     CLUSTER_NAME: "${e.clusterName}01"
@@ -190,6 +191,7 @@ ${
     e.name === 'prod' || e.name === 'demo' ? 'prod' : 'dev'
   }-workers
   stage: deploy-previous
+  when: manual
   variables:
     ENV: "${e.name}"
     CLUSTER_NAME: "workers-${e.clusterName}01"
