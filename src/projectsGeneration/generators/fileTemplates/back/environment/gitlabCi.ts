@@ -109,7 +109,7 @@ ${system.deployEnvironments
   extends: .deploy-${
     e.name === 'prod' || e.name === 'demo' ? 'prod' : 'dev'
   }-back
-  stage: deploy-${e.name}
+  stage: deploy
   variables:
     ENV: "${e.name}"
     CLUSTER_NAME: "${e.clusterName}01"
@@ -135,10 +135,65 @@ ${
   extends: .deploy-${
     e.name === 'prod' || e.name === 'demo' ? 'prod' : 'dev'
   }-workers
-  stage: deploy-${e.name}
+  stage: deploy
   variables:
     ENV: "${e.name}"
     CLUSTER_NAME: "workers-${e.clusterName}01"
+${
+  e.name !== 'prod' && e.name !== 'dev' && e.name !== 'stage'
+    ? `    TAG: ":${e.name}"`
+    : ''
+}
+${
+  e.name !== 'prod' && e.name !== 'dev' && e.name !== 'stage'
+    ? `  only:
+    - ${e}`
+    : ''
+}`.replace(/\n\n/gu, '\n')
+        )
+        .join('\n')
+        .trim()
+    : ''
+}
+
+${system.deployEnvironments
+  .map((e) =>
+    `deploy-${e.name}-back-previous:
+  extends: .deploy-${
+    e.name === 'prod' || e.name === 'demo' ? 'prod' : 'dev'
+  }-back
+  stage: deploy-previous
+  variables:
+    ENV: "${e.name}"
+    CLUSTER_NAME: "${e.clusterName}01"
+    TAG: ":\${CI_COMMIT_REF_SLUG}-previous-for-\${CI_COMMIT_SHA}"
+${
+  e.name !== 'prod' && e.name !== 'dev' && e.name !== 'stage'
+    ? `    TAG: ":${e.name}"`
+    : ''
+}
+${
+  e.name !== 'prod' && e.name !== 'dev' && e.name !== 'stage'
+    ? `  only:
+    - ${e}`
+    : ''
+}`.replace(/\n\n/gu, '\n')
+  )
+  .join('\n')
+  .trim()}${
+  system.workers.length > 0
+    ? '\n\n' +
+      system.deployEnvironments
+        .map((e) =>
+          `deploy-${e.name}-workers-previous:
+  extends: .deploy-${
+    e.name === 'prod' || e.name === 'demo' ? 'prod' : 'dev'
+  }-workers
+  stage: deploy-previous
+  variables:
+    ENV: "${e.name}"
+    CLUSTER_NAME: "workers-${e.clusterName}01"
+    TAG: ":\${CI_COMMIT_REF_SLUG}-previous-for-\${CI_COMMIT_SHA}"
 ${
   e.name !== 'prod' && e.name !== 'dev' && e.name !== 'stage'
     ? `    TAG: ":${e.name}"`
