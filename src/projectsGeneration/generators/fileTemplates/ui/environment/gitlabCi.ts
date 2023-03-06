@@ -180,7 +180,7 @@ ${
     KUBE_CONFIG: \${KUBE_PROD01_CONFIG}${system.configVars
       .filter((v) => v.scopes.includes('admin-app') || v.scopes.includes('ci'))
       .map(
-        (v) => `\n    ${constantCase(v.name)}: \${DEV_${constantCase(v.name)}}`
+        (v) => `\n    ${constantCase(v.name)}: \${PROD_${constantCase(v.name)}}`
       )
       .join('')}
   only:
