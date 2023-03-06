@@ -355,7 +355,7 @@ class SystemMetaBuilder {
     required: boolean,
     def: ConfigValue<T> | undefined,
     needFor: string,
-    scopes: ConfigVarScope[] = ['ci', 'back', 'worker', 'telegramBot']
+    scopes: ConfigVarScope[] = ['back', 'worker', 'telegramBot']
   ) {
     if (this.configVars.some((v) => v.name === name)) {
       throw new Error(`"${name}" config var already exists`)
