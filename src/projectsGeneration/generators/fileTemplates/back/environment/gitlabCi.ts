@@ -275,7 +275,7 @@ ${
     HOST: "making.ventures"
     ROOT_ENABLED: "false"
     TAG: ":\${CI_COMMIT_REF_SLUG}-\${CI_COMMIT_SHA}"${system.configVars
-      .filter((v) => v.scopes.includes('back'))
+      .filter((v) => v.scopes.includes('back') || v.scopes.includes('ci'))
       .map(
         (v) => `\n    ${constantCase(v.name)}: \${DEV_${constantCase(v.name)}}`
       )
@@ -293,7 +293,7 @@ ${
     HOST: "making.ventures"
     ROOT_ENABLED: "true"
     TAG: ":\${CI_COMMIT_REF_SLUG}-\${CI_COMMIT_SHA}"${system.configVars
-      .filter((v) => v.scopes.includes('back'))
+      .filter((v) => v.scopes.includes('back') || v.scopes.includes('ci'))
       .map(
         (v) => `\n    ${constantCase(v.name)}: \${PROD_${constantCase(v.name)}}`
       )
@@ -345,7 +345,7 @@ ${
       --set "worker.enabled=\${WORKER_ENABLED}"
       --set "bot.enabled=\${BOT_ENABLED}"
       --set "ingress.rootEnabled=\${ROOT_ENABLED}"${system.configVars
-        .filter((v) => v.scopes.includes('back'))
+        .filter((v) => v.scopes.includes('back') || v.scopes.includes('ci'))
         .map((v) => `\n      --set "${v.name}=\${${constantCase(v.name)}}"`)
         .join('')}
       --namespace \${NAMESPACE}
