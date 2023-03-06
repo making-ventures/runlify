@@ -378,6 +378,18 @@ class SystemMetaBuilder {
     return this
   }
 
+  delConfigVar<T extends FieldType>(
+    name: string,
+  ) {
+    if (!this.configVars.some((v) => v.name === name)) {
+      throw new Error(`There is no "${name}" config var`)
+    }
+
+    this.configVars = this.configVars.filter(v => v.name !== name)
+
+    return this
+  }
+
   setConfigVarDefaultValue<T extends FieldType>(
     name: string,
     def: ConfigValue<T> | undefined,
