@@ -56,10 +56,8 @@ spec:
         env: {{ $.Values.global.env }}
         deployKind: {{ $.Values.global.deployKind }}
     spec:
-    {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-    {{- end }}
+        - name: {{ $.Release.Name }}-pullsecret
       containers:
       - name: ${options.k8sChartName || prefix}-back
         image: {{ $.Values.docker.registry }}/${
