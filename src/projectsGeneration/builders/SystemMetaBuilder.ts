@@ -73,7 +73,7 @@ class SystemMetaBuilder {
     this.setName(prefix)
     this.back = new DeploymentBuilder('back', defaultLanguage);
 
-    this.addConfigVar('dockerRegistry.url', 'string', false, '', 'Docker registry url', ['ci']);
+    this.addConfigVar('dockerRegistry.domain', 'string', false, '', 'Docker registry domain', ['ci']);
     this.addConfigVar('dockerRegistry.username', 'string', false, '', 'Docker registry username', ['ci']);
     this.addConfigVar('dockerRegistry.password', 'string', false, '', 'Docker registry password', ['ci']);
 
