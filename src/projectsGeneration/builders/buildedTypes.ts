@@ -3,6 +3,7 @@ import { DocumentationOfDocument } from './docs/DocumentationOfDocument'
 import { Forms } from './ui/Forms'
 
 export type ConfigVarScope =
+  | 'ci'
   | 'back'
   | 'admin-app'
   | 'cutomer-app'

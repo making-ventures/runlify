@@ -73,6 +73,9 @@ class SystemMetaBuilder {
     this.setName(prefix)
     this.back = new DeploymentBuilder('back', defaultLanguage);
 
+    this.addConfigVar('dockerRegistry.url', 'string', false, '', 'Docker registry url', ['ci']);
+    this.addConfigVar('dockerRegistry.username', 'string', false, '', 'Docker registry username', ['ci']);
+    this.addConfigVar('dockerRegistry.password', 'string', false, '', 'Docker registry password', ['ci']);
 
     this.addConfigVar(
       'app.name',
@@ -352,7 +355,7 @@ class SystemMetaBuilder {
     required: boolean,
     def: ConfigValue<T> | undefined,
     needFor: string,
-    scopes: ConfigVarScope[] = ['back', 'worker', 'telegramBot']
+    scopes: ConfigVarScope[] = ['ci', 'back', 'worker', 'telegramBot']
   ) {
     if (this.configVars.some((v) => v.name === name)) {
       throw new Error(`"${name}" config var already exists`)
