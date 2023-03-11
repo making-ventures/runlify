@@ -60,7 +60,7 @@ spec:
         - name: {{ $.Release.Name }}-pullsecret
       containers:
       - name: ${options.k8sChartName || prefix}-back
-        image: {{ $.Values.docker.registry }}/${options.projectsGroup}/${
+        image: {{ $.Values.dockerRegistry.domain }}/${options.projectsGroup}/${
           options.projectPrefix || prefix
         }-back{{ $.Values.app.tag }}
         ports:
