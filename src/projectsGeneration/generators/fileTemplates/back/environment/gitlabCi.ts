@@ -98,25 +98,14 @@ tag-latest:
 ${system.deployEnvironments
   .map((e) =>
     `deploy-${e.name}-back:
-  extends: .deploy-${
-    e.name === 'prod' || e.name === 'demo' ? 'prod' : 'dev'
-  }-back
+  extends: .deploy-${e.name}-back
   stage: deploy
   variables:
     ENV: "${e.name}"
     CLUSTER_NAME: "${e.clusterName}01"
-${
-  e.name !== 'prod' && e.name !== 'dev' && e.name !== 'stage'
-    ? `    TAG: ":${e.name}"`
-    : ''
-}
-${
-  e.name !== 'prod' && e.name !== 'dev' && e.name !== 'stage'
-    ? `  only:
-    - ${e}`
-    : ''
-}`.replace(/\n\n/gu, '\n')
-  )
+    TAG: ":${e.name}"
+  only:
+    - ${e}`)
   .join('\n')
   .trim()}${
   system.workers.length > 0
@@ -124,24 +113,14 @@ ${
       system.deployEnvironments
         .map((e) =>
           `deploy-${e.name}-workers:
-  extends: .deploy-${
-    e.name === 'prod' || e.name === 'demo' ? 'prod' : 'dev'
-  }-workers
+  extends: .deploy-${e.name}-workers
   stage: deploy
   variables:
     ENV: "${e.name}"
     CLUSTER_NAME: "workers-${e.clusterName}01"
-${
-  e.name !== 'prod' && e.name !== 'dev' && e.name !== 'stage'
-    ? `    TAG: ":${e.name}"`
-    : ''
-}
-${
-  e.name !== 'prod' && e.name !== 'dev' && e.name !== 'stage'
-    ? `  only:
+    TAG: ":${e.name}"
+  only:
     - ${e}`
-    : ''
-}`.replace(/\n\n/gu, '\n')
         )
         .join('\n')
         .trim()
@@ -151,26 +130,15 @@ ${
 ${system.deployEnvironments
   .map((e) =>
     `deploy-${e.name}-back-previous:
-  extends: .deploy-${
-    e.name === 'prod' || e.name === 'demo' ? 'prod' : 'dev'
-  }-back
+  extends: .deploy-${e.name}-back
   stage: deploy-previous
   when: manual
   variables:
     ENV: "${e.name}"
     CLUSTER_NAME: "${e.clusterName}01"
     TAG: ":\${CI_COMMIT_REF_SLUG}-previous-for-\${CI_COMMIT_SHA}"
-${
-  e.name !== 'prod' && e.name !== 'dev' && e.name !== 'stage'
-    ? `    TAG: ":${e.name}"`
-    : ''
-}
-${
-  e.name !== 'prod' && e.name !== 'dev' && e.name !== 'stage'
-    ? `  only:
+  only:
     - ${e}`
-    : ''
-}`.replace(/\n\n/gu, '\n')
   )
   .join('\n')
   .trim()}${
@@ -179,26 +147,15 @@ ${
       system.deployEnvironments
         .map((e) =>
           `deploy-${e.name}-workers-previous:
-  extends: .deploy-${
-    e.name === 'prod' || e.name === 'demo' ? 'prod' : 'dev'
-  }-workers
+  extends: .deploy-${e.name}-workers
   stage: deploy-previous
   when: manual
   variables:
     ENV: "${e.name}"
     CLUSTER_NAME: "workers-${e.clusterName}01"
     TAG: ":\${CI_COMMIT_REF_SLUG}-previous-for-\${CI_COMMIT_SHA}"
-${
-  e.name !== 'prod' && e.name !== 'dev' && e.name !== 'stage'
-    ? `    TAG: ":${e.name}"`
-    : ''
-}
-${
-  e.name !== 'prod' && e.name !== 'dev' && e.name !== 'stage'
-    ? `  only:
+  only:
     - ${e}`
-    : ''
-}`.replace(/\n\n/gu, '\n')
         )
         .join('\n')
         .trim()
@@ -232,13 +189,13 @@ ${
     ROOT_ENABLED: "false"
   only:
     - master
-
-.deploy-prod-back:
+${system.deployEnvironments
+  .map((e) =>`.deploy-${e.name}-back:
   extends:
-    - .deploy-prod
+    - .deploy-${e.name}
     - .deploy-back
   variables:
-    KUBE_CONFIG: \${KUBE_PROD01_CONFIG}
+    KUBE_CONFIG: \${KUBE_${e.clusterName.toUpperCase()}_CONFIG}
     BACK_ENABLED: "true"
     INGRESS_ENABLED: "true"
     METRICS_ENABLED: "true"
@@ -246,18 +203,18 @@ ${
     BOT_ENABLED: "false"
     ROOT_ENABLED: "false"
 
-.deploy-prod-workers:
+.deploy-${e.name}-workers:
   extends:
-    - .deploy-prod
+    - .deploy-${e.name}
     - .deploy-worker
   variables:
-    KUBE_CONFIG: \${KUBE_WORKERS01_CONFIG}
+    KUBE_CONFIG: \${KUBE_${e.workerClusterName.toUpperCase()}_CONFIG}
     BACK_ENABLED: "false"
     INGRESS_ENABLED: "false"
     METRICS_ENABLED: "false"
     WORKER_ENABLED: "true"
     BOT_ENABLED: "true"
-    ROOT_ENABLED: "false"
+    ROOT_ENABLED: "false"`).join('\n\n')}
 ${system.deployEnvironments
   .map((e) =>`.deploy-${e.name}:
   extends: .deploy

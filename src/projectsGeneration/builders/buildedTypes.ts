@@ -356,6 +356,7 @@ export interface DeployEnvironment {
   manualDeploy: boolean
   name: string
   clusterName: string
+  workerClusterName: string
   branchName: string
 }
 
