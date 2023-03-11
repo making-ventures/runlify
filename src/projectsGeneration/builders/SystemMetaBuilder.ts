@@ -299,6 +299,7 @@ class SystemMetaBuilder {
     this.addConfigVar('es.node', 'string', false, 'http://localhost:9200', 'Нода эластика');
     this.addConfigVar('es.tls.rejectUnauthorized', 'bool', false, false, 'Запрещать невалидный ssl сертификат');
 
+    this.addDeployEnvironment('dev', 'stage')
     this.addDeployEnvironment('stage', 'stage')
     this.addDeployEnvironment('prod', 'stage')
     this.addLanguage('en', 'English')
