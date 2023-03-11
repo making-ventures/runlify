@@ -76,6 +76,15 @@ build:
   only:${system.deployEnvironments
       .map((e) => `\n    - ${e.branchName}`).join('')}
 
+tag-latest:
+  extends: .tag-image
+  stage: latest-image
+  only:
+    - master
+  variables:
+    TAG_ORIGIN: master
+    TAG_DESTINATION: latest
+
 .tag-image:
   image:
     name: gcr.io/go-containerregistry/crane:debug
