@@ -104,6 +104,7 @@ ${system.deployEnvironments
     TAG: ":${e.branchName}"
   only:
     - ${e.branchName}`).join('\n\n')}
+
 ${system.deployEnvironments
   .map((e) =>
     `deploy-${e.name}-previous:
@@ -140,6 +141,7 @@ ${system.deployEnvironments
       .join('')}`).join('\n\n')}
 
 .deploy-ui:
+  extends: .deploy
   variables:
     DEPLOY_KIND: "ui"
 
