@@ -146,7 +146,7 @@ ${system.deployEnvironments
       )
       .join('')}
   only:
-    - ${e.branchName}`)}
+    - ${e.branchName}`).join('\n')}
 
 .deploy-ui:
   variables:
