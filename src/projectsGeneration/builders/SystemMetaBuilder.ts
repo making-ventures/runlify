@@ -302,19 +302,19 @@ class SystemMetaBuilder {
     this.addDeployEnvironment({
       name: 'dev',
       manualDeploy: false,
-      clusterName: 'stage',
+      clusterName: 'stage01',
       branchName: 'master',
     })
     this.addDeployEnvironment({
       name: 'stage',
       manualDeploy: false,
-      clusterName: 'stage',
+      clusterName: 'stage01',
       branchName: 'stage',
     })
     this.addDeployEnvironment({
       name: 'prod',
       manualDeploy: true,
-      clusterName: 'stage',
+      clusterName: 'stage01',
       branchName: 'release',
     })
     this.addLanguage('en', 'English')

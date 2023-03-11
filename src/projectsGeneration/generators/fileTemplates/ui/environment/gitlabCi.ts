@@ -106,7 +106,7 @@ ${system.deployEnvironments
   stage: deploy
   variables:
     ENV: "${e.name}"
-    CLUSTER_NAME: "${e.clusterName}01"
+    CLUSTER_NAME: "${e.clusterName}"
 ${
   e.name !== 'prod' && e.name !== 'dev' && e.name !== 'stage'
     ? `    TAG: ":${e.name}"`
@@ -128,7 +128,7 @@ ${system.deployEnvironments
   when: manual
   variables:
     ENV: "${e.name}"
-    CLUSTER_NAME: "${e.clusterName}01"
+    CLUSTER_NAME: "${e.clusterName}"
     TAG: ":\${CI_COMMIT_REF_SLUG}-previous-for-\${CI_COMMIT_SHA}"
 ${
   e.name !== 'prod' && e.name !== 'dev' && e.name !== 'stage'
