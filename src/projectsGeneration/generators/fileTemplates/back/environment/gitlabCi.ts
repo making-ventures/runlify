@@ -103,10 +103,10 @@ ${system.deployEnvironments
   variables:
     ENV: "${e.name}"
     CLUSTER_NAME: "${e.clusterName}"
-    TAG: ":${e.branchName}"
+    TAG: ":\${CI_COMMIT_REF_SLUG}-\${CI_COMMIT_SHA}"
   only:
     - ${e.branchName}`)
-  .join('\n')
+  .join('\n\n')
   .trim()}${
   system.workers.length > 0
     ? '\n\n' +
@@ -118,11 +118,11 @@ ${system.deployEnvironments
   variables:
     ENV: "${e.name}"
     CLUSTER_NAME: "workers-${e.clusterName}"
-    TAG: ":${e.branchName}"
+    TAG: ":\${CI_COMMIT_REF_SLUG}-\${CI_COMMIT_SHA}"
   only:
     - ${e.branchName}`
         )
-        .join('\n')
+        .join('\n\n')
         .trim()
     : ''
 }

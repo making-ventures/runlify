@@ -101,7 +101,7 @@ ${system.deployEnvironments
   variables:
     ENV: "${e.name}"
     CLUSTER_NAME: "${e.clusterName}"
-    TAG: ":${e.branchName}"
+    TAG: ":\${CI_COMMIT_REF_SLUG}-\${CI_COMMIT_SHA}"
   only:
     - ${e.branchName}`).join('\n\n')}
 
