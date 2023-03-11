@@ -170,6 +170,7 @@ ${system.deployEnvironments
       --set "app.tag=\${TAG}"
       --set "ingress.host=\${HOST}"
       --set "style=\${STYLE}"
+      --set "docker.registry=\${DOCKER_REGISTRY}"
       --set "ingress.rootEnabled=\${ROOT_ENABLED}"${system.configVars
         .filter((v) => v.scopes.includes('admin-app') || v.scopes.includes('ci'))
         .map((v) => `\n      --set "${v.name}=\${${constantCase(v.name)}}"`)

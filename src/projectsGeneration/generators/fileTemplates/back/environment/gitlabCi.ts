@@ -243,6 +243,7 @@ ${system.deployEnvironments
       --set "metrics.enabled=\${METRICS_ENABLED}"
       --set "worker.enabled=\${WORKER_ENABLED}"
       --set "bot.enabled=\${BOT_ENABLED}"
+      --set "docker.registry=\${DOCKER_REGISTRY}"
       --set "ingress.rootEnabled=\${ROOT_ENABLED}"${system.configVars
         .filter((v) => v.scopes.includes('back') || v.scopes.includes('ci'))
         .map((v) => `\n      --set "${v.name}=\${${constantCase(v.name)}}"`)
