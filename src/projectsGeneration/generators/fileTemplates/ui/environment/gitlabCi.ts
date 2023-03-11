@@ -119,7 +119,7 @@ ${system.deployEnvironments
 
 ${system.deployEnvironments
   .map((e) =>`.deploy-${e.name}:
-  extends: .deploy
+  extends: .deploy-ui
   stage: deploy
   when: ${e.manualDeploy ? 'manual' : 'on_success'}
   only:
