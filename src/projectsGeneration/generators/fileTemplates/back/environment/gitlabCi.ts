@@ -129,7 +129,7 @@ ${system.deployEnvironments
     CLUSTER_NAME: "${e.clusterName}01"
     TAG: ":\${CI_COMMIT_REF_SLUG}-previous-for-\${CI_COMMIT_SHA}"
   only:
-    - ${e.branchName}`).join('\n')}${system.workers.length > 0
+    - ${e.branchName}`).join('\n\n')}${system.workers.length > 0
     ? '\n\n' +
       system.deployEnvironments
         .map((e) =>
@@ -142,7 +142,7 @@ ${system.deployEnvironments
     CLUSTER_NAME: "workers-${e.clusterName}01"
     TAG: ":\${CI_COMMIT_REF_SLUG}-previous-for-\${CI_COMMIT_SHA}"
   only:
-    - ${e.branchName}`).join('\n')
+    - ${e.branchName}`).join('\n\n')
     : ''}
 ${system.deployEnvironments
   .map((e) =>`.deploy-${e.name}-back:
