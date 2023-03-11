@@ -48,7 +48,7 @@ tag-previous-with-sha:
   extends: .tag-image
   stage: previous-image
   only:${system.deployEnvironments
-    .map((e) => `\n    - ${e.branchName}`)}
+    .map((e) => `\n    - ${e.branchName}`).join('')}
   allow_failure: true # Firt run won't be able to create previous image
   variables:
     TAG_ORIGIN: :\${CI_COMMIT_REF_SLUG}
@@ -72,7 +72,7 @@ build:
       --destination \${CI_REGISTRY_IMAGE}:\${CI_COMMIT_REF_SLUG}-\${CI_COMMIT_SHA}
       --single-snapshot
   only:${system.deployEnvironments
-    .map((e) => `\n    - ${e.branchName}`)}
+    .map((e) => `\n    - ${e.branchName}`).join('')}
 
 .tag-image:
   image:
