@@ -92,9 +92,9 @@ ${system.deployEnvironments
   variables:
     ENV: "${e.name}"
     CLUSTER_NAME: "${e.clusterName}"
-    TAG: ":${e.name}"
+    TAG: ":${e.branchName}"
   only:
-    - ${e}`
+    - ${e.branchName}`
   )
   .join('\n')}
 ${system.deployEnvironments
@@ -108,7 +108,7 @@ ${system.deployEnvironments
     CLUSTER_NAME: "${e.clusterName}"
     TAG: ":\${CI_COMMIT_REF_SLUG}-previous-for-\${CI_COMMIT_SHA}"
   only:
-    - ${e}`
+    - ${e.branchName}`
   )
   .join('\n')}
 ${system.deployEnvironments

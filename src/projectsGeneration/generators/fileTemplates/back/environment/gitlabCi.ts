@@ -76,15 +76,6 @@ build:
   only:${system.deployEnvironments
       .map((e) => `\n    - ${e.branchName}`).join('')}
 
-tag-latest:
-  extends: .tag-image
-  stage: latest-image
-  only:
-    - master
-  variables:
-    TAG_ORIGIN: master
-    TAG_DESTINATION: latest
-
 .tag-image:
   image:
     name: gcr.io/go-containerregistry/crane:debug
@@ -103,9 +94,9 @@ ${system.deployEnvironments
   variables:
     ENV: "${e.name}"
     CLUSTER_NAME: "${e.clusterName}01"
-    TAG: ":${e.name}"
+    TAG: ":${e.branchName}"
   only:
-    - ${e}`)
+    - ${e.branchName}`)
   .join('\n')
   .trim()}${
   system.workers.length > 0
@@ -118,9 +109,9 @@ ${system.deployEnvironments
   variables:
     ENV: "${e.name}"
     CLUSTER_NAME: "workers-${e.clusterName}01"
-    TAG: ":${e.name}"
+    TAG: ":${e.branchName}"
   only:
-    - ${e}`
+    - ${e.branchName}`
         )
         .join('\n')
         .trim()
@@ -138,7 +129,7 @@ ${system.deployEnvironments
     CLUSTER_NAME: "${e.clusterName}01"
     TAG: ":\${CI_COMMIT_REF_SLUG}-previous-for-\${CI_COMMIT_SHA}"
   only:
-    - ${e}`
+    - ${e.branchName}`
   )
   .join('\n')
   .trim()}${
@@ -155,40 +146,12 @@ ${system.deployEnvironments
     CLUSTER_NAME: "workers-${e.clusterName}01"
     TAG: ":\${CI_COMMIT_REF_SLUG}-previous-for-\${CI_COMMIT_SHA}"
   only:
-    - ${e}`
+    - ${e.branchName}`
         )
         .join('\n')
         .trim()
     : ''
 }
-
-.deploy-dev-back:
-  extends:
-    - .deploy-dev
-    - .deploy-back
-  variables:
-    KUBE_CONFIG: \${KUBE_STAGE01_CONFIG}
-    BACK_ENABLED: "true"
-    INGRESS_ENABLED: "true"
-    METRICS_ENABLED: "true"
-    WORKER_ENABLED: "false"
-    BOT_ENABLED: "false"
-    ROOT_ENABLED: "false"
-
-.deploy-dev-workers:
-  extends:
-    - .deploy-dev
-    - .deploy-worker
-  variables:
-    KUBE_CONFIG: \${KUBE_WORKERS01_CONFIG}
-    BACK_ENABLED: "false"
-    INGRESS_ENABLED: "false"
-    METRICS_ENABLED: "false"
-    WORKER_ENABLED: "true"
-    BOT_ENABLED: "true"
-    ROOT_ENABLED: "false"
-  only:
-    - master
 ${system.deployEnvironments
   .map((e) =>`.deploy-${e.name}-back:
   extends:
