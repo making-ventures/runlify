@@ -176,6 +176,10 @@ ${system.deployEnvironments
   extends: .deploy
   stage: deploy
   when: ${e.manualDeploy ? 'manual' : 'on_success'}
+  only:
+    - ${e.branchName}
+  tags:
+    - ${e.name}
   variables:
     ENV: "${e.name}"
     DEV: "false"
@@ -186,9 +190,7 @@ ${system.deployEnvironments
       .map(
         (v) => `\n    ${constantCase(v.name)}: \${${e.name.toUpperCase()}_${constantCase(v.name)}}`
       )
-      .join('')}
-  only:
-    - ${e.branchName}`).join('\n\n')}
+      .join('')}`).join('\n\n')}
 
 .deploy-back:
   variables:
