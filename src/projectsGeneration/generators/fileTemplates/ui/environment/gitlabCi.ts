@@ -132,7 +132,7 @@ ${system.deployEnvironments
     HOST: "making.ventures"
     ROOT_ENABLED: "true"
     TAG: ":\${CI_COMMIT_REF_SLUG}-\${CI_COMMIT_SHA}"${system.configVars
-      .filter((v) => v.scopes.includes('back') || v.scopes.includes('ci'))
+      .filter((v) => v.scopes.includes('admin-app') || v.scopes.includes('ci'))
       .map(
         (v) => `\n    ${constantCase(v.name)}: \${${e.name.toUpperCase()}_${constantCase(v.name)}}`
       )
