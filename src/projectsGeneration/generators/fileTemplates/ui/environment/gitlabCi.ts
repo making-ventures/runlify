@@ -47,9 +47,8 @@ check:
 tag-previous-with-sha:
   extends: .tag-image
   stage: previous-image
-  only:
-    - master
-    - release
+  only:${system.deployEnvironments
+    .map((e) => `\n    - ${e.branchName}`)}
   allow_failure: true # Firt run won't be able to create previous image
   variables:
     TAG_ORIGIN: :\${CI_COMMIT_REF_SLUG}
@@ -72,22 +71,8 @@ build:
       --destination \${CI_REGISTRY_IMAGE}:\${CI_COMMIT_REF_SLUG}
       --destination \${CI_REGISTRY_IMAGE}:\${CI_COMMIT_REF_SLUG}-\${CI_COMMIT_SHA}
       --single-snapshot
-  only:
-    - master
-    - release${system.deployEnvironments
-      .filter(
-        (e) => e.name !== 'prod' && e.name !== 'dev' && e.name !== 'stage'
-      )
-      .map((e) => `\n    - ${e.name}`)}
-
-tag-latest:
-  extends: .tag-image
-  stage: latest-image
-  only:
-    - master
-  variables:
-    TAG_ORIGIN: master
-    TAG_DESTINATION: latest
+  only:${system.deployEnvironments
+    .map((e) => `\n    - ${e.branchName}`)}
 
 .tag-image:
   image:
@@ -144,26 +129,24 @@ ${
   )
   .join('\n')}
 
-.deploy-prod:
-  extends:
-    - .deploy
-    - .deploy-ui
+${system.deployEnvironments
+  .map((e) =>`.deploy-${e.name}:
+  extends: .deploy
   stage: deploy
-  when: manual
+  when: ${e.manualDeploy ? 'manual' : 'on_success'}
   variables:
-    ENV: "prod"
+    ENV: "${e.name}"
     DEV: "false"
     HOST: "making.ventures"
     ROOT_ENABLED: "true"
-    TAG: ":\${CI_COMMIT_REF_SLUG}-\${CI_COMMIT_SHA}"
-    KUBE_CONFIG: \${KUBE_PROD01_CONFIG}${system.configVars
-      .filter((v) => v.scopes.includes('admin-app') || v.scopes.includes('ci'))
+    TAG: ":\${CI_COMMIT_REF_SLUG}-\${CI_COMMIT_SHA}"${system.configVars
+      .filter((v) => v.scopes.includes('back') || v.scopes.includes('ci'))
       .map(
-        (v) => `\n    ${constantCase(v.name)}: \${PROD_${constantCase(v.name)}}`
+        (v) => `\n    ${constantCase(v.name)}: \${${e.name.toUpperCase()}_${constantCase(v.name)}}`
       )
       .join('')}
   only:
-    - release
+    - ${e.branchName}`)}
 
 .deploy-ui:
   variables:
