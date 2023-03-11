@@ -143,25 +143,6 @@ ${
 }`.replace(/\n\n/gu, '\n')
   )
   .join('\n')}
-.deploy-dev:
-  extends:
-    - .deploy
-    - .deploy-ui
-  stage: deploy
-  variables:
-    ENV: "stage"
-    DEV: "true"
-    HOST: "making.ventures"
-    ROOT_ENABLED: "false"
-    TAG: ":\${CI_COMMIT_REF_SLUG}-\${CI_COMMIT_SHA}"
-    KUBE_CONFIG: \${KUBE_STAGE01_CONFIG}${system.configVars
-      .filter((v) => v.scopes.includes('admin-app') || v.scopes.includes('ci'))
-      .map(
-        (v) => `\n    ${constantCase(v.name)}: \${DEV_${constantCase(v.name)}}`
-      )
-      .join('')}
-  only:
-    - master
 
 .deploy-prod:
   extends:

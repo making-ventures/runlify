@@ -259,22 +259,6 @@ ${
     BOT_ENABLED: "true"
     ROOT_ENABLED: "false"
 
-.deploy-dev:
-  extends: .deploy
-  variables:
-    ENV: "stage"
-    DEV: "true"
-    HOST: "making.ventures"
-    ROOT_ENABLED: "false"
-    TAG: ":\${CI_COMMIT_REF_SLUG}-\${CI_COMMIT_SHA}"${system.configVars
-      .filter((v) => v.scopes.includes('back') || v.scopes.includes('ci'))
-      .map(
-        (v) => `\n    ${constantCase(v.name)}: \${DEV_${constantCase(v.name)}}`
-      )
-      .join('')}
-  only:
-    - master
-
 ${system.deployEnvironments
   .map((e) =>`.deploy-${e.name}:
   extends: .deploy
