@@ -52,7 +52,6 @@ tag-previous-with-sha:
   only:
     - master
     - release
-    - /^release-.*$/
   allow_failure: true # Firt run won't be able to create previous image
   variables:
     TAG_ORIGIN: :\${CI_COMMIT_REF_SLUG}
@@ -77,8 +76,7 @@ build:
       --single-snapshot
   only:
     - master
-    - release
-    - /^release-.*$/${system.deployEnvironments
+    - release${system.deployEnvironments
       .filter(
         (e) => e.name !== 'prod' && e.name !== 'dev' && e.name !== 'stage'
       )
@@ -300,7 +298,6 @@ ${
       .join('')}
   only:
     - release
-    - /^release-.*$/
 
 .deploy-back:
   variables:
