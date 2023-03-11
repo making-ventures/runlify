@@ -107,6 +107,7 @@ ${system.deployEnvironments
     TAG: ":\${CI_COMMIT_REF_SLUG}-previous-for-\${CI_COMMIT_SHA}"
   only:
     - ${e.branchName}`).join('\n\n')}
+
 ${system.deployEnvironments
   .map((e) =>`.deploy-${e.name}:
   extends: .deploy
