@@ -20,7 +20,7 @@ global:
 dev: false
 
 docker:
-  registry: ${options.ciDockerRegistry}/${options.projectsGroup}
+  registry: ${options.ciDockerRegistry}
 
 app:
   tag: :master

@@ -58,7 +58,7 @@ spec:
         - name: {{ $.Release.Name }}-pullsecret
       containers:
       - name: ${options.k8sChartName || prefix}-ui
-        image: {{ $.Values.docker.registry }}/${
+        image: {{ $.Values.docker.registry }}/${options.projectsGroup}/${
           options.projectPrefix || prefix
         }-ui{{ $.Values.app.tag }}
         ports:
