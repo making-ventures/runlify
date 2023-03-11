@@ -299,12 +299,12 @@ class SystemMetaBuilder {
     this.addConfigVar('es.node', 'string', false, 'http://localhost:9200', 'Нода эластика');
     this.addConfigVar('es.tls.rejectUnauthorized', 'bool', false, false, 'Запрещать невалидный ssl сертификат');
 
-    this.addDeployEnvironment({
-      name: 'dev',
-      manualDeploy: false,
-      clusterName: 'stage01',
-      branchName: 'master',
-    })
+    // this.addDeployEnvironment({
+    //   name: 'dev',
+    //   manualDeploy: false,
+    //   clusterName: 'stage01',
+    //   branchName: 'master',
+    // })
     this.addDeployEnvironment({
       name: 'stage',
       manualDeploy: false,
