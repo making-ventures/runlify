@@ -441,6 +441,10 @@ class SystemMetaBuilder {
   }
 
   addDeployEnvironment(name: string, clusterName: string) {
+    if (this.deployEnvironments.some((f) => f.name === name)) {
+      throw new Error(`There is already deployEnvironment with name "${name}"`)
+    }
+
     this.deployEnvironments.push({ name, clusterName })
 
     return this
