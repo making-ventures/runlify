@@ -276,7 +276,7 @@ ${system.deployEnvironments
       )
       .join('')}
   only:
-    - ${e.branchName}`).join('\n')}
+    - ${e.branchName}`).join('\n\n')}
 
 .deploy-back:
   variables:
