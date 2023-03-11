@@ -94,9 +94,7 @@ ${system.deployEnvironments
     CLUSTER_NAME: "${e.clusterName}"
     TAG: ":${e.branchName}"
   only:
-    - ${e.branchName}`
-  )
-  .join('\n')}
+    - ${e.branchName}`).join('\n\n')}
 ${system.deployEnvironments
   .map((e) =>
     `deploy-${e.name}-previous:
@@ -108,9 +106,7 @@ ${system.deployEnvironments
     CLUSTER_NAME: "${e.clusterName}"
     TAG: ":\${CI_COMMIT_REF_SLUG}-previous-for-\${CI_COMMIT_SHA}"
   only:
-    - ${e.branchName}`
-  )
-  .join('\n')}
+    - ${e.branchName}`).join('\n\n')}
 ${system.deployEnvironments
   .map((e) =>`.deploy-${e.name}:
   extends: .deploy
