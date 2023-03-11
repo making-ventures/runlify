@@ -22,8 +22,20 @@ const addCommonCommands = (system: SystemMetaBuilder) => {
   system.addCommnad(
     'back',
     'dev:stage',
-    'runlify start yarn dev',
-    'Запуска преокта в режиме разработки с использование stage базы данных',
+    'runlify start env=stage yarn dev',
+    'Запуска преокта в режиме разработки с использованием stage окружения',
+  );
+  system.addCommnad(
+    'back',
+    'dev:local',
+    'runlify start env=local yarn dev',
+    'Запуска преокта в режиме разработки с использованием локального окружения',
+  );
+  system.addCommnad(
+    'back',
+    'dev:prod',
+    'runlify start env=prod yarn dev',
+    'Запуска преокта в режиме разработки с использованием prod окружения',
   );
   system.addCommnad(
     'back',
