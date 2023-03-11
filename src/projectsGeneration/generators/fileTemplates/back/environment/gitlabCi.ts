@@ -165,7 +165,7 @@ ${system.deployEnvironments
     METRICS_ENABLED: "true"
     WORKER_ENABLED: "false"
     BOT_ENABLED: "false"
-    ROOT_ENABLED: "false"
+    ROOT_ENABLED: "${e.main}"
 
 .deploy-${e.name}-workers:
   extends:
@@ -178,7 +178,7 @@ ${system.deployEnvironments
     METRICS_ENABLED: "false"
     WORKER_ENABLED: "true"
     BOT_ENABLED: "true"
-    ROOT_ENABLED: "false"`).join('\n\n')}
+    ROOT_ENABLED: "${e.main}"`).join('\n\n')}
 
 ${system.deployEnvironments
   .map((e) =>`.deploy-${e.name}:
@@ -193,7 +193,7 @@ ${system.deployEnvironments
     ENV: "${e.name}"
     DEV: "false"
     HOST: "making.ventures"
-    ROOT_ENABLED: "false"
+    ROOT_ENABLED: "${e.main}"
     TAG: ":\${CI_COMMIT_REF_SLUG}-\${CI_COMMIT_SHA}"${system.configVars
       .filter((v) => v.scopes.includes('back') || v.scopes.includes('ci'))
       .map(

@@ -131,7 +131,7 @@ ${system.deployEnvironments
     ENV: "${e.name}"
     DEV: "false"
     HOST: "making.ventures"
-    ROOT_ENABLED: "false"
+    ROOT_ENABLED: "${e.main}"
     KUBE_CONFIG: \${KUBE_${e.clusterName.toUpperCase()}_CONFIG}
     TAG: ":\${CI_COMMIT_REF_SLUG}-\${CI_COMMIT_SHA}"${system.configVars
       .filter((v) => v.scopes.includes('admin-app') || v.scopes.includes('ci'))
