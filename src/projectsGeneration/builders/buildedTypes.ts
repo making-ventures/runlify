@@ -353,8 +353,10 @@ export type SumRegistry = BaseSavableEntity & {
 export type Entity = Document | Catalog | InfoRegistry | SumRegistry
 
 export interface DeployEnvironment {
+  manualDeploy: boolean
   name: string
   clusterName: string
+  branchName: string
 }
 
 export type Language = {

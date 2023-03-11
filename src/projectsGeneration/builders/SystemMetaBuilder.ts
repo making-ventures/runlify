@@ -299,9 +299,24 @@ class SystemMetaBuilder {
     this.addConfigVar('es.node', 'string', false, 'http://localhost:9200', 'Нода эластика');
     this.addConfigVar('es.tls.rejectUnauthorized', 'bool', false, false, 'Запрещать невалидный ssl сертификат');
 
-    this.addDeployEnvironment('dev', 'stage')
-    this.addDeployEnvironment('stage', 'stage')
-    this.addDeployEnvironment('prod', 'stage')
+    this.addDeployEnvironment({
+      name: 'dev',
+      manualDeploy: false,
+      clusterName: 'stage',
+      branchName: 'master',
+    })
+    this.addDeployEnvironment({
+      name: 'stage',
+      manualDeploy: false,
+      clusterName: 'stage',
+      branchName: 'stage',
+    })
+    this.addDeployEnvironment({
+      name: 'prod',
+      manualDeploy: true,
+      clusterName: 'stage',
+      branchName: 'release',
+    })
     this.addLanguage('en', 'English')
     this.addLanguage('ru', 'Russian')
     if (!['en', 'ru'].includes(defaultLanguage)) {
@@ -440,12 +455,22 @@ class SystemMetaBuilder {
     this.defaultLanguage = id
   }
 
-  addDeployEnvironment(name: string, clusterName: string) {
-    if (this.deployEnvironments.some((f) => f.name === name)) {
-      throw new Error(`There is already deployEnvironment with name "${name}"`)
+  addDeployEnvironment(deployEnvironment: DeployEnvironment) {
+    if (this.deployEnvironments.some((f) => f.name === deployEnvironment.name)) {
+      throw new Error(`There is already deployEnvironment with name "${deployEnvironment.name}"`)
     }
 
-    this.deployEnvironments.push({ name, clusterName })
+    this.deployEnvironments.push(deployEnvironment)
+
+    return this
+  }
+
+  delDeployEnvironment(name: string) {
+    if (!this.deployEnvironments.some((f) => f.name === name)) {
+      throw new Error(`There is no "${name}" config var`)
+    }
+
+    this.deployEnvironments = this.deployEnvironments.filter(v => v.name !== name)
 
     return this
   }
