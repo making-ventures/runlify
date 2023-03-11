@@ -170,6 +170,7 @@ ${system.deployEnvironments
     WORKER_ENABLED: "true"
     BOT_ENABLED: "true"
     ROOT_ENABLED: "false"`).join('\n\n')}
+
 ${system.deployEnvironments
   .map((e) =>`.deploy-${e.name}:
   extends: .deploy
