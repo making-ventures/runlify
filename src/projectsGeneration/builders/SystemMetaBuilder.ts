@@ -302,6 +302,7 @@ class SystemMetaBuilder {
     this.addDeployEnvironment({
       name: 'dev',
       manualDeploy: false,
+      main: false,
       clusterName: 'stage01',
       workerClusterName: 'workers01',
       branchName: 'master',
@@ -315,6 +316,7 @@ class SystemMetaBuilder {
     this.addDeployEnvironment({
       name: 'prod',
       manualDeploy: true,
+      main: true,
       clusterName: 'stage01',
       workerClusterName: 'workers01',
       branchName: 'release',
@@ -463,6 +465,10 @@ class SystemMetaBuilder {
     }
 
     this.deployEnvironments.push(deployEnvironment)
+
+    if (this.deployEnvironments.filter((f) => f.main)?.length > 1) {
+      throw new Error(`Main deployEnvironment shuold be only one"`)
+    }
 
     return this
   }
