@@ -163,7 +163,7 @@ class SystemMetaBuilder {
     //   'string',
     //   true,
     //   's3.eu-central-1.wasabisys.com',
-    //   'Публичныйм эндпоинт S3, к которому имеет доступ полььзовательь',
+    //   'Публичныйм эндпоинт S3, к которому имеет доступ полььзователь',
     // )
     this.addConfigVar(
       's3.region',
