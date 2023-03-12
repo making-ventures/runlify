@@ -90,6 +90,7 @@ tag-latest:
     name: gcr.io/go-containerregistry/crane:debug
     entrypoint: ['']
   script:
+    - crane TAG_DESTINATION \${TAG_DESTINATION}
     - crane auth login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - crane cp \${CI_REGISTRY_IMAGE}:\${TAG_ORIGIN} \${CI_REGISTRY_IMAGE}:\${TAG_DESTINATION}
   variables:
@@ -222,6 +223,7 @@ ${system.deployEnvironments
     - echo \${KUBE_CONFIG} | base64 -d > \${KUBECONFIG}
   script:
     - NAMESPACE=\${NAMESPACE:-"${options.k8sNamespacePrefix || prefix}-\${ENV}"}
+    - echo TAG \${TAG}
     - echo NAMESPACE \${NAMESPACE}
     - echo chart \${NAMESPACE}-\${DEPLOY_KIND}
 
