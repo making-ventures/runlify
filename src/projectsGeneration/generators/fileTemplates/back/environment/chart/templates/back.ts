@@ -67,6 +67,39 @@ spec:
         - name: main-port
           containerPort: 3000
         imagePullPolicy: Always
+        livenessProbe:
+          httpGet:
+            path: /health?type=liveness
+            port: main-port
+          initialDelaySeconds: 60
+          timeoutSeconds: 15
+          periodSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /health?type=readiness
+            port: main-port
+          initialDelaySeconds: 60
+          timeoutSeconds: 15
+          periodSeconds: 5
+        startupProbe:
+          httpGet:
+            path: /health?type=startup
+            port: main-port
+          initialDelaySeconds: 60
+          timeoutSeconds: 15
+          failureThreshold: 10
+          periodSeconds: 10
+        resources:
+          requests:
+            memory: {{ $.Values.back.requests.memory }}
+            cpu: {{ $.Values.back.requests.cpu }}
+          limits:
+            memory: {{ $.Values.back.limits.memory }}
+            cpu: {{ $.Values.back.limits.cpu }}
+        securityContext:
+          runAsNonRoot: true
+          # readOnlyRootFilesystem: true
+          runAsUser: 1000
         env:
         - name: NODE_ENV
           value: production
@@ -95,42 +128,6 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-
-        livenessProbe:
-          httpGet:
-            path: /health?type=liveness
-            port: main-port
-          initialDelaySeconds: 60
-          timeoutSeconds: 15
-          periodSeconds: 5
-        readinessProbe:
-          httpGet:
-            path: /health?type=readiness
-            port: main-port
-          initialDelaySeconds: 60
-          timeoutSeconds: 15
-          periodSeconds: 5
-        startupProbe:
-          httpGet:
-            path: /health?type=startup
-            port: main-port
-          initialDelaySeconds: 60
-          timeoutSeconds: 15
-          failureThreshold: 10
-          periodSeconds: 10
-
-        resources:
-          requests:
-            memory: {{ $.Values.back.requests.memory }}
-            cpu: {{ $.Values.back.requests.cpu }}
-          limits:
-            memory: {{ $.Values.back.limits.memory }}
-            cpu: {{ $.Values.back.limits.cpu }}
-
-        securityContext:
-          runAsNonRoot: true
-          # readOnlyRootFilesystem: true
-          runAsUser: 1000
 ---
 {{- end }}
 `

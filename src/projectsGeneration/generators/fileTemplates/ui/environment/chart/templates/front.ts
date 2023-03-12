@@ -65,6 +65,35 @@ spec:
         - name: main-port
           containerPort: 80
         imagePullPolicy: Always
+        livenessProbe:
+          httpGet:
+            path: /
+            port: main-port
+          initialDelaySeconds: 60
+          timeoutSeconds: 15
+          periodSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /
+            port: main-port
+          initialDelaySeconds: 60
+          timeoutSeconds: 15
+          periodSeconds: 5
+        startupProbe:
+          httpGet:
+            path: /
+            port: main-port
+          initialDelaySeconds: 60
+          timeoutSeconds: 15
+          failureThreshold: 10
+          periodSeconds: 10
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "0.15"
+          limits:
+            memory: "512Mi"
+            cpu: "1"
         env:
         - name: NODE_ENV
           value: production
@@ -93,36 +122,5 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-
-        livenessProbe:
-          httpGet:
-            path: /
-            port: main-port
-          initialDelaySeconds: 60
-          timeoutSeconds: 15
-          periodSeconds: 5
-        readinessProbe:
-          httpGet:
-            path: /
-            port: main-port
-          initialDelaySeconds: 60
-          timeoutSeconds: 15
-          periodSeconds: 5
-        startupProbe:
-          httpGet:
-            path: /
-            port: main-port
-          initialDelaySeconds: 60
-          timeoutSeconds: 15
-          failureThreshold: 10
-          periodSeconds: 10
-
-        resources:
-          requests:
-            memory: "256Mi"
-            cpu: "0.15"
-          limits:
-            memory: "512Mi"
-            cpu: "1"
 ---
 `
