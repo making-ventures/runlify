@@ -158,13 +158,13 @@ class SystemMetaBuilder {
       's3.eu-central-1.wasabisys.com',
       'Эндпоинт S3, который использует бекенд',
     )
-    this.addConfigVar(
-      's3.publicEndpoint',
-      'string',
-      true,
-      's3.eu-central-1.wasabisys.com',
-      'Публичныйм эндпоинт S3, к которому имеет доступ полььзовательь',
-    )
+    // this.addConfigVar(
+    //   's3.publicEndpoint',
+    //   'string',
+    //   true,
+    //   's3.eu-central-1.wasabisys.com',
+    //   'Публичныйм эндпоинт S3, к которому имеет доступ полььзовательь',
+    // )
     this.addConfigVar(
       's3.region',
       'string',
