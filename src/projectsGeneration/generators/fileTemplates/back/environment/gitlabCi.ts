@@ -66,7 +66,7 @@ build:
     - echo "{\\"auths\\":{\\"$CI_REGISTRY\\":{\\"username\\":\\"$CI_REGISTRY_USER\\",\\"password\\":\\"$CI_REGISTRY_PASSWORD\\"}}}" > /kaniko/.docker/config.json
     # - /kaniko/warmer --cache-dir=$CI_PROJECT_DIR/.cache_images --image=browserless/chrome
     - echo TAG1 "\${CI_COMMIT_REF_SLUG}"
-    - echo TAG2 "\${CI_REGISTRY_IMAGE}:\${CI_COMMIT_REF_SLUG}-\${CI_COMMIT_SHA}"
+    - echo TAG2 "\${CI_COMMIT_REF_SLUG}-\${CI_COMMIT_SHA}"
   script:
     - /kaniko/executor
       --cache-dir=$CI_PROJECT_DIR/.cache_images
