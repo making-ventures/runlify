@@ -1,6 +1,7 @@
 import { expect } from 'jest-without-globals'
 import CatalogBuilder from '../../../../builders/CatalogBuilder'
 import { getCompNamesToShowLinkField } from './getCompNamesToShowLinkField'
+import {baseField} from '../../../../dataForTests';
 
 describe('getCompNamesToShowLinkField', () => {
   it('generates NumberField and ReferenceField for link to entity with int id which is also title field', () => {
@@ -10,6 +11,7 @@ describe('getCompNamesToShowLinkField', () => {
     expect(
       getCompNamesToShowLinkField(
         {
+          ...baseField,
           category: 'link',
           needFor: 'notSet',
           externalEntity: 'cards',
@@ -40,6 +42,7 @@ describe('getCompNamesToShowLinkField', () => {
     expect(
       getCompNamesToShowLinkField(
         {
+          ...baseField,
           category: 'link',
           needFor: 'notSet',
           externalEntity: 'cards',
@@ -73,6 +76,7 @@ describe('getCompNamesToShowLinkField', () => {
     expect(
       getCompNamesToShowLinkField(
         {
+          ...baseField,
           category: 'link',
           needFor: 'notSet',
           externalEntity: 'cards',
@@ -106,6 +110,7 @@ describe('getCompNamesToShowLinkField', () => {
     expect(
       getCompNamesToShowLinkField(
         {
+          ...baseField,
           category: 'link',
           needFor: 'notSet',
           externalEntity: 'cards',
@@ -139,6 +144,7 @@ describe('getCompNamesToShowLinkField', () => {
     expect(
       getCompNamesToShowLinkField(
         {
+          ...baseField,
           category: 'link',
           needFor: 'notSet',
           externalEntity: 'cards',
@@ -172,6 +178,7 @@ describe('getCompNamesToShowLinkField', () => {
     expect(
       getCompNamesToShowLinkField(
         {
+          ...baseField,
           category: 'link',
           needFor: 'notSet',
           externalEntity: 'cards',

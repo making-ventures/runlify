@@ -1,6 +1,7 @@
 import { expect } from 'jest-without-globals'
 import CatalogBuilder from '../builders/CatalogBuilder'
 import { getLinksToExternalEntities } from './getLinksToExternalEntities'
+import {baseField} from '../dataForTests';
 
 // yarn test --testPathPattern getLinksToExternalEntities
 
@@ -13,6 +14,7 @@ describe('getLinksToExternalEntities', () => {
         {
           externalEntityName: 'secondEntities',
           fromField: {
+            ...baseField,
             name: 'secondEntityId',
             title: { ru: '' },
             needFor: '',
@@ -37,6 +39,7 @@ describe('getLinksToExternalEntities', () => {
         {
           externalEntityName: 'firstEntities',
           fromField: {
+            ...baseField,
             name: 'firstEntityId',
             title: { ru: '' },
             needFor: '',

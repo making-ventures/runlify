@@ -1,6 +1,7 @@
 /* eslint-disable no-tabs */
 import { expect } from 'jest-without-globals'
 import { genPrismaFieldFromExternalEntity } from './genPrismaFieldFromExternalEntity'
+import {baseField} from '../../../../dataForTests';
 
 // yarn test --testPathPattern genPrismaFieldFromExternalEntity
 
@@ -11,22 +12,11 @@ describe('genPrismaFieldFromExternalEntity', () => {
         type: 'oneToMany',
         entityOwnerName: 'cards',
         fromField: {
-          name: 'userId',
-          title: { ru: '' },
-          needFor: '',
-          updatable: true,
-          required: false,
-          requiredOnInput: true,
-          updatableByUser: true,
-          showInList: true,
-          showInCreate: true,
-          showInEdit: true,
-          showInFilter: true,
+          ...baseField,
           externalEntity: '',
           category: 'link',
           type: 'string',
           linkCategory: 'entity',
-          defaultDbValue: undefined,
           predefinedLinkedEntity: 'none',
         },
         externalEntityName: 'users',
