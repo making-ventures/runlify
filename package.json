@@ -72,7 +72,7 @@
     "preset": "ts-jest",
     "testEnvironment": "node",
     "modulePathIgnorePatterns": [
-      "<rootDir>/dist/"
+      "<rootDir>/build/"
     ],
     "setupFilesAfterEnv": [
       "jest-extended/all"
