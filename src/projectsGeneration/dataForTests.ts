@@ -1,6 +1,16 @@
 import {BaseField} from './builders';
-import {BaseFieldBuilder} from './builders/fields/BaseFieldBuilder';
 
-class FieldBuilder extends BaseFieldBuilder {}
-
-export const baseField: BaseField = new FieldBuilder('userId', 'ru', '').setRequiredOnInput(true).build()
+export const baseField: BaseField = {
+    name: 'userId',
+    title: { ru: '' },
+    needFor: '',
+    updatable: true,
+    required: false,
+    requiredOnInput: true,
+    updatableByUser: true,
+    showInList: true,
+    showInCreate: true,
+    showInEdit: true,
+    showInFilter: true,
+    defaultDbValue: undefined,
+};
