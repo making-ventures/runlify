@@ -88,7 +88,7 @@ export const defaultBootstrapEntityOptions = {
 
   // dockerfile
   adminBaseDockerimage: 'nginx:1.23-alpine',
-  backendBaseDockerimage: 'registry.gitlab.com/making.ventures/images/node-base-private',
+  backendBaseDockerimage: 'registry.gitlab.com/making.ventures/images/node-base',
 
   // chart
   genBackChartValues: true,
