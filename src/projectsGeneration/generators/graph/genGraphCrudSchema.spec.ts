@@ -403,7 +403,7 @@ type Mutation {
 
     expect(printSchema(genGraphCrudSchema(cards.build()))).toBe(`type Card {
   id: Int!
-  name: String!
+  name: String
   lastDigits: Int!
   active: Boolean
 }
