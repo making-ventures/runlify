@@ -109,7 +109,7 @@ ${
       {...props}
       transform={useCallback((data: any) => ({
         ...data,${fieldsToWorkWith
-          .filter((f) => ['datetime', 'date'].includes(f.type))
+          .filter((f) => f.requiredOnInput !== false && ['datetime', 'date'].includes(f.type))
           .map(
             (f) => `
         ${f.name}: data.${f.name} || null,`
