@@ -59,23 +59,22 @@ export const getTrivialEditComponent = (
 export const getEditComponent = (
   entity: Entity,
   allEntities: Map<string, Entity>,
-  field: Field, type: 'create' | 'edit' | 'filter',
+  field: Field,
+  type: 'create' | 'edit' | 'filter',
   additionalProps: string[] = [],
   postfix?: {source: string, label: string},
 ) => {
+  const isDisabled = field.sharded && type === 'edit'
   if (field.category === 'link') {
     const linkedEntity = allEntities.get(field.externalEntity);
-    if (!linkedEntity) {
-      return getTrivialEditComponent(entity, field, type, additionalProps);
-    }
-
-    if (isImageFileRef(field)) {
-      if (type === 'edit') {
-        return `<FileInput source='${field.name}' type='image' />`;
-      } else if (type === 'create') {
-        return `<FileInput source='${field.name}' type='image' />`;
+    if (linkedEntity) {
+      if (isImageFileRef(field)) {
+        if (type === 'edit') {
+          return `<FileInput source='${field.name}' type='image' />`;
+        } else if (type === 'create') {
+          return `<FileInput source='${field.name}' type='image' />`;
+        }
       }
-    }
 
     return `<ReferenceInput${additionalProps.map(p => `\n  ${p}`)}
   source='${field.name}'
@@ -90,23 +89,29 @@ export const getEditComponent = (
     ${getFieldLabel(entity, field)}
     defaultValue={null}
     parse={val => val || null}${field.required && type !== 'filter' ? `
-    isRequired` : ''}
+    isRequired` : ''}${isDisabled ? `
+    disabled`: ''}
     noOptionsText='ra.message.noOptions'
   />
 </ReferenceInput>`;
-  } else {
-    if (isMarkdownField(field)) {
-      additionalProps.push('multiline');
-      additionalProps.push('maxRows={24}');
     }
-
-    if (isMultilineField(field)) {
-      additionalProps.push('multiline');
-      additionalProps.push('maxRows={24}');
-    }
-
-    return getTrivialEditComponent(entity, field, type, additionalProps, postfix);
   }
+
+  if (isMarkdownField(field)) {
+    additionalProps.push('multiline');
+    additionalProps.push('maxRows={24}');
+  }
+
+  if (isMultilineField(field)) {
+    additionalProps.push('multiline');
+    additionalProps.push('maxRows={24}');
+  }
+
+  if (isDisabled) {
+    additionalProps.push('disabled');
+  }
+
+  return getTrivialEditComponent(entity, field, type, additionalProps, postfix);
 };
 
 export const uiDefaultEditTmpl = ({

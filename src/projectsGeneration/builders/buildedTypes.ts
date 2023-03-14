@@ -99,6 +99,7 @@ export type BaseField = {
   defaultDbValue: DefaultDbValue
   defaultValueExpression?: string
   defaultBackendValueExpression?: string
+  sharded: boolean
 }
 
 type ScalarBaseField = BaseField & {
@@ -271,7 +272,7 @@ export type BaseSavableEntity = BaseEntity & {
   commonElementsVisibleToAll: boolean
   title: Record<string, {singular: string, plural: string}>
   externalSearchName: string | undefined
-  shardUniqKeys: string[] | null
+  sharded: boolean
   isExternalSearch: boolean;
 }
 

@@ -7,7 +7,7 @@ export const genPrismaSchemaForEntitiesWithClientAdnDb = ({
 }: ProjectWideGenerationArgs,
   forShards = false,
 ) => {
-  let ent = entities.filter(e => forShards ? e.shardUniqKeys : !e.shardUniqKeys);
+  let ent = entities.filter(e => forShards ? e.sharded : !e.sharded);
 
   const joined = genPrismaSchemaForEntities(ent, allLinks, forShards)
 

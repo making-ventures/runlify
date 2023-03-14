@@ -34,7 +34,8 @@ export const configTmpl = ({
     (f) => !['date', 'datetime'].includes(f.type)
   )
 
-  const isSharded = !!entity.shardUniqKeys
+  const isSharded = entity.sharded
+  const shardUniqKeys = entity.fields.filter(f => f.sharded).map(f => f.name)
   const isDocument = entity.type === 'document'
   const isInfoRegistry = entity.type === 'infoRegistry'
 
@@ -107,7 +108,7 @@ const config: ${configType} = {
 ${externalSearchDeps.map(([key, val]) => `'${key}': '${val}',`).map(pad(2)).join('\n')}
   },` : ''}${isInfoRegistry ? `
   period: '${entity.period}',` : ''}${isSharded ? `
-  uniqKeys: ${arrToStr(entity.shardUniqKeys)},` : ''}
+  uniqKeys: ${arrToStr(shardUniqKeys)},` : ''}
 };
 
 export default config;

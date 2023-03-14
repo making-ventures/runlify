@@ -71,37 +71,11 @@ export class InfoRegistryBuilder extends BaseSavableEntityBuilder {
 
     return {
       ...super.build(),
-      title: this.title,
       type: 'infoRegistry',
       registrarDepended: this.registrarDepended,
-      singleKey: this.singleKey,
-      // titleField: this.titleField.build(),
-      titleField: this.titleField.name,
-      // linkFields: this.getLinkFileds().map(f => f.build()),
       dimensions: this.dimensions.map((f) => f.build()),
       resources: this.resources.map((f) => f.build()),
-      // keyField: this.getKey().build(),
-      keyField: this.getKey().name,
-      fields: this.getFileds().map((field) => field.build()),
-      uniqueConstraints,
-      forms: this.getForms().build(),
-      predefinedElements: this.predefinedElements,
-      devPerefinedElements: this.devPerefinedElements,
-      auditable: this.auditable,
-      externalSearch: this.externalSearch,
-      searchEnabled: this.searchEnabled,
       period: this.period,
-      sortField: this.sortField,
-      sortOrder: this.sortOrder,
-      multitenancy: this.multitenancy,
-      commonElementsVisibleToAll: this.commonElementsVisibleToAll,
-      externalSearchName: this.externalSearchName,
-      shardUniqKeys: this.shardUniqKeys,
-      isExternalSearch: this.isExternalSearch,
-      creatableByUser: this.creatableByUser,
-      updatableByUser: this.updatableByUser,
-      removableByUser: this.removableByUser,
-      exportableByUser: this.exportableByUser,
     }
   }
 
@@ -334,5 +308,18 @@ export class InfoRegistryBuilder extends BaseSavableEntityBuilder {
     }
 
     return builder
+  }
+
+  getUniqueConstraints(): string[][] {
+    const uniqueConstraints: string[][] = []
+    if (this.dimensions.length) {
+      uniqueConstraints.push(this.dimensions.map((d) => d.name))
+    }
+    const constrains = super.getUniqueConstraints(this.registrarDepended)
+    if (constrains.length) {
+      uniqueConstraints.push(...constrains)
+    }
+
+    return uniqueConstraints;
   }
 }

@@ -2,7 +2,7 @@
 import { ScalarFieldBuilder } from './fields/ScalarFieldBuilder'
 import { IdFieldBuilder } from './fields/IdFieldBuilder'
 import { LinkFieldBuilder } from './fields/LinkFieldBuilder'
-import { EtityType, TKeyFieldType, Multitenancy } from './buildedTypes'
+import {EtityType, TKeyFieldType, Multitenancy, BaseSavableEntity} from './buildedTypes'
 import CatalogBuilder from './CatalogBuilder'
 import BaseBuilder from './BaseBuilder'
 import { FormsBuilder } from './ui/FormsBuilder'
@@ -38,9 +38,9 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
   multitenancy: Multitenancy = 'none'
   commonElementsVisibleToAll = false
   title: Record<string, {singular: string, plural: string}> = {}
-  externalSearchName: string | undefined = undefined;
-  shardUniqKeys: string[] | null = null;
-  isExternalSearch = false;
+  externalSearchName: string | undefined = undefined
+  sharded = false
+  isExternalSearch = false
 
   constructor(name: string, defaultLanguage: string, title?: {singular?: string, plural?: string}) {
     super(name, defaultLanguage, title)
@@ -123,6 +123,22 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
     }
 
     return this.id
+  }
+
+  getShardedFields () {
+    return this.fields.filter((f) => f.sharded)
+  }
+
+  getUniqueConstraints (registrarDependent = false): string[][] {
+    const uniqKeys = this.getShardedFields().map(f => f.name)
+
+    const isRegistrarDependentSumRegistry = this.type === 'sumRegistry' && registrarDependent;
+
+    if (!isRegistrarDependentSumRegistry && !R.isEmpty(uniqKeys) && !R.equals(uniqKeys, ['id'])) {
+      this.uniqueConstraints.push(uniqKeys);
+    }
+
+    return this.uniqueConstraints;
   }
 
   getFileds(): FieldBuilder[] {
@@ -353,7 +369,37 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
     return this
   }
 
-  // todo: realize recurring build method
+  build (): BaseSavableEntity {
+    return {
+      ...super.build(),
+      title: this.title,
+      singleKey: this.singleKey,
+      // titleField: this.titleField.build(),
+      titleField: this.titleField.name,
+      // linkFields: this.getLinkFileds().map(f => f.build()),
+      // keyField: this.getKey().build(),
+      keyField: this.getKey().name,
+      fields: this.getFileds().map((field) => field.build()),
+      uniqueConstraints: this.getUniqueConstraints(),
+      forms: this.getForms().build(),
+      predefinedElements: this.predefinedElements,
+      devPerefinedElements: this.devPerefinedElements,
+      auditable: this.auditable,
+      externalSearch: this.externalSearch,
+      searchEnabled: this.searchEnabled,
+      sortField: this.sortField,
+      sortOrder: this.sortOrder,
+      multitenancy: this.multitenancy,
+      commonElementsVisibleToAll: this.commonElementsVisibleToAll,
+      externalSearchName: this.externalSearchName,
+      sharded: this.sharded,
+      isExternalSearch: this.isExternalSearch,
+      creatableByUser: this.creatableByUser,
+      updatableByUser: this.updatableByUser,
+      removableByUser: this.removableByUser,
+      exportableByUser: this.exportableByUser,
+    }
+  }
 
   initFormas(): BaseSavableEntityBuilder {
     if (!this.forms) {
@@ -419,15 +465,11 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
     }
   }
 
-  setSharded (uniqKeys: string[] = []) {
-    this.shardUniqKeys = uniqKeys;
-    if (!R.isEmpty(uniqKeys) && !R.equals(uniqKeys, ['id'])) {
-      this.uniqueConstraints.push(uniqKeys);
-    }
+  setSharded (value = true) {
+    this.sharded = value
 
-    return this;
+    return this
   }
-
   setIsExternalTable () {
     this.isExternalSearch = true;
     return this;
