@@ -81,7 +81,7 @@ export enum TsTypes {
 
 export type DefaultDbValue = string | boolean | undefined
 
-type BaseField = {
+export type BaseField = {
   name: string
   title: Record<string, string>
   needFor: string

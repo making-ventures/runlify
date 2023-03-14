@@ -2,6 +2,7 @@
 import { expect } from 'jest-without-globals'
 import CatalogBuilder from '../../../builders/CatalogBuilder'
 import { genPrismaEntity } from './genPrismaEntity'
+import {baseField} from '../../../dataForTests';
 
 // yarn test --testPathPattern genPrismaEntity
 // yarn test --testPathPattern genPrismaEntity -t 'with true default db field'
@@ -106,22 +107,11 @@ describe('genPrismaEntity', () => {
           type: 'oneToMany',
           entityOwnerName: 'cards',
           fromField: {
-            name: 'userId',
-            title: { ru: '' },
-            needFor: '',
-            updatable: true,
-            required: false,
-            requiredOnInput: true,
-            updatableByUser: true,
-            showInList: true,
-            showInCreate: true,
-            showInEdit: true,
-            showInFilter: true,
+            ...baseField,
             externalEntity: '',
             category: 'link',
             type: 'string',
             linkCategory: 'entity',
-            defaultDbValue: undefined,
             predefinedLinkedEntity: 'none',
           },
           externalEntityName: 'users',

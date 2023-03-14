@@ -26,16 +26,7 @@ export class IdFieldBuilder extends BaseFieldBuilder {
   }
 
   build(): IdField {
-    const base = {
-      needFor: this.needFor,
-      hidden: this.hidden,
-      name: this.name,
-      required: this.required,
-      requiredOnInput: this.requiredOnInput,
-      updatable: this.updatable,
-      updatableByUser: this.updatableByUser,
-      searchable: this.searchable,
-    }
+    const base = super.build()
 
     if (this.type === 'bigint' || this.type === 'int') {
       return {

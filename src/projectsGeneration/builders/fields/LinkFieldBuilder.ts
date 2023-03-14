@@ -63,18 +63,8 @@ export class LinkFieldBuilder extends BaseFieldBuilder {
   }
 
   build(): LinkField {
-    const base = {
-      name: this.name,
-      required: this.required,
-      requiredOnInput: this.requiredOnInput,
-      updatable: this.updatable,
-      needFor: this.needFor,
-      updatableByUser: this.updatableByUser,
-      defaultValueExpression: this.defaultValueExpression,
-      defaultBackendValueExpression: this.defaultBackendValueExpression,
-      hidden: this.hidden,
-      searchable: this.searchable,
-    }
+    const base = super.build()
+
     if (this.type === 'bigint' || this.type === 'int') {
       if (this.predefinedLinkedEntity === 'file') {
         return {

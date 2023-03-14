@@ -5,6 +5,7 @@ import {
   FieldType,
   DefaultDbValue,
   StringType,
+  BaseField,
 } from '../buildedTypes'
 
 export abstract class BaseFieldBuilder {
@@ -40,6 +41,28 @@ export abstract class BaseFieldBuilder {
       title || sentence(name.endsWith('Id') ? name.replace('Id', '') : name)
     )
   }
+
+  build (): BaseField {
+    return {
+      name: this.name,
+      title: this.title,
+      needFor: this.needFor,
+      updatable: this.updatable,
+      required: this.required,
+      requiredOnInput: this.requiredOnInput,
+      updatableByUser: this.updatableByUser,
+      hidden: this.hidden,
+      searchable: this.searchable,
+      showInList: this.showInList,
+      showInCreate: this.showInCreate,
+      showInEdit: this.showInEdit,
+      showInFilter: this.showInFilter,
+      defaultDbValue: this.defaultDbValue,
+      defaultValueExpression: this.defaultValueExpression,
+      defaultBackendValueExpression: this.defaultBackendValueExpression,
+    }
+  }
+
   setName(name: string) {
     if (!/^[a-zA-Z0-9]+$/.test(name)) {
       throw new Error(`Name can contain only letters and numbers. Current name: "${name}"`);
