@@ -48,7 +48,7 @@ tag-previous-with-sha:
   extends: .tag-image
   stage: previous-image
   only:${system.deployEnvironments
-    .map((e) => `\n    - ${e.branchName}`).join('')}
+    .map((e) => `\n    - ${e.branchName}\n    - /^${e.branchName}-.*$/`).join('')}
   allow_failure: true # Firt run won't be able to create previous image
   variables:
     TAG_ORIGIN: :\${CI_COMMIT_REF_SLUG}
@@ -74,7 +74,7 @@ build:
       --destination \${CI_REGISTRY_IMAGE}:\${CI_COMMIT_REF_SLUG}-\${CI_COMMIT_SHA}
       --single-snapshot
   only:${system.deployEnvironments
-    .map((e) => `\n    - ${e.branchName}`).join('')}
+    .map((e) => `\n    - ${e.branchName}\n    - /^${e.branchName}-.*$/`).join('')}
 
 tag-latest:
   extends: .tag-image
@@ -106,7 +106,8 @@ ${system.deployEnvironments
     CLUSTER_NAME: "${e.clusterName}"
     TAG: ":\${CI_COMMIT_REF_SLUG}-\${CI_COMMIT_SHA}"
   only:
-    - ${e.branchName}`).join('\n\n')}
+    - ${e.branchName}
+    - /^${e.branchName}-.*$/`).join('\n\n')}
 
 ${system.deployEnvironments
   .map((e) =>
@@ -119,7 +120,8 @@ ${system.deployEnvironments
     CLUSTER_NAME: "${e.clusterName}"
     TAG: ":\${CI_COMMIT_REF_SLUG}-previous-for-\${CI_COMMIT_SHA}"
   only:
-    - ${e.branchName}`).join('\n\n')}
+    - ${e.branchName}
+    - /^${e.branchName}-.*$/`).join('\n\n')}
 
 ${system.deployEnvironments
   .map((e) =>`.deploy-${e.name}:
@@ -128,6 +130,7 @@ ${system.deployEnvironments
   when: ${e.manualDeploy ? 'manual' : 'on_success'}
   only:
     - ${e.branchName}
+    - /^${e.branchName}-.*$/
   tags:
     - ${e.name}
   variables:
