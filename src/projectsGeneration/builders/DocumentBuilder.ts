@@ -19,8 +19,8 @@ class DocumentBuilder extends BaseSavableEntityBuilder {
     this.addField('date')
       .setType('datetime')
       .setRequired()
-      // .setRequiredOnInput(false, 'new Date()')
-      .setNotUpdatableByUser('new Date()')
+      .setDefaultBackendValueExpression('new Date()')
+      .setRequiredOnInput(false)
       .setTitle('Date', 'en')
       .setTitle('Дата', 'ru')
 
