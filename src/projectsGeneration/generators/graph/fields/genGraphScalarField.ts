@@ -10,7 +10,7 @@ export const genGraphScalarField = (
   if (purpose === 'entity') {
     return {
       [field.name]: {
-        type: field.required
+        type: field.requiredOnInput !== false && field.required
           ? new GraphQLNonNull(fieldTypeToGraphScalar(field))
           : fieldTypeToGraphScalar(field),
       },
