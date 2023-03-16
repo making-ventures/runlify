@@ -94,6 +94,11 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
 
     return this
   }
+  setCreatableByUser(creatableByUser?: boolean) {
+    this.creatableByUser = creatableByUser ?? true
+
+    return this
+  }
   getKey() {
     if (!this.singleKey) {
       throw new Error('There is no single key')
