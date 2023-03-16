@@ -17,9 +17,9 @@ ${entities.map(
 const Loadable${pascalSingular(m.name)}Edit = Loadable({
   loader: () => import('./pages/${m.name}/${pascalSingular(m.name)}Edit'),
 });
-const Loadable${pascalSingular(m.name)}Create = Loadable({
+${m.creatableByUser ? `const Loadable${pascalSingular(m.name)}Create = Loadable({
   loader: () => import('./pages/${m.name}/${pascalSingular(m.name)}Create'),
-});
+});` : ''}
 const Loadable${pascalSingular(m.name)}List = Loadable({
   loader: () => import('./pages/${m.name}/${pascalSingular(m.name)}List'),
 });`
