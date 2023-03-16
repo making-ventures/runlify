@@ -22,6 +22,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
   singleKey = true
   logging = false
   auditable = true
+  creatableByUser = true
   space = ''
   sortField = 'id'
   sortOrder: 'ASC' | 'DESC' = 'DESC'
