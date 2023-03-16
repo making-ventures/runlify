@@ -7,7 +7,7 @@ import * as R from 'ramda';
 import {Entity, Field} from '../../../../../builders/buildedTypes';
 import {getCompNameToEditScalar} from '../../../../ui/componentNames/edit/getCompNameToEditScalar';
 import {EntityWideGenerationArgs} from '../../../../../args';
-import { generatedWarning, pad6, pad1 } from '../../../../../utils'
+import { generatedWarning, pad } from '../../../../../utils'
 import {isImageFileRef, isMarkdownField, isMultilineField} from '../../../../../metaUtils';
 import {getFieldLabel} from '../../../../ui/getShowComponent';
 
@@ -51,7 +51,7 @@ export const getTrivialEditComponent = (
   return `<${getCompNameToEditScalar(field.type)}${additionalProps.map(p => `\n  ${p}`).join('')}
   fullWidth
   sx={{m: 1}}
-  source='${field.name}${postfix ? postfix.source : ''}'${field.required ? '' : '\n  defaultValue={null}'}${field.required && type !== 'filter' && field.type !== 'bool' ? `\n  required` : ''}
+  source='${field.name}${postfix ? postfix.source : ''}'${field.required ? '' : '\n  defaultValue={null}'}${field.required && type !== 'filter' && field.type !== 'bool' && field.requiredOnInput !== false ? `\n  required` : ''}
   ${getFieldLabel(entity, field, postfix?.label)}
 />`;
 };
@@ -209,7 +209,7 @@ ${hasHidden ? `  const {debug} = useDebug();
       <LoadingContext>
         <SimpleForm
           defaultValues=${initialValues.length === 0 ? '{{}}' : `{{
-${initialValues.map(f => `${f.name}: ${getTsDefaultTypeValueExpression(f)},`).map(pad6).join('\n')}
+${initialValues.map(f => `${f.name}: ${getTsDefaultTypeValueExpression(f)},`).map(pad(6)).join('\n')}
           }}`}
           resolver={resolver}
           toolbar={<DefaultToolbar />}
@@ -218,12 +218,12 @@ ${initialValues.map(f => `${f.name}: ${getTsDefaultTypeValueExpression(f)},`).ma
 ${fieldsToWorkWith.length === 0 ? '            <div />' : fieldsToWorkWith
     .map(f => {
       const comp = `<Grid item ${(isMarkdownField(f) || isMultilineField(f)) ? 'xs={12} sm={12} md={12} lg={12}': 'xs={12} sm={6} md={3} lg={2}'}>
-${pad1(getEditComponent(entity, allEntities, f, 'edit'))}
+${pad(1)(getEditComponent(entity, allEntities, f, 'edit'))}
 </Grid>`;
 
       const debuggedComp = f.requiredOnInput || f.requiredOnInput === null ? comp : `{debug && ${comp}}`;
 
-      return pad6(debuggedComp);
+      return pad(6)(debuggedComp);
     })
     .join('\n')}
           </Grid>
