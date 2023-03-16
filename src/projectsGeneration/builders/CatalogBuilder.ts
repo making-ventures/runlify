@@ -42,6 +42,7 @@ class CatalogBuilder extends BaseSavableEntityBuilder {
       externalSearchName: this.externalSearchName,
       shardUniqKeys: this.shardUniqKeys,
       isExternalSearch: this.isExternalSearch,
+      creatableByUser: this.creatableByUser,
     }
   }
 

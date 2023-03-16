@@ -51,7 +51,6 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
     this.setTitleFieldByName(this.getKey().name)
   }
 
-
   setTitle(title: {plural: string, singular: string}, language?: string) {
     const resultedLangiage = language ? language : this.defaultLanguage
     this.title[resultedLangiage] = title

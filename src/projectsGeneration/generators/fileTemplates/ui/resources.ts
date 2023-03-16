@@ -39,9 +39,9 @@ ${entities.map(
         edit={hasPermission(permissions, '${
           entity.name
         }.update') ? Loadable${pascalSingular(entity.name)}Edit : undefined}
-        create={hasPermission(permissions, '${
+        create={${entity.creatableByUser ? `hasPermission(permissions, '${
           entity.name
-        }.create') ? Loadable${pascalSingular(entity.name)}Create : undefined}
+        }.create') ? Loadable${pascalSingular(entity.name)}Create : undefined` : 'undefined'}}
         list={hasPermission(permissions, '${
           entity.name
         }.all') ? Loadable${pascalSingular(entity.name)}List : undefined}

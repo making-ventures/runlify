@@ -261,6 +261,7 @@ export type BaseSavableEntity = BaseEntity & {
   externalSearch: boolean
   searchEnabled: boolean
   sortField: string
+  creatableByUser: boolean
   sortOrder: 'ASC' | 'DESC'
   multitenancy: Multitenancy
   commonElementsVisibleToAll: boolean
