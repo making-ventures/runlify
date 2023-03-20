@@ -92,6 +92,7 @@ export const getEditComponent = (
     parse={val => val || null}${field.required && type !== 'filter' ? `
     isRequired` : ''}
     noOptionsText='ra.message.noOptions'
+    optionText='title'
   />
 </ReferenceInput>`;
   } else {
