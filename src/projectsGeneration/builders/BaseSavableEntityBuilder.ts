@@ -23,6 +23,8 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
   logging = false
   auditable = true
   creatableByUser = true
+  updatableByUser = true
+  removableByUser = true
   space = ''
   sortField = 'id'
   sortOrder: 'ASC' | 'DESC' = 'DESC'
@@ -96,6 +98,16 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
   }
   setCreatableByUser(creatableByUser?: boolean) {
     this.creatableByUser = creatableByUser ?? true
+
+    return this
+  }
+  setUpdatableByUser(updatableByUser?: boolean) {
+    this.updatableByUser = updatableByUser ?? true
+
+    return this
+  }
+  setRemovableByUser(removableByUser?: boolean) {
+    this.removableByUser = removableByUser ?? true
 
     return this
   }

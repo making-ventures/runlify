@@ -45,14 +45,22 @@ export const uiDefaultListTmpl = ({
     'List',
     'Datagrid',
     'ListProps',
-    'BulkActionProps',
-    'usePermissions',
-    'BulkDeleteButton',
+    // 'BulkActionProps',
+    // 'usePermissions',
+    // 'BulkDeleteButton',
 
     ...R.flatten(
       notDateFieldsToImport.map((f) => getCompNamesToShowField(f, allEntities))
     ),
   ]
+
+  if (entity.removableByUser) {
+    reactAdminImports.push(
+      'BulkActionProps',
+      'usePermissions',
+      'BulkDeleteButton',
+    )
+  }
 
   const registrarDepended =
     ['infoRegistry', 'sumRegistry'].includes(entity.type) &&
@@ -77,8 +85,8 @@ import RegistrarField from '../../../../raUiLib/RegistrarField';`
   }
 import ${pascalSingular(entity.name)}Filter from './${pascalSingular(
     entity.name
-  )}Filter';
-import {hasPermission} from '../../../../utils/permissions';
+  )}Filter';${entity.removableByUser ? `
+import {hasPermission} from '../../../../utils/permissions';` : ''}
 import ListActions from '../../../../raUiLib/ListActions';
 ${
   withFileRef
@@ -90,7 +98,7 @@ ${
     ? ''
     : `// ${generatedWarning}
 `
-}
+}${entity.removableByUser ? `
 const DefaultBulkActionButton = (props: BulkActionProps) => {
   const {permissions} = usePermissions<string[]>();
 
@@ -100,7 +108,7 @@ const DefaultBulkActionButton = (props: BulkActionProps) => {
     </>
   );
 };
-
+` : ''}
 const Default${pascalSingular(
     entity.name
   )}List: FC<ListProps> = (props: ListProps) => {
@@ -113,11 +121,13 @@ const Default${pascalSingular(
     entity.name
   )}Filter />}
       actions={<ListActions />}
-      bulkActionButtons={<DefaultBulkActionButton />}
       sort={{field: 'id', order: 'desc'}}
       {...props}
     >
-      <Datagrid rowClick='show'>
+      <Datagrid
+        rowClick='show'
+        bulkActionButtons={${entity.removableByUser ? '<DefaultBulkActionButton />' : 'false'}}
+      >
 ${entity.fields
   .filter((f) => !f.hidden)
   .filter(f => f.showInList)

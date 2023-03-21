@@ -12,12 +12,12 @@ export const uiDefaultActionTmpl = (
 ) => {
   return `import React from 'react';
 import {
+  TopToolbar,${entity.updatableByUser ? `
   EditButton,
-  TopToolbar,
-  usePermissions,
+  usePermissions,` : ''}
 } from 'react-admin';
-import OpenAudit from '../../../commonActions/OpenAudit';
-import {hasPermission} from '../../../../utils/permissions';
+import OpenAudit from '../../../commonActions/OpenAudit';${entity.updatableByUser ? `
+import {hasPermission} from '../../../../utils/permissions';` : ''}
 import OpenHelp from '../../../commonActions/OpenHelp';${
     entity && entity.type === 'document' && entity.registries.length > 0
       ? `
@@ -32,9 +32,9 @@ ${
 // DO NOT EDIT! THIS IS GENERATED FILE
 `
 }
-const Default${pascalSingular(entity.name)}Actions = () => {
+const Default${pascalSingular(entity.name)}Actions = () => {${entity.updatableByUser ? `
   const {permissions} = usePermissions<string[]>();
-
+` : ''}
   return (
     <TopToolbar sx={{alignItems: 'center'}}>${
       entity && entity.type === 'document' && entity.registries.length > 0
@@ -58,8 +58,8 @@ ${entity.registries
     entity &&
     `
       <OpenAudit entityTypeId='${singular(entity.name)}' />
-      <OpenHelp entityType='${entity.name}' />
-      {hasPermission(permissions, '${entity.name}.update') && <EditButton />}`
+      <OpenHelp entityType='${entity.name}' />${entity.updatableByUser ? `
+      {hasPermission(permissions, '${entity.name}.update') && <EditButton />}` : ''}`
   }
     </TopToolbar>
   );

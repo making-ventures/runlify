@@ -13,11 +13,11 @@ import {hasPermission} from '../utils/permissions';
 ${entities.map(
   (m) => `const Loadable${pascalSingular(m.name)}Show = Loadable({
   loader: () => import('./pages/${m.name}/${pascalSingular(m.name)}Show'),
-});
+});${m.updatableByUser ? `
 const Loadable${pascalSingular(m.name)}Edit = Loadable({
   loader: () => import('./pages/${m.name}/${pascalSingular(m.name)}Edit'),
-});
-${m.creatableByUser ? `const Loadable${pascalSingular(m.name)}Create = Loadable({
+});` : ''}${m.creatableByUser ? `
+const Loadable${pascalSingular(m.name)}Create = Loadable({
   loader: () => import('./pages/${m.name}/${pascalSingular(m.name)}Create'),
 });` : ''}
 const Loadable${pascalSingular(m.name)}List = Loadable({
@@ -36,9 +36,9 @@ ${entities.map(
         show={hasPermission(permissions, '${
           entity.name
         }.get') ? Loadable${pascalSingular(entity.name)}Show : undefined}
-        edit={hasPermission(permissions, '${
+        edit={${entity.updatableByUser ? `hasPermission(permissions, '${
           entity.name
-        }.update') ? Loadable${pascalSingular(entity.name)}Edit : undefined}
+        }.update') ? Loadable${pascalSingular(entity.name)}Edit : undefined` : 'undefined'}}
         create={${entity.creatableByUser ? `hasPermission(permissions, '${
           entity.name
         }.create') ? Loadable${pascalSingular(entity.name)}Create : undefined` : 'undefined'}}

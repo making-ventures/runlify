@@ -117,6 +117,8 @@ class SumRegistryBuilder extends BaseSavableEntityBuilder {
       shardUniqKeys: this.shardUniqKeys,
       isExternalSearch: this.isExternalSearch,
       creatableByUser: this.creatableByUser,
+      updatableByUser: this.updatableByUser,
+      removableByUser: this.removableByUser,
     }
   }
 
