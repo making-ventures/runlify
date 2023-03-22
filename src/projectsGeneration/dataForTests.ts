@@ -12,5 +12,6 @@ export const baseField: BaseField = {
     showInCreate: true,
     showInEdit: true,
     showInFilter: true,
+    showInShow: true,
     defaultDbValue: undefined,
 };

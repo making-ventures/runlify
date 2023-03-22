@@ -34,6 +34,7 @@ export abstract class BaseFieldBuilder {
   showInFilter = true
   showInCreate = true
   showInEdit = true
+  showInShow = true
   constructor(name: string, defaultLanguage: string, title?: string) {
     this.defaultLanguage = defaultLanguage
     this.setName(name)
@@ -57,6 +58,7 @@ export abstract class BaseFieldBuilder {
       showInCreate: this.showInCreate,
       showInEdit: this.showInEdit,
       showInFilter: this.showInFilter,
+      showInShow: this.showInShow,
       defaultDbValue: this.defaultDbValue,
       defaultValueExpression: this.defaultValueExpression,
       defaultBackendValueExpression: this.defaultBackendValueExpression,
@@ -156,6 +158,12 @@ export abstract class BaseFieldBuilder {
 
   setShowInEdit(value = true) {
     this.showInEdit = value
+
+    return this
+  }
+
+  setShowInShow(value = true) {
+    this.showInShow = value
 
     return this
   }
