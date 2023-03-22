@@ -95,6 +95,7 @@ export type BaseField = {
   showInCreate: boolean
   showInEdit: boolean
   showInFilter: boolean
+  showInShow: boolean
   defaultDbValue: DefaultDbValue
   defaultValueExpression?: string
   defaultBackendValueExpression?: string

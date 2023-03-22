@@ -51,7 +51,7 @@ const DefaultMainTab: FC<Omit<TabProps, 'children'>> = (props) => {
   return (<Tab {...props}>
     <Grid container spacing={2}>
 ${entity.fields
-  .filter((f) => !f.hidden)
+  .filter((f) => !f.hidden && f.showInShow)
   .map(
     (f) => `<Grid item ${isMarkdownField(f) ? 'xs={12} sm={12} md={12} lg={12}' : 'xs={12} sm={6} md={3} lg={2}'}>
   <Labeled>
