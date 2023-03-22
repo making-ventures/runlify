@@ -37,6 +37,7 @@ describe('getLinksOfEntities', () => {
           searchable: true,
           showInCreate: true,
           showInEdit: true,
+          showInShow: true,
           showInList: true,
           showInFilter: true,
           title: {
@@ -77,6 +78,7 @@ describe('getLinksOfEntities', () => {
           searchable: true,
           showInCreate: true,
           showInEdit: true,
+          showInShow: true,
           showInList: true,
           showInFilter: true,
           title: {
@@ -107,6 +109,7 @@ describe('getLinksOfEntities', () => {
           searchable: true,
           showInCreate: true,
           showInEdit: true,
+          showInShow: true,
           showInList: true,
           showInFilter: true,
           title: {
@@ -160,6 +163,7 @@ describe('getLinksOfEntities', () => {
           searchable: true,
           showInCreate: true,
           showInEdit: true,
+          showInShow: true,
           showInList: true,
           showInFilter: true,
           title: {
@@ -190,6 +194,7 @@ describe('getLinksOfEntities', () => {
           searchable: true,
           showInCreate: true,
           showInEdit: true,
+          showInShow: true,
           showInList: true,
           showInFilter: true,
           title: {
