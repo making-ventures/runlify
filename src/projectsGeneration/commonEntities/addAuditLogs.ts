@@ -42,6 +42,8 @@ const addAuditLogs = (system: SystemMetaBuilder) => {
   // auditLogs
   const auditLogs = system.addCatalog('auditLogs')
   auditLogs.setCreatableByUser(false);
+  auditLogs.setUpdatableByUser(false);
+  auditLogs.setRemovableByUser(false);
   auditLogs.setTitles({
     en: {
       singular: 'Audit log',
