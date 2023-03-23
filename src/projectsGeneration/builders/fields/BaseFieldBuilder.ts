@@ -194,11 +194,11 @@ export abstract class BaseFieldBuilder {
   ) {
     this.updatableByUser = false
     this.setRequiredOnInput(false, defaultValueExpression)
-    if (defaultValueExpression) {
+    if (defaultValueExpression !== undefined) {
       this.setDefaultValueExpression(defaultValueExpression)
     }
 
-    if (defaultBackendValueExpression) {
+    if (defaultBackendValueExpression !== undefined) {
       this.setDefaultBackendValueExpression(defaultBackendValueExpression)
     }
 
