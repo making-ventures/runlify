@@ -25,7 +25,7 @@ export const prismaServiceBaseClassTmpl = ({
 
   const getDefaultableFields = () =>
     entity.fields
-      .filter((f) => f.defaultBackendValueExpression !== undefined)
+      .filter((f) => f.defaultBackendValueExpression)
       .filter((f) => !f.hidden)
 
   const isSharded = !!entity.shardUniqKeys;
