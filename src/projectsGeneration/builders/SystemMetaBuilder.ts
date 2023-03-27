@@ -159,7 +159,7 @@ class SystemMetaBuilder {
       'Эндпоинт S3, который использует бекенд',
     )
     this.addConfigVar(
-      's3.sstEnabled',
+      's3.sslEnabled',
       'bool',
       false,
       true,
