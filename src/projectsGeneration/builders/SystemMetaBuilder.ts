@@ -158,6 +158,13 @@ class SystemMetaBuilder {
       's3.eu-central-1.wasabisys.com',
       'Эндпоинт S3, который использует бекенд',
     )
+    this.addConfigVar(
+      's3.sstEnabled',
+      'bool',
+      false,
+      true,
+      'Включен ли ssl при работе с S3',
+    )
     // this.addConfigVar(
     //   's3.publicEndpoint',
     //   'string',
