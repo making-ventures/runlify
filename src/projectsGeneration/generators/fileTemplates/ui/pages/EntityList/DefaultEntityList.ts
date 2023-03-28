@@ -121,7 +121,8 @@ const Default${pascalSingular(
     entity.name
   )}Filter />}
       actions={<ListActions />}
-      sort={{field: 'id', order: 'desc'}}
+      sort={{field: 'id', order: 'desc'}}${!entity.exportableByUser ? `
+      exporter={false}` : ''}
       {...props}
     >
       <Datagrid

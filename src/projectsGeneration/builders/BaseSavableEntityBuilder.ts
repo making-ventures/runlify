@@ -25,6 +25,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
   creatableByUser = true
   updatableByUser = true
   removableByUser = true
+  exportableByUser = true
   space = ''
   sortField = 'id'
   sortOrder: 'ASC' | 'DESC' = 'DESC'
@@ -108,6 +109,11 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
   }
   setRemovableByUser(removableByUser?: boolean) {
     this.removableByUser = removableByUser ?? true
+
+    return this
+  }
+  setExportableByUser(exportableByUser?: boolean) {
+    this.exportableByUser = exportableByUser ?? true
 
     return this
   }

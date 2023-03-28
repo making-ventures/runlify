@@ -265,6 +265,7 @@ export type BaseSavableEntity = BaseEntity & {
   creatableByUser: boolean
   updatableByUser: boolean
   removableByUser: boolean
+  exportableByUser: boolean
   sortOrder: 'ASC' | 'DESC'
   multitenancy: Multitenancy
   commonElementsVisibleToAll: boolean

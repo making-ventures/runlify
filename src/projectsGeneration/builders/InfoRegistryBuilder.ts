@@ -101,6 +101,7 @@ export class InfoRegistryBuilder extends BaseSavableEntityBuilder {
       creatableByUser: this.creatableByUser,
       updatableByUser: this.updatableByUser,
       removableByUser: this.removableByUser,
+      exportableByUser: this.exportableByUser,
     }
   }
 
