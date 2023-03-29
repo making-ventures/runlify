@@ -57,6 +57,9 @@ class SumRegistryBuilder extends BaseSavableEntityBuilder {
         .setType('int')
         .setRequired()
         .setDefaultDbValue('1')
+      this.setCreatableByUser(false)
+      this.setUpdatableByUser(false)
+      this.setRemovableByUser(false)
       this.addUniqueConstraint(['registrarTypeId', 'registrarId', 'row'])
     }
   }
