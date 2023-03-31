@@ -27,7 +27,7 @@ export const addElasticSearch = (system: SystemMetaBuilder) => {
     })
     externalSearchTrackings
       .setNeedFor(`Данные на основе которых можно понять, какие ${externalSearchEntity.title.plural} нужно обновить во внешней базе для поиска`)
-    if (externalSearchEntity.shardUniqKeys) {
+    if (externalSearchEntity.sharded) {
       externalSearchTrackings.setSharded();
       externalSearchTrackings.getKey().setType(externalSearchEntity.getKey().type)
     }

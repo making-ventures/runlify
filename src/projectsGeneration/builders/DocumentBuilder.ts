@@ -36,37 +36,11 @@ class DocumentBuilder extends BaseSavableEntityBuilder {
   build(): Document {
     return {
       ...super.build(),
-      title: this.title,
       type: 'document',
-      singleKey: this.singleKey,
-      // titleField: this.titleField.build(),
-      titleField: this.titleField.name,
-      // linkFields: this.getLinkFileds().map(f => f.build()),
-      // keyField: this.getKey().build(),
-      keyField: this.getKey().name,
-      fields: this.getFileds().map((field) => field.build()),
-      uniqueConstraints: this.uniqueConstraints,
-      registries: this.registries,
       deletable: this.deletable,
       editable: this.editable,
-      forms: this.getForms().build(),
+      registries: this.registries,
       documentation: this.documentation.build(),
-      predefinedElements: this.predefinedElements,
-      devPerefinedElements: this.devPerefinedElements,
-      auditable: this.auditable,
-      externalSearch: this.externalSearch,
-      searchEnabled: this.searchEnabled,
-      sortField: this.sortField,
-      sortOrder: this.sortOrder,
-      multitenancy: this.multitenancy,
-      commonElementsVisibleToAll: this.commonElementsVisibleToAll,
-      externalSearchName: this.externalSearchName,
-      shardUniqKeys: this.shardUniqKeys,
-      isExternalSearch: this.isExternalSearch,
-      creatableByUser: this.creatableByUser,
-      updatableByUser: this.updatableByUser,
-      removableByUser: this.removableByUser,
-      exportableByUser: this.exportableByUser,
     }
   }
 
@@ -100,20 +74,23 @@ class DocumentBuilder extends BaseSavableEntityBuilder {
     return builder
   }
 
-  setSharded(uniqKeys: string[] = []) {
-    this.addField('repostRequired', 'Обозначение что нужно обновить проводки')
-      .setType('bool')
-      .setDefaultDbValue('true')
-      .setDefaultValueExpression('true')
-      .setHidden()
-      .setRequired()
-    this.addField('deleteRequired', 'Используется для определения что нужно удалить документ, так как мы удаляем из')
-      .setType('bool')
-      .setDefaultDbValue('false')
-      .setDefaultValueExpression('false')
-      .setHidden()
-      .setRequired()
-    super.setSharded(uniqKeys)
+  setSharded (value = true) {
+    if (value) {
+      this.addField('repostRequired', 'Обозначение что нужно обновить проводки')
+        .setType('bool')
+        .setDefaultDbValue('true')
+        .setDefaultValueExpression('true')
+        .setHidden()
+        .setRequired()
+      this.addField('deleteRequired', 'Используется для определения что нужно удалить документ, так как мы удаляем из')
+        .setType('bool')
+        .setDefaultDbValue('false')
+        .setDefaultValueExpression('false')
+        .setHidden()
+        .setRequired()
+    }
+
+    super.setSharded(value)
     return this
   }
 }

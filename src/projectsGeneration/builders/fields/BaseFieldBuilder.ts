@@ -35,6 +35,7 @@ export abstract class BaseFieldBuilder {
   showInCreate = true
   showInEdit = true
   showInShow = true
+  sharded = false
   constructor(name: string, defaultLanguage: string, title?: string) {
     this.defaultLanguage = defaultLanguage
     this.setName(name)
@@ -62,6 +63,7 @@ export abstract class BaseFieldBuilder {
       defaultDbValue: this.defaultDbValue,
       defaultValueExpression: this.defaultValueExpression,
       defaultBackendValueExpression: this.defaultBackendValueExpression,
+      sharded: this.sharded,
     }
   }
 
@@ -293,6 +295,11 @@ export abstract class BaseFieldBuilder {
   }
   setNotRequired() {
     this.required = false
+
+    return this
+  }
+  setSharded (value = true) {
+    this.sharded = value
 
     return this
   }

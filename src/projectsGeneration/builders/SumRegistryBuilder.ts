@@ -82,47 +82,26 @@ class SumRegistryBuilder extends BaseSavableEntityBuilder {
     return filed
   }
 
-  build(): SumRegistry {
-    const uniqueConstraints: string[][] = [];
+  getUniqueConstraints(): string[][] {
+    const uniqueConstraints: string[][] = []
     if (this.dimensions.length) {
       uniqueConstraints.push(this.dimensions.map((d) => d.name))
     }
-    if (this.uniqueConstraints.length) {
-      uniqueConstraints.push(...this.uniqueConstraints)
+    const constrains = super.getUniqueConstraints(this.registrarDepended)
+    if (constrains.length) {
+      uniqueConstraints.push(...constrains)
     }
 
+    return uniqueConstraints;
+  }
+
+  build(): SumRegistry {
     return {
       ...super.build(),
-      title: this.title,
       type: 'sumRegistry',
       registrarDepended: this.registrarDepended,
-      singleKey: this.singleKey,
-      // titleField: this.titleField.build(),
-      titleField: this.titleField.name,
-      // linkFields: this.getLinkFileds().map(f => f.build()),
       dimensions: this.dimensions.map((f) => f.build()),
       resources: this.resources.map((f) => f.build()),
-      // keyField: this.getKey().build(),
-      keyField: this.getKey().name,
-      fields: this.getFileds().map((field) => field.build()),
-      uniqueConstraints,
-      forms: this.getForms().build(),
-      predefinedElements: this.predefinedElements,
-      devPerefinedElements: this.devPerefinedElements,
-      auditable: this.auditable,
-      externalSearch: this.externalSearch,
-      searchEnabled: this.searchEnabled,
-      sortField: this.sortField,
-      sortOrder: this.sortOrder,
-      multitenancy: this.multitenancy,
-      commonElementsVisibleToAll: this.commonElementsVisibleToAll,
-      externalSearchName: this.externalSearchName,
-      shardUniqKeys: this.shardUniqKeys,
-      isExternalSearch: this.isExternalSearch,
-      creatableByUser: this.creatableByUser,
-      updatableByUser: this.updatableByUser,
-      removableByUser: this.removableByUser,
-      exportableByUser: this.exportableByUser,
     }
   }
 

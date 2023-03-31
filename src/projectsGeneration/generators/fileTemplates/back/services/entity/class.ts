@@ -28,7 +28,7 @@ export const prismaServiceBaseClassTmpl = ({
       .filter((f) => f.defaultBackendValueExpression)
       .filter((f) => !f.hidden)
 
-  const isSharded = !!entity.shardUniqKeys;
+  const isSharded = entity.sharded;
   const isExternalSearch = entity.externalSearch;
   const isDocument = entity.type === 'document';
   const isSumRegistry = entity.type === 'sumRegistry';
