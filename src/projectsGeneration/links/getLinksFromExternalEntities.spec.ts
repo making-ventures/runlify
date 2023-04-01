@@ -68,6 +68,7 @@ describe('getLinksFromExternalEntities', () => {
       {
         externalEntityName: 'firstEntities',
         fromField: {
+          ...baseField,
           name: 'firstEntityId',
           title: { ru: '' },
           needFor: '',
