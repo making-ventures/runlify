@@ -1,6 +1,7 @@
 import { expect } from 'jest-without-globals'
 import CatalogBuilder from '../builders/CatalogBuilder'
 import { getLinksOfEntities } from './getLinksOfEntities'
+import {baseField} from '../dataForTests';
 
 // yarn test --testPathPattern getLinksOfEntities
 
@@ -23,6 +24,7 @@ describe('getLinksOfEntities', () => {
         entityOwnerName: 'cards',
         externalEntityName: 'someEntity',
         fromField: {
+          ...baseField,
           category: 'link',
           defaultBackendValueExpression: undefined,
           defaultDbValue: undefined,
@@ -64,6 +66,7 @@ describe('getLinksOfEntities', () => {
         entityOwnerName: 'cards',
         externalEntityName: 'someEntity',
         fromField: {
+          ...baseField,
           category: 'link',
           defaultBackendValueExpression: undefined,
           defaultDbValue: undefined,
@@ -95,6 +98,7 @@ describe('getLinksOfEntities', () => {
         entityOwnerName: 'cards',
         externalEntityName: 'someEntity2',
         fromField: {
+          ...baseField,
           category: 'link',
           defaultBackendValueExpression: undefined,
           defaultDbValue: undefined,
@@ -149,6 +153,7 @@ describe('getLinksOfEntities', () => {
         entityOwnerName: 'firstEntities',
         externalEntityName: 'secondEntities',
         fromField: {
+          ...baseField,
           category: 'link',
           defaultBackendValueExpression: undefined,
           defaultDbValue: undefined,
@@ -180,6 +185,7 @@ describe('getLinksOfEntities', () => {
         entityOwnerName: 'secondEntities',
         externalEntityName: 'firstEntities',
         fromField: {
+          ...baseField,
           category: 'link',
           defaultBackendValueExpression: undefined,
           defaultDbValue: undefined,
