@@ -169,6 +169,8 @@ ${system.deployEnvironments
       --wait \${NAMESPACE}-\${DEPLOY_KIND} chart
       --timeout 3600s
       -f chart/values_\${ENV}.yaml
+      --namespace \${NAMESPACE}
+      --create-namespace
       --set "global.projectName=\${PROJECT_NAME}"
       --set "global.clusterName=\${CLUSTER_NAME}"
       --set "global.env=\${ENV}"
@@ -181,5 +183,4 @@ ${system.deployEnvironments
         .filter((v) => v.scopes.includes('admin-app') || v.scopes.includes('ci'))
         .map((v) => `\n      --set "${v.name}=\${${constantCase(v.name)}}"`)
         .join('')}
-      --namespace \${NAMESPACE}
 `
