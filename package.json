@@ -1,6 +1,6 @@
 {
   "name": "runlify",
-  "version": "0.0.492",
+  "version": "0.0.493",
   "description": "runlify CLI",
   "private": false,
   "main": "build/index.js",
