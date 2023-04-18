@@ -4,7 +4,7 @@ import BaseBuilder from './BaseBuilder'
 class DeploymentBuilder extends BaseBuilder {
   replicas: number = 1
   requests: MemoryAndCpu = { memory: '64Mi', cpu: '0.15' }
-  limits: MemoryAndCpu = { memory: '128Mi', cpu: '0.3' }
+  limits: MemoryAndCpu = { memory: '64Mi', cpu: '0.15' }
 
   constructor(
     name: string, 
