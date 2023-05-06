@@ -98,7 +98,7 @@ bot:
 bots:${system.telegramBots
   .map(
     ({ name }) => `\n  - name: ${name}
-    file: dist/bots/${name}Bot.js`
+    file: dist/bots/${name}Bot/${name}Bot.js`
   )
   .join('')}
 
