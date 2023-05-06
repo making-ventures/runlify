@@ -67,6 +67,7 @@ export const getFromNconf = <T extends boolean>(name: string, required?: T): Val
 const utils = getConfigUtils(getFromNconf);
 
 const envConfig = {
+  env: envName,
   ${system.configVars
     .filter((v) => v.scopes.includes('back'))
     .map((v) => `${camelCase(v.name)}: utils.${getUtilGetterForType(v.type)}('${v.name}', ${v.required}),`).join(`
