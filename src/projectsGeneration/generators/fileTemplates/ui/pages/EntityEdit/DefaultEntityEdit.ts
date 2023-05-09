@@ -124,7 +124,7 @@ export const uiDefaultEditTmpl = ({
 
   const fieldsToImport = entity
     .fields
-    .filter(f => !f.hidden)
+    .filter(f => !f.hidden && f.showInEdit)
     .filter(f => !fileRefFields.includes(f))
 
     // .filter(f => f.requiredOnInput || f.requiredOnInput === null)
@@ -150,13 +150,13 @@ export const uiDefaultEditTmpl = ({
   ];
 
   const hasHidden = entity.fields
-    .filter(f => !f.hidden)
+    .filter(f => !f.hidden && f.showInEdit)
     .filter(f => f.name !== 'id')
     .some(f => !(f.requiredOnInput || f.requiredOnInput === null));
 
   const fieldsToWorkWith = entity
     .fields
-    .filter(f => !f.hidden)
+    .filter(f => !f.hidden && f.showInEdit)
 
     // .filter(f => f.requiredOnInput || f.requiredOnInput === null)
     .filter(f => f.name !== 'id');
