@@ -140,14 +140,21 @@ export const uiDefaultEditTmpl = ({
     'ToolbarProps',
     'Toolbar',
     'SaveButton',
-    'DeleteButton',
-    'usePermissions',
+    // 'DeleteButton',
+    // 'usePermissions',
 
     ...R.flatten(
       notDateFieldsToImport
         .map(f => getCompNamesToEditField(f, allEntities)),
     ),
   ];
+
+  if (entity.removableByUser) {
+    reactAdminImports.push(
+      'DeleteButton',
+      'usePermissions',
+    )
+  }
 
   const hasHidden = entity.fields
     .filter(f => !f.hidden && f.showInEdit)
@@ -175,24 +182,26 @@ import DateInput from '../../../../uiLib/DateInput';` : ''}${hasHidden ? `
 import {useDebug} from '../../../../contexts/DebugContext';` : ''}
 import {Grid} from '@mui/material';
 import {yupResolver} from '@hookform/resolvers/yup';
-import get${pascalSingular(entity.name)}Validation from '../get${pascalSingular(entity.name)}Validation';
-import {hasPermission} from '../../../../utils/permissions';
+import get${pascalSingular(entity.name)}Validation from '../get${pascalSingular(
+  entity.name
+  )}Validation';${entity.removableByUser ? `
+import {hasPermission} from '../../../../utils/permissions';` : ''}
 import {LoadingContext} from '../../../../contexts/LoadingContext';${withFileRef ? `
 import {FileInput} from \'../../../../uiLib/file/FileInput\';` : ''}${isAllowedToChange ? `
 import {AllowedToEdit} from '../../../../uiLib/AllowedToEdit';` : ''}
 ${options.skipWarningThisIsGenerated ? '' : `
 // ${generatedWarning}
 `}
-const DefaultToolbar = (props: ToolbarProps) => {
+const DefaultToolbar = (props: ToolbarProps) => {${entity.removableByUser ? `
   const {permissions} = usePermissions<string[]>();
-
+  ` : ''}
   return (
     <Toolbar
       {...props}
       sx={{display: 'flex', justifyContent: 'space-between'}}
     >
-      <SaveButton />
-      {hasPermission(permissions, '${entity.name}.delete') && <DeleteButton mutationMode='pessimistic' />}
+      <SaveButton />${entity.removableByUser ? `
+      {hasPermission(permissions, '${entity.name}.delete') && <DeleteButton mutationMode='pessimistic' />}` : ''}
     </Toolbar>
   );
 };
