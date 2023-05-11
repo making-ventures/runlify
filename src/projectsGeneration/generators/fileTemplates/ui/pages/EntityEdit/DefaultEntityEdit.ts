@@ -194,7 +194,7 @@ ${options.skipWarningThisIsGenerated ? '' : `
 `}
 const DefaultToolbar = (props: ToolbarProps) => {${entity.removableByUser ? `
   const {permissions} = usePermissions<string[]>();
-  ` : ''}
+` : ''}
   return (
     <Toolbar
       {...props}
