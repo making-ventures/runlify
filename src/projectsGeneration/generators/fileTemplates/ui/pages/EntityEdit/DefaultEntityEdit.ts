@@ -162,6 +162,7 @@ export const uiDefaultEditTmpl = ({
     .filter(f => f.name !== 'id');
 
   const initialValues = fieldsToWorkWith.filter(f => getTsDefaultTypeValueExpression(f));
+  const isAllowedToChange = entity.allowedToChange;
 
   return `/* eslint-disable max-len */
 import React, {FC, useMemo, useCallback} from 'react';
@@ -176,9 +177,11 @@ import {Grid} from '@mui/material';
 import {yupResolver} from '@hookform/resolvers/yup';
 import get${pascalSingular(entity.name)}Validation from '../get${pascalSingular(entity.name)}Validation';
 import {hasPermission} from '../../../../utils/permissions';
-import {LoadingContext} from '../../../../contexts/LoadingContext';
-${withFileRef ? 'import {FileInput} from \'../../../../uiLib/file/FileInput\';\n' : ''}
-${options.skipWarningThisIsGenerated ? '' : `// ${generatedWarning}
+import {LoadingContext} from '../../../../contexts/LoadingContext';${withFileRef ? `
+import {FileInput} from \'../../../../uiLib/file/FileInput\';` : ''}${isAllowedToChange ? `
+import {AllowedToEdit} from '../../../../uiLib/AllowedToEdit';` : ''}
+${options.skipWarningThisIsGenerated ? '' : `
+// ${generatedWarning}
 `}
 const DefaultToolbar = (props: ToolbarProps) => {
   const {permissions} = usePermissions<string[]>();
@@ -211,7 +214,8 @@ ${hasHidden ? `  const {debug} = useDebug();
       }), [])}
       mutationMode='pessimistic'
     >
-      <LoadingContext>
+      <LoadingContext>${isAllowedToChange ? `
+        <AllowedToEdit allowedToEdit={${entity.allowedToChange}} />` : ''}
         <SimpleForm
           defaultValues=${initialValues.length === 0 ? '{{}}' : `{{
 ${initialValues.map(f => `${f.name}: ${getTsDefaultTypeValueExpression(f)},`).map(pad(6)).join('\n')}

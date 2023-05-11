@@ -39,14 +39,22 @@ export const configTmpl = ({
   const isDocument = entity.type === 'document'
   const isInfoRegistry = entity.type === 'infoRegistry'
 
+  const isClearFromDB = entity.clearDBAfter !== undefined;
+
   let configType = 'ServiceConfig'
   if (isSharded) {
     configType = 'ServiceShardConfig'
+    if (isClearFromDB) {
+      configType = 'ServiceClearDBShardConfig'
+    }
   }
   if (isDocument) {
     configType = 'DocumentConfig'
     if (isSharded) {
       configType = 'DocumentShardConfig'
+      if (isClearFromDB) {
+        configType = 'DocumentClearDBShardConfig'
+      }
     }
   } else if (isInfoRegistry) {
     configType = 'InfoRegistryConfig'
@@ -108,7 +116,8 @@ const config: ${configType} = {
 ${externalSearchDeps.map(([key, val]) => `'${key}': '${val}',`).map(pad(2)).join('\n')}
   },` : ''}${isInfoRegistry ? `
   period: '${entity.period}',` : ''}${isSharded ? `
-  uniqKeys: ${arrToStr(shardUniqKeys)},` : ''}
+  uniqKeys: ${arrToStr(shardUniqKeys)},` : ''}${isClearFromDB ? `
+  clearDBAfter: ${entity.clearDBAfter},` : ''}
 };
 
 export default config;

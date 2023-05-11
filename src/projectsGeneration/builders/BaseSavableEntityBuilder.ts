@@ -41,6 +41,8 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
   externalSearchName: string | undefined = undefined
   sharded = false
   isExternalSearch = false
+  clearDBAfter: number | undefined
+  allowedToChange: string = ''
 
   constructor(name: string, defaultLanguage: string, title?: {singular?: string, plural?: string}) {
     super(name, defaultLanguage, title)
@@ -398,6 +400,8 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
       updatableByUser: this.updatableByUser,
       removableByUser: this.removableByUser,
       exportableByUser: this.exportableByUser,
+      clearDBAfter: this.clearDBAfter,
+      allowedToChange: this.allowedToChange,
     }
   }
 
@@ -471,8 +475,22 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
     return this
   }
   setIsExternalTable () {
-    this.isExternalSearch = true;
-    return this;
+    this.isExternalSearch = true
+    return this
+  }
+  setClearDBAfter (days?: number) {
+    if (!this.externalSearch) {
+      throw new Error('You can only clear the database when it is synchronized with Elastic!')
+    }
+
+    this.clearDBAfter = days
+
+    return this
+  }
+  setAllowedToChange (value: string = '') {
+    this.allowedToChange = value
+
+    return this
   }
 }
 

@@ -273,7 +273,9 @@ export type BaseSavableEntity = BaseEntity & {
   title: Record<string, {singular: string, plural: string}>
   externalSearchName: string | undefined
   sharded: boolean
-  isExternalSearch: boolean;
+  isExternalSearch: boolean
+  clearDBAfter: number | undefined
+  allowedToChange: string
 }
 
 export type Report = BaseEntity & {
