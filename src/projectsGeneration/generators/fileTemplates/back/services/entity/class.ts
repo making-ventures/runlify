@@ -33,6 +33,7 @@ export const prismaServiceBaseClassTmpl = ({
   const isDocument = entity.type === 'document';
   const isSumRegistry = entity.type === 'sumRegistry';
   const isInfoRegistry = entity.type === 'infoRegistry';
+  const isClearFromDB = entity.clearDBAfter !== undefined;
 
   let extendedType = 'BaseService';
   if (isExternalSearch) {
@@ -67,9 +68,15 @@ export const prismaServiceBaseClassTmpl = ({
     extendedType = 'ShardsService';
     if (isExternalSearch) {
       extendedType = 'ElasticShardsService';
+      if (isClearFromDB) {
+        extendedType = 'ElasticClearDBShardsService';
+      }
     }
     if (isDocument) {
       extendedType = 'DocumentShardsService';
+      if (isClearFromDB) {
+        extendedType = 'DocumentClearDBShardsService';
+      }
     }
   }
 
@@ -237,7 +244,9 @@ ${pad(4)(
       return R.mergeLeft(currentData, R.fromPairs(resultedPairs)) as T & Autodefinable${pascalSingular(
           entity.name
         )}Part;
-    };` : ''}
+    };` : ''}${entity.allowedToChange ? `
+
+    this.allowedToChange = ${entity.allowedToChange};` : ''}
   }
 }
 `

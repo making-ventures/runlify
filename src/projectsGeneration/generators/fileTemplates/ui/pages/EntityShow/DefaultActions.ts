@@ -10,13 +10,16 @@ export const uiDefaultActionTmpl = (
     allEntities,
   }: EntityWideGenerationArgs,
 ) => {
+  const isUpdatableByUser = entity.updatableByUser;
+  const isAllowedToChange = entity.allowedToChange;
+
   return `import React from 'react';
 import {
   TopToolbar,${entity.updatableByUser ? `
   EditButton,
   usePermissions,` : ''}
 } from 'react-admin';
-import OpenAudit from '../../../commonActions/OpenAudit';${entity.updatableByUser ? `
+import OpenAudit from '../../../commonActions/OpenAudit';${isUpdatableByUser ? `
 import {hasPermission} from '../../../../utils/permissions';` : ''}
 import OpenHelp from '../../../commonActions/OpenHelp';${
     entity && entity.type === 'document' && entity.registries.length > 0
@@ -24,7 +27,8 @@ import OpenHelp from '../../../commonActions/OpenHelp';${
 import RePost from '../../../commonActions/RePost';
 import OpenRegistries from '../../../commonActions/OpenRegistries';`
       : ''
-  }
+  }${isAllowedToChange && isUpdatableByUser ? `
+import {useAllowedToEdit} from '../../../../uiLib/AllowedToEdit';` : ''}
 ${
   options.skipWarningThisIsGenerated
     ? ''
@@ -32,8 +36,9 @@ ${
 // DO NOT EDIT! THIS IS GENERATED FILE
 `
 }
-const Default${pascalSingular(entity.name)}Actions = () => {${entity.updatableByUser ? `
-  const {permissions} = usePermissions<string[]>();
+const Default${pascalSingular(entity.name)}Actions = () => {${isUpdatableByUser ? `
+  const {permissions} = usePermissions<string[]>();${isAllowedToChange ? `
+  const allowedToEdit = useAllowedToEdit(${entity.allowedToChange});`: ''}
 ` : ''}
   return (
     <TopToolbar sx={{alignItems: 'center'}}>${
@@ -58,8 +63,8 @@ ${entity.registries
     entity &&
     `
       <OpenAudit entityTypeId='${singular(entity.name)}' />
-      <OpenHelp entityType='${entity.name}' />${entity.updatableByUser ? `
-      {hasPermission(permissions, '${entity.name}.update') && <EditButton />}` : ''}`
+      <OpenHelp entityType='${entity.name}' />${isUpdatableByUser ? `
+      {${isAllowedToChange ? 'allowedToEdit && ' : ''}hasPermission(permissions, '${entity.name}.update') && <EditButton />}` : ''}`
   }
     </TopToolbar>
   );
