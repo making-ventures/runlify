@@ -1,7 +1,7 @@
 import { Entity, LinkField } from '../../../../builders/buildedTypes'
-import { getCompNameToShowScalar } from './getCompNameToShowScalar'
 import { LinkShowComponentName, ShowComponentName } from '../types'
-import { getFieldByName } from '../../../../metaUtils'
+// import { getCompNameToShowScalar } from './getCompNameToShowScalar'
+// import { getFieldByName } from '../../../../metaUtils'
 
 export const getCompNamesToShowLinkField = (
   field: LinkField,
@@ -14,9 +14,9 @@ export const getCompNamesToShowLinkField = (
   }
 
   return [
-    getCompNameToShowScalar(
-      getFieldByName(linkedEntity, linkedEntity.titleField)
-    ),
+    // getCompNameToShowScalar(
+    //   getFieldByName(linkedEntity, linkedEntity.titleField)
+    // ),
     'ReferenceField',
   ]
 }
