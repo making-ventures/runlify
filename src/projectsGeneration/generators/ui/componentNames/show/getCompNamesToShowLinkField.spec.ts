@@ -4,7 +4,7 @@ import { getCompNamesToShowLinkField } from './getCompNamesToShowLinkField'
 import {baseField} from '../../../../dataForTests';
 
 describe('getCompNamesToShowLinkField', () => {
-  it('generates NumberField and ReferenceField for link to entity with int id which is also title field', () => {
+  it('generates ReferenceField for link to entity with int id which is also title field', () => {
     const cards = new CatalogBuilder('cards', 'ru')
     cards.getKey().setType('bigint')
 
@@ -32,10 +32,10 @@ describe('getCompNamesToShowLinkField', () => {
         },
         new Map([['cards', cards.build()]])
       )
-    ).toEqual(['NumberField', 'ReferenceField'])
+    ).toEqual(['ReferenceField'])
   })
 
-  it('generates TextField and ReferenceField for link to entity with string id which is also title field', () => {
+  it('generates ReferenceField for link to entity with string id which is also title field', () => {
     const cards = new CatalogBuilder('cards', 'ru')
     cards.getKey().setType('string')
 
@@ -63,10 +63,10 @@ describe('getCompNamesToShowLinkField', () => {
         },
         new Map([['cards', cards.build()]])
       )
-    ).toEqual(['TextField', 'ReferenceField'])
+    ).toEqual(['ReferenceField'])
   })
 
-  it('generates TextField, ReferenceField for link to entity with int id and string title', () => {
+  it('generates ReferenceField for link to entity with int id and string title', () => {
     const cards = new CatalogBuilder('cards', 'ru')
     cards.getKey().setType('bigint')
     cards
@@ -97,10 +97,10 @@ describe('getCompNamesToShowLinkField', () => {
         },
         new Map([['cards', cards.build()]])
       )
-    ).toEqual(['TextField', 'ReferenceField'])
+    ).toEqual(['ReferenceField'])
   })
 
-  it('generates TextField, ReferenceField for link to entity with string id and string title', () => {
+  it('generates ReferenceField for link to entity with string id and string title', () => {
     const cards = new CatalogBuilder('cards', 'ru')
     cards.getKey().setType('string')
     cards
@@ -131,10 +131,10 @@ describe('getCompNamesToShowLinkField', () => {
         },
         new Map([['cards', cards.build()]])
       )
-    ).toEqual(['TextField', 'ReferenceField'])
+    ).toEqual(['ReferenceField'])
   })
 
-  it('generates NumberField, ReferenceField for link to entity with int id and int title', () => {
+  it('generates ReferenceField for link to entity with int id and int title', () => {
     const cards = new CatalogBuilder('cards', 'ru')
     cards.getKey().setType('bigint')
     cards
@@ -165,10 +165,10 @@ describe('getCompNamesToShowLinkField', () => {
         },
         new Map([['cards', cards.build()]])
       )
-    ).toEqual(['NumberField', 'ReferenceField'])
+    ).toEqual(['ReferenceField'])
   })
 
-  it('generates NumberField, ReferenceField for link to entity with string id and int title', () => {
+  it('generates ReferenceField for link to entity with string id and int title', () => {
     const cards = new CatalogBuilder('cards', 'ru')
     cards.getKey().setType('string')
     cards
@@ -199,6 +199,6 @@ describe('getCompNamesToShowLinkField', () => {
         },
         new Map([['cards', cards.build()]])
       )
-    ).toEqual(['NumberField', 'ReferenceField'])
+    ).toEqual(['ReferenceField'])
   })
 })
