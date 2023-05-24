@@ -49,7 +49,7 @@ const i18nProvider: I18nProvider = ({
         return defaultMessages;
       }
     },
-    'ru',
+    '${defaultLanguage}',
     locales,
   ),
   locales,
