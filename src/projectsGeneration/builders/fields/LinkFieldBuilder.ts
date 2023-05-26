@@ -28,7 +28,7 @@ export class LinkFieldBuilder extends BaseFieldBuilder {
 
   checkName(name: string) {
     if (!name.endsWith('Id')) {
-      throw new Error(`Link field name should wnd by 'Id'. Current name: "${name}"`);
+      throw new Error(`Link field name should end by 'Id'. Current name: "${name}"`);
     }
   }
 
