@@ -212,14 +212,20 @@ ${system.deployEnvironments
 .deploy-back:
   variables:
     DEPLOY_KIND: "back"
+    FLUENTD_ENABLED: "true"
+    PROMETHEUS_RULES_ENABLED: "true"
 
 .deploy-worker:
   variables:
     DEPLOY_KIND: "worker"
+    FLUENTD_ENABLED: "false"
+    PROMETHEUS_RULES_ENABLED: "false"
 
 .deploy-telegramBot:
   variables:
     DEPLOY_KIND: "telegramBot"
+    FLUENTD_ENABLED: "false"
+    PROMETHEUS_RULES_ENABLED: "false"
 
 .deploy:
   image:
@@ -254,6 +260,8 @@ ${system.deployEnvironments
       --set "metrics.enabled=\${METRICS_ENABLED}"
       --set "worker.enabled=\${WORKER_ENABLED}"
       --set "bot.enabled=\${BOT_ENABLED}"
+      --set "fluentd.enabled=\${FLUENTD_ENABLED}"
+      --set "prometheus.rules.enabled=\${PROMETHEUS_RULES_ENABLED}"
       --set "ingress.rootEnabled=\${ROOT_ENABLED}"${system.configVars
         .filter((v) => v.scopes.includes('back') || v.scopes.includes('ci'))
         .map((v) => `\n      --set "${v.name}=\${${constantCase(v.name)}}"`)
