@@ -179,7 +179,7 @@ ${system.deployEnvironments
     - .deploy-${e.name}
     - .deploy-worker
   variables:
-    KUBE_CONFIG: \${KUBE_${e.workerClusterName.toUpperCase()}_CONFIG}
+    KUBE_CONFIG: \${KUBE_${e.clusterName.toUpperCase()}_CONFIG}
     BACK_ENABLED: "false"
     INGRESS_ENABLED: "false"
     METRICS_ENABLED: "false"
