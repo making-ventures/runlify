@@ -28,3 +28,4 @@ export const pad9 = (content: string) => padN(content, 9)
 export const pad10 = (content: string) => padN(content, 10)
 export const pad = (num: number) => (content: string) => padN(content, num)
 export const addComma = (content: string) => content + ','
+export const newStrBefore = (content: string) => '\n' + content

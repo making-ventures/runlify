@@ -51,6 +51,7 @@ const i18nProvider: I18nProvider = ({
     },
     '${defaultLanguage}',
     locales,
+    {allowMissing: true}, // turned off notifications about missing keys
   ),
   locales,
 });
