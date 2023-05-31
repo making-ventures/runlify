@@ -7,7 +7,7 @@ import {
 } from '../../../../../../utils/cases'
 import { singular } from 'pluralize'
 import { EntityWideGenerationArgs } from '../../../../../args'
-import { addComma, generatedWarning, pad } from '../../../../../utils'
+import {addComma, generatedWarning, newStrBefore, pad} from '../../../../../utils'
 import { Document } from '../../../../../builders'
 
 export const prismaServiceBaseClassTmpl = ({
@@ -80,15 +80,15 @@ export const prismaServiceBaseClassTmpl = ({
     }
   }
 
-  let registriesImports = '';
+  let additionalImports: string[] = [];
   let registries = '';
 
   if (isDocument) {
     const document = entity as Document;
 
-    registriesImports = document.registries.map(
-      (registry) => `\nimport {StrictCreate${pascalSingular(registry)}Args} from '../${pascalPlural(registry)}Service/${pascalPlural(registry)}Service';`
-    ).join('');
+    additionalImports.push(...document.registries.map(
+      (registry) => `import {StrictCreate${pascalSingular(registry)}Args} from '../${pascalPlural(registry)}Service/${pascalPlural(registry)}Service';`
+    ));
 
     registries = `
 export interface ${pascalSingular(document.name)}RegistryEntries {${
@@ -105,6 +105,10 @@ export interface ${pascalSingular(document.name)}RegistryEntries {${
 `;
   }
 
+  if (!isSharded) {
+    additionalImports.push('import {Prisma} from \'@prisma/client\';');
+  }
+
   return `import {
   MutationCreate${pascalSingular(entity.name)}Args,
   MutationUpdate${pascalSingular(entity.name)}Args,
@@ -119,7 +123,8 @@ import initBuiltInHooks from './initBuiltInHooks';
 import {${extendedType}} from '../utils/class/${extendedType}';${getDefaultableFields().length ? `
 import * as R from 'ramda';` : ''}
 import config from './config';
-import {DefinedFieldsInRecord, DefinedRecord, PartialFieldsInRecord} from '../../../types/utils';${registriesImports}
+import {DefinedFieldsInRecord, DefinedRecord, PartialFieldsInRecord} from '../../../types/utils';${additionalImports.length ?
+    additionalImports.map(newStrBefore) : ''}
 ${
     options.skipWarningThisIsGenerated
       ? ''
@@ -214,7 +219,8 @@ export class ${pascal(entity.name)}Service extends ${extendedType}<
   ForbidenForUser${pascalSingular(entity.name)}Keys,
   RequiredDbNotUser${pascalSingular(entity.name)}Keys${isExternalSearch ? `,
   External${pascal(entity.name)}SearchTracking` : ''}${isDocument ? `,
-  ${pascalSingular(entity.name)}RegistryEntries` : ''}
+  ${pascalSingular(entity.name)}RegistryEntries` : ''}${!isSharded ? `,
+  Prisma.${pascalSingular(entity.name)}Delegate<any>` : ''}
 > {
   constructor(public ctx: Context) {
     super(ctx, ${isSharded ? `'${camelSingular(entity.name)}'${entity.externalSearchName ? `, 'external${pascal(entity.name)}SearchTracking'` : ''},`
