@@ -124,7 +124,7 @@ import {${extendedType}} from '../utils/class/${extendedType}';${getDefaultableF
 import * as R from 'ramda';` : ''}
 import config from './config';
 import {DefinedFieldsInRecord, DefinedRecord, PartialFieldsInRecord} from '../../../types/utils';${additionalImports.length ?
-    additionalImports.map(newStrBefore) : ''}
+    additionalImports.map(newStrBefore).join('\n') : ''}
 ${
     options.skipWarningThisIsGenerated
       ? ''
