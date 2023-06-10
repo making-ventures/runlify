@@ -354,7 +354,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
     // const currentRequiredFieldNames = currentRequiredFields.map(f => f.name);
     if (fields.some((f) => !currentFieldNames.includes(f))) {
       throw new Error(`You trying to add constraint for non existing field.
-      Current fields: ${currentFields}, fields for constrain: ${fields}, field not in current: ${fields.filter(
+      Current fields: ${currentFields.map(f => f.title[this.defaultLanguage]).join(', ')}, fields for constraint: ${fields.join(', ')}, field not in current: ${fields.filter(
         (f) => !currentFieldNames.includes(f)
       )}.
       Entity ${this.name}`)
