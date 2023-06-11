@@ -306,6 +306,8 @@ class SystemMetaBuilder {
     this.addConfigVar('es.node', 'string', false, 'http://localhost:9200', 'Нода эластика');
     this.addConfigVar('es.tls.rejectUnauthorized', 'bool', false, false, 'Запрещать невалидный ssl сертификат');
 
+    this.addConfigVar('sentry.dsn', 'string', false, '', 'Sentry dsn');
+
     this.addDeployEnvironment({
       name: 'dev',
       manualDeploy: false,
