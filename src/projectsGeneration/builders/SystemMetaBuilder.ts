@@ -486,7 +486,7 @@ class SystemMetaBuilder {
 
   editDeployEnvironment(name: string, deployEnvironment: Partial<DeployEnvironment>) {
     if (!this.deployEnvironments.some((f) => f.name === name)) {
-      throw new Error(`There is no "${name}" config var`)
+      throw new Error(`There is no "${name}" deploy environment (you may use ${this.deployEnvironments.map(e => e.name).join(', ')})`)
     }
 
     this.deployEnvironments = this.deployEnvironments.map(env => env.name === name ? {
@@ -504,7 +504,7 @@ class SystemMetaBuilder {
 
   delDeployEnvironment(name: string) {
     if (!this.deployEnvironments.some((f) => f.name === name)) {
-      throw new Error(`There is no "${name}" config var`)
+      throw new Error(`There is no "${name}" deploy environment (you may use ${this.deployEnvironments.map(e => e.name).join(', ')})`)
     }
 
     this.deployEnvironments = this.deployEnvironments.filter(v => v.name !== name)
