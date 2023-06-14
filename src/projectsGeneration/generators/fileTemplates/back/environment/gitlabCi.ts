@@ -169,7 +169,7 @@ ${system.deployEnvironments
     KUBE_CONFIG: \${KUBE_${e.clusterName.toUpperCase()}_CONFIG}
     BACK_ENABLED: "true"
     INGRESS_ENABLED: "true"
-    METRICS_ENABLED: "true"
+    METRICS_ENABLED: "${e.metricsEnabled.toString()}"
     WORKER_ENABLED: "false"
     BOT_ENABLED: "false"
     ROOT_ENABLED: "${e.main}"

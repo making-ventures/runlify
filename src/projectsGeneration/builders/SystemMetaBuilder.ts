@@ -315,7 +315,7 @@ class SystemMetaBuilder {
       clusterName: 'stage01',
       workerClusterName: 'workers01',
       branchName: 'master',
-      monitoringEnabled: true,
+      metricsEnabled: true,
     })
     // this.addDeployEnvironment({
     //   name: 'stage',
@@ -330,7 +330,7 @@ class SystemMetaBuilder {
       clusterName: 'stage01',
       workerClusterName: 'workers01',
       branchName: 'release',
-      monitoringEnabled: true,
+      metricsEnabled: true,
     })
     this.addLanguage('en', 'English')
     this.addLanguage('ru', 'Russian')
