@@ -11,6 +11,7 @@ import addAutogeneration from './addAutogeneration';
 import addTenants from './addTenants';
 import addAggregateTrackings from './addAggregateTrackings';
 import { addEmailModuleEntities } from '../modules';
+import {addConfigurationVariables} from '.';
 
 const addCommonEntities = (system: SystemMetaBuilder) => {
   addLanguages(system);
@@ -26,6 +27,9 @@ const addCommonEntities = (system: SystemMetaBuilder) => {
 
   // Modules
   addEmailModuleEntities(system);
+
+  // configurationVariables
+  addConfigurationVariables(system);
 };
 
 export default addCommonEntities;
