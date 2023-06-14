@@ -367,6 +367,7 @@ export interface DeployEnvironment {
   clusterName: string
   workerClusterName: string
   branchName: string
+  monitoringEnabled: boolean
 }
 
 export type Language = {

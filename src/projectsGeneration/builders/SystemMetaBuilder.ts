@@ -315,6 +315,7 @@ class SystemMetaBuilder {
       clusterName: 'stage01',
       workerClusterName: 'workers01',
       branchName: 'master',
+      monitoringEnabled: true,
     })
     // this.addDeployEnvironment({
     //   name: 'stage',
@@ -329,6 +330,7 @@ class SystemMetaBuilder {
       clusterName: 'stage01',
       workerClusterName: 'workers01',
       branchName: 'release',
+      monitoringEnabled: true,
     })
     this.addLanguage('en', 'English')
     this.addLanguage('ru', 'Russian')
@@ -474,6 +476,24 @@ class SystemMetaBuilder {
     }
 
     this.deployEnvironments.push(deployEnvironment)
+
+    if (this.deployEnvironments.filter((f) => f.main)?.length > 1) {
+      throw new Error(`Main deployEnvironment shuold be only one"`)
+    }
+
+    return this
+  }
+
+  editDeployEnvironment(name: string, deployEnvironment: Partial<DeployEnvironment>) {
+    if (!this.deployEnvironments.some((f) => f.name === name)) {
+      throw new Error(`There is no "${name}" config var`)
+    }
+
+    this.deployEnvironments = this.deployEnvironments.map(env => env.name === name ? {
+      ...env,
+      ...deployEnvironment,
+      name,
+    } : env)
 
     if (this.deployEnvironments.filter((f) => f.main)?.length > 1) {
       throw new Error(`Main deployEnvironment shuold be only one"`)
