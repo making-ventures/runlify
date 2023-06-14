@@ -43,6 +43,8 @@ export interface ConfigVar<T extends FieldType = 'string'> {
   default: ConfigValue<T>
   needFor: string
   scopes: ConfigVarScope[]
+  hidden: boolean,
+  editable: boolean,
 }
 
 export interface Glossary {

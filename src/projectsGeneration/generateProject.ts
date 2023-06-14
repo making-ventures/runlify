@@ -8,7 +8,7 @@ import uiDashboardTmpl from './generators/fileTemplates/ui/Dashboard'
 import { uiFunctionsTmpl } from './generators/fileTemplates/ui/functions/Functions'
 import { uiGetDefaultMenuTmpl } from './generators/fileTemplates/ui/getDefaultMenu'
 import { generateEnvironment } from './generateEnvironment'
-import { configTmpl } from './generators/fileTemplates/back/root/config'
+import { configItemsTmpl } from './generators/fileTemplates/back/root/config/config'
 import { genGraphSchemesByLocalGenerator } from './genGraphSchemesByLocalGenerator'
 import { BootstrapEntityOptions, defaultBootstrapEntityOptions } from './types'
 import { generateEntity } from './generateEntity'
@@ -133,8 +133,8 @@ export const generateBackSrc = async (args: ProjectWideGenerationArgs) => {
 
   await Promise.all([
     write(
-      join(args.options.detachedBackProject, 'src', 'config', 'index.ts'),
-      configTmpl(args)
+      join(args.options.detachedBackProject, 'src', 'config', 'config.ts'),
+      configItemsTmpl(args)
     ),
     generateHelpService(args, true),
   ])
@@ -661,13 +661,6 @@ const generateProject = async (
   )
 
   // Root
-
-  // src/config.ts
-  if (opts.genRootConfig) {
-    const generatedResources = configTmpl(args)
-
-    await write(join(prjDetachedBackSrcDir, 'config', 'index.ts'), generatedResources)
-  }
 
   // src/restRouter.ts
   const restRouter = restRouterTmpl()

@@ -27,12 +27,16 @@ import RestApiBuilder from './RestApiBuilder'
 import DeploymentBuilder from './DeploymentBuilder'
 import RoleBuilder from './RoleBuilder'
 import TelegramBotBuilder from './TelegramBotBuilder'
+import {ConfigVarBuilder} from './ConfigVarBuilder';
+import log from '../../log';
 
 export const defaultConfigVar: Omit<ConfigVar, 'name' | 'type'> = {
   needFor: '',
   default: '',
   required: true,
   scopes: ['back', 'worker', 'telegramBot'],
+  hidden: false,
+  editable: true,
 }
 
 class SystemMetaBuilder {
@@ -41,7 +45,7 @@ class SystemMetaBuilder {
   documents: EntityBuilderWithOptions<DocumentBuilder>[] = []
   infoRegistries: EntityBuilderWithOptions<InfoRegistryBuilder>[] = []
   sumRegistries: EntityBuilderWithOptions<SumRegistryBuilder>[] = []
-  configVars: ConfigVar[] = []
+  configVars: ConfigVarBuilder<any>[] = []
   glossary: Glossary[] = []
   commands: Command[] = []
   deployEnvironments: DeployEnvironment[] = []
@@ -113,14 +117,14 @@ class SystemMetaBuilder {
       true,
       'postgresql://postgres:password@localhost:5432',
       'Строка подключения к основной базе данных для записи'
-    )
+    ).setSecure()
     this.addConfigVar(
       'database.main.readOnly.uri',
       'string',
       false,
       'postgresql://postgres:password@localhost:5432',
       'Строка подключения к основной базе только для чтения'
-    )
+    ).setSecure()
     this.addConfigVar(
       'database.main.readOnly.enabled',
       'bool',
@@ -132,9 +136,9 @@ class SystemMetaBuilder {
       'database.main.migration.uri',
       'string',
       true,
-      'postgresql://postgres:password@localhost:5432',
+      'postgresql://postgres:password@localhost:5432/migration',
       'Строка подключения к основной базе для миграций (должна быть прямой строкой подключения к бд минуя pgbouncer, если он используется)'
-    )
+    ).setSecure()
 
     this.addConfigVar(
       'adm.jwt.secret',
@@ -142,14 +146,14 @@ class SystemMetaBuilder {
       false,
       'admSecret',
       'Секрет для подписи JWT-токенов приложения админки'
-    )
+    ).setSecure()
     this.addConfigVar(
       'app.jwt.secret',
       'string',
       false,
       'appSecret',
       'Секрет для подписи JWT-токенов приложения пользователей'
-    )
+    ).setSecure()
 
     this.addConfigVar(
       's3.endpoint',
@@ -157,7 +161,7 @@ class SystemMetaBuilder {
       true,
       's3.eu-central-1.wasabisys.com',
       'Эндпоинт S3, который использует бекенд',
-    )
+    ).setSecure()
     // this.addConfigVar(
     //   's3.publicEndpoint',
     //   'string',
@@ -185,7 +189,7 @@ class SystemMetaBuilder {
       true,
       '',
       'Секретный ключ для авторизации в S3'
-    )
+    ).setSecure()
     this.addConfigVar(
       's3.bucket.emailFiles',
       'string',
@@ -214,7 +218,7 @@ class SystemMetaBuilder {
       false,
       '',
       'Секретный токен рекапчи приложения админки'
-    )
+    ).setSecure()
     this.addConfigVar(
       'admin.recaptcha.requiredScore',
       'float',
@@ -237,7 +241,7 @@ class SystemMetaBuilder {
       false,
       '',
       'Секретный токен рекапчи приложения пользователя'
-    )
+    ).setSecure()
     this.addConfigVar(
       'customer.recaptcha.requiredScore',
       'string',
@@ -285,7 +289,7 @@ class SystemMetaBuilder {
     this.addConfigVar('kafka.enabled', 'bool', false, false, 'Кафка включена');
     this.addConfigVar('kafka.brokers', 'string', false, 'localhost:29092;localhost:29094', 'Список kafka блокеров');
     this.addConfigVar('kafka.username', 'string', false, '', 'Username доступа в kafka');
-    this.addConfigVar('kafka.password', 'string', false, '', 'Пароль доступа в kafka');
+    this.addConfigVar('kafka.password', 'string', false, '', 'Пароль доступа в kafka').setSecure();
     this.addConfigVar('kafka.queue.maxAttemptsSize', 'int', false, 10, 'Максимальное количество попыток обработки ошибки на сообщение');
     this.addConfigVar('kafka.queue.defaultRetryTime', 'int', false, 20000, 'Время паузы после первой ошибки, например 20000 мс, потом оно увеличывается экспоненциально с мультипликатором 1.5');
     this.addConfigVar('kafka.queue.waitingInterruptTime', 'int', false, 60000, 'Время паузы в очереди ожидания, когда она прошла все сообщения, это чтобы она не крутила сообщения покругу без остановки ');
@@ -302,7 +306,7 @@ class SystemMetaBuilder {
     this.addConfigVar('es.enabled', 'bool', false, false, 'Эластик включен');
     this.addConfigVar('es.cloudId', 'string', false, '', 'Идентификатор аккаунта в облачном сервисе ElasticSearch');
     this.addConfigVar('es.username', 'string', false, '', 'Пользователь для авторизации в облачном сервисе ElasticSearch');
-    this.addConfigVar('es.password', 'string', false, '', 'Пароль для авторизации в облачном сервисе ElasticSearch');
+    this.addConfigVar('es.password', 'string', false, '', 'Пароль для авторизации в облачном сервисе ElasticSearch').setSecure();
     this.addConfigVar('es.node', 'string', false, 'http://localhost:9200', 'Нода эластика');
     this.addConfigVar('es.tls.rejectUnauthorized', 'bool', false, false, 'Запрещать невалидный ssl сертификат');
 
@@ -386,30 +390,22 @@ class SystemMetaBuilder {
     required: boolean,
     def: ConfigValue<T> | undefined,
     needFor: string,
-    scopes: ConfigVarScope[] = ['back', 'worker', 'telegramBot']
-  ) {
+    scopes: ConfigVarScope[] = ['back', 'worker', 'telegramBot'],
+    hidden = false,
+    editable = true,
+  ): ConfigVarBuilder<T> {
     if (this.configVars.some((v) => v.name === name)) {
       throw new Error(`"${name}" config var already exists`)
     }
 
-    this.configVars.push(
-      R.mergeDeepLeft(
-        {
-          name,
-          type,
-          required,
-          default: def,
-          needFor,
-          scopes,
-        } as ConfigVar,
-        defaultConfigVar
-      ) as ConfigVar
-    )
+    const configVar = new ConfigVarBuilder(name, type, required, def, needFor, scopes, hidden, editable)
 
-    return this
+    this.configVars.push(configVar)
+
+    return configVar
   }
 
-  delConfigVar<T extends FieldType>(
+  delConfigVar(
     name: string,
   ) {
     if (!this.configVars.some((v) => v.name === name)) {
@@ -421,35 +417,35 @@ class SystemMetaBuilder {
     return this
   }
 
+  getConfigVar(name: string): ConfigVarBuilder<any> | undefined {
+    return this.configVars.find(el => el.name === name)
+  }
+
+  getConfigVarRequired(name: string): ConfigVarBuilder<any> {
+    const configVars = this.configVars.find(el => el.name === name)
+
+    if (!configVars) {
+      throw new Error(`There is no "${name}" config var`)
+    }
+
+    return configVars
+  }
+
   setConfigVarDefaultValue<T extends FieldType>(
     name: string,
     def: ConfigValue<T> | undefined,
   ) {
-    if (!this.configVars.some((v) => v.name === name)) {
-      throw new Error(`There is no "${name}" config var`)
-    }
+    log.warn('setConfigVarDefaultValue is legacy, legacy, use system.getConfigVarRequired(name).setDefValue(def) instead')
+    const configVars = this.getConfigVarRequired(name);
 
-    this.configVars = this.configVars.map(el => el.name === name ? {...el, default: def} as ConfigVar : el)
+    configVars.setDefValue(def);
 
     return this
   }
 
   setDefaultValueForConfigVar(name: string, def: string) {
-    const variable = this.configVars.find((v) => v.name === name)
-
-    if (!variable) {
-      throw new Error(`There is no "${name}" config var`)
-    }
-
-    this.configVars = [
-      ...this.configVars.filter((v) => v.name !== name),
-      {
-        ...variable,
-        default: def,
-      },
-    ]
-
-    return this
+    log.warn('setDefaultValueForConfigVar is legacy, legacy, use system.getConfigVarRequired(name).setDefValue(def) instead')
+    return this.setConfigVarDefaultValue(name, def);
   }
 
   addLanguage(id: string, title?: string) {
@@ -823,7 +819,7 @@ class SystemMetaBuilder {
       telegramBots: R.sortBy(R.prop('name'), this.telegramBots).map((el) =>
         el.build()
       ),
-      configVars: R.sortBy(R.prop('name'), this.configVars),
+      configVars: R.sortBy(R.prop('name'), this.configVars.map((cv) => cv.build())),
       catalogs: sortByName(this.catalogs).map((el) => el.entity.build()),
       documents: sortByName(this.documents).map((el) => el.entity.build()),
       infoRegistries: sortByName(this.infoRegistries).map((el) =>

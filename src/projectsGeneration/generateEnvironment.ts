@@ -1,7 +1,6 @@
 import { join } from 'path'
 import { defaultBootstrapEntityOptions } from './types'
 import { prismaGetterTmpl } from './generators/fileTemplates/back/environment/src/clients/getPrisma'
-import { knexGetterTmpl } from './generators/fileTemplates/back/environment/src/clients/knex'
 import { getQueueTmpl } from './generators/fileTemplates/back/environment/src/clients/queue/getQueue'
 import { environmentIndexTmpl } from './generators/fileTemplates/back/environment/src'
 import { chartBackTmpl } from './generators/fileTemplates/back/environment/chart/templates/back'
@@ -53,13 +52,6 @@ export const generateEnvironment = async (
         join(clientsFolderDir, 'getPrisma.ts'),
         prismaGetterTmpl(opts)
       )
-    }
-
-    // src/clients/knex.ts
-    if (opts.corePrismaGetter) {
-      const clientsFolderDir = join(prjDetachedBackSrcDir, 'clients')
-
-      await write(join(clientsFolderDir, 'knex.ts'), knexGetterTmpl(opts))
     }
 
     // src/clients/queue/getQueue.ts
