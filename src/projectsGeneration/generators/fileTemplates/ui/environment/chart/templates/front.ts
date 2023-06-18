@@ -100,9 +100,7 @@ spec:
         - name: RANDOM
           value: {{ $.Values.random | quote }}
         - name: ENV
-          value: '{{ $.Values.global.env }}'
-        - name: ENDPOINT
-          value: 'https://{{ $.Values.ingress.domains.endpoint }}.{{ $.Values.global.env }}.apps.{{ $.Values.global.clusterName }}.{{ $.Values.ingress.host }}/adm'${system.configVars
+          value: '{{ $.Values.global.env }}'${system.configVars
             .filter((v) => v.scopes.includes('admin-app'))
             .map(
               (v) => `\n        - name: ${constantCase(v.name)}
