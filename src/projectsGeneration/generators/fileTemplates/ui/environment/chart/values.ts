@@ -25,7 +25,6 @@ docker:
 app:
   tag: :master
   replicas: 1
-  endpoint: ""
 
 image:
   repository: nginx
