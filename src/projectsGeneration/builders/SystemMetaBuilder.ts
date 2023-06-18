@@ -227,6 +227,14 @@ class SystemMetaBuilder {
       'Требуемый уровень доверия к пользователю'
     )
     this.addConfigVar(
+      'endpoint',
+      'string',
+      false,
+      '',
+      'Путь к бекенду',
+      ['admin-app']
+    )
+    this.addConfigVar(
       'admin.recaptcha.publicKey',
       'string',
       false,
