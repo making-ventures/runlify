@@ -138,6 +138,7 @@ ${system.deployEnvironments
     DEV: "false"
     HOST: "making.ventures"
     ROOT_ENABLED: "${e.main}"
+    NODEPORT_SERVICE_ENABLED: "${e.name === 'prod' ? 'true' : 'false'}"
     KUBE_CONFIG: \${KUBE_${e.clusterName.toUpperCase()}_CONFIG}
     TAG: ":\${CI_COMMIT_REF_SLUG}-\${CI_COMMIT_SHA}"${system.configVars
       .filter((v) => v.scopes.includes('admin-app') || v.scopes.includes('ci'))
@@ -150,7 +151,6 @@ ${system.deployEnvironments
   extends: .deploy
   variables:
     DEPLOY_KIND: "ui"
-    NODEPORT_SERVICE_ENABLED: "true"
 
 .deploy:
   image:
