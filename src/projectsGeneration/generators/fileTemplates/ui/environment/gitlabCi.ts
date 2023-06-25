@@ -138,7 +138,6 @@ ${system.deployEnvironments
     DEV: "false"
     HOST: "making.ventures"
     ROOT_ENABLED: "${e.main}"
-    NODEPORT_SERVICE_ENABLED: "${e.name === 'prod' ? 'true' : 'false'}"
     KUBE_CONFIG: \${KUBE_${e.clusterName.toUpperCase()}_CONFIG}
     TAG: ":\${CI_COMMIT_REF_SLUG}-\${CI_COMMIT_SHA}"${system.configVars
       .filter((v) => v.scopes.includes('admin-app') || v.scopes.includes('ci'))
@@ -180,7 +179,6 @@ ${system.deployEnvironments
       --set "app.tag=\${TAG}"
       --set "ingress.host=\${HOST}"
       --set "style=\${STYLE}"
-      --set "nodeportService.enabled=\${NODEPORT_SERVICE_ENABLED}"
       --set "ingress.rootEnabled=\${ROOT_ENABLED}"${system.configVars
         .filter((v) => v.scopes.includes('admin-app') || v.scopes.includes('ci'))
         .map((v) => `\n      --set "${v.name}=\${${constantCase(v.name)}}"`)
