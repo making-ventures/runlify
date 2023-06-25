@@ -136,7 +136,7 @@ ${system.deployEnvironments
   variables:
     ENV: "${e.name}"
     DEV: "false"
-    HOST: "making.ventures"
+    HOST: "${e.host}"
     ROOT_ENABLED: "${e.main}"
     KUBE_CONFIG: \${KUBE_${e.clusterName.toUpperCase()}_CONFIG}
     TAG: ":\${CI_COMMIT_REF_SLUG}-\${CI_COMMIT_SHA}"${system.configVars

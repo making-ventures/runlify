@@ -370,6 +370,7 @@ export interface DeployEnvironment {
   workerClusterName: string
   branchName: string
   metricsEnabled: boolean
+  host: string
 }
 
 export type Language = {

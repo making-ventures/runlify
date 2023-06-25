@@ -328,6 +328,7 @@ class SystemMetaBuilder {
       workerClusterName: 'workers01',
       branchName: 'master',
       metricsEnabled: true,
+      host: 'making.ventures',
     })
     // this.addDeployEnvironment({
     //   name: 'stage',
@@ -343,6 +344,7 @@ class SystemMetaBuilder {
       workerClusterName: 'workers01',
       branchName: 'release',
       metricsEnabled: true,
+      host: 'making.ventures',
     })
     this.addLanguage('en', 'English')
     this.addLanguage('ru', 'Russian')
