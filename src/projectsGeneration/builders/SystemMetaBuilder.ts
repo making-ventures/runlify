@@ -136,7 +136,7 @@ class SystemMetaBuilder {
       'database.main.migration.uri',
       'string',
       true,
-      'postgresql://postgres:password@localhost:5432/migration',
+      'postgresql://postgres:password@localhost:5432',
       'Строка подключения к основной базе для миграций (должна быть прямой строкой подключения к бд минуя pgbouncer, если он используется)'
     ).setSecure()
 
