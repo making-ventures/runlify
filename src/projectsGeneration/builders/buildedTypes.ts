@@ -371,6 +371,7 @@ export interface DeployEnvironment {
   branchName: string
   metricsEnabled: boolean
   host: string
+  runnerTag: string
 }
 
 export type Language = {

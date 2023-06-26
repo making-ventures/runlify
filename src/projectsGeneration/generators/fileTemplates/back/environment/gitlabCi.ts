@@ -196,7 +196,7 @@ ${system.deployEnvironments
     - ${e.branchName}
     - /^${e.branchName}-.*$/
   tags:
-    - ${e.name}
+    - ${e.runnerTag}
   variables:
     ENV: "${e.name}"
     DEV: "false"

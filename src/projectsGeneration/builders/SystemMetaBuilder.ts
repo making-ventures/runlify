@@ -329,6 +329,7 @@ class SystemMetaBuilder {
       branchName: 'master',
       metricsEnabled: true,
       host: 'making.ventures',
+      runnerTag: 'dev',
     })
     // this.addDeployEnvironment({
     //   name: 'stage',
@@ -345,6 +346,7 @@ class SystemMetaBuilder {
       branchName: 'release',
       metricsEnabled: true,
       host: 'making.ventures',
+      runnerTag: 'prod',
     })
     this.addLanguage('en', 'English')
     this.addLanguage('ru', 'Russian')
