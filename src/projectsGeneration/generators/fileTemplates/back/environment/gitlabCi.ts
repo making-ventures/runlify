@@ -205,7 +205,7 @@ ${system.deployEnvironments
     TAG: ":\${CI_COMMIT_REF_SLUG}-\${CI_COMMIT_SHA}"${system.configVars
       .filter((v) => v.scopes.includes('back') || v.scopes.includes('ci'))
       .map(
-        (v) => `\n    ${constantCase(v.name)}: \${${e.name.toUpperCase()}_${constantCase(v.name)}}`
+        (v) => `\n    ${constantCase(v.name)}: \${${e.gitlabEnvPrefix.toUpperCase()}_${constantCase(v.name)}}`
       )
       .join('')}`).join('\n\n')}
 

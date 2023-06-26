@@ -330,6 +330,7 @@ class SystemMetaBuilder {
       metricsEnabled: true,
       host: 'making.ventures',
       runnerTag: 'dev',
+      gitlabEnvPrefix: 'dev',
     })
     // this.addDeployEnvironment({
     //   name: 'stage',
@@ -347,6 +348,7 @@ class SystemMetaBuilder {
       metricsEnabled: true,
       host: 'making.ventures',
       runnerTag: 'prod',
+      gitlabEnvPrefix: 'prod',
     })
     this.addLanguage('en', 'English')
     this.addLanguage('ru', 'Russian')

@@ -372,6 +372,7 @@ export interface DeployEnvironment {
   metricsEnabled: boolean
   host: string
   runnerTag: string
+  gitlabEnvPrefix: string
 }
 
 export type Language = {
