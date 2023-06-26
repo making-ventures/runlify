@@ -485,9 +485,9 @@ class SystemMetaBuilder {
 
     this.deployEnvironments.push(deployEnvironment)
 
-    if (this.deployEnvironments.filter((f) => f.main)?.length > 1) {
-      throw new Error(`Main deployEnvironment shuold be only one"`)
-    }
+    // if (this.deployEnvironments.filter((f) => f.main)?.length > 1) {
+    //   throw new Error(`Main deployEnvironment shuold be only one"`)
+    // }
 
     return this
   }
@@ -503,9 +503,9 @@ class SystemMetaBuilder {
       name,
     } : env)
 
-    if (this.deployEnvironments.filter((f) => f.main)?.length > 1) {
-      throw new Error(`Main deployEnvironment shuold be only one"`)
-    }
+    // if (this.deployEnvironments.filter((f) => f.main)?.length > 1) {
+    //   throw new Error(`Main deployEnvironment shuold be only one"`)
+    // }
 
     return this
   }
