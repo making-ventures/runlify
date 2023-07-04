@@ -11,7 +11,7 @@ export const uiResourcesPageTmpl = ({
   return `import React, {
   FC,
 } from 'react';
-import NumberWiget from '../widgets/NumberWiget';
+import NumberWidget from '../widgets/NumberWidget';
 import {
   gql,
 } from '@apollo/client';
@@ -30,7 +30,7 @@ const ResourcesPage: FC = () => {
   return (
     <Grid container>
 ${entities.map((entity) => {
-  return `      <NumberWiget
+  return `      <NumberWidget
         request={gql\`
           query {
             _all${pascalPlural(entity.name)}Meta {

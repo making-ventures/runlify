@@ -9,9 +9,9 @@ export const uiCountWidgetTmpl = ({
 import React, {
   FC,
 } from 'react';
-import NumberWiget, {
-  NumberWigetProps,
-} from '../../../widgets/NumberWiget';
+import NumberWidget, {
+  NumberWidgetProps,
+} from '../../../widgets/NumberWidget';
 import {
   gql,
 } from '@apollo/client';
@@ -24,7 +24,7 @@ ${
 `
 }
 interface Count${pascal(entity.name)}WidgetProps extends
-Omit<NumberWigetProps, 'request' | 'resultToValue'> {
+Omit<NumberWidgetProps, 'request' | 'resultToValue'> {
   filter?: ${pascalSingular(entity.name)}Filter;
 }
 
@@ -35,7 +35,7 @@ const Count${pascal(entity.name)}Widget: FC<Count${pascal(
   ...rest
 }) => {
   return (
-    <NumberWiget
+    <NumberWidget
       measuring='шт'
       {...rest}
       options={{
