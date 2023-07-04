@@ -27,9 +27,9 @@ import {
   Link,
 } from 'react-router-dom';
 import {ListItem, ListItemText} from '@mui/material';
-import ListWiget, {
-  ListWigetProps,
-} from '../../../widgets/ListWiget';
+import ListWidget, {
+  ListWidgetProps,
+} from '../../../widgets/ListWidget';
 import {
   ${pascalSingular(entity.name)},
   QueryAll${pascal(entity.name)}Args,
@@ -42,7 +42,7 @@ ${
 `
 }
 interface List${pascal(entity.name)}WidgetProps extends
-Omit<ListWigetProps<${pascalSingular(
+Omit<ListWidgetProps<${pascalSingular(
     entity.name
   )}>, 'request' | 'resultToValue'| 'children' | 'source'>,
 QueryAll${pascal(entity.name)}Args {
@@ -86,7 +86,7 @@ const List${pascal(entity.name)}Widget: FC<List${pascal(
   ...rest
 }) => {
   return (
-    <ListWiget<${pascalSingular(entity.name)}>
+    <ListWidget<${pascalSingular(entity.name)}>
       {...rest}
       source='${entity.name}'
       options={{
@@ -121,7 +121,7 @@ const List${pascal(entity.name)}Widget: FC<List${pascal(
       resultToValue={result => result?.all${pascal(entity.name)}}
     >
       {(record) => children(record)}
-    </ListWiget>
+    </ListWidget>
   );
 };
 
