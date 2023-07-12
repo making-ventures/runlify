@@ -23,11 +23,12 @@ ${
 }
 const ${
   entity.name
-}PermissionToGraphql: Partial<PermissionToGraphql<${pascalPlural(
-  entity.name
-)}Service>> = {
-  ...${entity.name}BasePermissionToGraphql,
-};
+}PermissionToGraphql:
+  Partial<PermissionToGraphql<${pascalPlural(
+    entity.name
+  )}Service>> = {
+    ...${entity.name}BasePermissionToGraphql,
+  };
 
 export default ${entity.name}PermissionToGraphql;
 `
