@@ -11,8 +11,7 @@ export const backBaseTypesTmpl = (
   const scheme = pad1(printedSchema.replaceAll('`', "'"));
   const maxLenght = Math.max(...scheme.split('\n').map(el => el.length))
 
-  return `
-  ${
+  return `${
     maxLenght > 140
       ? `/* eslint-disable max-len */
 `
