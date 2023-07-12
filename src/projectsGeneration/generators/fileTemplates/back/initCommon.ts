@@ -1,7 +1,7 @@
 import { singular } from 'pluralize'
 import { pascal } from '../../../../utils/cases'
 import { EntityWideGenerationArgs } from '../../../args'
-import { generatedWarning, pad1 } from '../../../utils'
+import { generatedWarning, pad1, pad3 } from '../../../utils'
 import * as R from 'ramda'
 
 export const toTsValue = (value: any): string => {
@@ -36,9 +36,9 @@ ${entity.predefinedElements
   .map(
     (el) => `  {
     id: ${pascal(singular(entity.name))}.${pascal(el.id)},
-  ${R.toPairs(R.omit(['id'], el))
+${R.toPairs(R.omit(['id'], el))
     .map((item) => `${item[0]}: ${toTsValue(item[1])},`)
-    .map(pad1)
+    .map(pad3)
     .join('\n')}
   },`
   )
