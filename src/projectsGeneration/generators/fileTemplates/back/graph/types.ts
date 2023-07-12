@@ -14,9 +14,9 @@ export const backBaseTypesTmpl = (
   return `
   ${
     maxLenght > 140
-      ? ''
-      : `/* eslint-disable max-len */
-`}import {gql} from 'apollo-server';
+      ? `/* eslint-disable max-len */
+`
+      : ''}import {gql} from 'apollo-server';
 ${
   options.skipWarningThisIsGenerated
     ? ''
