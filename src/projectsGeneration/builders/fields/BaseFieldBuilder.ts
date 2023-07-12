@@ -40,7 +40,7 @@ export abstract class BaseFieldBuilder {
     this.defaultLanguage = defaultLanguage
     this.setName(name)
     this.setTitle(
-      title || sentence(name.endsWith('Id') ? name.replace('Id', '') : name)
+      title || sentence(name.endsWith('Id') ? name.replaceAll('Id', '') : name)
     )
   }
 

@@ -22,7 +22,7 @@ describe('genPrismaFieldFromExternalEntity', () => {
         externalEntityName: 'users',
       })
     ).toEqual(
-      '  cardUsers	Card[]	@relation("From-Card.user")'.replace(/\s+/gu, '\t')
+      '  cardUsers	Card[]	@relation("From-Card.user")'.replaceAll(/\s+/gu, '\t')
     )
   })
 })

@@ -19,5 +19,5 @@ export const genPrismaScalarField = (field: ScalarField): string[] => {
     genPrismaDefault(field),
   ])
 
-  return [`  ${withoutPadding}`.replace(/\s+/gu, '\t')]
+  return [`  ${withoutPadding}`.replaceAll(/\s+/gu, '\t')]
 }

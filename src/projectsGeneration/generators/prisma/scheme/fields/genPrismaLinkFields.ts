@@ -15,7 +15,7 @@ export const genPrismaLinkFields = (
     ? field.name
     : `${field.name}Id`
   const linkFieldName = field.name.endsWith('Id')
-    ? field.name.replace(/Id$/gu, '')
+    ? field.name.replaceAll(/Id$/gu, '')
     : field.name
 
   // const trivialField = `${trivialFieldName}	${fieldIdTypeToPrismaType(field.type)}${field.required ? '' : '?'}`

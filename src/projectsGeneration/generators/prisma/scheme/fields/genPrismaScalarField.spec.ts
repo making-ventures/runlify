@@ -11,7 +11,7 @@ describe('genPrismaScalarField', () => {
       .setType('int')
       .build()
     expect(genPrismaScalarField(someField)).toEqual([
-      '  someField	Int?'.replace(/\s+/gu, '\t'),
+      '  someField	Int?'.replaceAll(/\s+/gu, '\t'),
     ])
   })
   test('int required', () => {
@@ -20,7 +20,7 @@ describe('genPrismaScalarField', () => {
       .setRequired()
       .build()
     expect(genPrismaScalarField(someField)).toEqual([
-      '  someField	Int'.replace(/\s+/gu, '\t'),
+      '  someField	Int'.replaceAll(/\s+/gu, '\t'),
     ])
   })
 
@@ -30,7 +30,7 @@ describe('genPrismaScalarField', () => {
       .setType('string')
       .build()
     expect(genPrismaScalarField(someField)).toEqual([
-      '  someField	String?'.replace(/\s+/gu, '\t'),
+      '  someField	String?'.replaceAll(/\s+/gu, '\t'),
     ])
   })
   test('string required', () => {
@@ -39,7 +39,7 @@ describe('genPrismaScalarField', () => {
       .setRequired()
       .build()
     expect(genPrismaScalarField(someField)).toEqual([
-      '  someField	String'.replace(/\s+/gu, '\t'),
+      '  someField	String'.replaceAll(/\s+/gu, '\t'),
     ])
   })
 
@@ -49,7 +49,7 @@ describe('genPrismaScalarField', () => {
       .setType('float')
       .build()
     expect(genPrismaScalarField(someField)).toEqual([
-      '  someField	Float?'.replace(/\s+/gu, '\t'),
+      '  someField	Float?'.replaceAll(/\s+/gu, '\t'),
     ])
   })
   test('float required', () => {
@@ -58,7 +58,7 @@ describe('genPrismaScalarField', () => {
       .setRequired()
       .build()
     expect(genPrismaScalarField(someField)).toEqual([
-      '  someField	Float'.replace(/\s+/gu, '\t'),
+      '  someField	Float'.replaceAll(/\s+/gu, '\t'),
     ])
   })
 
@@ -68,7 +68,7 @@ describe('genPrismaScalarField', () => {
       .setType('bool')
       .build()
     expect(genPrismaScalarField(someField)).toEqual([
-      '  someField	Boolean?'.replace(/\s+/gu, '\t'),
+      '  someField	Boolean?'.replaceAll(/\s+/gu, '\t'),
     ])
   })
   test('bool required', () => {
@@ -77,7 +77,7 @@ describe('genPrismaScalarField', () => {
       .setRequired()
       .build()
     expect(genPrismaScalarField(someField)).toEqual([
-      '  someField	Boolean'.replace(/\s+/gu, '\t'),
+      '  someField	Boolean'.replaceAll(/\s+/gu, '\t'),
     ])
   })
 
@@ -87,7 +87,7 @@ describe('genPrismaScalarField', () => {
       .setType('datetime')
       .build()
     expect(genPrismaScalarField(someField)).toEqual([
-      '  someField	DateTime?'.replace(/\s+/gu, '\t'),
+      '  someField	DateTime?'.replaceAll(/\s+/gu, '\t'),
     ])
   })
   test('datetime required', () => {
@@ -96,7 +96,7 @@ describe('genPrismaScalarField', () => {
       .setRequired()
       .build()
     expect(genPrismaScalarField(someField)).toEqual([
-      '  someField	DateTime'.replace(/\s+/gu, '\t'),
+      '  someField	DateTime'.replaceAll(/\s+/gu, '\t'),
     ])
   })
 
@@ -106,7 +106,7 @@ describe('genPrismaScalarField', () => {
       .setType('date')
       .build()
     expect(genPrismaScalarField(someField)).toEqual([
-      '  someField	DateTime?	@db.Date'.replace(/\s+/gu, '\t'),
+      '  someField	DateTime?	@db.Date'.replaceAll(/\s+/gu, '\t'),
     ])
   })
   test('date required', () => {
@@ -115,7 +115,7 @@ describe('genPrismaScalarField', () => {
       .setRequired()
       .build()
     expect(genPrismaScalarField(someField)).toEqual([
-      '  someField	DateTime	@db.Date'.replace(/\s+/gu, '\t'),
+      '  someField	DateTime	@db.Date'.replaceAll(/\s+/gu, '\t'),
     ])
   })
 })

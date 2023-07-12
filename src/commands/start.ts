@@ -21,7 +21,7 @@ module.exports = {
     // toolbox.print.info('envDefined')
     // toolbox.print.info(envDefined)
     const envName = envDefined
-      ? parameters.first?.replace('env=', '')
+      ? parameters.first?.replaceAll('env=', '')
       : config?.developer?.defaultEnvironment
     // toolbox.print.info('envName')
     // toolbox.print.info(envName)

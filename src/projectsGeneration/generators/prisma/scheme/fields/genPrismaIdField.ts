@@ -17,5 +17,5 @@ export const genPrismaIdField = (field: IdField, forShards = false): string[] =>
 
   const withoutPadding = joinPrismaFieldParts(parts)
 
-  return [`  ${withoutPadding}`.replace(/\s+/gu, '\t')]
+  return [`  ${withoutPadding}`.replaceAll(/\s+/gu, '\t')]
 }

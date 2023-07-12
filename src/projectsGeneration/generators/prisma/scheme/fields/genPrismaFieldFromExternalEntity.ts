@@ -9,7 +9,7 @@ import { LinkedEntities } from '../../../../types'
 export const genPrismaFieldFromExternalEntity = (
   link: LinkedEntities
 ): string => {
-  const fromFieldName = link.fromField.name.replace(/Id$/gu, '')
+  const fromFieldName = link.fromField.name.replaceAll(/Id$/gu, '')
   const withoutPadding = `${camelSingular(link.entityOwnerName)}${pascalPlural(
     fromFieldName
   )}  ${pascalSingular(
@@ -18,5 +18,5 @@ export const genPrismaFieldFromExternalEntity = (
     link.entityOwnerName
   )}.${fromFieldName}")`.trim()
 
-  return `  ${withoutPadding}`.replace(/\s+/gu, '\t')
+  return `  ${withoutPadding}`.replaceAll(/\s+/gu, '\t')
 }
