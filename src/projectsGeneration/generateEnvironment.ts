@@ -4,6 +4,7 @@ import { prismaGetterTmpl } from './generators/fileTemplates/back/environment/sr
 import { getQueueTmpl } from './generators/fileTemplates/back/environment/src/clients/queue/getQueue'
 import { environmentIndexTmpl } from './generators/fileTemplates/back/environment/src'
 import { chartBackTmpl } from './generators/fileTemplates/back/environment/chart/templates/back'
+import { chartWorkerTmpl } from './generators/fileTemplates/back/environment/chart/templates/worker'
 import { gitlabCiTmpl } from './generators/fileTemplates/back/environment/gitlabCi'
 import { chartTmpl } from './generators/fileTemplates/back/environment/chart/Chart'
 import { chartValuesTmpl } from './generators/fileTemplates/back/environment/chart/values'
@@ -128,6 +129,15 @@ export const generateEnvironment = async (
       await write(
         join(chartTemplatesDir, 'back.yaml'),
         chartBackTmpl(projectWideGenerationArgs)
+      )
+    }
+
+    // chart worker
+    if (opts.genBackChartWorker) {
+      // chart/templates/worker.yaml
+      await write(
+        join(chartTemplatesDir, 'worker.yaml'),
+        chartWorkerTmpl(projectWideGenerationArgs)
       )
     }
 
