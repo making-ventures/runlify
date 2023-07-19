@@ -36,6 +36,9 @@ spec:
   selector:
     app: ${(options.k8sChartName || prefix).split('-')[0]}-{{ .name  }}-worker
 ---
+{{- end }}
+
+{{- range $.Values.workers }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
