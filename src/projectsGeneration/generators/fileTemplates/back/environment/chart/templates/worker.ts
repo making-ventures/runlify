@@ -118,6 +118,9 @@ spec:
             )
             .join('')}
 
+        - name: APP_URI
+          value: {{ $.Values.app.prefix }}.{{ $.Values.ingress.host }}
+
         - name: K8S_NODE_NAME
           valueFrom:
             fieldRef:
