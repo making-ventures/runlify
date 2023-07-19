@@ -19,9 +19,9 @@ export const chartWorkerTmpl = ({
 apiVersion: v1
 kind: Service
 metadata:
-  name: ${options.k8sChartName.split('-')[0]}-{{ .name  }}-worker
+  name: ${(options.k8sChartName || prefix).split('-')[0]}-{{ .name  }}-worker
   labels:
-    app: ${options.k8sChartName.split('-')[0]}-{{ .name  }}-worker
+    app: ${(options.k8sChartName || prefix).split('-')[0]}-{{ .name  }}-worker
     projectName: {{ $.Values.global.projectName }}
     clusterName: {{ $.Values.global.clusterName }}
     env: {{ $.Values.global.env }}
@@ -34,12 +34,12 @@ spec:
     protocol: TCP
     targetPort: 3000
   selector:
-    app: ${options.k8sChartName.split('-')[0]}-{{ .name  }}-worker
+    app: ${(options.k8sChartName || prefix).split('-')[0]}-{{ .name  }}-worker
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ${options.k8sChartName.split('-')[0]}-{{ .name  }}-worker
+  name: ${(options.k8sChartName || prefix).split('-')[0]}-{{ .name  }}-worker
 spec:
   replicas: {{ $.Values.worker.replicas }}
   strategy:
@@ -48,11 +48,11 @@ spec:
       maxSurge: 3
   selector:
     matchLabels:
-      app: ${options.k8sChartName.split('-')[0]}-{{ .name  }}-worker
+      app: ${(options.k8sChartName || prefix).split('-')[0]}-{{ .name  }}-worker
   template:
     metadata:
       labels:
-        app: ${options.k8sChartName.split('-')[0]}-{{ .name  }}-worker
+        app: ${(options.k8sChartName || prefix).split('-')[0]}-{{ .name  }}-worker
         projectName: {{ $.Values.global.projectName }}
         clusterName: {{ $.Values.global.clusterName }}
         env: {{ $.Values.global.env }}
@@ -61,7 +61,7 @@ spec:
       imagePullSecrets:
         - name: {{ $.Release.Name }}-pullsecret
       containers:
-      - name: ${options.k8sChartName.split('-')[0]}-{{ .name  }}-worker
+      - name: ${(options.k8sChartName || prefix).split('-')[0]}-{{ .name  }}-worker
         image: {{ $.Values.dockerRegistry.domain }}/${options.projectsGroup}/${
           options.projectPrefix || prefix
         }-worker{{ $.Values.app.tag }}
