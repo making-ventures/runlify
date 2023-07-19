@@ -132,4 +132,5 @@ spec:
               fieldPath: metadata.namespace
 ---
 {{- end }}
+{{- end }}
 `
