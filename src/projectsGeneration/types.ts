@@ -94,7 +94,6 @@ export const defaultBootstrapEntityOptions = {
   genBackChartValues: true,
   genBackChartIngress: true,
   genBackChartBack: true,
-  genBackChartWorker: true,
   genUiChartIngress: true,
   genUiChartFront: true,
 
