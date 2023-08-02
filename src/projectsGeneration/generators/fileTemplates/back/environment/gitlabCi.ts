@@ -184,8 +184,8 @@ ${system.deployEnvironments
     INGRESS_ENABLED: "false"
     METRICS_ENABLED: "false"
     WORKER_ENABLED: "true"
-    BOT_ENABLED: "true"
-    ROOT_ENABLED: "${e.main}"`).join('\n\n')}
+    BOT_ENABLED: "false"
+    ROOT_ENABLED: "false"`).join('\n\n')}
 
 ${system.deployEnvironments
   .map((e) =>`.deploy-${e.name}:
