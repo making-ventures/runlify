@@ -19,9 +19,9 @@ import {
   EditButton,
   usePermissions,` : ''}
 } from 'react-admin';
-import OpenAudit from '../../../commonActions/OpenAudit';${isUpdatableByUser ? `
+// import OpenAudit from '../../../commonActions/OpenAudit';${isUpdatableByUser ? `
 import {hasPermission} from '../../../../utils/permissions';` : ''}
-import OpenHelp from '../../../commonActions/OpenHelp';${
+// import OpenHelp from '../../../commonActions/OpenHelp';${
     entity && entity.type === 'document' && entity.registries.length > 0
       ? `
 import RePost from '../../../commonActions/RePost';
@@ -62,8 +62,8 @@ ${entity.registries
     }${
     entity &&
     `
-      <OpenAudit entityTypeId='${singular(entity.name)}' />
-      <OpenHelp entityType='${entity.name}' />${isUpdatableByUser ? `
+      {/* <OpenAudit entityTypeId='${singular(entity.name)}' />
+      <OpenHelp entityType='${entity.name}' /> */}${isUpdatableByUser ? `
       {${isAllowedToChange ? 'allowedToEdit && ' : ''}hasPermission(permissions, '${entity.name}.update') && <EditButton />}` : ''}`
   }
     </TopToolbar>
