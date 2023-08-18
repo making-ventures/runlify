@@ -54,6 +54,7 @@ import graphServiceConstrictorsTmpl from './generators/fileTemplates/back/servic
 import { Entities } from './generators/fileTemplates/back/Entities'
 import { initEntities } from './generators/fileTemplates/back/initEntities'
 import { uiGetEntityValidationTmpl } from './generators/fileTemplates/ui/pages/getEntityValidation'
+import {generateBackElasticBootstrap} from './generators/fileTemplates/back/elastic/elastic';
 
 // Бек (generateBack)
 //  Исходники бека (generateBackSrc)
@@ -382,6 +383,7 @@ export const generateBack = async (args: ProjectWideGenerationArgs) => {
     generateBackHelm(args),
     generateBackEnvs(args),
     generateBackDocs(args),
+    generateBackElasticBootstrap(args),
   ])
 }
 
