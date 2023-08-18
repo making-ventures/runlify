@@ -51,7 +51,7 @@ tag-previous-with-sha:
   stage: previous-image
   only:${system.deployEnvironments
     .map((e) => `\n    - ${e.branchName}\n    - /^${e.branchName}-.*$/`).join('')}
-  allow_failure: true # Firt run won't be able to create previous image
+  allow_failure: true # First run won't be able to create previous image
   variables:
     TAG_ORIGIN: :\${CI_COMMIT_REF_SLUG}
     TAG_DESTINATION: :\${CI_COMMIT_REF_SLUG}-previous-for-\${CI_COMMIT_SHA}
@@ -251,7 +251,6 @@ ${system.deployEnvironments
       --set "global.clusterName=\${CLUSTER_NAME}"
       --set "global.env=\${ENV}"
       --set "global.deployKind=\${DEPLOY_KIND}"
-      --set "random=:$(date)"
       --set "app.tag=\${TAG}"
       --set "ingress.host=\${HOST}"
       --set "style=\${STYLE}"
