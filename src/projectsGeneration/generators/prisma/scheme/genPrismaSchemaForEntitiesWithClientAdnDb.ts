@@ -13,7 +13,7 @@ export const genPrismaSchemaForEntitiesWithClientAdnDb = ({
 
   return `generator client {
   provider = "prisma-client-js"
-  previewFeatures = ["fieldReference", "metrics", "extendedWhereUnique"]${forShards ? `
+  previewFeatures = ["metrics"]${forShards ? `
   output   = "./build"`: ''}
 }
 
