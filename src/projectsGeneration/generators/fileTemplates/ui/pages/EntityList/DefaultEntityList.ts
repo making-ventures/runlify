@@ -6,22 +6,22 @@ import { getShowComponent } from '../../../../ui/getShowComponent'
 import { Entity } from '../../../../../builders/buildedTypes'
 import { EntityWideGenerationArgs } from '../../../../../args'
 import { generatedWarning, pad4 } from '../../../../../utils'
-import { getFieldByName, isImageFileRef, isMarkdownField } from '../../../../../metaUtils'
+import { isImageFileRef, isMarkdownField } from '../../../../../metaUtils'
 import { plural } from 'pluralize'
 
 export const uiDefaultListTmpl = ({
   allEntities,
   entity,
-  fromLinks,
+  // fromLinks,
   options,
 }: EntityWideGenerationArgs) => {
   const fileRefFields = entity.fields.filter(isImageFileRef)
   const withFileRef = fileRefFields.length > 0
 
   const allEntitiesForImport: Entity[] = [entity].filter(Boolean) as Entity[]
-  const toEntitiesForImport: Entity[] = fromLinks
-    .map((link) => allEntities.get(link.externalEntityName))
-    .filter(Boolean) as Entity[]
+  // const toEntitiesForImport: Entity[] = fromLinks
+  //   .map((link) => allEntities.get(link.externalEntityName))
+  //   .filter(Boolean) as Entity[]
 
   const fieldsToImport = [
     ...R.flatten(
@@ -29,11 +29,11 @@ export const uiDefaultListTmpl = ({
         R.flatten(entity.fields.filter((f) => !f.hidden).filter(f => !isMarkdownField(f)))
       )
     ),
-    ...R.flatten(
-      toEntitiesForImport.map((entity) =>
-        getFieldByName(entity, entity.titleField)
-      )
-    ),
+    // ...R.flatten(
+    //   toEntitiesForImport.map((entity) =>
+    //     getFieldByName(entity, entity.titleField)
+    //   )
+    // ),
   ]
   .filter((f) => !f.hidden)
   .filter(f => f.showInList)
