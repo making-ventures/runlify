@@ -23,7 +23,7 @@ export const uiEntityShowDefaultMainTabTmpl = ({
     'TabProps',
 
     ...R.flatten(
-      notDateFieldsToImport.map((f) => getCompNamesToShowField(f, allEntities))
+      notDateFieldsToImport.map((f) => getCompNamesToShowField(f))
     ),
   ]
 

@@ -38,7 +38,7 @@ export const uiEntityShowDependencyTabTmpl = (
     'Tab',
 
     ...R.flatten(
-      notDateFieldsToImport.map((f) => getCompNamesToShowField(f, allEntities))
+      notDateFieldsToImport.map((f) => getCompNamesToShowField(f))
     ),
   ]
 
