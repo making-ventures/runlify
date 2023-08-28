@@ -49,25 +49,19 @@ export const uiDefaultListTmpl = ({
     // 'usePermissions',
     // 'BulkDeleteButton',
 
-    '123',
+    '',
 
     ...R.flatten(
       notDateFieldsToImport.map((f) => getCompNamesToShowField(f))
     ),
 
-    '123',
+    '',
 
     ...R.flatten(
-      notDateFieldsToImport.map((f) => f.category)
+      notDateFieldsToImport.map((f) => `name: ${f.name}, category: ${f.category}, type: ${f.type}`)
     ),
 
-    '123',
-
-    ...R.flatten(
-      notDateFieldsToImport.map((f) => f.name)
-    ),
-
-    '123',
+    '',
   ]
 
   if (entity.removableByUser) {
