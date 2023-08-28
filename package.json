@@ -1,6 +1,6 @@
 {
   "name": "runlify",
-  "version": "0.0.564",
+  "version": "0.0.565",
   "description": "runlify CLI",
   "private": false,
   "main": "build/index.js",
@@ -53,7 +53,7 @@
     "@typescript-eslint/parser": "^4.17.0",
     "copyfiles": "^2.4.1",
     "eslint": "^7.22.0",
-    "eslint-config-canonical": "^37.0.3",
+    "eslint-config-canonical": "^41.1.7",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-jest": "^27.2.3",
     "eslint-plugin-prettier": "^3.3.1",
