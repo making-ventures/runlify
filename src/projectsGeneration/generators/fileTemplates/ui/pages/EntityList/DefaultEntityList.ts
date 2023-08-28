@@ -35,6 +35,9 @@ export const uiDefaultListTmpl = ({
       )
     ),
   ]
+  .filter((f) => !f.hidden)
+  .filter(f => f.showInList)
+  
   const dateFieldsToImport = fieldsToImport.filter((f) =>
     ['datetime', 'date'].includes(f.type)
   )
