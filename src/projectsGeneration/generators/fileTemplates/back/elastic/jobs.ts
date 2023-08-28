@@ -41,7 +41,18 @@ const getConstructor = (g: string) => {
   }
 }
 
-export const genJobsTmpl = (entities: Entity[], options = defaultBootstrapEntityOptions) => {
+const genJobsBlankTmpl = (options = defaultBootstrapEntityOptions) => {
+  return `import {ElasticJobs} from './type';
+${options.skipWarningThisIsGenerated
+      ? ''
+      : `
+// ${generatedWarning}
+`}
+export const genJobs: ElasticJobs = {};
+`;
+}
+
+export const genJobsDataTmpl = (entities: Entity[], options = defaultBootstrapEntityOptions) => {
   return `import Entity from '../../types/Entity';
 import {textFields, keywordFields, integerFields, dateFields, booleanFields} from './utils';
 import {ElasticJobs} from './type';
@@ -59,3 +70,6 @@ export const genJobs: ElasticJobs = {
 };
 `;
 }
+
+export const genJobsTmpl = (entities: Entity[], options = defaultBootstrapEntityOptions) => 
+  entities.length ? genJobsDataTmpl(entities, options) : genJobsBlankTmpl(options)

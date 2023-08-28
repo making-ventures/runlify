@@ -142,6 +142,13 @@ const Default${pascalSingular(
         rowClick='show'
         bulkActionButtons={${entity.removableByUser ? '<DefaultBulkActionButton />' : 'false'}}
       >
+      ${
+        entity.fields
+          .filter((f) => !f.hidden)
+          .filter(f => f.showInList)
+          .map((f) => `name: ${f.name}, category: ${f.category}, type: ${f.type}, component: ${getShowComponent(entity, allEntities, f, 'list')}`)
+          .join('\n')
+      }
 ${entity.fields
   .filter((f) => !f.hidden)
   .filter(f => f.showInList)
