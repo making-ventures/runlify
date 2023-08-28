@@ -61,7 +61,8 @@ export const uiDefaultListTmpl = ({
     '',
 
     ...R.flatten(
-      notDateFieldsToImport.map((f) => `name: ${f.name}, category: ${f.category}, type: ${f.type}, component: ${getCompNamesToShowField(f)}`)
+      notDateFieldsToImport
+        .map((f) => `name: ${f.name}, category: ${f.category}, hidden: ${f.hidden}, showInList: ${f.showInList}, type: ${f.type}, component: ${getCompNamesToShowField(f)}`)
     ),
 
     '',
