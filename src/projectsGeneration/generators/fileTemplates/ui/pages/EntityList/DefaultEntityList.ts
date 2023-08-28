@@ -22,7 +22,7 @@ export const uiDefaultListTmpl = ({
   const fieldsToImport = [
     ...R.flatten(
       allEntitiesForImport.map((entity) =>
-        R.flatten(entity.fields.filter((f) => !f.hidden).filter(f => !isMarkdownField(f)))
+        R.flatten(entity.fields.filter((f) => !f.hidden).filter(f => f.showInList).filter(f => !isMarkdownField(f)))
       )
     ),
   ]
