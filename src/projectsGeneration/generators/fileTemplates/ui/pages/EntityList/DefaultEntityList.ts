@@ -49,9 +49,25 @@ export const uiDefaultListTmpl = ({
     // 'usePermissions',
     // 'BulkDeleteButton',
 
+    '123',
+
     ...R.flatten(
       notDateFieldsToImport.map((f) => getCompNamesToShowField(f))
     ),
+
+    '123',
+
+    ...R.flatten(
+      notDateFieldsToImport.map((f) => f.category)
+    ),
+
+    '123',
+
+    ...R.flatten(
+      notDateFieldsToImport.map((f) => f.name)
+    ),
+
+    '123',
   ]
 
   if (entity.removableByUser) {
@@ -70,7 +86,7 @@ export const uiDefaultListTmpl = ({
   return `/* eslint-disable max-len */
 import React, {FC} from 'react';
 import {
-  ${R.uniq(reactAdminImports).map((s) => s + ',').join(`
+  ${(reactAdminImports).map((s) => s + ',').join(`
   `)}
 } from 'react-admin';${
     dateFieldsToImport.some((f) => ['date', 'datetime'].includes(f.type))
