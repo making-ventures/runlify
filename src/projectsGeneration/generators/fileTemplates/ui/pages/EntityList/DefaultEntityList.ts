@@ -12,16 +12,12 @@ import { plural } from 'pluralize'
 export const uiDefaultListTmpl = ({
   allEntities,
   entity,
-  // fromLinks,
   options,
 }: EntityWideGenerationArgs) => {
   const fileRefFields = entity.fields.filter(isImageFileRef)
   const withFileRef = fileRefFields.length > 0
 
   const allEntitiesForImport: Entity[] = [entity].filter(Boolean) as Entity[]
-  // const toEntitiesForImport: Entity[] = fromLinks
-  //   .map((link) => allEntities.get(link.externalEntityName))
-  //   .filter(Boolean) as Entity[]
 
   const fieldsToImport = [
     ...R.flatten(
@@ -29,15 +25,7 @@ export const uiDefaultListTmpl = ({
         R.flatten(entity.fields.filter((f) => !f.hidden).filter(f => !isMarkdownField(f)))
       )
     ),
-    // ...R.flatten(
-    //   toEntitiesForImport.map((entity) =>
-    //     getFieldByName(entity, entity.titleField)
-    //   )
-    // ),
   ]
-  .filter((f) => !f.hidden)
-  .filter(f => f.showInList)
-  
   const dateFieldsToImport = fieldsToImport.filter((f) =>
     ['datetime', 'date'].includes(f.type)
   )
@@ -52,20 +40,9 @@ export const uiDefaultListTmpl = ({
     // 'usePermissions',
     // 'BulkDeleteButton',
 
-    '',
-
     ...R.flatten(
       notDateFieldsToImport.map((f) => getCompNamesToShowField(f))
     ),
-
-    '',
-
-    ...R.flatten(
-      notDateFieldsToImport
-        .map((f) => `name: ${f.name}, category: ${f.category}, hidden: ${f.hidden}, showInList: ${f.showInList}, type: ${f.type}, component: ${getCompNamesToShowField(f)}`)
-    ),
-
-    '',
   ]
 
   if (entity.removableByUser) {
@@ -84,7 +61,7 @@ export const uiDefaultListTmpl = ({
   return `/* eslint-disable max-len */
 import React, {FC} from 'react';
 import {
-  ${(reactAdminImports).map((s) => s + ',').join(`
+  ${R.uniq(reactAdminImports).map((s) => s + ',').join(`
   `)}
 } from 'react-admin';${
     dateFieldsToImport.some((f) => ['date', 'datetime'].includes(f.type))
@@ -143,13 +120,6 @@ const Default${pascalSingular(
         rowClick='show'
         bulkActionButtons={${entity.removableByUser ? '<DefaultBulkActionButton />' : 'false'}}
       >
-      ${
-        entity.fields
-          .filter((f) => !f.hidden)
-          .filter(f => f.showInList)
-          .map((f) => `name: ${f.name}, category: ${f.category}, type: ${f.type}, component: ${getShowComponent(entity, allEntities, f, 'list')}`)
-          .join('\n')
-      }
 ${entity.fields
   .filter((f) => !f.hidden)
   .filter(f => f.showInList)
