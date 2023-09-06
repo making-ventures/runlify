@@ -80,6 +80,7 @@ export const getEditComponent = (
   source='${field.name}'
   reference='${field.externalEntity}'
   sort={{field: '${entity.sortField}', order: '${entity.sortOrder}'}}
+  perPage={100}
   ${getFieldLabel(entity, field)}
 >
   <AutocompleteInput
