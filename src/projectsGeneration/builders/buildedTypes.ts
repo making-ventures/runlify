@@ -326,6 +326,7 @@ export type RestApi = BaseEntity & {
 export type MemoryAndCpu = {
   memory: string
   cpu: string
+  maxOldSpaceSize: number
 }
 
 export type BaseDeployment = {

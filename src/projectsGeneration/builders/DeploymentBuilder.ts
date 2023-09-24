@@ -3,8 +3,8 @@ import BaseBuilder from './BaseBuilder'
 
 class DeploymentBuilder extends BaseBuilder {
   replicas: number = 1
-  requests: MemoryAndCpu = { memory: '192Mi', cpu: '0.15' }
-  limits: MemoryAndCpu = { memory: '192Mi', cpu: '0.15' }
+  requests: MemoryAndCpu = { memory: '192Mi', cpu: '0.15', maxOldSpaceSize: 173 }
+  limits: MemoryAndCpu = { memory: '192Mi', cpu: '0.15', maxOldSpaceSize: 173 }
 
   constructor(
     name: string, 
@@ -37,6 +37,9 @@ class DeploymentBuilder extends BaseBuilder {
     } else {
       this.limits.memory = request
     }
+
+    this.limits.maxOldSpaceSize = Math.ceil(Number.parseInt(this.limits.memory.replace('Mi', ''), 10) * 0.9)
+    this.requests.maxOldSpaceSize = Math.ceil(Number.parseInt(this.requests.memory.replace('Mi', ''), 10) * 0.9)
 
     return this
   }

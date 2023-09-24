@@ -79,9 +79,11 @@ workers:${system.workers
     requests:
       memory: "${worker.requests.memory}"
       cpu: "${worker.requests.cpu}"
+      maxOldSpaceSize: "${worker.requests.maxOldSpaceSize}"
     limits:
       memory: "${worker.limits.memory}"
-      cpu: "${worker.limits.cpu}"`
+      cpu: "${worker.limits.cpu}"
+      maxOldSpaceSize: "${worker.limits.maxOldSpaceSize}"`
   )
   .join('')}
 
