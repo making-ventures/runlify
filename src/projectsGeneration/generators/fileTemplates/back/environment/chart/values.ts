@@ -68,9 +68,11 @@ worker:
   requests:
     memory: "64Mi"
     cpu: "0.15"
+    maxOldSpaceSize: "58"
   limits:
     memory: "64Mi"
     cpu: "0.15"
+    maxOldSpaceSize: "58"
 
 workers:${system.workers
   .map(
