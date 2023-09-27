@@ -37,7 +37,8 @@ describe('yup', () => {
 			})
     ).toStrictEqual({
 			name: 'Name',
-			age: 22, birthDate: new Date('2000-01-01')
+			age: 22,
+			birthDate: new Date('2000-01-01')
 		})
   })
 })
