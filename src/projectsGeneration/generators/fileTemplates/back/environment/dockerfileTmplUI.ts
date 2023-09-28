@@ -29,6 +29,10 @@ RUN yarn build
 # Actual image
 FROM ${options.adminBaseDockerimage}
 
+ARG GIT_COMMIT
+ENV GIT_COMMIT=$GIT_COMMIT
+RUN echo $GIT_COMMIT
+
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 RUN apk add jq
