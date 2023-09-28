@@ -9,15 +9,14 @@ export const uiAppTmpl = (
   { system: { defaultLanguage } }: ProjectWideGenerationArgs,
   options: BootstrapEntityOptions = defaultBootstrapEntityOptions
 ) => `import * as React from 'react';
-import {
-  useState, useEffect,
-} from 'react';
+import {useState, useEffect, useRef} from 'react';
 import {
   Admin,
   AuthProvider,
   useTranslate,
   CustomRoutes,
   localStorageStore,
+  DataProvider,
 } from 'react-admin';
 import {
   ApolloClient,
@@ -29,13 +28,12 @@ import Layout from './layout/Layout';
 import Login from './layout/Login';
 import dataProviderFactory from './dataProvider';
 import getConfig from './config/config';
-import {createBrowserHistory} from 'history';
 import {getResources} from './adm/resources';
 import Dashboard from './adm/Dashboard';
 import {DebugProvider} from './contexts/DebugContext';
 import getAuthProvider from './authProvider/getAuthProvider';
 import {onStart} from './systemHooks';
-import getApollo from './apollo/getApollo';
+import getApollo, {updateApolloLinks} from './apollo/getApollo';
 import Loader from './shared/Loader';
 import {lightTheme} from './layout/themes';
 import {routes} from './adm/routes';
@@ -49,29 +47,30 @@ ${
 }
 onStart();
 
-const history = createBrowserHistory();
-
 const App = () => {
-  const [dataProvider, setDataProvider] = useState<any | null>(null);
-  const [authProvider, setAuthProvider] = useState<AuthProvider | null>(null);
+  const dataProvider = useRef<DataProvider | undefined>(undefined);
+  const authProvider = useRef<AuthProvider | undefined>(undefined);
+  // const client = useRef<ApolloClient<NormalizedCacheObject> | undefined>(undefined);
   const [client, setClient] = useState<ApolloClient<NormalizedCacheObject> | null>(null);
   const translate = useTranslate();
 
   useEffect(() => {
     const fetchDataProvider = async () => {
       const config = await getConfig();
-      setAuthProvider(getAuthProvider(config.endpoint));
+      authProvider.current = getAuthProvider(config.endpoint);
 
-      const client = getApollo(config.endpoint);
+      const client = getApollo(config.endpoint)
       setClient(client);
-      const dataProviderInstance = await dataProviderFactory(client);
-      setDataProvider(() => dataProviderInstance);
+
+      dataProvider.current = await dataProviderFactory(client);
+
+      updateApolloLinks(config.endpoint);
     };
 
     fetchDataProvider();
   }, []);
 
-  if (!dataProvider || !client || !authProvider) {
+  if (!dataProvider.current || !client || !authProvider.current) {
     return (
       <Loader />
     );
@@ -82,13 +81,12 @@ const App = () => {
       <DebugProvider>
         <Admin
           dashboard={Dashboard}
-          dataProvider={dataProvider}
-          history={history}
+          dataProvider={dataProvider.current}
           i18nProvider={i18nProvider}
           layout={Layout}
           loading={Loader}
           loginPage={Login}
-          authProvider={authProvider}
+          authProvider={authProvider.current}
           title=''
           theme={lightTheme}
           store={localStorageStore('3')}
