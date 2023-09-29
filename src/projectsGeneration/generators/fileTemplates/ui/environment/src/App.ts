@@ -59,7 +59,7 @@ const App = () => {
       const config = await getConfig();
       authProvider.current = getAuthProvider(config.endpoint);
 
-      const client = getApollo(config.endpoint)
+      const client = getApollo(config.endpoint);
       setClient(client);
 
       dataProvider.current = await dataProviderFactory(client);
