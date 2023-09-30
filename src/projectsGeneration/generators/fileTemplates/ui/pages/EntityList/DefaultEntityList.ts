@@ -112,7 +112,7 @@ const Default${pascalSingular(
     entity.name
   )}Filter />}
       actions={<ListActions />}
-      sort={{field: 'id', order: 'desc'}}${!entity.exportableByUser ? `
+      sort={{field: 'id', order: 'DESC'}}${!entity.exportableByUser ? `
       exporter={false}` : ''}
       {...props}
     >
