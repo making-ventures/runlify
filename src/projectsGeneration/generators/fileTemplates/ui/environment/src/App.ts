@@ -38,6 +38,7 @@ import Loader from './shared/Loader';
 import {lightTheme} from './layout/themes';
 import {routes} from './adm/routes';
 import i18nProvider from './i18nProvider';
+import {BrowserRouter} from 'react-router-dom';
 ${
   options.skipWarningThisIsGenerated
     ? ''
@@ -79,27 +80,29 @@ const App = () => {
   return (
     <ApolloProvider client={client}>
       <DebugProvider>
-        <Admin
-          dashboard={Dashboard}
-          dataProvider={dataProvider.current}
-          i18nProvider={i18nProvider}
-          layout={Layout}
-          loading={Loader}
-          loginPage={Login}
-          authProvider={authProvider.current}
-          title=''
-          theme={lightTheme}
-          store={localStorageStore('3')}
-        >
-          {permissions => [
-            (
-              <CustomRoutes key='customRoutes'>
-                {routes}
-              </CustomRoutes>
-            ),
-            ...getResources(translate, permissions),
-          ]}
-        </Admin>
+        <BrowserRouter>
+          <Admin
+            dashboard={Dashboard}
+            dataProvider={dataProvider.current}
+            i18nProvider={i18nProvider}
+            layout={Layout}
+            loading={Loader}
+            loginPage={Login}
+            authProvider={authProvider.current}
+            title=''
+            theme={lightTheme}
+            store={localStorageStore('3')}
+          >
+            {permissions => [
+              (
+                <CustomRoutes key='customRoutes'>
+                  {routes}
+                </CustomRoutes>
+              ),
+              ...getResources(translate, permissions),
+            ]}
+          </Admin>
+        </BrowserRouter>
       </DebugProvider>
     </ApolloProvider>
   );
