@@ -78,9 +78,9 @@ const App = () => {
   }
 
   return (
-    <ApolloProvider client={client}>
-      <DebugProvider>
-        <BrowserRouter>
+    <BrowserRouter>
+      <ApolloProvider client={client}>
+        <DebugProvider>
           <Admin
             dashboard={Dashboard}
             dataProvider={dataProvider.current}
@@ -102,9 +102,9 @@ const App = () => {
               ...getResources(translate, permissions),
             ]}
           </Admin>
-        </BrowserRouter>
-      </DebugProvider>
-    </ApolloProvider>
+        </DebugProvider>
+      </ApolloProvider>
+    </BrowserRouter>
   );
 };
 
