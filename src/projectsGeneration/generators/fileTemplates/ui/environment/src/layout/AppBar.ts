@@ -9,8 +9,7 @@ export const uiLayoutAppBarTmpl = (
 ) => `import * as React from 'react';
 import {AppBar as RaAppBar${options.themesEnabled ? `, ToggleThemeButton` : ''}} from 'react-admin';
 import {Box, Typography} from '@mui/material';
-import {Link} from 'react-router-dom';${options.themesEnabled ? (`
-import {darkTheme, lightTheme} from './themes';`) : ''}
+import {Link} from 'react-router-dom';
 import UserMenu from './UserMenu/UserMenu';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import {Theme} from '@mui/system';
@@ -61,10 +60,7 @@ const AppBar = (props: any) => {
         </Typography>
       )}
       <Box flex={1} />${options.themesEnabled ? (`
-      <ToggleThemeButton
-        lightTheme={lightTheme}
-        darkTheme={darkTheme}
-      />`) : ''}
+      <ToggleThemeButton />`) : ''}
     </RaAppBar>
   );
 };

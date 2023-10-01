@@ -35,7 +35,7 @@ import getAuthProvider from './authProvider/getAuthProvider';
 import {onStart} from './systemHooks';
 import getApollo, {updateApolloLinks} from './apollo/getApollo';
 import Loader from './shared/Loader';
-import {lightTheme} from './layout/themes';
+import {darkTheme, lightTheme} from './layout/themes';
 import {routes} from './adm/routes';
 import i18nProvider from './i18nProvider';
 import {BrowserRouter} from 'react-router-dom';
@@ -92,6 +92,8 @@ const App = () => {
             title=''
             theme={lightTheme}
             store={localStorageStore('3')}
+            lightTheme={lightTheme}
+            darkTheme={darkTheme}
           >
             {permissions => [
               (
