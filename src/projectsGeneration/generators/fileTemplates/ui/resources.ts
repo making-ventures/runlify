@@ -11,18 +11,10 @@ import Loadable from '../shared/Loadable';
 import {hasPermission} from '../utils/permissions';
 
 ${entities.map(
-  (m) => `const Loadable${pascalSingular(m.name)}Show = Loadable({
-  loader: () => import('./pages/${m.name}/${pascalSingular(m.name)}Show'),
-});${m.updatableByUser ? `
-const Loadable${pascalSingular(m.name)}Edit = Loadable({
-  loader: () => import('./pages/${m.name}/${pascalSingular(m.name)}Edit'),
-});` : ''}${m.creatableByUser ? `
-const Loadable${pascalSingular(m.name)}Create = Loadable({
-  loader: () => import('./pages/${m.name}/${pascalSingular(m.name)}Create'),
-});` : ''}
-const Loadable${pascalSingular(m.name)}List = Loadable({
-  loader: () => import('./pages/${m.name}/${pascalSingular(m.name)}List'),
-});`
+  (m) => `const Loadable${pascalSingular(m.name)}Show = Loadable(() => import('./pages/${m.name}/${pascalSingular(m.name)}Show'));${m.updatableByUser ? `
+const Loadable${pascalSingular(m.name)}Edit = Loadable(() => import('./pages/${m.name}/${pascalSingular(m.name)}Edit'));` : ''}${m.creatableByUser ? `
+const Loadable${pascalSingular(m.name)}Create = Loadable(() => import('./pages/${m.name}/${pascalSingular(m.name)}Create'));` : ''}
+const Loadable${pascalSingular(m.name)}List = Loadable(() => import('./pages/${m.name}/${pascalSingular(m.name)}List'));`
 ).join(`
 `)}
 
