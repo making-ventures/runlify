@@ -83,6 +83,16 @@ const addManagers = (system: SystemMetaBuilder) => {
   managers.addUniqueConstraint(['email']);
   managers.setMultitenancy('optional', false);
 
+  
+  // managerLoginTypes
+  const managerLoginTypes = system.addCatalog('managerLoginTypes', {singular: 'Manager login type', plural: 'Manager login types'});
+  managerLoginTypes.getKey().setType('string');
+  managerLoginTypes.addField('title', undefined, {isTitleField: true}).setTitles({en: 'Title', ru: 'Название'}).setType('string');
+  managerLoginTypes.addPredefinedElements([
+    {id: 'internal', title: 'Internal'},
+    {id: 'oidc', title: 'Open Id Connect'},
+  ]);
+
   // managerLogins
   const managerLogins = system.addCatalog('managerLogins');
   managerLogins.setTitles({
@@ -96,48 +106,13 @@ const addManagers = (system: SystemMetaBuilder) => {
     },
   });
   managerLogins.setNeedFor('Аккаунты (информация по логинам) пользователей бек-офиса (админы, менеджеры)');
-  managerLogins.addField('login')
-    .setTitles({
-      en: 'Login',
-      ru: 'Логин',
-    })
-    .setType('string')
-    .setRequired();
-  managerLogins.addField('passwordHash')
-    .setTitles({
-      en: 'Password hash',
-      ru: 'Хэш пароля',
-    })
-    .setType('string')
-    .setRequired();
-  managerLogins.addField('emailVerified')
-    .setTitles({
-      en: 'Email verified',
-      ru: 'Email подтвержден',
-    })
-    .setType('bool')
-    .setRequired();
-  managerLogins.addField('initialPasswordChanged')
-    .setTitles({
-      en: 'Initial password changed',
-      ru: 'Исходный пароль изменен',
-    })
-    .setType('bool')
-    .setRequired();
-  managerLogins.addField('locked')
-    .setTitles({
-      en: 'Locked',
-      ru: 'Заблокирован',
-    })
-    .setType('bool')
-    .setRequired();
-  managerLogins.addLinkField('managers', 'managerId')
-    .setTitles({
-      en: 'Managers',
-      ru: 'Менеджеры',
-    })
-    .setRequired();
-  managerLogins.addUniqueConstraint(['login']);
+  managerLogins.addLinkField('managerLoginTypes', 'managerLoginTypeId').setTitles({en: 'Login type', ru: 'Тил логина'}).setType('string').setRequired();
+  managerLogins.addField('login').setTitles({en: 'Login', ru: 'Логин'}).setType('string').setRequired();
+  managerLogins.addField('passwordHash').setTitles({en: 'Password hash', ru: 'Хэш пароля'}).setType('string');
+  managerLogins.addField('emailVerified').setTitles({en: 'Email verified', ru: 'Email подтвержден'}).setType('bool');
+  managerLogins.addField('locked') .setTitles({en: 'Locked', ru: 'Заблокирован'}).setType('bool').setRequired();
+  managerLogins.addLinkField('managers', 'managerId').setTitles({en: 'Managers', ru: 'Менеджеры'}).setRequired();
+  managerLogins.addUniqueConstraint(['managerLoginTypeId', 'login']);
 
   // units
   const units = system.addCatalog('units');
