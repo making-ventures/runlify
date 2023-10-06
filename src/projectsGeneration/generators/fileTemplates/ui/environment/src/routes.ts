@@ -16,21 +16,11 @@ ${
 // ${generatedWarning}
 `
 }
-const LoadableDashboard = Loadable({
-  loader: () => import('./Dashboard'),
-});
-const LoadableFunctions = Loadable({
-  loader: () => import('./functions/Functions'),
-});
-const LoadableResourcesPage = Loadable({
-  loader: () => import('./ResourcesPage'),
-});
-const LoadableMetaPage = Loadable({
-  loader: () => import('./MetaPage'),
-});
-const LoadableDebugPage = Loadable({
-  loader: () => import('./utility/DebugPage'),
-});
+const LoadableDashboard = Loadable(() => import('./Dashboard'));
+const LoadableFunctions = Loadable(() => import('./functions/Functions'));
+const LoadableResourcesPage = Loadable(() => import('./ResourcesPage'));
+const LoadableMetaPage = Loadable(() => import('./MetaPage'));
+const LoadableDebugPage = Loadable(() => import('./utility/DebugPage'));
 
 export const routes = [
   <Route element={<LoadableDashboard />} key='dashboard' path='/dashboard' />,
