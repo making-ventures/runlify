@@ -30,7 +30,7 @@ const start = async () => {
   const endpoints = await initEndpoints(app, ctx, port, production);
 
   app.listen({port}, () => {
-    log.info('\n' + endpoints.map(e => \`🚀 Server ready at \${e}\`).join('\n'));
+    log.info('\\n' + endpoints.map(e => \`🚀 Server ready at \${e}\`).join('\\n'));
   });
 };
 
