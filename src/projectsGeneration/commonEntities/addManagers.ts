@@ -83,7 +83,6 @@ const addManagers = (system: SystemMetaBuilder) => {
   managers.addUniqueConstraint(['email']);
   managers.setMultitenancy('optional', false);
 
-  
   // managerLoginTypes
   const managerLoginTypes = system.addCatalog('managerLoginTypes', {singular: 'Manager login type', plural: 'Manager login types'});
   managerLoginTypes.getKey().setType('string');
