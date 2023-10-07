@@ -31,7 +31,7 @@ import getConfig from './config/config';
 import {getResources} from './adm/resources';
 import Dashboard from './adm/Dashboard';
 import {DebugProvider} from './contexts/DebugContext';
-import getAuthProvider from './authProvider/getAuthProvider';
+import getAuthProviderLegacy from './authProvider/getAuthProviderLegacy';
 import {onStart} from './systemHooks';
 import getApollo, {updateApolloLinks} from './apollo/getApollo';
 import Loader from './shared/Loader';
@@ -58,7 +58,7 @@ const App = () => {
   useEffect(() => {
     const fetchDataProvider = async () => {
       const config = await getConfig();
-      authProvider.current = getAuthProvider(config.endpoint);
+      authProvider.current = getAuthProviderLegacy(config.endpoint);
 
       const client = getApollo(config.endpoint);
       setClient(client);
