@@ -207,6 +207,10 @@ const DefaultToolbar = (props: ToolbarProps) => {${entity.removableByUser ? `
   );
 };
 
+const defaultValues = ${initialValues.length === 0 ? '{}' : `{
+${initialValues.map(f => `${f.name}: ${getTsDefaultTypeValueExpression(f)},`).map(pad(1)).join('\n')}
+}`};
+
 const Default${pascalSingular(entity.name)}Edit: FC<EditProps> = (props: EditProps) => {
 ${hasHidden ? `  const {debug} = useDebug();
 ` : ''}  const resolver = useMemo(() => yupResolver(get${pascalSingular(entity.name)}Validation()), []);
@@ -215,7 +219,9 @@ ${hasHidden ? `  const {debug} = useDebug();
     <Edit
       redirect='show'
       {...props}
-      transform={useCallback((data: any) => ({
+      transform={useCallback((data: any, previousData?: { previousData: any }) => ({
+        ...defaultValues,
+        ...previousData?.previousData,
         ...data,${fieldsToWorkWith
     .filter(f => f.requiredOnInput !== false && ['datetime', 'date'].includes(f.type))
     .map(f => `
@@ -227,9 +233,7 @@ ${hasHidden ? `  const {debug} = useDebug();
       <LoadingContext>${isAllowedToChange ? `
         <AllowedToEdit allowedToEdit={${entity.allowedToChange}} />` : ''}
         <SimpleForm
-          defaultValues=${initialValues.length === 0 ? '{{}}' : `{{
-${initialValues.map(f => `${f.name}: ${getTsDefaultTypeValueExpression(f)},`).map(pad(6)).join('\n')}
-          }}`}
+          defaultValues={defaultValues}
           resolver={resolver}
           toolbar={<DefaultToolbar />}
         >
