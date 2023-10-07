@@ -6,7 +6,7 @@ import {
 } from '../EntityEdit/DefaultEntityEdit'
 import { getCompNamesToEditField } from '../../../../ui/componentNames/edit/getCompNamesToEditField'
 import { EntityWideGenerationArgs } from '../../../../../args'
-import { generatedWarning, pad1, pad6 } from '../../../../../utils'
+import { generatedWarning, pad1, pad } from '../../../../../utils'
 import { getKeyField, isImageFileRef, isMarkdownField, isMultilineField } from '../../../../../metaUtils'
 
 export const uiDefaultCreateTmpl = ({
@@ -91,6 +91,10 @@ ${
     : `// ${generatedWarning}
 `
 }
+const defaultValues = ${initialValues.length === 0 ? '{}' : `{
+${initialValues.map(f => `${f.name}: ${getTsDefaultTypeValueExpression(f)},`).map(pad(1)).join('\n')}
+}`};
+
 const Default${pascalSingular(
     entity.name
   )}Create: FC<CreateProps> = (props: CreateProps) => {
@@ -108,6 +112,7 @@ ${
       redirect='show'
       {...props}
       transform={useCallback((data: any) => ({
+        ...defaultValues,
         ...data,${fieldsToWorkWith
           .filter((f) => f.requiredOnInput !== false && ['datetime', 'date'].includes(f.type))
           .map(
@@ -119,16 +124,7 @@ ${
     >
       <LoadingContext>
         <SimpleForm
-          defaultValues=${
-            initialValues.length === 0
-              ? '{{}}'
-              : `{{
-${initialValues
-  .map((f) => `${f.name}: ${getTsDefaultTypeValueExpression(f)},`)
-  .map(pad6)
-  .join('\n')}
-          }}`
-        }
+          defaultValues={defaultValues}
           resolver={resolver}
         >
           <Grid container spacing={2}>
@@ -143,7 +139,7 @@ ${pad1(getEditComponent(entity, allEntities, f, 'create'))}
         ? comp
         : `{debug && ${comp}}`
 
-    return pad6(debuggedComp)
+    return pad(6)(debuggedComp)
   })
   .join('\n')}
           </Grid>
