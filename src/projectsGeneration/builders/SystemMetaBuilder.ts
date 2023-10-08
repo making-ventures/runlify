@@ -329,10 +329,10 @@ class SystemMetaBuilder {
     // keycloak.app.clientId: 'cmng-admin',
     this.addConfigVar('keycloak.adm.url', 'string', false, undefined, 'Хост keycloak для админки');
     this.addConfigVar('keycloak.adm.realm', 'string', false, undefined, 'Реалм keycloak для админки');
-    this.addConfigVar('keycloak.adm.clientId', 'string', false, undefined, 'ИДентификатор клиента keycloak для админки');
+    this.addConfigVar('keycloak.adm.clientId', 'string', false, undefined, 'Идентификатор клиента keycloak для админки');
     this.addConfigVar('keycloak.app.url', 'string', false, undefined, 'Хост keycloak для приложения пользователя');
     this.addConfigVar('keycloak.app.realm', 'string', false, undefined, 'Реалм keycloak для приложения пользователя');
-    this.addConfigVar('keycloak.app.clientId', 'string', false, undefined, 'ИДентификатор клиента keycloak для приложения пользователя');
+    this.addConfigVar('keycloak.app.clientId', 'string', false, undefined, 'Идентификатор клиента keycloak для приложения пользователя');
 
     this.addDeployEnvironment({
       name: 'dev',
