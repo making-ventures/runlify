@@ -320,6 +320,20 @@ class SystemMetaBuilder {
 
     this.addConfigVar('sentry.dsn', 'string', false, '', 'Sentry dsn');
 
+    // keycloak
+    // keycloak.adm.url: 'https://kk.stage01.making.ventures',
+    // keycloak.adm.realm: 'cmng-dev',
+    // keycloak.adm.clientId: 'cmng-admin',
+    // keycloak.app.url: 'https://kk.stage01.making.ventures',
+    // keycloak.app.realm: 'cmng-dev',
+    // keycloak.app.clientId: 'cmng-admin',
+    this.addConfigVar('keycloak.adm.url', 'string', false, undefined, 'Хост keycloak для админки');
+    this.addConfigVar('keycloak.adm.realm', 'string', false, undefined, 'Реалм keycloak для админки');
+    this.addConfigVar('keycloak.adm.clientId', 'string', false, undefined, 'ИДентификатор клиента keycloak для админки');
+    this.addConfigVar('keycloak.app.url', 'string', false, undefined, 'Хост keycloak для приложения пользователя');
+    this.addConfigVar('keycloak.app.realm', 'string', false, undefined, 'Реалм keycloak для приложения пользователя');
+    this.addConfigVar('keycloak.app.clientId', 'string', false, undefined, 'ИДентификатор клиента keycloak для приложения пользователя');
+
     this.addDeployEnvironment({
       name: 'dev',
       manualDeploy: false,
