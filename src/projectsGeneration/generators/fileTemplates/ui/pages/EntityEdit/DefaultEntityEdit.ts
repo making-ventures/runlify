@@ -172,6 +172,8 @@ export const uiDefaultEditTmpl = ({
   const initialValues = fieldsToWorkWith.filter(f => getTsDefaultTypeValueExpression(f));
   const isAllowedToChange = entity.allowedToChange;
 
+  const dateFields = fieldsToWorkWith.filter(f => f.requiredOnInput !== false && ['datetime', 'date'].includes(f.type))
+
   return `/* eslint-disable max-len */
 import React, {FC, useMemo, useCallback} from 'react';
 import {
@@ -219,15 +221,15 @@ ${hasHidden ? `  const {debug} = useDebug();
     <Edit
       redirect='show'
       {...props}
-      transform={useCallback((data: any, previousData?: { previousData: any }) => ({
-        ...defaultValues,
-        ...previousData?.previousData,
-        ...data,${fieldsToWorkWith
-    .filter(f => f.requiredOnInput !== false && ['datetime', 'date'].includes(f.type))
+      transform={useCallback((data: any, previousData?: { previousData: any }) => {
+        const mergedData = {...defaultValues, ...previousData?.previousData, ...data};
+        return ${dateFields.length ? `{
+          ...mergedData,${dateFields
     .map(f => `
-        ${f.name}: data.${f.name} || null,`)
+          ${f.name}: mergedData.${f.name} || null,`)
     .join('')}
-      }), [])}
+        }` : 'mergedData'};
+      }, [])}
       mutationMode='pessimistic'
     >
       <LoadingContext>${isAllowedToChange ? `
