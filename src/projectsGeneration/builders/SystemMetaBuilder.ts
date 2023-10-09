@@ -320,19 +320,19 @@ class SystemMetaBuilder {
 
     this.addConfigVar('sentry.dsn', 'string', false, '', 'Sentry dsn');
 
-    // keycloak
-    // keycloak.adm.url: 'https://kk.stage01.making.ventures',
-    // keycloak.adm.realm: 'cmng-dev',
-    // keycloak.adm.clientId: 'cmng-admin',
-    // keycloak.app.url: 'https://kk.stage01.making.ventures',
-    // keycloak.app.realm: 'cmng-dev',
-    // keycloak.app.clientId: 'cmng-admin',
-    this.addConfigVar('keycloak.adm.url', 'string', false, undefined, 'Хост keycloak для админки');
-    this.addConfigVar('keycloak.adm.realm', 'string', false, undefined, 'Реалм keycloak для админки');
-    this.addConfigVar('keycloak.adm.clientId', 'string', false, undefined, 'Идентификатор клиента keycloak для админки');
-    this.addConfigVar('keycloak.app.url', 'string', false, undefined, 'Хост keycloak для приложения пользователя');
-    this.addConfigVar('keycloak.app.realm', 'string', false, undefined, 'Реалм keycloak для приложения пользователя');
-    this.addConfigVar('keycloak.app.clientId', 'string', false, undefined, 'Идентификатор клиента keycloak для приложения пользователя');
+    // oidc
+    // oidc.adm.url: 'https://kk.stage01.making.ventures',
+    // oidc.adm.realm: 'cmng-dev',
+    // oidc.adm.clientId: 'cmng-admin',
+    // oidc.app.url: 'https://kk.stage01.making.ventures',
+    // oidc.app.realm: 'cmng-dev',
+    // oidc.app.clientId: 'cmng-admin',
+    this.addConfigVar('oidc.adm.url', 'string', false, undefined, 'Хост oidc для админки');
+    this.addConfigVar('oidc.adm.realm', 'string', false, undefined, 'Реалм oidc для админки');
+    this.addConfigVar('oidc.adm.clientId', 'string', false, undefined, 'Идентификатор клиента oidc для админки');
+    this.addConfigVar('oidc.app.url', 'string', false, undefined, 'Хост oidc для приложения пользователя');
+    this.addConfigVar('oidc.app.realm', 'string', false, undefined, 'Реалм oidc для приложения пользователя');
+    this.addConfigVar('oidc.app.clientId', 'string', false, undefined, 'Идентификатор клиента oidc для приложения пользователя');
 
     this.addDeployEnvironment({
       name: 'dev',
