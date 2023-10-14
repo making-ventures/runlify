@@ -329,10 +329,10 @@ class SystemMetaBuilder {
     // oidc.app.clientId: 'cmng-admin',
     this.addConfigVar('oidc.adm.url', 'string', false, undefined, 'Хост oidc для админки', ['back', 'admin-app']);
     this.addConfigVar('oidc.adm.realm', 'string', false, undefined, 'Реалм oidc для админки', ['back', 'admin-app']);
-    this.addConfigVar('oidc.adm.clientId', 'string', false, undefined, 'Идентификатор клиента oidc для админки', ['back']);
-    this.addConfigVar('oidc.app.url', 'string', false, undefined, 'Хост oidc для приложения пользователя', ['back', 'admin-app']);
-    this.addConfigVar('oidc.app.realm', 'string', false, undefined, 'Реалм oidc для приложения пользователя', ['back', 'admin-app']);
-    this.addConfigVar('oidc.app.clientId', 'string', false, undefined, 'Идентификатор клиента oidc для приложения пользователя', ['back']);
+    this.addConfigVar('oidc.adm.clientId', 'string', false, undefined, 'Идентификатор клиента oidc для админки', ['admin-app']);
+    this.addConfigVar('oidc.app.url', 'string', false, undefined, 'Хост oidc для приложения пользователя', ['back', 'cutomer-app']);
+    this.addConfigVar('oidc.app.realm', 'string', false, undefined, 'Реалм oidc для приложения пользователя', ['back', 'cutomer-app']);
+    this.addConfigVar('oidc.app.clientId', 'string', false, undefined, 'Идентификатор клиента oidc для приложения пользователя', ['cutomer-app']);
 
     // 'admin-app'
 
