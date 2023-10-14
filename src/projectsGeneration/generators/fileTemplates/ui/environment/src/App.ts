@@ -55,12 +55,6 @@ ${
 }
 onStart();
 
-const keycloakConfig: KeycloakConfig = {
-  url: 'https://kk.stage01.making.ventures',
-  realm: 'prj-dev-admin',
-  clientId: 'prj-admin',
-};
-
 const keycloakInitOptions: KeycloakInitOptions = {onLoad: 'login-required'};
 
 const getPermissions = (decoded: KeycloakTokenParsed) => {
@@ -90,6 +84,14 @@ const App = () => {
 
   useEffect(() => {
     const fetchDataProvider = async () => {
+      const config = await getConfig();
+
+      const keycloakConfig: KeycloakConfig = {
+        url: config.oidcAdmUrl,
+        realm: config.oidcAdmRealm,
+        clientId: config.oidcAdmClientId,
+      };
+
       const keycloakClient = new Keycloak(keycloakConfig);
 
       keycloakClient.onAuthError =
@@ -107,8 +109,6 @@ const App = () => {
       await keycloakClient.init(keycloakInitOptions);
 
       log.info(\`token: \${keycloakClient.token}\`);
-
-      const config = await getConfig();
 
       authProvider.current = getAuthProvider(
         config.endpoint,
