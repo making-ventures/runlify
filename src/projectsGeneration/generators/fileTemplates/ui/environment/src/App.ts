@@ -57,8 +57,8 @@ onStart();
 
 const keycloakConfig: KeycloakConfig = {
   url: 'https://kk.stage01.making.ventures',
-  realm: 'cmng-dev',
-  clientId: 'cmng-admin',
+  realm: 'prj-dev-admin',
+  clientId: 'prj-admin',
 };
 
 const keycloakInitOptions: KeycloakInitOptions = {onLoad: 'login-required'};
@@ -85,6 +85,7 @@ const App = () => {
   const authProvider = useRef<AuthProvider | undefined>(undefined);
   // const client = useRef<ApolloClient<NormalizedCacheObject> | undefined>(undefined);
   const [client, setClient] = useState<ApolloClient<NormalizedCacheObject> | null>(null);
+  const [keycloak, setKeycloak] = useState<Keycloak | undefined>(undefined);
   const translate = useTranslate();
 
   useEffect(() => {
