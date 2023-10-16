@@ -155,8 +155,8 @@ const App = () => {
               title=''
               theme={lightTheme}
               store={localStorageStore('3')}
-              lightTheme={lightTheme}
-              darkTheme={darkTheme}
+              lightTheme={lightTheme}${options.themesEnabled ? `
+              darkTheme={darkTheme}`: ''}
             >
               {permissions => [
                 (

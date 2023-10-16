@@ -7,7 +7,7 @@ import { generatedWarning } from '../../../../../../utils'
 export const uiLayoutAppBarTmpl = (
   options: BootstrapEntityOptions = defaultBootstrapEntityOptions
 ) => `import * as React from 'react';
-import {AppBar as RaAppBar${options.themesEnabled ? `, ToggleThemeButton` : ''}} from 'react-admin';
+import {AppBar as RaAppBar} from 'react-admin';
 import {Box, Typography} from '@mui/material';
 import {Link} from 'react-router-dom';
 import UserMenu from './UserMenu/UserMenu';
@@ -59,8 +59,7 @@ const AppBar = (props: any) => {
           </Link>
         </Typography>
       )}
-      <Box flex={1} />${options.themesEnabled ? (`
-      <ToggleThemeButton />`) : ''}
+      <Box flex={1} />
     </RaAppBar>
   );
 };
