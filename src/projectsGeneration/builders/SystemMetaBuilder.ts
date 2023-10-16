@@ -321,18 +321,17 @@ class SystemMetaBuilder {
     this.addConfigVar('sentry.dsn', 'string', false, '', 'Sentry dsn');
 
     // oidc
-    // oidc.adm.url: 'https://kk.stage01.making.ventures',
-    // oidc.adm.realm: 'cmng-dev',
-    // oidc.adm.clientId: 'cmng-admin',
-    // oidc.app.url: 'https://kk.stage01.making.ventures',
-    // oidc.app.realm: 'cmng-dev',
-    // oidc.app.clientId: 'cmng-admin',
     this.addConfigVar('oidc.adm.url', 'string', false, undefined, 'Хост oidc для админки', ['back', 'admin-app']);
     this.addConfigVar('oidc.adm.realm', 'string', false, undefined, 'Реалм oidc для админки', ['back', 'admin-app']);
     this.addConfigVar('oidc.adm.clientId', 'string', false, undefined, 'Идентификатор клиента oidc для админки', ['admin-app']);
     this.addConfigVar('oidc.app.url', 'string', false, undefined, 'Хост oidc для приложения пользователя', ['back', 'cutomer-app']);
     this.addConfigVar('oidc.app.realm', 'string', false, undefined, 'Реалм oidc для приложения пользователя', ['back', 'cutomer-app']);
     this.addConfigVar('oidc.app.clientId', 'string', false, undefined, 'Идентификатор клиента oidc для приложения пользователя', ['cutomer-app']);
+
+    this.addConfigVar('keycloak.adm.cli.username', 'string', false, undefined, 'Пользователь для доступа в api keycloak админки');
+    this.addConfigVar('keycloak.adm.cli.password', 'string', false, undefined, 'Пароль для доступа в api keycloak админки');
+    this.addConfigVar('keycloak.app.cli.username', 'string', false, undefined, 'Пользователь для доступа в api keycloak приложения пользователя');
+    this.addConfigVar('keycloak.app.cli.password', 'string', false, undefined, 'Пароль для доступа в api keycloak приложения пользователя');
 
     // 'admin-app'
 
