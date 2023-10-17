@@ -328,9 +328,9 @@ class SystemMetaBuilder {
     this.addConfigVar('oidc.app.realm', 'string', false, undefined, 'Реалм oidc для приложения пользователя', ['back', 'cutomer-app']);
     this.addConfigVar('oidc.app.clientId', 'string', false, undefined, 'Идентификатор клиента oidc для приложения пользователя', ['cutomer-app']);
 
-    this.addConfigVar('keycloak.adm.cli.client', 'string', false, 'admin-cli', 'Клиент для доступа в api keycloak админки');
+    this.addConfigVar('keycloak.adm.cli.client', 'string', false, 'backend-api', 'Клиент для доступа в api keycloak админки');
     this.addConfigVar('keycloak.adm.cli.secret', 'string', false, undefined, 'Секрет для доступа в api keycloak админки');
-    this.addConfigVar('keycloak.app.cli.client', 'string', false, 'admin-cli', 'Клиент для доступа в api keycloak приложения пользователя');
+    this.addConfigVar('keycloak.app.cli.client', 'string', false, 'backend-api', 'Клиент для доступа в api keycloak приложения пользователя');
     this.addConfigVar('keycloak.app.cli.secret', 'string', false, undefined, 'Секрет для доступа в api keycloak приложения пользователя');
 
     // 'admin-app'
