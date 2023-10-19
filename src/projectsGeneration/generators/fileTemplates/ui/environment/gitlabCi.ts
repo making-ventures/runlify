@@ -158,7 +158,7 @@ ${system.deployEnvironments
     entrypoint: [""]
   before_script:
     - mkdir -p /etc/deploy
-    - echo \${KUBE_CONFIG} | base64 -d > \${KUBECONFIG}
+    - cp $KUBE_CONFIG $KUBECONFIG
   script:
     - NAMESPACE=\${NAMESPACE:-"${options.k8sNamespacePrefix || prefix}-\${ENV}"}
     - echo TAG \${TAG}
