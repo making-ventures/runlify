@@ -27,7 +27,7 @@ If both files exists they will be merged. \`\${ENV}.json\` takes precedence.
 
 ${markdownTable([
   ['Key in file', 'Environment', 'Type', 'Required', 'Default value', 'Need for'],
-  ...backVars.map((v) => [v.name, constantCase(v.name), v.type, v.required, v.default, v.needFor]),
+  ...backVars.map((v) => [v.name, constantCase(v.name), v.type, String(v.required), v.default, v.needFor]),
 ])}
 `
 }
