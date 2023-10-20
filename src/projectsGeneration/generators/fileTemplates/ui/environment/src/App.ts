@@ -41,7 +41,7 @@ import getAuthProvider from './authProvider/getAuthProvider';
 import {onStart} from './systemHooks';
 import getApollo, {updateApolloLinks} from './apollo/getApollo';
 import Loader from './shared/Loader';
-import {lightTheme} from './layout/themes';
+import {lightTheme${options.themesEnabled ? ', darkTheme': ''}} from './layout/themes';
 import {routes} from './adm/routes';
 import i18nProvider from './i18nProvider';
 import log from './utils/log';
