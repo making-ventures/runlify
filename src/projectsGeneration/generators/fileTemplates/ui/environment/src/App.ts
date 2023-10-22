@@ -9,26 +9,10 @@ export const uiAppTmpl = (
   { system: { defaultLanguage } }: ProjectWideGenerationArgs,
   options: BootstrapEntityOptions = defaultBootstrapEntityOptions
 ) => `import * as React from 'react';
-import {useState, useEffect, useRef} from 'react';
-import {
-  Admin,
-  AuthProvider,
-  useTranslate,
-  CustomRoutes,
-  localStorageStore,
-  DataProvider,
-} from 'react-admin';
-import {
-  ApolloClient,
-  ApolloProvider,
-  NormalizedCacheObject,
-} from '@apollo/client';
-import Keycloak, {
-  KeycloakConfig,
-  KeycloakTokenParsed,
-  KeycloakInitOptions,
-  KeycloakError,
-} from 'keycloak-js';
+import {useEffect, useRef, useState} from 'react';
+import {Admin, AuthProvider, CustomRoutes, DataProvider, localStorageStore, useTranslate} from 'react-admin';
+import {ApolloClient, ApolloProvider, NormalizedCacheObject} from '@apollo/client';
+import Keycloak, {KeycloakConfig, KeycloakError, KeycloakInitOptions, KeycloakTokenParsed} from 'keycloak-js';
 import './App.css';
 import Layout from './layout/Layout';
 import Login from './layout/Login';
