@@ -49,6 +49,7 @@ export const defaultBootstrapEntityOptions = {
 
   genUiCountWidget: true,
   genUiListWidget: true,
+  genUiAppBar: true,
 
   genUiEntityMapping: true,
   genUiMenu: true,

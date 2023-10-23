@@ -164,7 +164,9 @@ export const generateEnvironment = async (
     await write(join(uiLayoutFolder, 'Menu.tsx'), uiLayoutMenuTmpl(opts))
 
     // src/layout/AppBar.tsx
-    await write(join(uiLayoutFolder, 'AppBar.tsx'), uiLayoutAppBarTmpl(opts))
+    if (opts.genUiAppBar) {
+      await write(join(uiLayoutFolder, 'AppBar.tsx'), uiLayoutAppBarTmpl(opts))
+    }
 
     // src/contexts/SpacesContext.tsx
     const uiContextsFolder = join(prjDetachedUiSrcDir, 'contexts')
