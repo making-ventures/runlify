@@ -7,7 +7,7 @@ const prepareCurlExample = (curl: CurlExample) => {
     curl.headers = {}
   }
 
-  if (curl.data && curl.method !== 'GET') {
+  if (curl.data && Object.keys(curl.data).length && curl.method !== 'GET') {
     curl.headers['Content-Type'] = 'application/json'
   }
 
@@ -35,7 +35,7 @@ const curlExampleToText = (curl: CurlExample) => {
     }
   }
 
-  if (curl.data) {
+  if (curl.data && Object.keys(curl.data).length) {
     if (curl.method === 'GET') {
       uri = `${uri}?${qs.stringify(curl.data)}`
     } else {
