@@ -44,7 +44,7 @@ const curlExampleToText = (curl: CurlExample) => {
     }
   }
 
-  parts.push(uri)
+  parts.push(`'${uri}'`)
 
   return `curl ${parts.join(' \\\n').split('\n').join('\n  ')}`
 }
