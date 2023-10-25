@@ -9,7 +9,7 @@ export const backDocsRestApi = (
   const rootPath = `/rest/${restApi.path}`
 
   return `
-# ${restApi.title[system.defaultLanguage]}
+# ${restApi.title[system.defaultLanguage].singular}
 Корневой путь апи: \`${rootPath}\`
 
 ${restApi.methods
