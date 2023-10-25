@@ -1,4 +1,5 @@
 import * as R from 'ramda'
+import qs from 'qs';
 import { CurlExample } from '../projectsGeneration/builders/curlTypes'
 
 const prepareCurlExample = (curl: CurlExample) => {
@@ -6,7 +7,7 @@ const prepareCurlExample = (curl: CurlExample) => {
     curl.headers = {}
   }
 
-  if (curl.data) {
+  if (curl.data && curl.method !== 'GET') {
     curl.headers['Content-Type'] = 'application/json'
   }
 
@@ -22,6 +23,8 @@ const curlExampleToText = (curl: CurlExample) => {
 
   const parts: string[] = []
 
+  let uri = `${curl.baseUrl}${curl.path}`
+
   if (curl.method !== 'GET') {
     parts.push(`-i -X ${curl.method}`)
   }
@@ -32,12 +35,16 @@ const curlExampleToText = (curl: CurlExample) => {
     }
   }
 
-  if (curl.method !== 'GET' && curl.data) {
-    const stringified = JSON.stringify(curl.data, null, 2)
-    parts.push(`--data '${stringified}'`)
+  if (curl.data) {
+    if (curl.method === 'GET') {
+      uri = `${uri}?${qs.stringify(curl.data)}`
+    } else {
+      const stringified = JSON.stringify(curl.data, null, 2)
+      parts.push(`--data '${stringified}'`)
+    }
   }
 
-  parts.push(`${curl.baseUrl}${curl.path}`)
+  parts.push(uri)
 
   return `curl ${parts.join(' \\\n').split('\n').join('\n  ')}`
 }

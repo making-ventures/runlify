@@ -1,6 +1,6 @@
 {
   "name": "runlify",
-  "version": "0.0.606",
+  "version": "0.0.607",
   "description": "runlify CLI",
   "private": false,
   "main": "build/index.js",
@@ -40,13 +40,14 @@
     "markdown-table": "2.0.0",
     "nconf": "^0.12.0",
     "path": "^0.12.7",
+    "qs": "^6.11.2",
     "ramda": "^0.29.0",
     "winston": "^3.10.0"
   },
   "devDependencies": {
-    "@types/markdown-table": "^2.0.0",
     "@types/cross-spawn": "^6.0.2",
     "@types/jest": "^29.5.4",
+    "@types/markdown-table": "^2.0.0",
     "@types/nconf": "^0.10.3",
     "@types/node": "^12.7.11",
     "@types/ramda": "^0.29.3",
