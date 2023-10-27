@@ -20,6 +20,9 @@ export const genGraphScalarFilter = (
       [`${field.name}_in`]: {
         type: new GraphQLList(fieldTypeToGraphScalar(field)),
       },
+      [`${field.name}_not_in`]: {
+        type: new GraphQLList(fieldTypeToGraphScalar(field)),
+      },
     }
   }
 

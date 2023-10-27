@@ -33,8 +33,10 @@ input CardFilter {
   id: Int
   name: String
   name_in: [String]
+  name_not_in: [String]
   lastDigits: Int
   lastDigits_in: [Int]
+  lastDigits_not_in: [Int]
   lastDigits_lte: Int
   lastDigits_gte: Int
   lastDigits_lt: Int
@@ -97,8 +99,10 @@ input CardFilter {
   id: BigInt
   name: String
   name_in: [String]
+  name_not_in: [String]
   lastDigits: Int
   lastDigits_in: [Int]
+  lastDigits_not_in: [Int]
   lastDigits_lte: Int
   lastDigits_gte: Int
   lastDigits_lt: Int
@@ -144,6 +148,7 @@ input CardFilter {
   id: Int
   lastDigits: Int
   lastDigits_in: [Int]
+  lastDigits_not_in: [Int]
   lastDigits_lte: Int
   lastDigits_gte: Int
   lastDigits_lt: Int
@@ -187,8 +192,10 @@ input CardFilter {
   id: Int
   name: String
   name_in: [String]
+  name_not_in: [String]
   lastDigits: Int
   lastDigits_in: [Int]
+  lastDigits_not_in: [Int]
   lastDigits_lte: Int
   lastDigits_gte: Int
   lastDigits_lt: Int
@@ -234,8 +241,10 @@ input CardFilter {
   id: Int
   name: String
   name_in: [String]
+  name_not_in: [String]
   boxId: Int
   boxId_in: [Int]
+  boxId_not_in: [Int]
   active: Boolean
   active_defined: Boolean
 }
@@ -282,8 +291,10 @@ input CardFilter {
   id: Int
   name: String
   name_in: [String]
+  name_not_in: [String]
   boxId: BigInt
   boxId_in: [BigInt]
+  boxId_not_in: [BigInt]
   active: Boolean
   active_defined: Boolean
 }
@@ -325,8 +336,10 @@ input CardFilter {
   id: Int
   name: String
   name_in: [String]
+  name_not_in: [String]
   boxId: String
   boxId_in: [String]
+  boxId_not_in: [String]
   active: Boolean
   active_defined: Boolean
 }
@@ -368,8 +381,10 @@ input CardFilter {
   id: Int
   name: String
   name_in: [String]
+  name_not_in: [String]
   boxId: String
   boxId_in: [String]
+  boxId_not_in: [String]
   active: Boolean
   active_defined: Boolean
 }
@@ -414,8 +429,10 @@ input CardFilter {
   id: Int
   name: String
   name_in: [String]
+  name_not_in: [String]
   lastDigits: Int
   lastDigits_in: [Int]
+  lastDigits_not_in: [Int]
   lastDigits_lte: Int
   lastDigits_gte: Int
   lastDigits_lt: Int

@@ -22,8 +22,10 @@ describe('genGraphFilterType', () => {
   id: Int
   name: String
   name_in: [String]
+  name_not_in: [String]
   lastDigits: Int
   lastDigits_in: [Int]
+  lastDigits_not_in: [Int]
   lastDigits_lte: Int
   lastDigits_gte: Int
   lastDigits_lt: Int
@@ -35,6 +37,7 @@ describe('genGraphFilterType', () => {
   registered_gt: DateTime
   boxId: Int
   boxId_in: [Int]
+  boxId_not_in: [Int]
   active: Boolean
   active_defined: Boolean
 }
@@ -61,8 +64,10 @@ scalar DateTime`)
   id: BigInt
   name: String
   name_in: [String]
+  name_not_in: [String]
   lastDigits: Int
   lastDigits_in: [Int]
+  lastDigits_not_in: [Int]
   lastDigits_lte: Int
   lastDigits_gte: Int
   lastDigits_lt: Int
@@ -74,6 +79,7 @@ scalar DateTime`)
   registered_gt: DateTime
   boxId: BigInt
   boxId_in: [BigInt]
+  boxId_not_in: [BigInt]
   active: Boolean
   active_defined: Boolean
 }
