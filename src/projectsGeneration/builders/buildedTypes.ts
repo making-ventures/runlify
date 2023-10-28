@@ -321,6 +321,7 @@ export type RestApi = BaseEntity & {
   type: 'restApi'
   methods: RestApiMethod[]
   path: string
+  auth: boolean
 }
 
 export type MemoryAndCpu = {

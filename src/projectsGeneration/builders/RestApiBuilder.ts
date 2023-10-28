@@ -6,15 +6,18 @@ import { HttpMethod } from './curlTypes'
 class RestApiBuilder extends BaseBuilder {
   methods: RestApiMethodBuilder[] = []
   path: string
+  auth: boolean
 
   constructor(
     name: string,
     path: string,
     defaultLanguage: string,
-    title?: string
+    title?: string,
+    auth = true,
   ) {
     super(name, defaultLanguage, {singular: title})
     this.path = path
+    this.auth = auth
   }
 
   addMethod(
@@ -54,6 +57,7 @@ class RestApiBuilder extends BaseBuilder {
       materialUiIcon: this.materialUiIcon,
       methods: this.methods.map((m) => m.build()),
       path: this.path,
+      auth: this.auth,
     }
   }
 }

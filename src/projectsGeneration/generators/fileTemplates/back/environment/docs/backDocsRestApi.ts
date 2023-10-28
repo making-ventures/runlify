@@ -47,10 +47,10 @@ ${curlExampleToText({
   baseUrl: 'https://DOMAIN',
   path: pathExample,
   method: method.httpMethod,
-  auth: {
+  auth: restApi.auth ? {
     type: 'headerToken',
     token: 'TOKEN',
-  },
+  } : undefined,
   data: method.requestExample,
 })}
 \`\`\`

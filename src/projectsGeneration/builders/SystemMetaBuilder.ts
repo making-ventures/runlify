@@ -599,7 +599,7 @@ class SystemMetaBuilder {
     return infoRegistry.entity
   }
 
-  addRestApi(name: string, path: string, title?: string) {
+  addRestApi(name: string, path: string, title?: string, auth = true) {
     if (this.restApis.some((f) => f.name === name)) {
       throw new Error(`There is already rest api with name "${name}"`)
     }
@@ -608,7 +608,7 @@ class SystemMetaBuilder {
       throw new Error(`There is already rest api with path "${path}"`)
     }
 
-    const restApi = new RestApiBuilder(name, path, this.defaultLanguage, title)
+    const restApi = new RestApiBuilder(name, path, this.defaultLanguage, title, auth)
 
     this.restApis.push(restApi)
 
