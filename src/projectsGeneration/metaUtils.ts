@@ -43,8 +43,11 @@ export const getTitleField = (entity: Entity) => {
   return field as ScalarField
 }
 
+export const isFileRef = (f: Field) =>
+  'predefinedLinkedEntity' in f && f.predefinedLinkedEntity === 'file';
+
 export const isImageFileRef = (f: Field) =>
-  'fileType' in f && f.fileType === 'image';
+  isFileRef(f) && 'fileType' in f && f.fileType === 'image';
 
 export const isMarkdownField = (f: Field) => f.type === 'string' && 'stringType' in f && f.stringType === 'markdown';
 
