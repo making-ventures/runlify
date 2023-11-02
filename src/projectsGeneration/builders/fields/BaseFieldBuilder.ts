@@ -102,7 +102,7 @@ export abstract class BaseFieldBuilder {
 
     if (['bool'].includes(type)) {
       this.setSearchable(false)
-      this.setDefaultValueExpression('false')
+      // this.setDefaultValueExpression('false')
     }
 
     return this
