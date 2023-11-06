@@ -41,7 +41,6 @@ export const defaultConfigVar: Omit<ConfigVar, 'name' | 'type'> = {
 
 class SystemMetaBuilder {
   catalogs: EntityBuilderWithOptions<CatalogBuilder>[] = []
-  integrationClients: EntityBuilderWithOptions<IntegrationClientBuilder>[] = []
   reports: EntityBuilderWithOptions<ReportBuilder>[] = []
   documents: EntityBuilderWithOptions<DocumentBuilder>[] = []
   infoRegistries: EntityBuilderWithOptions<InfoRegistryBuilder>[] = []
@@ -53,6 +52,7 @@ class SystemMetaBuilder {
   telegramBots: TelegramBotBuilder[] = []
   languages: Language[] = []
   restApis: RestApiBuilder[] = []
+  integrationClients: IntegrationClientBuilder[] = []
   workers: DeploymentBuilder[] = []
   roles: RoleBuilder[] = []
   defaultLanguage: string
@@ -576,19 +576,6 @@ class SystemMetaBuilder {
     return catalog
   }
 
-  addIntegrationClient(
-    name: string,
-    title?: string,
-  ) {
-    this.assureNoNamedEntityAlreadyDefined(name)
-
-    const catalog = new IntegrationClientBuilder(name, this.defaultLanguage, title)
-
-    this.integrationClients.push({entity: catalog, options: this.defOpts})
-
-    return catalog
-  }
-
   getCatalogByName(name: string) {
     const catalog = this.catalogs.find((c) => c.entity.name === name)
 
@@ -623,6 +610,25 @@ class SystemMetaBuilder {
     this.restApis.push(restApi)
 
     return restApi
+  }
+
+  addIntegrationClient(
+    name: string,
+    title?: string,
+  ) {
+    if (
+      this.integrationClients.some((f) => f.name === name)
+    ) {
+      throw new Error(
+        `There is already entity with name "${name}". Entity ${this.name}`
+      )
+    }
+
+    const integrationClient = new IntegrationClientBuilder(name, this.defaultLanguage, title)
+
+    this.integrationClients.push(integrationClient)
+
+    return integrationClient;
   }
 
   addWorker(name: string, title?: string) {
@@ -699,7 +705,7 @@ class SystemMetaBuilder {
 
   assureNoNamedEntityAlreadyDefined(name: string) {
     if (
-      this.getNamedEntities().some((f) => f.entity.name === name)
+      this.getSavableEntities().some((f) => f.entity.name === name)
     ) {
       throw new Error(
         `There is already entity with name "${name}". Entity ${this.name}`
@@ -792,13 +798,6 @@ class SystemMetaBuilder {
       this.sumRegistries,
     ].flat();
   }
-  
-  getNamedEntities() {
-    return [
-      this.getSavableEntities(),
-      this.integrationClients,
-    ].flat();
-  }
 
   getExternalSearchEntities(): Array<CatalogBuilder | DocumentBuilder | InfoRegistryBuilder | SumRegistryBuilder> {
     return this.getSavableEntities()
@@ -859,8 +858,11 @@ class SystemMetaBuilder {
       languages: this.languages.sort(),
       defaultLanguage: this.defaultLanguage,
       reports: sortByName(this.reports).map(({ entity }) => entity.build()),
-      restApis: R.sortBy(R.prop('name'), this.restApis).map((api) =>
+      restApis: R.sortBy(R.prop('name'), this.restApis).map(api =>
         api.build()
+      ),
+      integrationClients: R.sortBy(R.prop('name'), this.integrationClients).map(c =>
+        c.build()
       ),
       workers: R.sortBy(R.prop('name'), this.workers).map((worker) =>
         worker.build()

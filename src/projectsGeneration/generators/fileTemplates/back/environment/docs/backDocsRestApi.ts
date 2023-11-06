@@ -2,7 +2,7 @@ import curlExampleToText from '../../../../../../documentation/curlExampleToText
 import { ProjectWideGenerationArgs } from '../../../../../args'
 import { RestApi } from '../../../../../builders/buildedTypes'
 
-export const backDocsRestApi = (
+const backDocsRestApi = (
   { system }: ProjectWideGenerationArgs,
   restApi: RestApi
 ) => {
@@ -68,3 +68,5 @@ ${JSON.stringify(method.errorResponseExample, null, 2)}
   })
   .join('\n')}`
 }
+
+export default backDocsRestApi;

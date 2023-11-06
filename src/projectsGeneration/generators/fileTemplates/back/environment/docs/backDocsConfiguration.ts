@@ -3,7 +3,7 @@ import { constantCase } from 'change-case'
 import markdownTable from 'markdown-table'
 import { ProjectWideGenerationArgs } from '../../../../../args'
 
-export const backDocsConfiguration = ({
+const backDocsConfiguration = ({
   system,
 }: ProjectWideGenerationArgs) => {
   const backVars = system.configVars.filter((v) => v.scopes.includes('back'))
@@ -31,3 +31,5 @@ ${markdownTable([
 ])}
 `
 }
+
+export default backDocsConfiguration;

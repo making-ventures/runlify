@@ -421,6 +421,7 @@ export type System = {
   commands: Command[]
   glossary: Glossary[]
   restApis: RestApi[]
+  integrationClients: IntegrationClient[]
   workers: Worker[]
 
   back: Back
