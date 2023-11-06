@@ -1,6 +1,5 @@
 import {
   BootstrapEntityOptions,
-  EntityWithOptions,
   EntityBuilderWithOptions,
   defaultBootstrapEntityOptions,
 } from '../types'
@@ -29,6 +28,7 @@ import RoleBuilder from './RoleBuilder'
 import TelegramBotBuilder from './TelegramBotBuilder'
 import {ConfigVarBuilder} from './ConfigVarBuilder';
 import log from '../../log';
+import IntegrationClientBuilder from './integrationClients/IntegrationClientBuilder'
 
 export const defaultConfigVar: Omit<ConfigVar, 'name' | 'type'> = {
   needFor: '',
@@ -41,6 +41,7 @@ export const defaultConfigVar: Omit<ConfigVar, 'name' | 'type'> = {
 
 class SystemMetaBuilder {
   catalogs: EntityBuilderWithOptions<CatalogBuilder>[] = []
+  integrationClients: EntityBuilderWithOptions<IntegrationClientBuilder>[] = []
   reports: EntityBuilderWithOptions<ReportBuilder>[] = []
   documents: EntityBuilderWithOptions<DocumentBuilder>[] = []
   infoRegistries: EntityBuilderWithOptions<InfoRegistryBuilder>[] = []
@@ -566,15 +567,24 @@ class SystemMetaBuilder {
     },
     options = this ? this.defOpts : ({} as any)
   ) {
-    if (
-      [...this.catalogs, ...this.documents].some((f) => f.entity.name === name)
-    ) {
-      throw new Error(`There is already entity with name "${name}"`)
-    }
+    this.assureNoNamedEntityAlreadyDefined(name)
 
     const catalog = new CatalogBuilder(name, this.defaultLanguage, title)
 
     this.catalogs.push({ entity: catalog, options })
+
+    return catalog
+  }
+
+  addIntegrationClient(
+    name: string,
+    title?: string,
+  ) {
+    this.assureNoNamedEntityAlreadyDefined(name)
+
+    const catalog = new IntegrationClientBuilder(name, this.defaultLanguage, title)
+
+    this.integrationClients.push({entity: catalog, options: this.defOpts})
 
     return catalog
   }
@@ -635,13 +645,7 @@ class SystemMetaBuilder {
     },
     options = this ? this.defOpts : ({} as any)
   ) {
-    if (
-      [...this.catalogs, ...this.documents].some((f) => f.entity.name === name)
-    ) {
-      throw new Error(
-        `There is already entity with name "${name}". Entity ${this.name}`
-      )
-    }
+    this.assureNoNamedEntityAlreadyDefined(name)
 
     const catalog = new CatalogBuilder(name, this.defaultLanguage, title)
     this.catalogs.push({ entity: catalog, options })
@@ -666,13 +670,7 @@ class SystemMetaBuilder {
     },
     options = this ? this.defOpts : ({} as any)
   ) {
-    if (
-      [...this.catalogs, ...this.documents].some((f) => f.entity.name === name)
-    ) {
-      throw new Error(
-        `There is already entity with name "${name}". Entity ${this.name}`
-      )
-    }
+    this.assureNoNamedEntityAlreadyDefined(name)
 
     const document = new DocumentBuilder(name, this.defaultLanguage, title)
 
@@ -699,6 +697,16 @@ class SystemMetaBuilder {
     return report
   }
 
+  assureNoNamedEntityAlreadyDefined(name: string) {
+    if (
+      this.getNamedEntities().some((f) => f.entity.name === name)
+    ) {
+      throw new Error(
+        `There is already entity with name "${name}". Entity ${this.name}`
+      )
+    }
+  }
+
   addInfoRegistry(
     name: string,
     registrarDepended: boolean,
@@ -708,13 +716,7 @@ class SystemMetaBuilder {
     },
     options = this ? this.defOpts : ({} as any)
   ) {
-    if (
-      [...this.catalogs, ...this.documents].some((f) => f.entity.name === name)
-    ) {
-      throw new Error(
-        `There is already entity with name "${name}". Entity ${this.name}`
-      )
-    }
+    this.assureNoNamedEntityAlreadyDefined(name)
 
     const infoRegistry = new InfoRegistryBuilder(
       name,
@@ -737,13 +739,7 @@ class SystemMetaBuilder {
     },
     options?: RegistryOptions,
   ) {
-    if (
-      [...this.catalogs, ...this.documents].some((f) => f.entity.name === name)
-    ) {
-      throw new Error(
-        `There is already entity with name "${name}". Entity ${this.name}`
-      )
-    }
+    this.assureNoNamedEntityAlreadyDefined(name)
 
     const sumRegistry = new SumRegistryBuilder(
       name,
@@ -787,22 +783,25 @@ class SystemMetaBuilder {
 
     return this
   }
-
-  getEntities(): EntityWithOptions[] {
-    return [...this.catalogs, ...this.documents].map((el) => ({
-      entity: el.entity.build(),
-      options: el.options,
-    }))
-  }
-
-  getExternalSearchEntities(): Array<CatalogBuilder | DocumentBuilder | InfoRegistryBuilder | SumRegistryBuilder> {
+  
+  getSavableEntities() {
     return [
       this.catalogs,
       this.documents,
       this.infoRegistries,
       this.sumRegistries,
-    ]
-      .flat()
+    ].flat();
+  }
+  
+  getNamedEntities() {
+    return [
+      this.getSavableEntities(),
+      this.integrationClients,
+    ].flat();
+  }
+
+  getExternalSearchEntities(): Array<CatalogBuilder | DocumentBuilder | InfoRegistryBuilder | SumRegistryBuilder> {
+    return this.getSavableEntities()
       .map(e => e.entity)
       .filter((e) => e.externalSearch)
   }
