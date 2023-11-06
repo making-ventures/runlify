@@ -56,6 +56,8 @@ import { initEntities } from './generators/fileTemplates/back/initEntities'
 import { uiGetEntityValidationTmpl } from './generators/fileTemplates/ui/pages/getEntityValidation'
 import {generateBackElasticBootstrap} from './generators/fileTemplates/back/elastic/elastic';
 import backDocsIntegrationClient from './generators/fileTemplates/back/environment/docs/backDocsIntegrationClient'
+import backIntegrationClientTmpl from './generators/fileTemplates/back/environment/src/integrationClients/IntegrationClient'
+import { pascalCase } from 'change-case'
 
 // Бек (generateBack)
 //  Исходники бека (generateBackSrc)
@@ -146,6 +148,25 @@ export const generateBackSrc = async (args: ProjectWideGenerationArgs) => {
       generateBackSrcEntity(prepareEntityWideGenerationArgs(args, entity))
     )
   )
+
+  generateBackIntegrationClients(args)
+}
+
+export const generateBackIntegrationClients = async (
+  args: ProjectWideGenerationArgs
+) => {
+  for (const client of args.system.integrationClients) {
+    const filePath = join(
+      args.options.detachedBackProject,
+      'src',
+      'integrationClients',
+      `${client.name}`,
+      `${pascalCase(client.name)}Client.ts`,
+    )
+
+    // rlw-back/src/integrationClients/express/ExpressClient.ts
+    write(filePath, backIntegrationClientTmpl(args, client))
+  }
 }
 
 export const generateBackGitlabCi = async (
@@ -197,7 +218,7 @@ export const generateBackDocsRestApis = async (
   }
 }
 
-export const generateBackIntegrationClients = async (
+export const generateBackDocsIntegrationClients = async (
   args: ProjectWideGenerationArgs
 ) => {
   for (const client of args.system.integrationClients) {
@@ -379,7 +400,7 @@ export const generateBackDocs = async (args: ProjectWideGenerationArgs) => {
   await Promise.all([
     generateBackDocsConfiguration(args),
     generateBackDocsRestApis(args),
-    generateBackIntegrationClients(args),
+    generateBackDocsIntegrationClients(args),
     generateBackDocsEntities(args),
     generateBackEnums(args),
     generateBackEnumsInit(args),
