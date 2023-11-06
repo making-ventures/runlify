@@ -58,6 +58,7 @@ import {generateBackElasticBootstrap} from './generators/fileTemplates/back/elas
 import backDocsIntegrationClient from './generators/fileTemplates/back/environment/docs/backDocsIntegrationClient'
 import backIntegrationClientTmpl from './generators/fileTemplates/back/environment/src/integrationClients/IntegrationClient'
 import { pascalCase } from 'change-case'
+import backIntegrationClientTypesTmpl from './generators/fileTemplates/back/environment/src/integrationClients/types'
 
 // Бек (generateBack)
 //  Исходники бека (generateBackSrc)
@@ -156,16 +157,15 @@ export const generateBackIntegrationClients = async (
   args: ProjectWideGenerationArgs
 ) => {
   for (const client of args.system.integrationClients) {
-    const filePath = join(
+    const clientFolder = join(
       args.options.detachedBackProject,
       'src',
       'integrationClients',
       `${client.name}`,
-      `${pascalCase(client.name)}Client.ts`,
     )
 
-    // rlw-back/src/integrationClients/express/ExpressClient.ts
-    write(filePath, backIntegrationClientTmpl(args, client))
+    write(join(clientFolder, `${pascalCase(client.name)}Client.ts`), backIntegrationClientTmpl(args, client));
+    write(join(clientFolder, `types.ts`), backIntegrationClientTypesTmpl(args, client));
   }
 }
 
