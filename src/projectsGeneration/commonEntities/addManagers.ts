@@ -109,7 +109,7 @@ const addManagers = (system: SystemMetaBuilder) => {
   managerLogins.addField('login').setTitles({en: 'Login', ru: 'Логин'}).setType('string').setRequired();
   managerLogins.addField('passwordHash').setTitles({en: 'Password hash', ru: 'Хэш пароля'}).setType('string');
   managerLogins.addField('emailVerified').setTitles({en: 'Email verified', ru: 'Email подтвержден'}).setType('bool');
-  managerLogins.addField('locked') .setTitles({en: 'Locked', ru: 'Заблокирован'}).setType('bool').setRequired();
+  managerLogins.addField('locked') .setTitles({en: 'Locked', ru: 'Заблокирован'}).setType('bool').setRequired().setDefaultValueExpression('false');
   managerLogins.addLinkField('managers', 'managerId').setTitles({en: 'Managers', ru: 'Менеджеры'}).setRequired();
   managerLogins.addUniqueConstraint(['managerLoginTypeId', 'login']);
 
