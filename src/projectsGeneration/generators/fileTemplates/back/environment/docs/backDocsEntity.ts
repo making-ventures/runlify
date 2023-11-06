@@ -1,6 +1,6 @@
 import { EntityWideGenerationArgs } from '../../../../../args'
 
-export const backDocsEntity = ({
+const backDocsEntity = ({
   system,
   entity,
 }: EntityWideGenerationArgs) => `
@@ -9,3 +9,5 @@ export const backDocsEntity = ({
 Need for: ${entity.needFor[system.defaultLanguage]}
 
 `
+
+export default backDocsEntity;

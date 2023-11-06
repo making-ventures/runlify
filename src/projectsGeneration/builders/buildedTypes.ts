@@ -298,6 +298,26 @@ export type Catalog = BaseSavableEntity & {
   editable: boolean
 }
 
+export type IntegrationClientBaseModel = {
+  fields: ScalarField[]
+}
+
+export type IntegrationClientArgsModel = IntegrationClientBaseModel
+
+export type IntegrationClientReturnModel = IntegrationClientBaseModel & {
+  array: boolean
+}
+
+export type IntegrationClientQueryMethod = BaseEntity & {
+  argsModel: IntegrationClientArgsModel
+  returnModel: IntegrationClientReturnModel
+}
+
+export type IntegrationClient = BaseEntity & {
+  type: 'integrationClient'
+  queryMethods: IntegrationClientQueryMethod[]
+}
+
 export type Role = BaseEntity & {
   type: 'role'
 }
@@ -401,6 +421,7 @@ export type System = {
   commands: Command[]
   glossary: Glossary[]
   restApis: RestApi[]
+  integrationClients: IntegrationClient[]
   workers: Worker[]
 
   back: Back

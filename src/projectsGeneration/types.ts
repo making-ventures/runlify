@@ -1,4 +1,4 @@
-import BaseSavableEntityBuilder from './builders/BaseSavableEntityBuilder'
+import BaseBuilder from './builders/BaseBuilder'
 import CatalogBuilder from './builders/CatalogBuilder'
 import ReportBuilder from './builders/ReportBuilder'
 import { Entity, LinkField } from './builders/buildedTypes'
@@ -116,7 +116,7 @@ export const defaultBootstrapEntityOptions = {
 export type BootstrapEntityOptions = typeof defaultBootstrapEntityOptions
 
 export interface EntityBuilderWithOptions<
-  T extends BaseSavableEntityBuilder | ReportBuilder = CatalogBuilder
+  T extends BaseBuilder | ReportBuilder = CatalogBuilder
 > {
   entity: T
   options: BootstrapEntityOptions

@@ -36,10 +36,10 @@ import {
   ProjectWideGenerationArgs,
 } from './args'
 import { backDefaultEnv } from './generators/fileTemplates/back/environment/defaultEnv'
-import { backDocsConfiguration } from './generators/fileTemplates/back/environment/docs/backDocsConfiguration'
+import backDocsConfiguration from './generators/fileTemplates/back/environment/docs/backDocsConfiguration'
 import { adminAppDocsConfiguration } from './generators/fileTemplates/ui/environment/docs/adminAppDocsConfiguration'
-import { backDocsRestApi } from './generators/fileTemplates/back/environment/docs/backDocsRestApi'
-import { backDocsEntity } from './generators/fileTemplates/back/environment/docs/backDocsEntity'
+import backDocsRestApi from './generators/fileTemplates/back/environment/docs/backDocsRestApi'
+import backDocsEntity from './generators/fileTemplates/back/environment/docs/backDocsEntity'
 import { plural, singular } from 'pluralize'
 import baseResolversTmpl from './generators/fileTemplates/back/graph/help/baseResolvers'
 import helpServiceTmpl from './generators/fileTemplates/back/services/HelpService/HelpService'
@@ -55,6 +55,10 @@ import { Entities } from './generators/fileTemplates/back/Entities'
 import { initEntities } from './generators/fileTemplates/back/initEntities'
 import { uiGetEntityValidationTmpl } from './generators/fileTemplates/ui/pages/getEntityValidation'
 import {generateBackElasticBootstrap} from './generators/fileTemplates/back/elastic/elastic';
+import backDocsIntegrationClient from './generators/fileTemplates/back/environment/docs/backDocsIntegrationClient'
+import backIntegrationClientTmpl from './generators/fileTemplates/back/environment/src/integrationClients/IntegrationClient'
+import { pascalCase } from 'change-case'
+import backIntegrationClientTypesTmpl from './generators/fileTemplates/back/environment/src/integrationClients/types'
 
 // Бек (generateBack)
 //  Исходники бека (generateBackSrc)
@@ -145,6 +149,24 @@ export const generateBackSrc = async (args: ProjectWideGenerationArgs) => {
       generateBackSrcEntity(prepareEntityWideGenerationArgs(args, entity))
     )
   )
+
+  generateBackIntegrationClients(args)
+}
+
+export const generateBackIntegrationClients = async (
+  args: ProjectWideGenerationArgs
+) => {
+  for (const client of args.system.integrationClients) {
+    const clientFolder = join(
+      args.options.detachedBackProject,
+      'src',
+      'integrationClients',
+      `${client.name}`,
+    )
+
+    write(join(clientFolder, `${pascalCase(client.name)}Client.ts`), backIntegrationClientTmpl(args, client));
+    write(join(clientFolder, `types.ts`), backIntegrationClientTypesTmpl(args, client));
+  }
 }
 
 export const generateBackGitlabCi = async (
@@ -166,7 +188,7 @@ export const generateBackEnvs = async (args: ProjectWideGenerationArgs) => {
     'default.json'
   )
 
-  await write(filePath, backDefaultEnv(args))
+  write(filePath, backDefaultEnv(args))
 }
 
 export const generateBackDocsConfiguration = async (
@@ -178,7 +200,7 @@ export const generateBackDocsConfiguration = async (
     'configuration.md'
   )
 
-  await write(filePath, backDocsConfiguration(args))
+  write(filePath, backDocsConfiguration(args))
 }
 
 export const generateBackDocsRestApis = async (
@@ -192,7 +214,22 @@ export const generateBackDocsRestApis = async (
       `${restApi.name}.md`
     )
 
-    await write(filePath, backDocsRestApi(args, restApi))
+    write(filePath, backDocsRestApi(args, restApi))
+  }
+}
+
+export const generateBackDocsIntegrationClients = async (
+  args: ProjectWideGenerationArgs
+) => {
+  for (const client of args.system.integrationClients) {
+    const filePath = join(
+      args.options.detachedBackProject,
+      'docs',
+      'integrationClients',
+      `${client.name}.md`
+    )
+
+    write(filePath, backDocsIntegrationClient(args, client))
   }
 }
 
@@ -356,13 +393,14 @@ export const generateAdminAppDocsConfiguration = async (
     'configuration.md'
   )
 
-  await write(filePath, adminAppDocsConfiguration(args))
+  write(filePath, adminAppDocsConfiguration(args))
 }
 
 export const generateBackDocs = async (args: ProjectWideGenerationArgs) => {
   await Promise.all([
     generateBackDocsConfiguration(args),
     generateBackDocsRestApis(args),
+    generateBackDocsIntegrationClients(args),
     generateBackDocsEntities(args),
     generateBackEnums(args),
     generateBackEnumsInit(args),
@@ -398,7 +436,7 @@ export const generateFrontSrcEntityTranslationsDocs = async (
       `src/i18n/${lang.id}/${lang.id}Docs.ts`
     )
 
-    await write(filePath, uiTranslationsLangDocsTmpl(args, lang.id))
+    write(filePath, uiTranslationsLangDocsTmpl(args, lang.id))
   }
 }
 
@@ -413,7 +451,7 @@ export const generateFrontSrcEntityTranslationsCatalogs = async (
       `src/i18n/${lang.id}/${lang.id}Catalogs.ts`
     )
 
-    await write(filePath, uiTranslationsLangCatalogsTmpl(args, lang.id))
+    write(filePath, uiTranslationsLangCatalogsTmpl(args, lang.id))
   }
 }
 
@@ -428,7 +466,7 @@ export const generateFrontSrcEntityTranslationsInfoRegistries = async (
       `src/i18n/${lang.id}/${lang.id}InfoRegistries.ts`
     )
 
-    await write(filePath, uiTranslationsLangInfoRegistriesTmpl(args, lang.id))
+    write(filePath, uiTranslationsLangInfoRegistriesTmpl(args, lang.id))
   }
 }
 
@@ -443,7 +481,7 @@ export const generateFrontSrcEntityTranslationsSumRegistries = async (
       `src/i18n/${lang.id}/${lang.id}SumRegistries.ts`
     )
 
-    await write(filePath, uiTranslationsLangSumRegistriesTmpl(args, lang.id))
+    write(filePath, uiTranslationsLangSumRegistriesTmpl(args, lang.id))
   }
 }
 
@@ -458,7 +496,7 @@ export const generateFrontSrcEntityTranslationsReports = async (
       `src/i18n/${lang.id}/${lang.id}Reports.ts`
     )
 
-    await write(filePath, uiTranslationsLangReportsTmpl(args, lang.id))
+    write(filePath, uiTranslationsLangReportsTmpl(args, lang.id))
   }
 }
 
@@ -474,7 +512,7 @@ export const generateFrontSrcEntityIcon = async (
     `src/adm/pages/${name}/${pascalSingular(name)}Icon.tsx`
   )
 
-  await write(filePath, uiEntityIconTmpl(entityWideGenerationArgs))
+  write(filePath, uiEntityIconTmpl(entityWideGenerationArgs))
 }
 
 export const generateFrontSrcGetEntityValidation = async (
@@ -490,7 +528,7 @@ export const generateFrontSrcGetEntityValidation = async (
     `src/adm/pages/${name}/get${pascalSingular(name)}Validation.tsx`
   )
 
-  await write(filePath, uiGetEntityValidationTmpl(entityWideGenerationArgs))
+  write(filePath, uiGetEntityValidationTmpl(entityWideGenerationArgs))
 }
 
 export const generateFrontSrcEntity = async (
@@ -590,7 +628,7 @@ const generateProject = async (
     'services',
     'meta'
   )
-  await write(`${graphMetaServiceDir}/baseTypeDefs.ts`, graphMetaTypesTmpl())
+  write(`${graphMetaServiceDir}/baseTypeDefs.ts`, graphMetaTypesTmpl())
 
   await genGraphSchemesByLocalGenerator(opts)
 
@@ -618,13 +656,13 @@ const generateProject = async (
 
   // if (opts.genPrismaSchema) {
   //   const prismaSchema = genPrismaSchemaForEntities(args, allLinks);
-  //   await write(join(prjBackSrcPrefixedDir, 'schema.prisma'), prismaSchema);
+  //   write(join(prjBackSrcPrefixedDir, 'schema.prisma'), prismaSchema);
   // }
 
   // Graph
   const graphDir = join(prjBackSrcPrefixedDir, 'graph')
 
-  await write(
+  write(
     `${graphMetaServiceDir}/baseResolvers.ts`,
     graphMetaResolversTmpl()
   )
@@ -632,12 +670,12 @@ const generateProject = async (
   // // Context
   // // src/dc/services/context.ts
   // if (opts.genContext && !opts.typesOnly) {
-  //   await write(join(servicesDir, 'context.ts'), graphContextTmpl(args));
+  //   write(join(servicesDir, 'context.ts'), graphContextTmpl(args));
   // }
 
   // Types
   if (opts.genContext) {
-    await write(
+    write(
       join(servicesDir, 'BaseServices.ts'),
       graphBaseServicesTmpl(args)
     )
@@ -645,7 +683,7 @@ const generateProject = async (
 
   // Types
   if (opts.genContext) {
-    await write(
+    write(
       join(servicesDir, 'serviceConstrictors.ts'),
       graphServiceConstrictorsTmpl(args)
     )
@@ -657,7 +695,7 @@ const generateProject = async (
     generatedAdditionalServices
   )
 
-  await write(
+  write(
     join(graphDir, 'permissionsToGraphql.ts'),
     backPermissionToGraphqlTmpl(args, opts)
   )
@@ -691,7 +729,7 @@ const generateProject = async (
   //   infoRegistries: system.infoRegistries,
   //   sumRegistries: system.sumRegistries,
   // }
-  // await write(
+  // write(
   //   join(genFolder, 'metadata.json'),
   //   stringify(metaWithoutOptions, undefined, 1)
   // )
@@ -714,7 +752,7 @@ const generateProject = async (
     if (opts.genUiResources) {
       const generatedResources = uiResourcesTmpl(args)
 
-      await write(
+      write(
         join(prjUiSrcPrefixedDir, 'resources.tsx'),
         generatedResources
       )
@@ -725,21 +763,21 @@ const generateProject = async (
     if (opts.genUiResourcesPage) {
       const generatedResources = uiResourcesPageTmpl(args)
 
-      await write(
+      write(
         join(prjUiSrcPrefixedDir, 'ResourcesPage.tsx'),
         generatedResources
       )
     }
 
     const generatedUiMetaPage = uiMetaPageTmpl()
-    await write(join(prjUiSrcPrefixedDir, 'MetaPage.tsx'), generatedUiMetaPage)
+    write(join(prjUiSrcPrefixedDir, 'MetaPage.tsx'), generatedUiMetaPage)
 
     // Resources page
     // src/dc/entityMapping.ts genUiEntityMapping uiEntityMappingTmpl
     if (opts.genUiEntityMapping) {
       const generatedResources = uiEntityMappingTmpl(args, opts)
 
-      await write(
+      write(
         join(prjUiSrcPrefixedDir, 'entityMapping.ts'),
         generatedResources
       )
@@ -751,7 +789,7 @@ const generateProject = async (
       const generatedSubMenu = uiGetDefaultMenuTmpl(args)
       const generatedAdditionalMenu = uiGetAdditionalMenuTmpl()
 
-      await write(
+      write(
         join(prjUiSrcPrefixedDir, 'getDefaultMenu.ts'),
         generatedSubMenu
       )
@@ -766,7 +804,7 @@ const generateProject = async (
     if (opts.genUiRoutes) {
       const generatedResources = uiRoutesTmpl(args)
 
-      await write(join(prjUiSrcPrefixedDir, 'routes.tsx'), generatedResources)
+      write(join(prjUiSrcPrefixedDir, 'routes.tsx'), generatedResources)
     }
 
     const generatedUiAdditionalRoutesTmpl = uiAdditionalRoutesTmpl()
@@ -782,7 +820,7 @@ const generateProject = async (
 
       const uiFunctionsDir = join(prjUiSrcPrefixedDir, 'functions')
 
-      await write(join(uiFunctionsDir, 'Functions.tsx'), generatedResources)
+      write(join(uiFunctionsDir, 'Functions.tsx'), generatedResources)
     }
 
     // Dashboard page

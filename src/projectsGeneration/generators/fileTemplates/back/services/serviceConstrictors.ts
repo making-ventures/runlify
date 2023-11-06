@@ -16,6 +16,7 @@ const graphServiceConstrictorsTmpl = ({
 import {getHelpService} from './HelpService/HelpService';
 import {ServiceConstrictors, BaseServiceConstrictors} from './types';
 import additionalServiceConstrictors from './additionalServiceConstrictors';
+import clientConstrictors from './clientConstrictors';
 ${
   options.skipWarningThisIsGenerated
     ? ''
@@ -31,6 +32,7 @@ export const baseServiceConstrictors: BaseServiceConstrictors = {
 const serviceConstrictors: ServiceConstrictors = {
   ...baseServiceConstrictors,
   ...additionalServiceConstrictors,
+  ...clientConstrictors,
 };
 
 export default serviceConstrictors;
