@@ -9,8 +9,8 @@ const backIntegrationClientTmpl = (
   return `import axios, {AxiosInstance} from 'axios';
 import log from '../../log';
 import {
-  ${pascalCase(client.name)}Client${pascalCase(m.name)}sArgs,
-  ${pascalCase(client.name)}Client${pascalCase(m.name)}sResult,
+${client.queryMethods.map(m => `  ${pascalCase(client.name)}Client${pascalCase(m.name)}Args,
+  ${pascalCase(client.name)}Client${pascalCase(m.name)}Result,`).join('\n')}
   I${pascalCase(client.name)}Client,
 } from './types';
 import {
@@ -45,14 +45,14 @@ class ${pascalCase(client.name)}Client extends IntegrationClient implements I${p
     // log.info(args);
   }
 
-${client.queryMethods.map(m => `  async ${m.name}(args: ${pascalCase(client.name)}Client${pascalCase(m.name)}sArgs) {
+${client.queryMethods.map(m => `  async ${m.name}(args: ${pascalCase(client.name)}Client${pascalCase(m.name)}Args) {
     log.info(args);
 
     if (Math.random() < 0.5) {
       throw new Error('Some error');
     }
 
-    return this.ax.get('https://jsonplaceholder.typicode.com/users').then(result => result.data as ${pascalCase(client.name)}Client${pascalCase(m.name)}sResult);
+    return this.ax.get('https://jsonplaceholder.typicode.com/users').then(result => result.data as ${pascalCase(client.name)}Client${pascalCase(m.name)}Result);
   }`).join('\n\n')}
 }
 
