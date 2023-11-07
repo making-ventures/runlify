@@ -26,7 +26,7 @@ ${markdownTable([
   ...m.argsModel.fields.map((f) => [
     f.name,
     f.title[system.defaultLanguage],
-    f.type,
+    'type' in f ? f.type : '',
     f.required ? 'Обязательное' : 'Не обязательное',
   ]),
 ])}
@@ -42,7 +42,7 @@ ${markdownTable([
   ...m.returnModel.fields.map((f) => [
     f.name,
     f.title[system.defaultLanguage],
-    f.type,
+    'type' in f ? f.type : '',
     f.required ? 'Обязательное' : 'Не обязательное',
   ]),
 ])}
