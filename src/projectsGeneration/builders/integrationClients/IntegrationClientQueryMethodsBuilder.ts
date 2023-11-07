@@ -13,8 +13,8 @@ class IntegrationClientQueryMethodsBuilder extends BaseBuilder {
     super(name, defaultLanguage, {singular: title})
     
     this.client = client
-    this.argsModel = new IntegrationClientArgsModelBuilder(client, defaultLanguage);
-    this.returnModel = new IntegrationClientReturnModelBuilder(client, defaultLanguage);
+    this.argsModel = new IntegrationClientArgsModelBuilder(client, name, defaultLanguage);
+    this.returnModel = new IntegrationClientReturnModelBuilder(client, name, defaultLanguage);
   }
 
   getArgsModel(): IntegrationClientArgsModelBuilder {

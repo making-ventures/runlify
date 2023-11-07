@@ -5,8 +5,8 @@ import IntegrationClientBuilder from './IntegrationClientBuilder';
 class IntegrationClientReturnModelBuilder extends IntegrationClientBaseModelBuilder {
   protected array = false;
 
-  constructor(client: IntegrationClientBuilder, defaultLanguage: string) {
-    super(client, `${client.name}Model`, `Основная модель результата ${client.name}`, defaultLanguage)
+  constructor(client: IntegrationClientBuilder, queryMethodName: string, defaultLanguage: string) {
+    super(client, `${queryMethodName}Model`, `Основная модель результата ${client.name}`, defaultLanguage)
   }
 
   setArray(array: boolean) {
