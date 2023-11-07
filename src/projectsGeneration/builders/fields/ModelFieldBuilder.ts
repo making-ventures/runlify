@@ -18,6 +18,10 @@ class ModelFieldBuilder extends BaseFieldBuilder {
     this.model = model;
   }
 
+  setArray(array: boolean) {
+    this.array = array;
+  }
+
   build(): ModelField {
     const base = super.build()
 
