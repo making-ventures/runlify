@@ -1,4 +1,4 @@
-import {paramCase} from 'change-case'
+import {paramCase, pascalCase} from 'change-case'
 import markdownTable from 'markdown-table';
 import {ProjectWideGenerationArgs} from '../../../../../args'
 import {IntegrationClient} from '../../../../../builders/buildedTypes'
@@ -26,7 +26,7 @@ ${markdownTable([
   ...m.argsModel.fields.map((f) => [
     f.name,
     f.title[system.defaultLanguage],
-    'type' in f ? f.type : '',
+    'type' in f ? f.type : pascalCase(f.model),
     f.required ? 'Обязательное' : 'Не обязательное',
   ]),
 ])}
@@ -42,7 +42,7 @@ ${markdownTable([
   ...m.returnModel.fields.map((f) => [
     f.name,
     f.title[system.defaultLanguage],
-    'type' in f ? f.type : '',
+    'type' in f ? f.type : pascalCase(f.model),
     f.required ? 'Обязательное' : 'Не обязательное',
   ]),
 ])}

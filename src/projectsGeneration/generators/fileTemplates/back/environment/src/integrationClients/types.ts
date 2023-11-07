@@ -4,13 +4,15 @@ import {IntegrationClient, TsModelField} from '../../../../../../builders/builde
 import { fieldTypeToTsType } from '../../../../../fieldTypeToTsType'
 
 const fieldsToTsTypeFields = (fields: TsModelField[]) =>
-  fields.map(f => `${f.name}${f.required ? '' : '?'}: ${f.category === 'model' ? f.model : fieldTypeToTsType(f.type)}`)
+  fields.map(f => `${f.name}${f.required ? '' : '?'}: ${f.category === 'model' ? `${pascalCase(f.model)}${f.array ? '[]' : ''}` : fieldTypeToTsType(f.type)}`)
 
 const backIntegrationClientTypesTmpl = (
   _args: ProjectWideGenerationArgs,
   client: IntegrationClient
 ) => {
-  return `${client.queryMethods.map(m => `export interface ${pascalCase(m.name)}Args ${m.argsModel.fields.length ? `{
+  return `${client.models.map(m => `export interface ${pascalCase(m.name)} {
+${fieldsToTsTypeFields(m.fields).map(r => `  ${r},`).join('\n')}
+}`).join('\n\n')}${client.models.length ? '\n\n' : ''}${client.queryMethods.map(m => `export interface ${pascalCase(m.name)}Args ${m.argsModel.fields.length ? `{
 ${fieldsToTsTypeFields(m.argsModel.fields).map(r => `  ${r},`).join('\n')}
 }` : '{}'}
 
