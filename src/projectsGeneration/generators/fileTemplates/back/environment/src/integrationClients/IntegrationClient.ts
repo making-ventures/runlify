@@ -45,7 +45,7 @@ class ${pascalCase(client.name)}Client extends IntegrationClient implements I${p
     // log.info(args);
   }
 
-${client.queryMethods.map(m => `  async ${m.name}(args: ${pascalCase(m.name)}Args) {
+${client.queryMethods.map(m => `  async ${m.name}(args: ${pascalCase(m.name)}Args): Promise<${pascalCase(m.name)}Result> {
     log.info(args);
 
     if (Math.random() < 0.5) {
