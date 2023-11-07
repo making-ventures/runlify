@@ -1,10 +1,10 @@
 import {pascalCase} from 'change-case'
 import {ProjectWideGenerationArgs} from '../../../../../../args'
-import {IntegrationClient, ScalarField} from '../../../../../../builders/buildedTypes'
+import {IntegrationClient, TsModelField} from '../../../../../../builders/buildedTypes'
 import { fieldTypeToTsType } from '../../../../../fieldTypeToTsType'
 
-const fieldsToTsTypeFields = (fields: ScalarField[]) =>
-  fields.map(f => `${f.name}${f.required ? '' : '?'}: ${fieldTypeToTsType(f.type)}`)
+const fieldsToTsTypeFields = (fields: TsModelField[]) =>
+  fields.map(f => `${f.name}${f.required ? '' : '?'}: ${f.category === 'model' ? f.model : fieldTypeToTsType(f.type)}`)
 
 const backIntegrationClientTypesTmpl = (
   _args: ProjectWideGenerationArgs,

@@ -8,7 +8,7 @@ import {
   BaseField,
 } from '../buildedTypes'
 
-export abstract class BaseFieldBuilder {
+abstract class BaseFieldBuilder {
   defaultLanguage: string
   category: 'trivial' | 'link' = 'trivial'
   type: FieldType = 'int'
@@ -36,6 +36,7 @@ export abstract class BaseFieldBuilder {
   showInEdit = true
   showInShow = true
   sharded = false
+
   constructor(name: string, defaultLanguage: string, title?: string) {
     this.defaultLanguage = defaultLanguage
     this.setName(name)
@@ -304,3 +305,5 @@ export abstract class BaseFieldBuilder {
     return this
   }
 }
+
+export default BaseFieldBuilder;

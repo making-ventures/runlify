@@ -1,9 +1,9 @@
 import {
   ScalarField,
 } from '../buildedTypes'
-import { BaseFieldBuilder } from './BaseFieldBuilder'
+import BaseFieldBuilder from './BaseFieldBuilder'
 
-export class ScalarFieldBuilder extends BaseFieldBuilder {
+class ScalarFieldBuilder extends BaseFieldBuilder {
   build(): ScalarField {
     const base = super.build()
 
@@ -63,3 +63,5 @@ export class ScalarFieldBuilder extends BaseFieldBuilder {
     }
   }
 }
+
+export default ScalarFieldBuilder;

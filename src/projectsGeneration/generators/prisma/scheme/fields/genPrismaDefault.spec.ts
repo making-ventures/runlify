@@ -1,6 +1,6 @@
 import { expect } from 'jest-without-globals'
-import { IdFieldBuilder } from '../../../../builders/fields/IdFieldBuilder'
-import { ScalarFieldBuilder } from '../../../../builders/fields/ScalarFieldBuilder'
+import IdFieldBuilder from '../../../../builders/fields/IdFieldBuilder'
+import ScalarFieldBuilder from '../../../../builders/fields/ScalarFieldBuilder'
 import { genPrismaDefault } from './genPrismaDefault'
 
 // yarn test --testPathPattern genPrismaDefault

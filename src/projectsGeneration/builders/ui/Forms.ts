@@ -12,6 +12,8 @@ export interface ListForm {
   filter: ListFormFilter
 }
 
-export interface Forms {
+interface Forms {
   listForm: ListForm
 }
+
+export default Forms;

@@ -1,6 +1,6 @@
 import { HttpMethod } from './curlTypes'
 import { DocumentationOfDocument } from './docs/DocumentationOfDocument'
-import { Forms } from './ui/Forms'
+import Forms from './ui/Forms'
 
 export type ConfigVarScope =
   | 'ci'
@@ -235,6 +235,21 @@ export type EntityLinkField = GeneralLinkField & { linkCategory: 'entity' }
 export type ViewLinkField = GeneralLinkField & { linkCategory: 'view' }
 export type LinkField = EntityLinkField | ViewLinkField
 
+export type ModelField = BaseField & {
+  category: 'model'
+  array: boolean
+  model: string;
+  // name: string
+  // title: Record<string, string>
+  // needFor: string
+  // updatable: boolean
+  // required: boolean
+}
+
+export type TsModelField =
+  | ScalarField
+  | ModelField
+
 export type IdField = IntIdField | BigIntIdField | StringIdField
 
 export type Field = ScalarField | LinkField | IdField | ViewLinkField
@@ -298,13 +313,13 @@ export type Catalog = BaseSavableEntity & {
   editable: boolean
 }
 
-export type IntegrationClientBaseModel = {
-  fields: ScalarField[]
+export type TsModel = BaseEntity & {
+  fields: TsModelField[]
 }
 
-export type IntegrationClientArgsModel = IntegrationClientBaseModel
+export type IntegrationClientArgsModel = TsModel
 
-export type IntegrationClientReturnModel = IntegrationClientBaseModel & {
+export type IntegrationClientReturnModel = TsModel & {
   array: boolean
 }
 
@@ -315,6 +330,7 @@ export type IntegrationClientQueryMethod = BaseEntity & {
 
 export type IntegrationClient = BaseEntity & {
   type: 'integrationClient'
+  models: TsModel[]
   queryMethods: IntegrationClientQueryMethod[]
 }
 

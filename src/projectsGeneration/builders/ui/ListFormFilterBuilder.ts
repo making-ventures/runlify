@@ -1,8 +1,8 @@
 import BaseSavableEntityBuilder from '../BaseSavableEntityBuilder'
 import { ListFormFilter } from './Forms'
-import { ListFormFilterFieldBuilder } from './ListFormFilterFieldBuilder'
+import ListFormFilterFieldBuilder from './ListFormFilterFieldBuilder'
 
-export class ListFormFilterBuilder {
+class ListFormFilterBuilder {
   getEntity: () => BaseSavableEntityBuilder
   fields: ListFormFilterFieldBuilder[]
 
@@ -32,3 +32,5 @@ export class ListFormFilterBuilder {
     }
   }
 }
+
+export default ListFormFilterBuilder;

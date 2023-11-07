@@ -5,9 +5,9 @@ import {
   PredefinedLinkedEntity,
   FileType,
 } from '../buildedTypes'
-import { BaseFieldBuilder } from './BaseFieldBuilder'
+import BaseFieldBuilder from './BaseFieldBuilder'
 
-export class ViewLinkFieldBuilder extends BaseFieldBuilder {
+class ViewLinkFieldBuilder extends BaseFieldBuilder {
   type: TKeyFieldType = 'int'
   predefinedLinkedEntity: PredefinedLinkedEntity = 'none'
   fileType: FileType = 'plain'
@@ -120,3 +120,5 @@ export class ViewLinkFieldBuilder extends BaseFieldBuilder {
     }
   }
 }
+
+export default ViewLinkFieldBuilder;

@@ -2,16 +2,19 @@ import {IntegrationClientQueryMethod} from '../buildedTypes'
 import BaseBuilder from '../BaseBuilder'
 import IntegrationClientArgsModelBuilder from './IntegrationClientArgsModelBuilder';
 import IntegrationClientReturnModelBuilder from './IntegrationClientReturnModelBuilder';
+import IntegrationClientBuilder from './IntegrationClientBuilder';
 
 class IntegrationClientQueryMethodsBuilder extends BaseBuilder {
+  protected client: IntegrationClientBuilder;
   protected argsModel: IntegrationClientArgsModelBuilder;
   protected returnModel: IntegrationClientReturnModelBuilder;
 
-  constructor(name: string, defaultLanguage: string, title?: string) {
+  constructor(client: IntegrationClientBuilder, name: string, defaultLanguage: string, title?: string) {
     super(name, defaultLanguage, {singular: title})
     
-    this.argsModel = new IntegrationClientArgsModelBuilder(defaultLanguage);
-    this.returnModel = new IntegrationClientReturnModelBuilder(defaultLanguage);
+    this.client = client
+    this.argsModel = new IntegrationClientArgsModelBuilder(client, defaultLanguage);
+    this.returnModel = new IntegrationClientReturnModelBuilder(client, defaultLanguage);
   }
 
   getArgsModel(): IntegrationClientArgsModelBuilder {

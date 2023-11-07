@@ -5,9 +5,9 @@ import {
   PredefinedLinkedEntity,
   TKeyFieldType,
 } from '../buildedTypes'
-import { BaseFieldBuilder } from './BaseFieldBuilder'
+import BaseFieldBuilder from './BaseFieldBuilder'
 
-export class LinkFieldBuilder extends BaseFieldBuilder {
+class LinkFieldBuilder extends BaseFieldBuilder {
   type: TKeyFieldType = 'int'
   predefinedLinkedEntity: PredefinedLinkedEntity = 'none'
   fileType: FileType = 'plain'
@@ -134,3 +134,5 @@ export class LinkFieldBuilder extends BaseFieldBuilder {
     }
   }
 }
+
+export default LinkFieldBuilder;

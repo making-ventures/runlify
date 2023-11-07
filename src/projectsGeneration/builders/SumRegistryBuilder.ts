@@ -1,9 +1,9 @@
 import { Multitenancy, SumRegistry } from './buildedTypes'
 import BaseSavableEntityBuilder from './BaseSavableEntityBuilder'
-import { ScalarFieldBuilder } from './fields/ScalarFieldBuilder'
-import { LinkFieldBuilder } from './fields/LinkFieldBuilder'
+import ScalarFieldBuilder from './fields/ScalarFieldBuilder'
+import LinkFieldBuilder from './fields/LinkFieldBuilder'
 import { FieldBuilder } from './types'
-import { ViewLinkFieldBuilder } from './fields/ViewLinkFieldBuilder'
+import ViewLinkFieldBuilder from './fields/ViewLinkFieldBuilder'
 
 export interface RegistryOptions {
   registrarIdType?: 'int' | 'string';

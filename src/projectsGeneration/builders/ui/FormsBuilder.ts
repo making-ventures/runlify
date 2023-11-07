@@ -1,8 +1,8 @@
 import BaseSavableEntityBuilder from '../BaseSavableEntityBuilder'
-import { Forms } from './Forms'
-import { ListFormBuilder } from './ListFormBuilder'
+import Forms from './Forms'
+import ListFormBuilder from './ListFormBuilder'
 
-export class FormsBuilder {
+class FormsBuilder {
   getEntity: () => BaseSavableEntityBuilder
   listForm: ListFormBuilder
 
@@ -22,3 +22,5 @@ export class FormsBuilder {
     }
   }
 }
+
+export default FormsBuilder;

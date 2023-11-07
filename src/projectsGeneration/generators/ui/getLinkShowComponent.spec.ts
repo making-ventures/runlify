@@ -1,5 +1,5 @@
 import { expect } from 'jest-without-globals'
-import { LinkFieldBuilder } from '../../builders/fields/LinkFieldBuilder'
+import LinkFieldBuilder from '../../builders/fields/LinkFieldBuilder'
 import CatalogBuilder from '../../builders/CatalogBuilder'
 import { getLinkShowComponent } from './getShowComponent'
 

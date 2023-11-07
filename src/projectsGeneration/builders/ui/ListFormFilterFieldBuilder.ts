@@ -2,7 +2,7 @@ import { FieldBuilder } from '../types'
 import BaseSavableEntityBuilder from '../BaseSavableEntityBuilder'
 import { ListFormFilterField } from './Forms'
 
-export class ListFormFilterFieldBuilder {
+class ListFormFilterFieldBuilder {
   getEntity: () => BaseSavableEntityBuilder
   getField: () => FieldBuilder
   alwaysOn = false
@@ -31,3 +31,5 @@ export class ListFormFilterFieldBuilder {
     }
   }
 }
+
+export default ListFormFilterFieldBuilder;

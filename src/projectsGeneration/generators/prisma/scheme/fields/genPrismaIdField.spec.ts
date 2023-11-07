@@ -1,5 +1,5 @@
 import { expect } from 'jest-without-globals'
-import { IdFieldBuilder } from '../../../../builders/fields/IdFieldBuilder'
+import IdFieldBuilder from '../../../../builders/fields/IdFieldBuilder'
 import { genPrismaIdField } from './genPrismaIdField'
 
 // yarn test --testPathPattern genPrismaIdField

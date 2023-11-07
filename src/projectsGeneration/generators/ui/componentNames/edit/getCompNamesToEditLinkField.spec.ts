@@ -1,6 +1,6 @@
 import { expect } from 'jest-without-globals'
 import CatalogBuilder from '../../../../builders/CatalogBuilder'
-import { LinkFieldBuilder } from '../../../../builders/fields/LinkFieldBuilder'
+import LinkFieldBuilder from '../../../../builders/fields/LinkFieldBuilder'
 import { getCompNamesToEditLinkField } from './getCompNamesToEditLinkField'
 
 describe('getCompNamesToEditLinkField', () => {

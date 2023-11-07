@@ -1,13 +1,13 @@
 /* eslint-disable max-len */
-import { ScalarFieldBuilder } from './fields/ScalarFieldBuilder'
-import { IdFieldBuilder } from './fields/IdFieldBuilder'
-import { LinkFieldBuilder } from './fields/LinkFieldBuilder'
+import ScalarFieldBuilder from './fields/ScalarFieldBuilder'
+import IdFieldBuilder from './fields/IdFieldBuilder'
+import LinkFieldBuilder from './fields/LinkFieldBuilder'
 import {EtityType, TKeyFieldType, Multitenancy, BaseSavableEntity} from './buildedTypes'
 import CatalogBuilder from './CatalogBuilder'
 import BaseBuilder from './BaseBuilder'
-import { FormsBuilder } from './ui/FormsBuilder'
+import FormsBuilder from './ui/FormsBuilder'
 import { FieldBuilder } from './types'
-import { ViewLinkFieldBuilder } from './fields/ViewLinkFieldBuilder'
+import ViewLinkFieldBuilder from './fields/ViewLinkFieldBuilder'
 import { pascal } from '../../utils/cases'
 import * as R from 'ramda'
 
