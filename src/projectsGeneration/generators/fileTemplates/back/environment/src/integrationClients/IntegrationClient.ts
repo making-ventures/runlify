@@ -52,7 +52,8 @@ ${client.queryMethods.map(m => `  async ${m.name}(args: ${pascalCase(client.name
       throw new Error('Some error');
     }
 
-    return this.ax.get('https://jsonplaceholder.typicode.com/users').then(result => result.data as ${pascalCase(client.name)}Client${pascalCase(m.name)}Result);
+    return this.ax.get('https://jsonplaceholder.typicode.com/users')
+      .then(result => result.data as ${pascalCase(client.name)}Client${pascalCase(m.name)}Result);
   }`).join('\n\n')}
 }
 

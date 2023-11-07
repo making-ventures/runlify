@@ -12,8 +12,7 @@ const backIntegrationClientTypesTmpl = (
 ) => {
   return `${client.queryMethods.map(m => `export interface ${pascalCase(client.name)}Client${pascalCase(m.name)}Args ${m.argsModel.fields.length ? `{
 ${fieldsToTsTypeFields(m.argsModel.fields).map(r => `  ${r},`).join('\n')}
-}
-` : '{}'}
+}` : '{}'}
 
 export interface ${pascalCase(client.name)}Client${pascalCase(m.name)}Model ${m.returnModel.fields.length ? `{
 ${fieldsToTsTypeFields(m.returnModel.fields).map(r => `  ${r},`).join('\n')}
@@ -22,7 +21,8 @@ ${fieldsToTsTypeFields(m.returnModel.fields).map(r => `  ${r},`).join('\n')}
 export type ${pascalCase(client.name)}Client${pascalCase(m.name)}Result = ${pascalCase(client.name)}Client${pascalCase(m.name)}Model${m.returnModel.array ? '[]' : ''}`).join('\n\n')}
 
 export interface I${pascalCase(client.name)}Client {
-${client.queryMethods.map(m => `  ${m.name}: (args: ${pascalCase(client.name)}Client${pascalCase(m.name)}Args) => Promise<${pascalCase(client.name)}Client${pascalCase(m.name)}Result>,`).join('\n')}
+${client.queryMethods.map(m => `  ${m.name}: (args: ${pascalCase(client.name)}Client${pascalCase(m.name)}Args) =>
+    Promise<${pascalCase(client.name)}Client${pascalCase(m.name)}Result>,`).join('\n')}
 }
 `
 }
