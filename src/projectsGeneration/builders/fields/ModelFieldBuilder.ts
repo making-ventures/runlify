@@ -20,6 +20,8 @@ class ModelFieldBuilder extends BaseFieldBuilder {
 
   setArray(array: boolean) {
     this.array = array;
+
+    return this;
   }
 
   build(): ModelField {
