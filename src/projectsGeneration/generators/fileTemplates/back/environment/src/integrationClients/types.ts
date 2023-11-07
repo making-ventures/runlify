@@ -10,19 +10,19 @@ const backIntegrationClientTypesTmpl = (
   _args: ProjectWideGenerationArgs,
   client: IntegrationClient
 ) => {
-  return `${client.queryMethods.map(m => `export interface ${pascalCase(client.name)}Client${pascalCase(m.name)}Args ${m.argsModel.fields.length ? `{
+  return `${client.queryMethods.map(m => `export interface ${pascalCase(m.name)}Args ${m.argsModel.fields.length ? `{
 ${fieldsToTsTypeFields(m.argsModel.fields).map(r => `  ${r},`).join('\n')}
 }` : '{}'}
 
-export interface ${pascalCase(client.name)}Client${pascalCase(m.name)}Model ${m.returnModel.fields.length ? `{
+export interface ${pascalCase(m.name)}Model ${m.returnModel.fields.length ? `{
 ${fieldsToTsTypeFields(m.returnModel.fields).map(r => `  ${r},`).join('\n')}
 }`: '{}'}
 
-export type ${pascalCase(client.name)}Client${pascalCase(m.name)}Result = ${pascalCase(client.name)}Client${pascalCase(m.name)}Model${m.returnModel.array ? '[]' : ''}`).join('\n\n')}
+export type ${pascalCase(m.name)}Result = ${pascalCase(m.name)}Model${m.returnModel.array ? '[]' : ''}`).join('\n\n')}
 
-export interface I${pascalCase(client.name)}Client {
-${client.queryMethods.map(m => `  ${m.name}: (args: ${pascalCase(client.name)}Client${pascalCase(m.name)}Args) =>
-    Promise<${pascalCase(client.name)}Client${pascalCase(m.name)}Result>,`).join('\n')}
+export interface I {
+${client.queryMethods.map(m => `  ${m.name}: (args: ${pascalCase(m.name)}Args) =>
+    Promise<${pascalCase(m.name)}Result>,`).join('\n')}
 }
 `
 }
