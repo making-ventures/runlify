@@ -20,7 +20,7 @@ ${fieldsToTsTypeFields(m.returnModel.fields).map(r => `  ${r},`).join('\n')}
 
 export type ${pascalCase(m.name)}Result = ${pascalCase(m.name)}Model${m.returnModel.array ? '[]' : ''}`).join('\n\n')}
 
-export interface I {
+export interface I${pascalCase(client.name)}Client {
 ${client.queryMethods.map(m => `  ${m.name}: (args: ${pascalCase(m.name)}Args) =>
     Promise<${pascalCase(m.name)}Result>,`).join('\n')}
 }
