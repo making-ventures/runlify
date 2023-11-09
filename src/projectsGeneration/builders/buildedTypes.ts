@@ -421,7 +421,7 @@ export type Language = {
 export type System = {
   name: string
   prefix: string
-  needFor: string
+  needFor?: string
   configVars: ConfigVar[]
   catalogs: Catalog[]
   documents: Document[]

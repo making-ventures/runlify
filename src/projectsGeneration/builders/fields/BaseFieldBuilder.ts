@@ -13,7 +13,7 @@ abstract class BaseFieldBuilder {
   category: 'trivial' | 'link' = 'trivial'
   type: FieldType = 'int'
   meaning?: Meaning
-  name = 'notSet'
+  name: string
   stringType: StringType = StringType.Plain
   entity = ''
   title: Record<string, string> = {}
@@ -39,6 +39,7 @@ abstract class BaseFieldBuilder {
 
   constructor(name: string, defaultLanguage: string, title?: string) {
     this.defaultLanguage = defaultLanguage
+    this.name = name
     this.setName(name)
     this.setTitle(
       title || sentence(name.endsWith('Id') ? name.replaceAll('Id', '') : name)

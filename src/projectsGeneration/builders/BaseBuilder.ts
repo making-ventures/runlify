@@ -4,7 +4,7 @@ import { BaseEntity, PreviewFeature } from './buildedTypes'
 
 class BaseBuilder {
   defaultLanguage: string
-  name = 'notSet'
+  name: string
   title: Record<string, {singular: string}> = {}
   needFor: Record<string, string> = {}
   materialUiIcon = 'Brightness1Outlined'
@@ -12,6 +12,7 @@ class BaseBuilder {
 
   constructor(name: string, defaultLanguage: string, title?: {singular?: string}) {
     this.defaultLanguage = defaultLanguage
+    this.name = name
     this.setName(name)
     this.setTitle({singular: title?.singular ?? name})
   }

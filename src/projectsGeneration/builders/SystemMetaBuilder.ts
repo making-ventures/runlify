@@ -58,9 +58,9 @@ class SystemMetaBuilder {
   defaultLanguage: string
   defOpts: BootstrapEntityOptions
 
-  name = 'notSet'
-  prefix = 'notSet'
-  needFor = 'notSet'
+  name: string
+  prefix: string
+  needFor?: string
 
   back: DeploymentBuilder
 
@@ -74,7 +74,9 @@ class SystemMetaBuilder {
     defaultLanguage = 'ru'
   ) {
     this.defOpts = defOpts
+    this.prefix = prefix
     this.setPrefix(prefix)
+    this.name = prefix
     this.setName(prefix)
     this.back = new DeploymentBuilder('back', defaultLanguage);
 
