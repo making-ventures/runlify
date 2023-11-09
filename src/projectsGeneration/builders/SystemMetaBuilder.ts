@@ -661,6 +661,19 @@ class SystemMetaBuilder {
     return catalog
   }
 
+  addRole(
+    name: string,
+    title?: string,
+  ) {
+    this.assureNoNamedEntityAlreadyDefined(name)
+
+    const role = new RoleBuilder(name, this.defaultLanguage, title)
+
+    this.roles.push(role)
+
+    return role
+  }
+
   getBack(): DeploymentBuilder {
     return this.back
   }

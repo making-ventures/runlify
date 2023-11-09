@@ -1,7 +1,7 @@
 import BaseBuilder from './builders/BaseBuilder'
 import CatalogBuilder from './builders/CatalogBuilder'
 import ReportBuilder from './builders/ReportBuilder'
-import { Entity, LinkField } from './builders/buildedTypes'
+import {Entity, LinkField} from './builders/buildedTypes'
 
 const defaultFormsShowOptions = {
   gen: true,

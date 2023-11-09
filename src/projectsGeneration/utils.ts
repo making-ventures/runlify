@@ -1,4 +1,4 @@
-import { exists, write } from 'fs-jetpack'
+import {exists, write} from 'fs-jetpack'
 
 export const generatedWarning = 'DO NOT EDIT! THIS IS GENERATED FILE'
 

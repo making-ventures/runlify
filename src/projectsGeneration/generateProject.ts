@@ -59,6 +59,7 @@ import backDocsIntegrationClient from './generators/fileTemplates/back/environme
 import backIntegrationClientTmpl from './generators/fileTemplates/back/environment/src/integrationClients/IntegrationClient'
 import { pascalCase } from 'change-case'
 import backIntegrationClientTypesTmpl from './generators/fileTemplates/back/environment/src/integrationClients/types'
+import backDocSpec from './generators/fileTemplates/back/environment/docs/backDocSpec'
 
 // Бек (generateBack)
 //  Исходники бека (generateBackSrc)
@@ -201,6 +202,18 @@ export const generateBackDocsConfiguration = async (
   )
 
   write(filePath, backDocsConfiguration(args))
+}
+
+export const generateBackDocsSpec = async (
+  args: ProjectWideGenerationArgs
+) => {
+  const filePath = join(
+    args.options.detachedBackProject,
+    'docs',
+    'spec.md'
+  )
+
+  write(filePath, backDocSpec(args))
 }
 
 export const generateBackDocsRestApis = async (
@@ -398,6 +411,7 @@ export const generateAdminAppDocsConfiguration = async (
 
 export const generateBackDocs = async (args: ProjectWideGenerationArgs) => {
   await Promise.all([
+    generateBackDocsSpec(args),
     generateBackDocsConfiguration(args),
     generateBackDocsRestApis(args),
     generateBackDocsIntegrationClients(args),
