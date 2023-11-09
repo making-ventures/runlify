@@ -1,8 +1,20 @@
 import markdownTable from 'markdown-table';
-import {BaseSavableEntity, Entity, System} from '../../../../../../builders/buildedTypes';
+import {
+  BaseSavableEntity,
+  Document,
+  Entity,
+  SumRegistry,
+  System,
+} from '../../../../../../builders/buildedTypes';
 import findLinksToEntities from './findLinksToEntities';
 import getAllSavableEntities from './getAllSavableEntities';
 import {titleMd1, titleMd2, titleMd3} from './titleMd';
+
+const paramCase = (source: string) => source.toLowerCase().replaceAll(' ', '-');
+const getLink = (title: string, link: string) => `[${title}](#${paramCase(link)})`;
+const getSimpleLink = (title: string) => getLink(title, title);
+const getEntityLink = (lang: string, entity: BaseSavableEntity) => getLink(`\`${entity.title[lang].plural}\``, entity.title[lang].plural);
+const getToCLink = (title: string, level: number) => `${'  '.repeat(level - 1)}* ${getSimpleLink(title)}\n`;
 
 const getEntityHeaderSpec = (
   lang: string,
@@ -17,12 +29,13 @@ const getEntityHeaderSpec = (
 };
 
 const getEntityLinksToEntitySpec = (
+  lang: string,
   links: BaseSavableEntity[],
 ) => {
   let docs = '';
 
   if (links.length) {
-    docs += `На сущность ссылаются: ${links.map(entity => `\`${entity.name}\``)}\n`;
+    docs += `На сущность ссылаются: ${links.map(entity => `${getEntityLink(lang, entity)}`).join(', ')}\n`;
   } else {
     docs += 'На сущность нет ссылок\n';
   }
@@ -49,6 +62,8 @@ const getEntityFieldsSpec = (
       ]),
   ])}`;
 
+  docs += '\n';
+
   return docs;
 };
 
@@ -56,7 +71,7 @@ const getEntityPredefinedSpec = (entity: Entity) => {
   let docs = '';
 
   if (entity.predefinedElements.length) {
-    docs += '\n\n';
+    docs += '\n';
 
     docs += titleMd3(`Предопределенные элементы`);
 
@@ -75,11 +90,49 @@ const getEntityUniqueConstraintsSpec = (entity: Entity) => {
   let docs = '';
 
   if (entity.uniqueConstraints.length) {
-    docs += '\n\n';
+    docs += '\n';
 
     docs += titleMd3(`Ограничения уникальности`);
 
     docs += entity.uniqueConstraints.map(с => `* ${с.map(c => `\`${c}\``).join(', ')}\n`).join('');
+  }
+
+  return docs;
+};
+
+const getDocRegistriesSpec = (
+  lang: string,
+  entity: Document,
+  registries: SumRegistry[],
+) => {
+  let docs = '';
+
+  if (entity.registries.length) {
+    docs += '\n';
+
+    docs += titleMd3(`Связанные регистры`);
+
+    docs += `${entity.registries.map(name => `${getEntityLink(lang, registries.find(r => r.name === name) as SumRegistry)}`).join(', ')}\n`;
+  }
+
+  return docs;
+};
+
+const getSumRegistryRegistrarsSpec = (
+  lang: string,
+  entity: SumRegistry,
+  documents: Document[],
+) => {
+  let docs = '';
+
+  const registrars = documents.filter(d => d.registries.includes(entity.name));
+
+  if (registrars.length) {
+    docs += '\n';
+
+    docs += titleMd3(`Регистраторы`);
+
+    docs += `${registrars.map(registrar => `${getEntityLink(lang, registrar)}`).join(', ')}\n`;
   }
 
   return docs;
@@ -93,7 +146,7 @@ const getEntitySpec = (
   let docs = '';
 
   docs += getEntityHeaderSpec(lang, entity);
-  docs += getEntityLinksToEntitySpec(links);
+  docs += getEntityLinksToEntitySpec(lang, links);
   docs += '\n';
   docs += getEntityFieldsSpec(lang, entity);
   docs += getEntityPredefinedSpec(entity);
@@ -104,28 +157,41 @@ const getEntitySpec = (
 
 const getDocSpec = (
   lang: string,
-  entity: Entity,
+  entity: Document,
+  registries: SumRegistry[],
   links: BaseSavableEntity[],
 ) => {
   let docs = '';
 
   docs += getEntityHeaderSpec(lang, entity);
-
-  docs += getEntityLinksToEntitySpec(links);
-
+  docs += getEntityLinksToEntitySpec(lang, links);
   docs += '\n';
-
   docs += getEntityFieldsSpec(lang, entity);
-
   docs += getEntityPredefinedSpec(entity);
+  docs += getEntityUniqueConstraintsSpec(entity);
+  docs += getDocRegistriesSpec(lang, entity, registries);
 
   return docs;
 };
 
-const paramCase = (source: string) => source.toLowerCase().replaceAll(' ', '-');
-const getLink = (title: string) => `[${title}](#${paramCase(title)})`;
-// const getEntityLink = (lang: string, entity: BaseSavableEntity) => getLink(entity.title[lang].plural);
-const getToCLink = (title: string, level: number) => `${'  '.repeat(level - 1)}* ${getLink(title)}\n`;
+const getSumRegistrySpec = (
+  lang: string,
+  entity: SumRegistry,
+  documents: Document[],
+  links: BaseSavableEntity[],
+) => {
+  let docs = '';
+
+  docs += getEntityHeaderSpec(lang, entity);
+  docs += getEntityLinksToEntitySpec(lang, links);
+  docs += '\n';
+  docs += getEntityFieldsSpec(lang, entity);
+  docs += getEntityPredefinedSpec(entity);
+  docs += getEntityUniqueConstraintsSpec(entity);
+  docs += getSumRegistryRegistrarsSpec(lang, entity, documents);
+
+  return docs;
+};
 
 const getEntityToCLinks = (lang: string, title: string, entities: BaseSavableEntity[]) => {
   let text = '';
@@ -217,8 +283,8 @@ const getProjectSpec = (meta: System) => {
     text += meta.documents.map(entity => {
       const links = findLinksToEntities(entities, entity.name);
 
-      return getDocSpec(meta.defaultLanguage, entity, links);
-    }).join('\n\n');
+      return getDocSpec(meta.defaultLanguage, entity, meta.sumRegistries, links);
+    }).join('\n');
 
     return text;
   };
@@ -238,7 +304,7 @@ const getProjectSpec = (meta: System) => {
       const links = findLinksToEntities(entities, entity.name);
 
       return getEntitySpec(meta.defaultLanguage, entity, links);
-    }).join('\n\n');
+    }).join('\n');
 
     text += '\n';
 
@@ -260,7 +326,7 @@ const getProjectSpec = (meta: System) => {
       const links = findLinksToEntities(entities, entity.name);
 
       return getEntitySpec(meta.defaultLanguage, entity, links);
-    }).join('\n\n');
+    }).join('\n');
 
     return text;
   };
@@ -279,8 +345,8 @@ const getProjectSpec = (meta: System) => {
     text += meta.sumRegistries.map(entity => {
       const links = findLinksToEntities(entities, entity.name);
 
-      return getEntitySpec(meta.defaultLanguage, entity, links);
-    }).join('\n\n');
+      return getSumRegistrySpec(meta.defaultLanguage, entity, meta.documents, links);
+    }).join('\n');
 
     return text;
   };
