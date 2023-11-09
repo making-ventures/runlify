@@ -60,7 +60,7 @@ const getEntityFieldsSpec = (
         f.title[lang],
         f.type,
         f.required ? 'Обязательное' : 'Не обязательное',
-        f.category === 'link' ? `ссылается на \`${getEntityLink(lang, catalogs.find(c => c.name === f.externalEntity) as Catalog)}\`` : '',
+        f.category === 'link' ? `ссылается на ${getEntityLink(lang, catalogs.find(c => c.name === f.externalEntity) as Catalog)}` : '',
       ]),
   ])}`;
 
