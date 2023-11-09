@@ -1,6 +1,7 @@
 import markdownTable from 'markdown-table';
 import {
   BaseSavableEntity,
+  Catalog,
   Document,
   Entity,
   SumRegistry,
@@ -46,6 +47,7 @@ const getEntityLinksToEntitySpec = (
 const getEntityFieldsSpec = (
   lang: string,
   entity: Entity,
+  catalogs: Catalog[],
 ) => {
   let docs = '';
 
@@ -58,7 +60,7 @@ const getEntityFieldsSpec = (
         f.title[lang],
         f.type,
         f.required ? 'Обязательное' : 'Не обязательное',
-        f.category === 'link' ? `ссылается на \`${f.externalEntity}\`` : '',
+        f.category === 'link' ? `ссылается на \`${getEntityLink(lang, catalogs.find(c => c.name === f.externalEntity) as Catalog)}\`` : '',
       ]),
   ])}`;
 
@@ -141,6 +143,7 @@ const getSumRegistryRegistrarsSpec = (
 const getEntitySpec = (
   lang: string,
   entity: Entity,
+  catalogs: Catalog[],
   links: BaseSavableEntity[],
 ) => {
   let docs = '';
@@ -148,7 +151,7 @@ const getEntitySpec = (
   docs += getEntityHeaderSpec(lang, entity);
   docs += getEntityLinksToEntitySpec(lang, links);
   docs += '\n';
-  docs += getEntityFieldsSpec(lang, entity);
+  docs += getEntityFieldsSpec(lang, entity, catalogs);
   docs += getEntityPredefinedSpec(entity);
   docs += getEntityUniqueConstraintsSpec(entity);
 
@@ -158,6 +161,7 @@ const getEntitySpec = (
 const getDocSpec = (
   lang: string,
   entity: Document,
+  catalogs: Catalog[],
   registries: SumRegistry[],
   links: BaseSavableEntity[],
 ) => {
@@ -166,7 +170,7 @@ const getDocSpec = (
   docs += getEntityHeaderSpec(lang, entity);
   docs += getEntityLinksToEntitySpec(lang, links);
   docs += '\n';
-  docs += getEntityFieldsSpec(lang, entity);
+  docs += getEntityFieldsSpec(lang, entity, catalogs);
   docs += getEntityPredefinedSpec(entity);
   docs += getEntityUniqueConstraintsSpec(entity);
   docs += getDocRegistriesSpec(lang, entity, registries);
@@ -177,6 +181,7 @@ const getDocSpec = (
 const getSumRegistrySpec = (
   lang: string,
   entity: SumRegistry,
+  catalogs: Catalog[],
   documents: Document[],
   links: BaseSavableEntity[],
 ) => {
@@ -185,7 +190,7 @@ const getSumRegistrySpec = (
   docs += getEntityHeaderSpec(lang, entity);
   docs += getEntityLinksToEntitySpec(lang, links);
   docs += '\n';
-  docs += getEntityFieldsSpec(lang, entity);
+  docs += getEntityFieldsSpec(lang, entity, catalogs);
   docs += getEntityPredefinedSpec(entity);
   docs += getEntityUniqueConstraintsSpec(entity);
   docs += getSumRegistryRegistrarsSpec(lang, entity, documents);
@@ -283,7 +288,7 @@ const getProjectSpec = (meta: System) => {
     text += meta.documents.map(entity => {
       const links = findLinksToEntities(entities, entity.name);
 
-      return getDocSpec(meta.defaultLanguage, entity, meta.sumRegistries, links);
+      return getDocSpec(meta.defaultLanguage, entity, meta.catalogs, meta.sumRegistries, links);
     }).join('\n');
 
     return text;
@@ -303,7 +308,7 @@ const getProjectSpec = (meta: System) => {
     text += meta.catalogs.map(entity => {
       const links = findLinksToEntities(entities, entity.name);
 
-      return getEntitySpec(meta.defaultLanguage, entity, links);
+      return getEntitySpec(meta.defaultLanguage, entity, meta.catalogs, links);
     }).join('\n');
 
     text += '\n';
@@ -325,7 +330,7 @@ const getProjectSpec = (meta: System) => {
     text += meta.infoRegistries.map(entity => {
       const links = findLinksToEntities(entities, entity.name);
 
-      return getEntitySpec(meta.defaultLanguage, entity, links);
+      return getEntitySpec(meta.defaultLanguage, entity, meta.catalogs, links);
     }).join('\n');
 
     return text;
@@ -345,7 +350,7 @@ const getProjectSpec = (meta: System) => {
     text += meta.sumRegistries.map(entity => {
       const links = findLinksToEntities(entities, entity.name);
 
-      return getSumRegistrySpec(meta.defaultLanguage, entity, meta.documents, links);
+      return getSumRegistrySpec(meta.defaultLanguage, entity, meta.catalogs, meta.documents, links);
     }).join('\n');
 
     return text;
