@@ -2,15 +2,88 @@ import markdownTable from 'markdown-table';
 import {BaseSavableEntity, Entity, System} from '../../../../../../builders/buildedTypes';
 import findLinksToEntities from './findLinksToEntities';
 import getAllSavableEntities from './getAllSavableEntities';
-import {titleMd1, titleMd2} from './titleMd';
+import {titleMd1, titleMd2, titleMd3} from './titleMd';
 
-interface FieldData {
-  fieldName: string,
-  fieldTitle: string,
-  fieldType: string,
-  required: boolean,
-  catalog: string,
-}
+const getEntityHeaderSpec = (
+  lang: string,
+  entity: Entity,
+) => {
+  let docs = '';
+
+  docs += titleMd2(`${entity.title[lang].plural}`);
+  docs += `\`${entity.name}\`\n\n`;
+
+  return docs;
+};
+
+const getEntityLinksToEntitySpec = (
+  links: BaseSavableEntity[],
+) => {
+  let docs = '';
+
+  if (links.length) {
+    docs += `На сущность ссылаются: ${links.map(entity => `\`${entity.name}\``)}\n`;
+  } else {
+    docs += 'На сущность нет ссылок\n';
+  }
+
+  return docs;
+};
+
+const getEntityFieldsSpec = (
+  lang: string,
+  entity: Entity,
+) => {
+  let docs = '';
+
+  docs += `${markdownTable([
+    ['Имя поля', 'Наименование', 'Тип данных', 'Обязательное', 'Справочник'],
+    ...entity.fields
+      .filter(f => !f.hidden)
+      .map((f) => [
+        f.name,
+        f.title[lang],
+        f.type,
+        f.required ? 'Обязательное' : 'Не обязательное',
+        f.category === 'link' ? `ссылается на \`${f.externalEntity}\`` : '',
+      ]),
+  ])}`;
+
+  return docs;
+};
+
+const getEntityPredefinedSpec = (entity: Entity) => {
+  let docs = '';
+
+  if (entity.predefinedElements.length) {
+    docs += '\n\n';
+
+    docs += titleMd3(`Предопределенные элементы`);
+
+    docs += `${markdownTable([
+      entity.fields.filter(f => !f.hidden).map(f => f.name),
+      ...entity.predefinedElements.map(
+        (f) => entity.fields.filter(f => !f.hidden).map(field => f[field.name]),
+      ),
+    ])}`;
+  }
+
+  return docs;
+};
+
+const getEntityUniqueConstraintsSpec = (entity: Entity) => {
+  let docs = '';
+
+  if (entity.uniqueConstraints.length) {
+    docs += '\n\n';
+
+    docs += titleMd3(`Ограничения уникальности`);
+
+    docs += entity.uniqueConstraints.map(с => `* ${с.map(c => `\`${c}\``).join(', ')}\n`).join('');
+  }
+
+  return docs;
+};
 
 const getEntitySpec = (
   lang: string,
@@ -19,49 +92,84 @@ const getEntitySpec = (
 ) => {
   let docs = '';
 
-  docs += titleMd2(`${entity.title[lang].plural}`);
-  docs += `\`${entity.name}\`\n\n`;
-
-  if (links.length) {
-    docs += `На сущность ссылаются: ${links.map(entity => `\`${entity.name}\``)}\n`;
-  } else {
-    docs += 'На сущность нет ссылок\n';
-  }
-
+  docs += getEntityHeaderSpec(lang, entity);
+  docs += getEntityLinksToEntitySpec(links);
   docs += '\n';
-
-  const fieldsData: FieldData[] = [];
-
-  for (const field of entity.fields) {
-    if (field.hidden) {
-      continue;
-    }
-
-    fieldsData.push({
-      fieldName: field.name,
-      fieldTitle: field.title[lang],
-      fieldType: field.type,
-      required: field.required,
-      catalog: field.category === 'link' ? `ссылается на \`${field.externalEntity}\`` : '',
-    });
-  }
-
-  docs += `${markdownTable([
-    ['Имя поля', 'Наименование', 'Тип данных', 'Обязательное', 'Справочник'],
-    ...fieldsData.map((f) => [
-      f.fieldName,
-      f.fieldTitle,
-      f.fieldType,
-      f.required ? 'Обязательное' : 'Не обязательное',
-      f.catalog,
-    ]),
-  ])}`;
+  docs += getEntityFieldsSpec(lang, entity);
+  docs += getEntityPredefinedSpec(entity);
+  docs += getEntityUniqueConstraintsSpec(entity);
 
   return docs;
 };
 
+const getDocSpec = (
+  lang: string,
+  entity: Entity,
+  links: BaseSavableEntity[],
+) => {
+  let docs = '';
+
+  docs += getEntityHeaderSpec(lang, entity);
+
+  docs += getEntityLinksToEntitySpec(links);
+
+  docs += '\n';
+
+  docs += getEntityFieldsSpec(lang, entity);
+
+  docs += getEntityPredefinedSpec(entity);
+
+  return docs;
+};
+
+const paramCase = (source: string) => source.toLowerCase().replaceAll(' ', '-');
+const getLink = (title: string) => `[${title}](#${paramCase(title)})`;
+// const getEntityLink = (lang: string, entity: BaseSavableEntity) => getLink(entity.title[lang].plural);
+const getToCLink = (title: string, level: number) => `${'  '.repeat(level - 1)}* ${getLink(title)}\n`;
+
+const getEntityToCLinks = (lang: string, title: string, entities: BaseSavableEntity[]) => {
+  let text = '';
+  
+  text += getToCLink(title, 1);
+  text += entities.map(m => getToCLink(m.title[lang].plural, 2)).join('')
+
+  return text;
+};
+
 const getProjectSpec = (meta: System) => {
   let spec = '\n';
+
+  const getTableOfContentsSpec = (meta: System) => {
+    let text = '';
+    
+    text += titleMd1('Оглавление');
+
+    if (meta.catalogs) {
+      text += getEntityToCLinks(meta.defaultLanguage, 'Каталоги', meta.catalogs);
+    }
+    
+    if (meta.documents) {
+      text += getEntityToCLinks(meta.defaultLanguage, 'Документы', meta.documents);
+    }
+    
+    if (meta.infoRegistries) {
+      text += getEntityToCLinks(meta.defaultLanguage, 'Информационные регистры', meta.infoRegistries);
+    }
+    
+    if (meta.sumRegistries) {
+      text += getEntityToCLinks(meta.defaultLanguage, 'Регистры накопления', meta.sumRegistries);
+    }
+    
+    if (meta.languages) {
+      text += getToCLink('Языки', 1);
+    }
+    
+    if (meta.roles) {
+      text += getToCLink('Роли', 1);
+    }
+
+    return text;
+  };
 
   const getCommonInfoSpec = (meta: System) => {
     let text = '';
@@ -75,6 +183,10 @@ const getProjectSpec = (meta: System) => {
   };
 
   const getGlosarySpec = (meta: System) => {
+    if (!meta.glossary.length) {
+      return;
+    }
+
     let text = '';
 
     text += titleMd1('Глоссарий');
@@ -85,21 +197,37 @@ const getProjectSpec = (meta: System) => {
         f.definition,
       ]),
     ])}`;
+
     text += '\n';
 
     return text;
   };
 
   const getDocumentsSpec = (meta: System) => {
+    if (!meta.documents.length) {
+      return;
+    }
+
     let text = '';
 
     text += titleMd1('Документы');
-    text += `documents: ${meta.documents}\n`;
+
+    const entities = getAllSavableEntities(meta);
+
+    text += meta.documents.map(entity => {
+      const links = findLinksToEntities(entities, entity.name);
+
+      return getDocSpec(meta.defaultLanguage, entity, links);
+    }).join('\n\n');
 
     return text;
   };
 
   const getCatalogsSpec = (meta: System) => {
+    if (!meta.catalogs.length) {
+      return;
+    }
+
     let text = '';
 
     text += titleMd1('Каталоги');
@@ -118,24 +246,50 @@ const getProjectSpec = (meta: System) => {
   };
 
   const getInfoRegistriesSpec = (meta: System) => {
+    if (!meta.infoRegistries.length) {
+      return;
+    }
+
     let text = '';
 
     text += titleMd1('Информационные регистры');
-    text += `infoRegistries: ${meta.infoRegistries}\n`;
+
+    const entities = getAllSavableEntities(meta);
+
+    text += meta.infoRegistries.map(entity => {
+      const links = findLinksToEntities(entities, entity.name);
+
+      return getEntitySpec(meta.defaultLanguage, entity, links);
+    }).join('\n\n');
 
     return text;
   };
 
   const getSumRegistriesSpec = (meta: System) => {
+    if (!meta.sumRegistries.length) {
+      return;
+    }
+
     let text = '';
 
     text += titleMd1('Регистры накопления');
-    text += `sumRegistries: ${meta.sumRegistries}\n`;
+
+    const entities = getAllSavableEntities(meta);
+
+    text += meta.sumRegistries.map(entity => {
+      const links = findLinksToEntities(entities, entity.name);
+
+      return getEntitySpec(meta.defaultLanguage, entity, links);
+    }).join('\n\n');
 
     return text;
   };
 
   const getLanguagesSpec = (meta: System) => {
+    if (!meta.languages.length) {
+      return;
+    }
+
     let text = '';
 
     text += titleMd1('Языки');
@@ -145,6 +299,10 @@ const getProjectSpec = (meta: System) => {
   };
 
   const getRolesSpec = (meta: System) => {
+    if (!meta.roles.length) {
+      return;
+    }
+
     let text = '';
 
     text += titleMd1('Роли');
@@ -153,18 +311,19 @@ const getProjectSpec = (meta: System) => {
     return text;
   };
 
-  const chapters = [
+  spec +=  [
     getCommonInfoSpec(meta),
+    getTableOfContentsSpec(meta),
     getGlosarySpec(meta),
-    getDocumentsSpec(meta),
     getCatalogsSpec(meta),
+    getDocumentsSpec(meta),
     getInfoRegistriesSpec(meta),
     getSumRegistriesSpec(meta),
     getLanguagesSpec(meta),
     getRolesSpec(meta),
-  ];
-
-  spec += chapters.join('\n');
+  ]
+    .filter(Boolean)
+    .join('\n');
 
   return spec;
 };
