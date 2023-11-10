@@ -11,6 +11,20 @@ import ViewLinkFieldBuilder from './fields/ViewLinkFieldBuilder'
 import { pascal } from '../../utils/cases'
 import * as R from 'ramda'
 
+const readPermissions: string[] = [
+  'all',
+  'get',
+  'count',
+  'meta',
+]
+
+const permissions: string[] = [
+  ...readPermissions,
+  'create',
+  'update',
+  'delete',
+]
+
 abstract class BaseSavableEntityBuilder extends BaseBuilder {
   id: IdFieldBuilder
   fields: FieldBuilder[] = []
@@ -43,6 +57,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
   isExternalSearch = false
   clearDBAfter: number | undefined
   allowedToChange: string = ''
+  permissions: string[] = permissions
 
   constructor(name: string, defaultLanguage: string, title?: {singular?: string, plural?: string}) {
     super(name, defaultLanguage, title)
@@ -371,6 +386,28 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
     return this
   }
 
+  addPemission(pemission: string): BaseSavableEntityBuilder {
+    if (this.permissions.some((p) => p === pemission)) {
+      throw new Error(`Entity "${this.name}" already have "${pemission}" pemission`)
+    }
+
+    this.permissions.push(pemission)
+
+    return this
+  }
+
+  addPemissions(pemissions: string[]): BaseSavableEntityBuilder {
+    for (const pemission of pemissions) {
+      this.addPemission(pemission)
+    }
+
+    return this
+  }
+
+  getPrefixedPemissions() {
+    return this.permissions.map(p => `${this.name}.${p}`)
+  }
+
   build (): BaseSavableEntity {
     return {
       ...super.build(),
@@ -402,6 +439,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
       exportableByUser: this.exportableByUser,
       clearDBAfter: this.clearDBAfter,
       allowedToChange: this.allowedToChange,
+      permissions: this.getPrefixedPemissions(),
     }
   }
 

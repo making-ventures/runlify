@@ -293,6 +293,7 @@ export type BaseSavableEntity = BaseEntity & {
   isExternalSearch: boolean
   clearDBAfter: number | undefined
   allowedToChange: string
+  permissions: string[]
 }
 
 export type Report = BaseEntity & {
