@@ -268,8 +268,16 @@ const getProjectSpec = (meta: System) => {
       text += getToCLink('Роли', 1);
     }
     
-    if (meta.sumRegistries) {
+    if (meta.reports) {
       text += getEntityToCLinks(meta.defaultLanguage, 'Отчеты', meta.reports);
+    }
+    
+    if (meta.restApis) {
+      text += getEntityToCLinks(meta.defaultLanguage, 'Апи', meta.restApis);
+    }
+    
+    if (meta.integrationClients) {
+      text += getEntityToCLinks(meta.defaultLanguage, 'Интеграционные клиенты', meta.integrationClients);
     }
 
     return text;
@@ -435,6 +443,48 @@ const getProjectSpec = (meta: System) => {
     return text;
   };
 
+  const getRestApisSpec = (meta: System) => {
+    if (!meta.restApis.length) {
+      return;
+    }
+
+    let text = '';
+
+    text += titleMd1('Апи');
+
+    text += meta.restApis.map(entity => {
+      let docs = '';
+
+      docs += getEntityHeaderSpec(meta.defaultLanguage, entity);
+
+      return docs;
+    }).join('\n');
+
+    return text;
+  };
+
+  const getIntegrationClientsSpec = (meta: System) => {
+    if (!meta.integrationClients.length) {
+      return;
+    }
+
+    let text = '';
+
+    text += titleMd1('Интеграционные клиенты');
+
+    text += `Используются дли запросов во внешние системы\n\n`;
+
+    text += meta.integrationClients.map(entity => {
+      let docs = '';
+
+      docs += getEntityHeaderSpec(meta.defaultLanguage, entity);
+
+      return docs;
+    }).join('\n');
+
+    return text;
+  };
+
   spec +=  [
     getCommonInfoSpec(meta),
     getTableOfContentsSpec(meta),
@@ -446,6 +496,8 @@ const getProjectSpec = (meta: System) => {
     getLanguagesSpec(meta),
     getRolesSpec(meta),
     getReportsSpec(meta),
+    getRestApisSpec(meta),
+    getIntegrationClientsSpec(meta),
   ]
     .filter(Boolean)
     .join('\n');

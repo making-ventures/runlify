@@ -29,6 +29,7 @@ import TelegramBotBuilder from './TelegramBotBuilder'
 import {ConfigVarBuilder} from './ConfigVarBuilder';
 import log from '../../log';
 import IntegrationClientBuilder from './integrationClients/IntegrationClientBuilder'
+import MenuItemBuilder from './MenuItemBuilder'
 
 export const defaultConfigVar: Omit<ConfigVar, 'name' | 'type'> = {
   needFor: '',
@@ -57,6 +58,7 @@ class SystemMetaBuilder {
   roles: RoleBuilder[] = []
   defaultLanguage: string
   defOpts: BootstrapEntityOptions
+  menuItems: MenuItemBuilder[] = [];
 
   name: string
   prefix: string
@@ -674,6 +676,17 @@ class SystemMetaBuilder {
     return role
   }
 
+  addMenuItem(
+    name: string,
+    title?: string,
+  ) {
+    const menuItem = new MenuItemBuilder(name, this.defaultLanguage, title)
+
+    this.menuItems.push(menuItem)
+
+    return menuItem
+  }
+
   getBack(): DeploymentBuilder {
     return this.back
   }
@@ -883,6 +896,7 @@ class SystemMetaBuilder {
         worker.build()
       ),
       roles: R.sortBy(R.prop('name'), this.roles).map((role) => role.build()),
+      menuItems: R.sortBy(R.prop('name'), this.menuItems).map((item) => item.build()),
       back: this.back.build(),
     }
   }

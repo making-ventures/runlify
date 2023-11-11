@@ -335,6 +335,10 @@ export type IntegrationClient = BaseEntity & {
   queryMethods: IntegrationClientQueryMethod[]
 }
 
+export type MenuItem = BaseEntity & {
+  type: 'menuItem'
+}
+
 export type Role = BaseEntity & {
   type: 'role'
 }
@@ -443,6 +447,7 @@ export type System = {
   languages: Language[]
   defaultLanguage: string
   roles: Role[]
+  menuItems: MenuItem[]
 
   reports: Report[]
   telegramBots: TelegramBot[]
