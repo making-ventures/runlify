@@ -30,6 +30,8 @@ import {ConfigVarBuilder} from './ConfigVarBuilder';
 import log from '../../log';
 import IntegrationClientBuilder from './integrationClients/IntegrationClientBuilder'
 import MenuItemBuilder from './MenuItemBuilder'
+import InternalPageBuilder from './InternalPageBuilder'
+import ExternalPageBuilder from './ExternalPageBuilder'
 
 export const defaultConfigVar: Omit<ConfigVar, 'name' | 'type'> = {
   needFor: '',
@@ -59,6 +61,7 @@ class SystemMetaBuilder {
   defaultLanguage: string
   defOpts: BootstrapEntityOptions
   menuItems: MenuItemBuilder[] = [];
+  pages: (InternalPageBuilder | ExternalPageBuilder)[] = [];
 
   name: string
   prefix: string
@@ -897,6 +900,7 @@ class SystemMetaBuilder {
       ),
       roles: R.sortBy(R.prop('name'), this.roles).map((role) => role.build()),
       menuItems: R.sortBy(R.prop('name'), this.menuItems).map((item) => item.build()),
+      pages: this.pages.map(p => p.build()),
       back: this.back.build(),
     }
   }

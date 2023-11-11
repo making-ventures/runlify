@@ -294,6 +294,7 @@ export type BaseSavableEntity = BaseEntity & {
   clearDBAfter: number | undefined
   allowedToChange: string
   permissions: Permission[]
+  pages: Page[]
 }
 
 export type Report = BaseEntity & {
@@ -335,6 +336,26 @@ export type IntegrationClient = BaseEntity & {
   queryMethods: IntegrationClientQueryMethod[]
 }
 
+export enum PageType {
+  External = 'external',
+  Internal = 'internal',
+}
+
+export type BasePage = BaseEntity & {
+  type: 'page'
+}
+
+export type ExternalPage = BasePage & {
+  pageType: PageType.External
+  url: string
+}
+
+export type InternalPage = BasePage & {
+  pageType: PageType.Internal
+}
+
+export type Page = ExternalPage | InternalPage
+
 export type MenuItem = BaseEntity & {
   type: 'menuItem'
 }
@@ -345,9 +366,9 @@ export type Role = BaseEntity & {
 
 export enum PermissionType {
   Read = 'read',
-  Create = 'read',
-  Update = 'read',
-  Delete = 'read',
+  Create = 'create',
+  Update = 'update',
+  Delete = 'delete',
 }
 
 export type Permission = BaseEntity & {
@@ -448,6 +469,7 @@ export type System = {
   defaultLanguage: string
   roles: Role[]
   menuItems: MenuItem[]
+  pages: Page[]
 
   reports: Report[]
   telegramBots: TelegramBot[]

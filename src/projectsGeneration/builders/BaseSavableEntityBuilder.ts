@@ -10,6 +10,7 @@ import ViewLinkFieldBuilder from './fields/ViewLinkFieldBuilder'
 import { pascal } from '../../utils/cases'
 import * as R from 'ramda'
 import PermissionBuilder from './PermissionBuilder'
+import InternalPageBuilder from './InternalPageBuilder'
 
 // const readPermissions: string[] = [
 //   'all',
@@ -58,6 +59,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
   isExternalSearch = false
   clearDBAfter: number | undefined
   allowedToChange: string = ''
+  pages: InternalPageBuilder[] = [];
 
   constructor(name: string, defaultLanguage: string, title?: {singular?: string, plural?: string}) {
     super(name, defaultLanguage, title)
@@ -429,6 +431,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
       clearDBAfter: this.clearDBAfter,
       allowedToChange: this.allowedToChange,
       permissions: this.permissions.map(p => p.build()),
+      pages: this.pages.map(p => p.build()),
     }
   }
 
