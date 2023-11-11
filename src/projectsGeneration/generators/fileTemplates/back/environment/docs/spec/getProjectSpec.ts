@@ -4,7 +4,6 @@ import {
   BaseSavableEntity,
   Catalog,
   Document,
-  Entity,
   SumRegistry,
   System,
 } from '../../../../../../builders/buildedTypes';
@@ -20,7 +19,23 @@ const getToCLink = (title: string, level: number) => `${'  '.repeat(level - 1)}*
 
 const getEntityHeaderSpec = (
   lang: string,
-  entity: Entity,
+  entity: BaseEntity,
+) => {
+  let docs = '';
+
+  docs += titleMd2(`${entity.title[lang].singular}`);
+  docs += `\`${entity.name}\`\n\n`;
+
+  if (entity.needFor) {
+    docs += `Нужен для: ${entity.needFor[lang]}\n\n`;
+  }
+
+  return docs;
+};
+
+const getSavableEntityHeaderSpec = (
+  lang: string,
+  entity: BaseSavableEntity,
 ) => {
   let docs = '';
 
@@ -51,7 +66,7 @@ const getEntityLinksToEntitySpec = (
 
 const getEntityFieldsSpec = (
   lang: string,
-  entity: Entity,
+  entity: BaseSavableEntity,
   catalogs: Catalog[],
 ) => {
   let docs = '';
@@ -74,7 +89,7 @@ const getEntityFieldsSpec = (
   return docs;
 };
 
-const getEntityPredefinedSpec = (entity: Entity) => {
+const getEntityPredefinedSpec = (entity: BaseSavableEntity) => {
   let docs = '';
 
   if (entity.predefinedElements.length) {
@@ -93,7 +108,7 @@ const getEntityPredefinedSpec = (entity: Entity) => {
   return docs;
 };
 
-const getEntityUniqueConstraintsSpec = (entity: Entity) => {
+const getEntityUniqueConstraintsSpec = (entity: BaseSavableEntity) => {
   let docs = '';
 
   if (entity.uniqueConstraints.length) {
@@ -147,13 +162,13 @@ const getSumRegistryRegistrarsSpec = (
 
 const getEntitySpec = (
   lang: string,
-  entity: Entity,
+  entity: BaseSavableEntity,
   catalogs: Catalog[],
   links: BaseSavableEntity[],
 ) => {
   let docs = '';
 
-  docs += getEntityHeaderSpec(lang, entity);
+  docs += getSavableEntityHeaderSpec(lang, entity);
   docs += getEntityLinksToEntitySpec(lang, links);
   docs += '\n';
   docs += getEntityFieldsSpec(lang, entity, catalogs);
@@ -172,7 +187,7 @@ const getDocSpec = (
 ) => {
   let docs = '';
 
-  docs += getEntityHeaderSpec(lang, entity);
+  docs += getSavableEntityHeaderSpec(lang, entity);
   docs += getEntityLinksToEntitySpec(lang, links);
   docs += '\n';
   docs += getEntityFieldsSpec(lang, entity, catalogs);
@@ -192,7 +207,7 @@ const getSumRegistrySpec = (
 ) => {
   let docs = '';
 
-  docs += getEntityHeaderSpec(lang, entity);
+  docs += getSavableEntityHeaderSpec(lang, entity);
   docs += getEntityLinksToEntitySpec(lang, links);
   docs += '\n';
   docs += getEntityFieldsSpec(lang, entity, catalogs);
@@ -412,12 +427,7 @@ const getProjectSpec = (meta: System) => {
     text += meta.reports.map(entity => {
       let docs = '';
 
-      docs += titleMd2(`${entity.title[meta.defaultLanguage].singular}`);
-      docs += `\`${entity.name}\`\n\n`;
-
-      if (entity.needFor) {
-        docs += `Нужен для: ${entity.needFor[meta.defaultLanguage]}\n\n`;
-      }
+      docs += getEntityHeaderSpec(meta.defaultLanguage, entity);
 
       return docs;
     }).join('\n');
