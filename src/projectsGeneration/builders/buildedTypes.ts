@@ -293,7 +293,7 @@ export type BaseSavableEntity = BaseEntity & {
   isExternalSearch: boolean
   clearDBAfter: number | undefined
   allowedToChange: string
-  permissions: string[]
+  permissions: Permission[]
 }
 
 export type Report = BaseEntity & {
@@ -337,6 +337,18 @@ export type IntegrationClient = BaseEntity & {
 
 export type Role = BaseEntity & {
   type: 'role'
+}
+
+export enum PermissionType {
+  Read = 'read',
+  Create = 'read',
+  Update = 'read',
+  Delete = 'read',
+}
+
+export type Permission = BaseEntity & {
+  type: 'permission'
+  permissionType: PermissionType
 }
 
 export type TelegramBot = BaseEntity & {

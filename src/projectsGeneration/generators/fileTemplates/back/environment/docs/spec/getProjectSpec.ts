@@ -1,5 +1,6 @@
 import markdownTable from 'markdown-table';
 import {
+  BaseEntity,
   BaseSavableEntity,
   Catalog,
   Document,
@@ -25,6 +26,10 @@ const getEntityHeaderSpec = (
 
   docs += titleMd2(`${entity.title[lang].plural}`);
   docs += `\`${entity.name}\`\n\n`;
+
+  if (entity.needFor) {
+    docs += `Нужен для: ${entity.needFor[lang]}\n\n`;
+  }
 
   return docs;
 };
@@ -198,7 +203,16 @@ const getSumRegistrySpec = (
   return docs;
 };
 
-const getEntityToCLinks = (lang: string, title: string, entities: BaseSavableEntity[]) => {
+const getEntityToCLinks = (lang: string, title: string, entities: BaseEntity[]) => {
+  let text = '';
+  
+  text += getToCLink(title, 1);
+  text += entities.map(m => getToCLink(m.title[lang].singular, 2)).join('')
+
+  return text;
+};
+
+const getSavableEntityToCLinks = (lang: string, title: string, entities: BaseSavableEntity[]) => {
   let text = '';
   
   text += getToCLink(title, 1);
@@ -216,19 +230,19 @@ const getProjectSpec = (meta: System) => {
     text += titleMd1('Оглавление');
 
     if (meta.catalogs) {
-      text += getEntityToCLinks(meta.defaultLanguage, 'Каталоги', meta.catalogs);
+      text += getSavableEntityToCLinks(meta.defaultLanguage, 'Каталоги', meta.catalogs);
     }
     
     if (meta.documents) {
-      text += getEntityToCLinks(meta.defaultLanguage, 'Документы', meta.documents);
+      text += getSavableEntityToCLinks(meta.defaultLanguage, 'Документы', meta.documents);
     }
     
     if (meta.infoRegistries) {
-      text += getEntityToCLinks(meta.defaultLanguage, 'Информационные регистры', meta.infoRegistries);
+      text += getSavableEntityToCLinks(meta.defaultLanguage, 'Информационные регистры', meta.infoRegistries);
     }
     
     if (meta.sumRegistries) {
-      text += getEntityToCLinks(meta.defaultLanguage, 'Регистры накопления', meta.sumRegistries);
+      text += getSavableEntityToCLinks(meta.defaultLanguage, 'Регистры накопления', meta.sumRegistries);
     }
     
     if (meta.languages) {
@@ -237,6 +251,10 @@ const getProjectSpec = (meta: System) => {
     
     if (meta.roles) {
       text += getToCLink('Роли', 1);
+    }
+    
+    if (meta.sumRegistries) {
+      text += getEntityToCLinks(meta.defaultLanguage, 'Отчеты', meta.reports);
     }
 
     return text;
@@ -382,6 +400,31 @@ const getProjectSpec = (meta: System) => {
     return text;
   };
 
+  const getReportsSpec = (meta: System) => {
+    if (!meta.reports.length) {
+      return;
+    }
+
+    let text = '';
+
+    text += titleMd1('Отчеты');
+
+    text += meta.reports.map(entity => {
+      let docs = '';
+
+      docs += titleMd2(`${entity.title[meta.defaultLanguage].singular}`);
+      docs += `\`${entity.name}\`\n\n`;
+
+      if (entity.needFor) {
+        docs += `Нужен для: ${entity.needFor[meta.defaultLanguage]}\n\n`;
+      }
+
+      return docs;
+    }).join('\n');
+
+    return text;
+  };
+
   spec +=  [
     getCommonInfoSpec(meta),
     getTableOfContentsSpec(meta),
@@ -392,6 +435,7 @@ const getProjectSpec = (meta: System) => {
     getSumRegistriesSpec(meta),
     getLanguagesSpec(meta),
     getRolesSpec(meta),
+    getReportsSpec(meta),
   ]
     .filter(Boolean)
     .join('\n');

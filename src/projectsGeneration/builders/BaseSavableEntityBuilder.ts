@@ -1,8 +1,7 @@
-/* eslint-disable max-len */
 import ScalarFieldBuilder from './fields/ScalarFieldBuilder'
 import IdFieldBuilder from './fields/IdFieldBuilder'
 import LinkFieldBuilder from './fields/LinkFieldBuilder'
-import {EtityType, TKeyFieldType, Multitenancy, BaseSavableEntity} from './buildedTypes'
+import {EtityType, TKeyFieldType, Multitenancy, BaseSavableEntity, PermissionType} from './buildedTypes'
 import CatalogBuilder from './CatalogBuilder'
 import BaseBuilder from './BaseBuilder'
 import FormsBuilder from './ui/FormsBuilder'
@@ -10,23 +9,25 @@ import { FieldBuilder } from './types'
 import ViewLinkFieldBuilder from './fields/ViewLinkFieldBuilder'
 import { pascal } from '../../utils/cases'
 import * as R from 'ramda'
+import PermissionBuilder from './PermissionBuilder'
 
-const readPermissions: string[] = [
-  'all',
-  'get',
-  'count',
-  'meta',
-]
+// const readPermissions: string[] = [
+//   'all',
+//   'get',
+//   'count',
+//   'meta',
+// ]
 
-const permissions: string[] = [
-  ...readPermissions,
-  'create',
-  'update',
-  'delete',
-]
+// const permissions: string[] = [
+//   ...readPermissions,
+//   'create',
+//   'update',
+//   'delete',
+// ]
 
 abstract class BaseSavableEntityBuilder extends BaseBuilder {
   id: IdFieldBuilder
+  permissions: PermissionBuilder[] = []
   fields: FieldBuilder[] = []
   uniqueConstraints: string[][] = []
   type: EtityType = 'catalog'
@@ -57,7 +58,6 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
   isExternalSearch = false
   clearDBAfter: number | undefined
   allowedToChange: string = ''
-  permissions: string[] = permissions
 
   constructor(name: string, defaultLanguage: string, title?: {singular?: string, plural?: string}) {
     super(name, defaultLanguage, title)
@@ -386,26 +386,15 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
     return this
   }
 
-  addPemission(pemission: string): BaseSavableEntityBuilder {
-    if (this.permissions.some((p) => p === pemission)) {
-      throw new Error(`Entity "${this.name}" already have "${pemission}" pemission`)
+  addPemission(name: string, type: PermissionType): BaseSavableEntityBuilder {
+    if (this.permissions.some((p) => p.name === name)) {
+      throw new Error(`Entity "${this.name}" already have "${name}" pemission`)
     }
 
-    this.permissions.push(pemission)
+    const permission = new PermissionBuilder(`${this.name}.${name}`, type, this.defaultLanguage, `${this.name}.${name}`)
+    this.permissions.push(permission)
 
     return this
-  }
-
-  addPemissions(pemissions: string[]): BaseSavableEntityBuilder {
-    for (const pemission of pemissions) {
-      this.addPemission(pemission)
-    }
-
-    return this
-  }
-
-  getPrefixedPemissions() {
-    return this.permissions.map(p => `${this.name}.${p}`)
   }
 
   build (): BaseSavableEntity {
@@ -439,7 +428,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
       exportableByUser: this.exportableByUser,
       clearDBAfter: this.clearDBAfter,
       allowedToChange: this.allowedToChange,
-      permissions: this.getPrefixedPemissions(),
+      permissions: this.permissions.map(p => p.build()),
     }
   }
 
