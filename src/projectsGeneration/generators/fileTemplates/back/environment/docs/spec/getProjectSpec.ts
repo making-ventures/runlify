@@ -540,6 +540,26 @@ const getProjectSpec = (meta: System) => {
     return text;
   };
 
+  const getSystemAdditionalPagesSpec = (meta: System) => {
+    if (!meta.pages.length) {
+      return;
+    }
+
+    let text = '';
+
+    text += titleMd1('Доп старницы');
+
+    text += meta.pages.map(page => {
+      let docs = '';
+      
+      docs += titleMd3(`${page.title[meta.defaultLanguage].singular}`);
+
+      return docs;
+    }).filter(Boolean).join('\n');
+
+    return text;
+  };
+
   spec +=  [
     getCommonInfoSpec(meta),
     getTableOfContentsSpec(meta),
@@ -553,6 +573,7 @@ const getProjectSpec = (meta: System) => {
     getReportsSpec(meta),
     getRestApisSpec(meta),
     getIntegrationClientsSpec(meta),
+    getSystemAdditionalPagesSpec(meta),
   ]
     .filter(Boolean)
     .join('\n');
