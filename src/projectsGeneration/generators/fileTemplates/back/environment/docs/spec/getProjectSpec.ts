@@ -4,6 +4,8 @@ import {
   BaseSavableEntity,
   Catalog,
   Document,
+  IntegrationClient,
+  RestApi,
   SumRegistry,
   System,
 } from '../../../../../../builders/buildedTypes';
@@ -11,11 +13,12 @@ import findLinksToEntities from './findLinksToEntities';
 import getAllSavableEntities from './getAllSavableEntities';
 import {titleMd1, titleMd2, titleMd3} from './titleMd';
 
-const paramCase = (source: string) => source.toLowerCase().replaceAll(' ', '-');
-const getLink = (title: string, link: string) => `[${title}](#${paramCase(link)})`;
+const toUrl = (source: string) => source.toLowerCase().replaceAll(' ', '-').replaceAll('.', '');
+const getLink = (title: string, link: string) => `[${title}](#${toUrl(link)})`;
 const getSimpleLink = (title: string) => getLink(title, title);
 const getEntityLink = (lang: string, entity: BaseSavableEntity) => getLink(`\`${entity.title[lang].plural}\``, entity.title[lang].plural);
-const getToCLink = (title: string, level: number) => `${'  '.repeat(level - 1)}* ${getSimpleLink(title)}\n`;
+const getToCLink = (title: string, link: string, level: number) => `${'  '.repeat(level - 1)}* ${getLink(title, link)}\n`;
+const getToCSimpleLink = (title: string, level: number) => `${'  '.repeat(level - 1)}* ${getSimpleLink(title)}\n`;
 
 const getEntityHeaderSpec = (
   lang: string,
@@ -218,11 +221,35 @@ const getSumRegistrySpec = (
   return docs;
 };
 
-const getEntityToCLinks = (lang: string, title: string, entities: BaseEntity[]) => {
+const getEntitiesToCLinks = (lang: string, title: string, entities: BaseEntity[]) => {
   let text = '';
   
-  text += getToCLink(title, 1);
-  text += entities.map(m => getToCLink(m.title[lang].singular, 2)).join('')
+  text += getToCSimpleLink(title, 1);
+  text += entities.map(m => getToCSimpleLink(m.title[lang].singular, 2)).join('')
+
+  return text;
+};
+
+const getRestApisToCLinks = (lang: string, title: string, apis: RestApi[]) => {
+  let text = '';
+  
+  text += getToCSimpleLink(title, 1);
+  text += apis.map(api => [
+    getToCSimpleLink(api.title[lang].singular, 2),
+    ...api.methods.map(m => getToCLink(m.name, `${api.name}.${m.name}`, 3)),
+  ]).flat().join('')
+
+  return text;
+};
+
+const getIntegrationClientsToCLinks = (lang: string, title: string, cleints: IntegrationClient[]) => {
+  let text = '';
+  
+  text += getToCSimpleLink(title, 1);
+  text += cleints.map(cleint => [
+    getToCSimpleLink(cleint.title[lang].singular, 2),
+    ...cleint.queryMethods.map(m => getToCLink(m.name, `${cleint.name}.${m.name}`, 3)),
+  ]).flat().join('')
 
   return text;
 };
@@ -230,8 +257,8 @@ const getEntityToCLinks = (lang: string, title: string, entities: BaseEntity[]) 
 const getSavableEntityToCLinks = (lang: string, title: string, entities: BaseSavableEntity[]) => {
   let text = '';
   
-  text += getToCLink(title, 1);
-  text += entities.map(m => getToCLink(m.title[lang].plural, 2)).join('')
+  text += getToCSimpleLink(title, 1);
+  text += entities.map(m => getToCSimpleLink(m.title[lang].plural, 2)).join('')
 
   return text;
 };
@@ -261,23 +288,23 @@ const getProjectSpec = (meta: System) => {
     }
     
     if (meta.languages) {
-      text += getToCLink('Языки', 1);
+      text += getToCSimpleLink('Языки', 1);
     }
     
     if (meta.roles) {
-      text += getToCLink('Роли', 1);
+      text += getToCSimpleLink('Роли', 1);
     }
     
     if (meta.reports) {
-      text += getEntityToCLinks(meta.defaultLanguage, 'Отчеты', meta.reports);
+      text += getEntitiesToCLinks(meta.defaultLanguage, 'Отчеты', meta.reports);
     }
     
     if (meta.restApis) {
-      text += getEntityToCLinks(meta.defaultLanguage, 'Апи', meta.restApis);
+      text += getRestApisToCLinks(meta.defaultLanguage, 'Апи', meta.restApis);
     }
     
     if (meta.integrationClients) {
-      text += getEntityToCLinks(meta.defaultLanguage, 'Интеграционные клиенты', meta.integrationClients);
+      text += getIntegrationClientsToCLinks(meta.defaultLanguage, 'Интеграционные клиенты', meta.integrationClients);
     }
 
     return text;
@@ -457,6 +484,20 @@ const getProjectSpec = (meta: System) => {
 
       docs += getEntityHeaderSpec(meta.defaultLanguage, entity);
 
+      for (const method of entity.methods) {
+        
+        docs += titleMd3(`${entity.name}.${method.name}`);
+        docs += `${method.title[meta.defaultLanguage].singular}. \`${method.httpMethod}\`\n\n`;
+
+        if (method.urlExample) {
+          docs += `Пример урла: \`${method.urlExample}\`\n\n`;
+        }
+
+        if (method.needFor) {
+          docs += `Нужен для: ${method.needFor[meta.defaultLanguage]}\n\n`;
+        }
+      }
+
       return docs;
     }).join('\n');
 
@@ -475,12 +516,26 @@ const getProjectSpec = (meta: System) => {
     text += `Используются дли запросов во внешние системы\n\n`;
 
     text += meta.integrationClients.map(entity => {
+      if (!entity.queryMethods.length) {
+        return;
+      }
+
       let docs = '';
 
       docs += getEntityHeaderSpec(meta.defaultLanguage, entity);
 
+      for (const queryMethod of entity.queryMethods) {
+        
+        docs += titleMd3(`${entity.name}.${queryMethod.name}`);
+        docs += `${queryMethod.title[meta.defaultLanguage].singular}\n\n`;
+
+        if (queryMethod.needFor) {
+          docs += `Нужен для: ${queryMethod.needFor[meta.defaultLanguage]}\n\n`;
+        }
+      }
+
       return docs;
-    }).join('\n');
+    }).filter(Boolean).join('\n');
 
     return text;
   };
