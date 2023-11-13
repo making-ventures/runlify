@@ -691,7 +691,7 @@ class SystemMetaBuilder {
   getAllPages() {
     return [
       ...this.pages,
-      ...this.reports.map(e => e.entity.page),
+      ...this.reports.map(e => e.entity.getPage()),
       ...this.getSavableEntities().map(e => e.entity.pages),
     ].flat();
   }
@@ -731,6 +731,7 @@ class SystemMetaBuilder {
   getAllLabels() {
     return [
       ...this.labels,
+      ...this.reports.map(r => r.entity.getLabels()),
       ...this.getSavableEntities().map(e => e.entity.labels),
     ].flat();
   }

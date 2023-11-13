@@ -11,6 +11,7 @@ import {
   RestApi,
   SumRegistry,
   System,
+  Report,
 } from '../../../../../../builders/buildedTypes';
 import findLinksToEntities from './findLinksToEntities';
 import getAllSavableEntities from './getAllSavableEntities';
@@ -121,7 +122,23 @@ const getSavableEntityLabelsSpec = (
 
     docs += titleMd3(`Лейблы`);
 
-    docs += entity.labels.map(method => `* ${method}\n`).join('');
+    docs += entity.labels.map(label => `* ${label}\n`).join('');
+  }
+
+  return docs;
+};
+
+const getReportLabelsSpec = (
+  entity: Report,
+) => {
+  let docs = '';
+
+  if (entity.labels.length) {
+    docs += '\n';
+
+    docs += titleMd3(`Лейблы`);
+
+    docs += entity.labels.map(label => `* ${label}\n`).join('');
   }
 
   return docs;
@@ -430,8 +447,6 @@ const getMenuSpec = (meta: System) => {
     text += getMenuItemSpec(item, 1);
   }
 
-  text += '\n';
-
   return text;
 };
 
@@ -573,10 +588,11 @@ const getReportsSpec = (meta: System) => {
 
   text += titleMd1('Отчеты');
 
-  text += meta.reports.map(entity => {
+  text += meta.reports.map(report => {
     let docs = '';
 
-    docs += getEntityHeaderSpec(meta.defaultLanguage, entity);
+    docs += getEntityHeaderSpec(meta.defaultLanguage, report);
+    docs += getReportLabelsSpec(report);
 
     return docs;
   }).join('\n');

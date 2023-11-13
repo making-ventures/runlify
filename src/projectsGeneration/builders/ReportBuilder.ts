@@ -3,12 +3,13 @@ import PageBuilder from './PageBuilder';
 import { Report } from './buildedTypes'
 
 class ReportBuilder extends BaseBuilder {
-  page: PageBuilder;
+  protected page: PageBuilder;
+  protected labels: string[] = [];
 
   constructor(name: string, defaultLanguage: string, title?: string) {
     super(name, defaultLanguage, {singular: title})
 
-    this.page = new PageBuilder(`reports.${name}`, `reports/${name}`, this.defaultLanguage, title)
+    this.page = new PageBuilder(`reports.${name}`, `/reports/${name}`, this.defaultLanguage, title)
   }
   
   setTitle(title: {singular: string}, language?: string) {
@@ -20,11 +21,20 @@ class ReportBuilder extends BaseBuilder {
 
     return this
   }
+  
+  getPage() {
+    return this.page;
+  }
+  
+  getLabels() {
+    return this.labels;
+  }
 
   build(): Report {
     return {
       ...super.build(),
       type: 'report',
+      labels: this.labels,
     }
   }
 

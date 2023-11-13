@@ -301,6 +301,7 @@ export type BaseSavableEntity = BaseEntity & {
 
 export type Report = BaseEntity & {
   type: 'report'
+  labels: string[]
 }
 
 export type Document = BaseSavableEntity & {

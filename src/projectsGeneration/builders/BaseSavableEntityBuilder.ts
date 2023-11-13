@@ -74,13 +74,16 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
 
     this.setTitleFieldByName(this.getKey().name)
 
-    this.addPage(`${name}.all`, this.title[this.defaultLanguage].plural).addRequiredPermission(`${name}.all`);
-    this.addPage(`${name}.create`, `Создать ${this.title[this.defaultLanguage].plural}`).addRequiredPermission(`${name}.create`);
+    this.addPage(`${name}.all`, `/${name}`, this.title[this.defaultLanguage].plural).addRequiredPermission(`${name}.all`);
+    this.addPage(`${name}.create`, `/${name}/create`, `Создать ${this.title[this.defaultLanguage].plural}`).addRequiredPermission(`${name}.create`);
 
     this.addMethod('all');
     this.addMethod('create');
     this.addMethod('update');
     this.addMethod('delete');
+
+    this.addLabel(`prefix.${this.name}.title.plural`);
+    this.addLabel(`prefix.${this.name}.title.singular`);
   }
 
   setTitle(title: {plural: string, singular: string}, language?: string) {
@@ -210,6 +213,8 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
     if (isTitleField) {
       this.setTitleFieldByName(name)
     }
+    
+    this.addLabel(`prefix.${this.name}.fields.${name}`);
 
     return field
   }
