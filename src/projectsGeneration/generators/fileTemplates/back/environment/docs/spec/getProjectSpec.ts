@@ -6,6 +6,8 @@ import {
   Document,
   Entity,
   IntegrationClient,
+  MenuItem,
+  MenuItemType,
   RestApi,
   SumRegistry,
   System,
@@ -30,7 +32,7 @@ const getEntityHeaderSpec = (
   docs += titleMd2(`${entity.title[lang].singular}`);
   docs += `\`${entity.name}\`\n\n`;
 
-  if (entity.needFor) {
+  if (entity.needFor[lang]) {
     docs += `Нужен для: ${entity.needFor[lang]}\n\n`;
   }
 
@@ -46,7 +48,7 @@ const getSavableEntityHeaderSpec = (
   docs += titleMd2(`${entity.title[lang].plural}`);
   docs += `\`${entity.name}\`\n\n`;
 
-  if (entity.needFor) {
+  if (entity.needFor[lang]) {
     docs += `Нужен для: ${entity.needFor[lang]}\n\n`;
   }
 
@@ -89,6 +91,38 @@ const getEntityFieldsSpec = (
   ])}`;
 
   docs += '\n';
+
+  return docs;
+};
+
+const getSavableEntityMethodsSpec = (
+  entity: BaseSavableEntity,
+) => {
+  let docs = '';
+
+  if (entity.methods.length) {
+    docs += '\n';
+
+    docs += titleMd3(`Методы`);
+
+    docs += entity.methods.map(method => `* ${method}\n`).join('');
+  }
+
+  return docs;
+};
+
+const getSavableEntityLabelsSpec = (
+  entity: BaseSavableEntity,
+) => {
+  let docs = '';
+
+  if (entity.labels.length) {
+    docs += '\n';
+
+    docs += titleMd3(`Лейблы`);
+
+    docs += entity.labels.map(method => `* ${method}\n`).join('');
+  }
 
   return docs;
 };
@@ -178,6 +212,8 @@ const getEntitySpec = (
   docs += getEntityFieldsSpec(lang, entity, entities);
   docs += getEntityPredefinedSpec(entity);
   docs += getEntityUniqueConstraintsSpec(entity);
+  docs += getSavableEntityMethodsSpec(entity);
+  docs += getSavableEntityLabelsSpec(entity);
 
   return docs;
 };
@@ -197,6 +233,8 @@ const getDocSpec = (
   docs += getEntityPredefinedSpec(entity);
   docs += getEntityUniqueConstraintsSpec(entity);
   docs += getDocRegistriesSpec(lang, entity, entities);
+  docs += getSavableEntityMethodsSpec(entity);
+  docs += getSavableEntityLabelsSpec(entity);
 
   return docs;
 };
@@ -217,6 +255,8 @@ const getSumRegistrySpec = (
   docs += getEntityPredefinedSpec(entity);
   docs += getEntityUniqueConstraintsSpec(entity);
   docs += getSumRegistryRegistrarsSpec(lang, entity, documents);
+  docs += getSavableEntityMethodsSpec(entity);
+  docs += getSavableEntityLabelsSpec(entity);
 
   return docs;
 };
@@ -263,306 +303,384 @@ const getSavableEntityToCLinks = (lang: string, title: string, entities: BaseSav
   return text;
 };
 
+const getTableOfContentsSpec = (meta: System) => {
+  let text = '';
+  
+  text += titleMd1('Оглавление');
+
+  if (meta.catalogs.length) {
+    text += getSavableEntityToCLinks(meta.defaultLanguage, 'Каталоги', meta.catalogs);
+  }
+
+  if (meta.menuItems.length) {
+    text += getToCSimpleLink('Меню', 1);
+  }
+  
+  if (meta.documents.length) {
+    text += getSavableEntityToCLinks(meta.defaultLanguage, 'Документы', meta.documents);
+  }
+  
+  if (meta.infoRegistries.length) {
+    text += getSavableEntityToCLinks(meta.defaultLanguage, 'Информационные регистры', meta.infoRegistries);
+  }
+  
+  if (meta.sumRegistries.length) {
+    text += getSavableEntityToCLinks(meta.defaultLanguage, 'Регистры накопления', meta.sumRegistries);
+  }
+  
+  if (meta.languages.length) {
+    text += getToCSimpleLink('Языки', 1);
+  }
+  
+  if (meta.roles.length) {
+    text += getToCSimpleLink('Роли', 1);
+  }
+  
+  if (meta.reports.length) {
+    text += getEntitiesToCLinks(meta.defaultLanguage, 'Отчеты', meta.reports);
+  }
+  
+  if (meta.restApis.length) {
+    text += getRestApisToCLinks(meta.defaultLanguage, 'Апи', meta.restApis);
+  }
+  
+  if (meta.integrationClients.length) {
+    text += getIntegrationClientsToCLinks(meta.defaultLanguage, 'Интеграционные клиенты', meta.integrationClients);
+  }
+
+  return text;
+};
+
+const getCommonInfoSpec = (meta: System) => {
+  let text = '';
+
+  text += titleMd1('Общие сведения');
+  text += `* Название: ${meta.name}\n`;
+  text += `* Нужен для: ${meta.needFor}\n`;
+  text += `* Префикс: ${meta.prefix}\n`;
+
+  return text;
+};
+
+const getMenuItemSpec = (item: MenuItem, level: number) => {  
+  switch (item.itemType) {
+    case MenuItemType.Group:
+      return item.items.map(i => getMenuItemSpec(i, level + 1)).join('')
+    case MenuItemType.Internal:
+      return `${'  '.repeat(level - 1)}* ${item.name} (${item.link})\n`;
+    case MenuItemType.External:
+      return `${'  '.repeat(level - 1)}* ${item.name} (${item.link})\n`;
+  }
+};
+
+const getMethodsSpec = (meta: System) => {
+  if (!meta.methods.length) {
+    return;
+  }
+
+  let text = '';
+
+  text += titleMd1('Доп методы');
+  
+  for (const method of meta.methods) {
+    let docs = '';
+    
+    docs += `* ${method}\n`;
+  
+    return docs;
+  }
+
+  text += '\n';
+
+  return text;
+};
+
+const getLabelsSpec = (meta: System) => {
+  if (!meta.labels.length) {
+    return;
+  }
+
+  let text = '';
+
+  text += titleMd1('Доп лейблы');
+  
+  for (const label of meta.labels) {
+    let docs = '';
+    
+    docs += `* ${label}\n`;
+  
+    return docs;
+  }
+
+  text += '\n';
+
+  return text;
+};
+
+const getMenuSpec = (meta: System) => {
+  if (!meta.menuItems.length) {
+    return;
+  }
+
+  let text = '';
+
+  text += titleMd1('Меню');
+  
+  for (const item of meta.menuItems) {
+    text += getMenuItemSpec(item, 1);
+  }
+
+  text += '\n';
+
+  return text;
+};
+
+const getGlosarySpec = (meta: System) => {
+  if (!meta.glossary.length) {
+    return;
+  }
+
+  let text = '';
+
+  text += titleMd1('Глоссарий');
+  text += `${markdownTable([
+    ['Термин', 'Расшифровка'],
+    ...meta.glossary.map((f) => [
+      f.term,
+      f.definition,
+    ]),
+  ])}`;
+
+  text += '\n';
+
+  return text;
+};
+
+const getDocumentsSpec = (meta: System) => {
+  if (!meta.documents.length) {
+    return;
+  }
+
+  let text = '';
+
+  text += titleMd1('Документы');
+
+  const entities = getAllSavableEntities(meta);
+
+  text += meta.documents.map(entity => {
+    const links = findLinksToEntities(entities, entity.name);
+
+    return getDocSpec(meta.defaultLanguage, entity, entities, links);
+  }).join('\n');
+
+  return text;
+};
+
+const getCatalogsSpec = (meta: System) => {
+  if (!meta.catalogs.length) {
+    return;
+  }
+
+  let text = '';
+
+  text += titleMd1('Каталоги');
+
+  const entities = getAllSavableEntities(meta);
+
+  text += meta.catalogs.map(entity => {
+    const links = findLinksToEntities(entities, entity.name);
+
+    return getEntitySpec(meta.defaultLanguage, entity, entities, links);
+  }).join('\n');
+
+  text += '\n';
+
+  return text;
+};
+
+const getInfoRegistriesSpec = (meta: System) => {
+  if (!meta.infoRegistries.length) {
+    return;
+  }
+
+  let text = '';
+
+  text += titleMd1('Информационные регистры');
+
+  const entities = getAllSavableEntities(meta);
+
+  text += meta.infoRegistries.map(entity => {
+    const links = findLinksToEntities(entities, entity.name);
+
+    return getEntitySpec(meta.defaultLanguage, entity, entities, links);
+  }).join('\n');
+
+  return text;
+};
+
+const getSumRegistriesSpec = (meta: System) => {
+  if (!meta.sumRegistries.length) {
+    return;
+  }
+
+  let text = '';
+
+  text += titleMd1('Регистры накопления');
+
+  const entities = getAllSavableEntities(meta);
+
+  text += meta.sumRegistries.map(entity => {
+    const links = findLinksToEntities(entities, entity.name);
+
+    return getSumRegistrySpec(meta.defaultLanguage, entity, entities, meta.documents, links);
+  }).join('\n');
+
+  return text;
+};
+
+const getLanguagesSpec = (meta: System) => {
+  if (!meta.languages.length) {
+    return;
+  }
+
+  let text = '';
+
+  text += titleMd1('Языки');
+  text += meta.languages.map(l => `* ${l.title} (${l.id})\n`).join('');
+
+  return text;
+};
+
+const getRolesSpec = (meta: System) => {
+  if (!meta.roles.length) {
+    return;
+  }
+
+  let text = '';
+
+  text += titleMd1('Роли');
+  text += meta.roles.map(r => `* ${r.name} ${r.title[meta.defaultLanguage].singular} (${r.needFor[meta.defaultLanguage]})\n`).join('');
+
+  return text;
+};
+
+const getReportsSpec = (meta: System) => {
+  if (!meta.reports.length) {
+    return;
+  }
+
+  let text = '';
+
+  text += titleMd1('Отчеты');
+
+  text += meta.reports.map(entity => {
+    let docs = '';
+
+    docs += getEntityHeaderSpec(meta.defaultLanguage, entity);
+
+    return docs;
+  }).join('\n');
+
+  return text;
+};
+
+const getRestApisSpec = (meta: System) => {
+  if (!meta.restApis.length) {
+    return;
+  }
+
+  let text = '';
+
+  text += titleMd1('Апи');
+
+  text += meta.restApis.map(entity => {
+    let docs = '';
+
+    docs += getEntityHeaderSpec(meta.defaultLanguage, entity);
+
+    for (const method of entity.methods) {
+      
+      docs += titleMd3(`${entity.name}.${method.name}`);
+      docs += `${method.title[meta.defaultLanguage].singular}. \`${method.httpMethod}\`\n\n`;
+
+      if (method.urlExample) {
+        docs += `Пример урла: \`${method.urlExample}\`\n\n`;
+      }
+
+      if (method.needFor[meta.defaultLanguage]) {
+        docs += `Нужен для: ${method.needFor[meta.defaultLanguage]}\n\n`;
+      }
+    }
+
+    return docs;
+  }).join('\n');
+
+  return text;
+};
+
+const getIntegrationClientsSpec = (meta: System) => {
+  if (!meta.integrationClients.length) {
+    return;
+  }
+
+  let text = '';
+
+  text += titleMd1('Интеграционные клиенты');
+
+  text += `Используются дли запросов во внешние системы\n\n`;
+
+  text += meta.integrationClients.map(entity => {
+    if (!entity.queryMethods.length) {
+      return;
+    }
+
+    let docs = '';
+
+    docs += getEntityHeaderSpec(meta.defaultLanguage, entity);
+
+    for (const queryMethod of entity.queryMethods) {
+      
+      docs += titleMd3(`${entity.name}.${queryMethod.name}`);
+      docs += `${queryMethod.title[meta.defaultLanguage].singular}\n\n`;
+
+      if (queryMethod.needFor[meta.defaultLanguage]) {
+        docs += `Нужен для: ${queryMethod.needFor[meta.defaultLanguage]}\n\n`;
+      }
+    }
+
+    return docs;
+  }).filter(Boolean).join('\n');
+
+  return text;
+};
+
+const getSystemAdditionalPagesSpec = (meta: System) => {
+  if (!meta.pages.length) {
+    return;
+  }
+
+  let text = '';
+
+  text += titleMd1('Доп старницы');
+
+  text += meta.pages.map(page => {
+    let docs = '';
+    
+    docs += titleMd3(`${page.title[meta.defaultLanguage].singular}`);
+
+    return docs;
+  }).filter(Boolean).join('\n');
+
+  return text;
+};
+
 const getProjectSpec = (meta: System) => {
   let spec = '\n';
-
-  const getTableOfContentsSpec = (meta: System) => {
-    let text = '';
-    
-    text += titleMd1('Оглавление');
-
-    if (meta.catalogs) {
-      text += getSavableEntityToCLinks(meta.defaultLanguage, 'Каталоги', meta.catalogs);
-    }
-    
-    if (meta.documents) {
-      text += getSavableEntityToCLinks(meta.defaultLanguage, 'Документы', meta.documents);
-    }
-    
-    if (meta.infoRegistries) {
-      text += getSavableEntityToCLinks(meta.defaultLanguage, 'Информационные регистры', meta.infoRegistries);
-    }
-    
-    if (meta.sumRegistries) {
-      text += getSavableEntityToCLinks(meta.defaultLanguage, 'Регистры накопления', meta.sumRegistries);
-    }
-    
-    if (meta.languages) {
-      text += getToCSimpleLink('Языки', 1);
-    }
-    
-    if (meta.roles) {
-      text += getToCSimpleLink('Роли', 1);
-    }
-    
-    if (meta.reports) {
-      text += getEntitiesToCLinks(meta.defaultLanguage, 'Отчеты', meta.reports);
-    }
-    
-    if (meta.restApis) {
-      text += getRestApisToCLinks(meta.defaultLanguage, 'Апи', meta.restApis);
-    }
-    
-    if (meta.integrationClients) {
-      text += getIntegrationClientsToCLinks(meta.defaultLanguage, 'Интеграционные клиенты', meta.integrationClients);
-    }
-
-    return text;
-  };
-
-  const getCommonInfoSpec = (meta: System) => {
-    let text = '';
-
-    text += titleMd1('Общие сведения');
-    text += `* Название: ${meta.name}\n`;
-    text += `* Нужен для: ${meta.needFor}\n`;
-    text += `* Префикс: ${meta.prefix}\n`;
-
-    return text;
-  };
-
-  const getGlosarySpec = (meta: System) => {
-    if (!meta.glossary.length) {
-      return;
-    }
-
-    let text = '';
-
-    text += titleMd1('Глоссарий');
-    text += `${markdownTable([
-      ['Термин', 'Расшифровка'],
-      ...meta.glossary.map((f) => [
-        f.term,
-        f.definition,
-      ]),
-    ])}`;
-
-    text += '\n';
-
-    return text;
-  };
-
-  const getDocumentsSpec = (meta: System) => {
-    if (!meta.documents.length) {
-      return;
-    }
-
-    let text = '';
-
-    text += titleMd1('Документы');
-
-    const entities = getAllSavableEntities(meta);
-
-    text += meta.documents.map(entity => {
-      const links = findLinksToEntities(entities, entity.name);
-
-      return getDocSpec(meta.defaultLanguage, entity, entities, links);
-    }).join('\n');
-
-    return text;
-  };
-
-  const getCatalogsSpec = (meta: System) => {
-    if (!meta.catalogs.length) {
-      return;
-    }
-
-    let text = '';
-
-    text += titleMd1('Каталоги');
-
-    const entities = getAllSavableEntities(meta);
-
-    text += meta.catalogs.map(entity => {
-      const links = findLinksToEntities(entities, entity.name);
-
-      return getEntitySpec(meta.defaultLanguage, entity, entities, links);
-    }).join('\n');
-
-    text += '\n';
-
-    return text;
-  };
-
-  const getInfoRegistriesSpec = (meta: System) => {
-    if (!meta.infoRegistries.length) {
-      return;
-    }
-
-    let text = '';
-
-    text += titleMd1('Информационные регистры');
-
-    const entities = getAllSavableEntities(meta);
-
-    text += meta.infoRegistries.map(entity => {
-      const links = findLinksToEntities(entities, entity.name);
-
-      return getEntitySpec(meta.defaultLanguage, entity, entities, links);
-    }).join('\n');
-
-    return text;
-  };
-
-  const getSumRegistriesSpec = (meta: System) => {
-    if (!meta.sumRegistries.length) {
-      return;
-    }
-
-    let text = '';
-
-    text += titleMd1('Регистры накопления');
-
-    const entities = getAllSavableEntities(meta);
-
-    text += meta.sumRegistries.map(entity => {
-      const links = findLinksToEntities(entities, entity.name);
-
-      return getSumRegistrySpec(meta.defaultLanguage, entity, entities, meta.documents, links);
-    }).join('\n');
-
-    return text;
-  };
-
-  const getLanguagesSpec = (meta: System) => {
-    if (!meta.languages.length) {
-      return;
-    }
-
-    let text = '';
-
-    text += titleMd1('Языки');
-    text += meta.languages.map(l => `* ${l.title} (${l.id})\n`).join('');
-
-    return text;
-  };
-
-  const getRolesSpec = (meta: System) => {
-    if (!meta.roles.length) {
-      return;
-    }
-
-    let text = '';
-
-    text += titleMd1('Роли');
-    text += meta.roles.map(r => `* ${r.name} ${r.title[meta.defaultLanguage].singular} (${r.needFor[meta.defaultLanguage]})\n`).join('');
-
-    return text;
-  };
-
-  const getReportsSpec = (meta: System) => {
-    if (!meta.reports.length) {
-      return;
-    }
-
-    let text = '';
-
-    text += titleMd1('Отчеты');
-
-    text += meta.reports.map(entity => {
-      let docs = '';
-
-      docs += getEntityHeaderSpec(meta.defaultLanguage, entity);
-
-      return docs;
-    }).join('\n');
-
-    return text;
-  };
-
-  const getRestApisSpec = (meta: System) => {
-    if (!meta.restApis.length) {
-      return;
-    }
-
-    let text = '';
-
-    text += titleMd1('Апи');
-
-    text += meta.restApis.map(entity => {
-      let docs = '';
-
-      docs += getEntityHeaderSpec(meta.defaultLanguage, entity);
-
-      for (const method of entity.methods) {
-        
-        docs += titleMd3(`${entity.name}.${method.name}`);
-        docs += `${method.title[meta.defaultLanguage].singular}. \`${method.httpMethod}\`\n\n`;
-
-        if (method.urlExample) {
-          docs += `Пример урла: \`${method.urlExample}\`\n\n`;
-        }
-
-        if (method.needFor) {
-          docs += `Нужен для: ${method.needFor[meta.defaultLanguage]}\n\n`;
-        }
-      }
-
-      return docs;
-    }).join('\n');
-
-    return text;
-  };
-
-  const getIntegrationClientsSpec = (meta: System) => {
-    if (!meta.integrationClients.length) {
-      return;
-    }
-
-    let text = '';
-
-    text += titleMd1('Интеграционные клиенты');
-
-    text += `Используются дли запросов во внешние системы\n\n`;
-
-    text += meta.integrationClients.map(entity => {
-      if (!entity.queryMethods.length) {
-        return;
-      }
-
-      let docs = '';
-
-      docs += getEntityHeaderSpec(meta.defaultLanguage, entity);
-
-      for (const queryMethod of entity.queryMethods) {
-        
-        docs += titleMd3(`${entity.name}.${queryMethod.name}`);
-        docs += `${queryMethod.title[meta.defaultLanguage].singular}\n\n`;
-
-        if (queryMethod.needFor) {
-          docs += `Нужен для: ${queryMethod.needFor[meta.defaultLanguage]}\n\n`;
-        }
-      }
-
-      return docs;
-    }).filter(Boolean).join('\n');
-
-    return text;
-  };
-
-  const getSystemAdditionalPagesSpec = (meta: System) => {
-    if (!meta.pages.length) {
-      return;
-    }
-
-    let text = '';
-
-    text += titleMd1('Доп старницы');
-
-    text += meta.pages.map(page => {
-      let docs = '';
-      
-      docs += titleMd3(`${page.title[meta.defaultLanguage].singular}`);
-
-      return docs;
-    }).filter(Boolean).join('\n');
-
-    return text;
-  };
 
   spec +=  [
     getCommonInfoSpec(meta),
     getTableOfContentsSpec(meta),
+    getMenuSpec(meta),
     getGlosarySpec(meta),
     getCatalogsSpec(meta),
     getDocumentsSpec(meta),
@@ -574,6 +692,8 @@ const getProjectSpec = (meta: System) => {
     getRestApisSpec(meta),
     getIntegrationClientsSpec(meta),
     getSystemAdditionalPagesSpec(meta),
+    getMethodsSpec(meta),
+    getLabelsSpec(meta),
   ]
     .filter(Boolean)
     .join('\n');

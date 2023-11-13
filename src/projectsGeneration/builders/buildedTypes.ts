@@ -295,6 +295,8 @@ export type BaseSavableEntity = BaseEntity & {
   allowedToChange: string
   permissions: Permission[]
   pages: Page[]
+  methods: string[]
+  labels: string[]
 }
 
 export type Report = BaseEntity & {
@@ -336,29 +338,41 @@ export type IntegrationClient = BaseEntity & {
   queryMethods: IntegrationClientQueryMethod[]
 }
 
-export enum PageType {
+export enum MenuItemType {
+  Group = 'group',
   External = 'external',
   Internal = 'internal',
 }
 
-export type BasePage = BaseEntity & {
+export type Page = BaseEntity & {
   type: 'page'
+  link: string
 }
 
-export type ExternalPage = BasePage & {
-  pageType: PageType.External
-  url: string
-}
-
-export type InternalPage = BasePage & {
-  pageType: PageType.Internal
-}
-
-export type Page = ExternalPage | InternalPage
-
-export type MenuItem = BaseEntity & {
+export type BaseMenuItem = BaseEntity & {
   type: 'menuItem'
+  label: string
+  debugOnly: boolean
+  permissions: string[]
 }
+
+export type GroupMenuItem = BaseMenuItem & {
+  itemType: MenuItemType.Group
+  items: MenuItem[]
+}
+
+export type InternalMenuItem = BaseMenuItem & {
+  itemType: MenuItemType.Internal
+  pageName: string
+  link: string
+}
+
+export type ExternalMenuItem = BaseMenuItem & {
+  itemType: MenuItemType.External
+  link: string
+}
+
+export type MenuItem = GroupMenuItem | InternalMenuItem | ExternalMenuItem
 
 export type Role = BaseEntity & {
   type: 'role'
@@ -470,6 +484,8 @@ export type System = {
   roles: Role[]
   menuItems: MenuItem[]
   pages: Page[]
+  methods: string[]
+  labels: string[]
 
   reports: Report[]
   telegramBots: TelegramBot[]

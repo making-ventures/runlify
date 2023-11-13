@@ -29,9 +29,10 @@ import TelegramBotBuilder from './TelegramBotBuilder'
 import {ConfigVarBuilder} from './ConfigVarBuilder';
 import log from '../../log';
 import IntegrationClientBuilder from './integrationClients/IntegrationClientBuilder'
-import MenuItemBuilder from './MenuItemBuilder'
-import InternalPageBuilder from './InternalPageBuilder'
-import ExternalPageBuilder from './ExternalPageBuilder'
+import ExternalMenuItemBuilder from './menu/ExternalMenuItemBuilder'
+import InternalMenuItemBuilder from './menu/InternalMenuItemBuilder'
+import GroupMenuItemBuilder from './menu/GroupMenuItemBuilder'
+import PageBuilder from './PageBuilder'
 
 export const defaultConfigVar: Omit<ConfigVar, 'name' | 'type'> = {
   needFor: '',
@@ -60,8 +61,10 @@ class SystemMetaBuilder {
   roles: RoleBuilder[] = []
   defaultLanguage: string
   defOpts: BootstrapEntityOptions
-  menuItems: MenuItemBuilder[] = [];
-  pages: (InternalPageBuilder | ExternalPageBuilder)[] = [];
+  menuItems: (GroupMenuItemBuilder | InternalMenuItemBuilder | ExternalMenuItemBuilder)[] = [];
+  pages: PageBuilder[] = [];
+  methods: string[] = [];
+  labels: string[] = [];
 
   name: string
   prefix: string
@@ -678,12 +681,87 @@ class SystemMetaBuilder {
 
     return role
   }
+  
+  // constructor(assurePageExists: (pageId: string) => void, name: string, defaultLanguage: string, title?: string, level?: number) {
+  //   super(name, defaultLanguage, title, level);
 
-  addMenuItem(
+  //   this.assurePageExists = assurePageExists;
+  // }
+
+  getAllPages() {
+    return [
+      ...this.pages,
+      ...this.reports.map(e => e.entity.page),
+      ...this.getSavableEntities().map(e => e.entity.pages),
+    ].flat();
+  }
+
+  assurePageExists(pageName: string) {
+    if (!this.getAllPages().some(p => p.name === pageName)) {
+      throw new Error(`There is no "${pageName}" page`);
+    }
+  }
+
+  addPage(
     name: string,
+    link: string,
     title?: string,
   ) {
-    const menuItem = new MenuItemBuilder(name, this.defaultLanguage, title)
+    if (this.getAllPages().some(p => p.name === name)) {
+      throw new Error(`There is already "${name}" page`);
+    }
+
+    const page = new PageBuilder(name, link, this.defaultLanguage, title)
+
+    this.pages.push(page)
+
+    return page
+  }
+
+  getPageByName(pageName: string) {
+    const found =  this.getAllPages().find(p => p.name === pageName);
+
+    if (!found) {
+      throw new Error(`Page "${pageName}" not found`);
+    }
+
+    return found;
+  }
+
+  getAllLabels() {
+    return [
+      ...this.labels,
+      ...this.getSavableEntities().map(e => e.entity.labels),
+    ].flat();
+  }
+
+  assureLabelExists(label: string) {
+    if (!this.getAllLabels().some(l => l === label)) {
+      throw new Error(`There is no "${label}" page`);
+    }
+  }
+
+  addGroupMenuItem(label: string) {
+    const menuItem = new GroupMenuItemBuilder(this, label, this.defaultLanguage, 1)
+
+    this.menuItems.push(menuItem)
+
+    return menuItem
+  }
+
+  addInternalMenuItem(pageName: string, label: string) {
+    const menuItem = new InternalMenuItemBuilder(this, pageName, label, this.defaultLanguage, 1)
+
+    this.menuItems.push(menuItem)
+
+    return menuItem
+  }
+
+  addExternalMenuItem(
+    label: string,
+    url: string,
+  ) {
+    const menuItem = new ExternalMenuItemBuilder(this, label, url, this.defaultLanguage, 1)
 
     this.menuItems.push(menuItem)
 
@@ -836,6 +914,22 @@ class SystemMetaBuilder {
       .filter((e) => e.externalSearch)
   }
 
+  addMethod(method: string) {
+    if (this.methods.some(m => m === method)) {
+      throw new Error(`There is already system method "${method}"`);
+    }
+
+    this.methods.push(method);
+  }
+
+  addLabel(label: string) {
+    if (this.labels.some(m => m === label)) {
+      throw new Error(`There is already system label "${label}"`);
+    }
+
+    this.labels.push(label);
+  }
+
   // setMemory(request: string, limit?: string) {
   //   this.requests.memory = request
 
@@ -899,9 +993,11 @@ class SystemMetaBuilder {
         worker.build()
       ),
       roles: R.sortBy(R.prop('name'), this.roles).map((role) => role.build()),
-      menuItems: R.sortBy(R.prop('name'), this.menuItems).map((item) => item.build()),
+      menuItems: this.menuItems.map((item) => item.build()),
       pages: this.pages.map(p => p.build()),
       back: this.back.build(),
+      methods: this.methods,
+      labels: this.labels,
     }
   }
 

@@ -10,7 +10,7 @@ import ViewLinkFieldBuilder from './fields/ViewLinkFieldBuilder'
 import { pascal } from '../../utils/cases'
 import * as R from 'ramda'
 import PermissionBuilder from './PermissionBuilder'
-import InternalPageBuilder from './InternalPageBuilder'
+import PageBuilder from './PageBuilder'
 
 // const readPermissions: string[] = [
 //   'all',
@@ -59,7 +59,9 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
   isExternalSearch = false
   clearDBAfter: number | undefined
   allowedToChange: string = ''
-  pages: InternalPageBuilder[] = [];
+  pages: PageBuilder[] = [];
+  methods: string[] = [];
+  labels: string[] = [];
 
   constructor(name: string, defaultLanguage: string, title?: {singular?: string, plural?: string}) {
     super(name, defaultLanguage, title)
@@ -71,6 +73,14 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
     this.titleField = new IdFieldBuilder('id', defaultLanguage)
 
     this.setTitleFieldByName(this.getKey().name)
+
+    this.addPage(`${name}.all`, this.title[this.defaultLanguage].plural).addRequiredPermission(`${name}.all`);
+    this.addPage(`${name}.create`, `Создать ${this.title[this.defaultLanguage].plural}`).addRequiredPermission(`${name}.create`);
+
+    this.addMethod('all');
+    this.addMethod('create');
+    this.addMethod('update');
+    this.addMethod('delete');
   }
 
   setTitle(title: {plural: string, singular: string}, language?: string) {
@@ -399,6 +409,56 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
     return this
   }
 
+  addPage(
+    name: string,
+    link: string,
+    title?: string,
+  ) {
+    if (this.pages.some(p => p.name === name)) {
+      throw new Error(`There is already "${name}" page`);
+    }
+
+    const page = new PageBuilder(name, link, this.defaultLanguage, title)
+
+    this.pages.push(page)
+
+    return page
+  }
+
+  getPageByName(pageName: string) {
+    const found =  this.pages.find(p => p.name === pageName);
+
+    if (!found) {
+      throw new Error(`Page "${pageName}" not found`);
+    }
+
+    return found;
+  }
+
+  getAllPage() {
+    return this.getPageByName(`${this.name}.all`);
+  }
+
+  getCreatePage() {
+    return this.getPageByName(`${this.name}.create`);
+  }
+
+  addMethod(method: string) {
+    if (this.methods.some(m => m === method)) {
+      throw new Error(`There is already method "${method}" in "${this.name}" entity`);
+    }
+
+    this.methods.push(method);
+  }
+  
+  addLabel(label: string) {
+    if (this.labels.some(l => l === label)) {
+      throw new Error(`There is already label "${label}" in "${this.name}" entity`);
+    }
+
+    this.labels.push(label);
+  }
+
   build (): BaseSavableEntity {
     return {
       ...super.build(),
@@ -432,6 +492,8 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
       allowedToChange: this.allowedToChange,
       permissions: this.permissions.map(p => p.build()),
       pages: this.pages.map(p => p.build()),
+      methods: this.methods,
+      labels: this.labels,
     }
   }
 
