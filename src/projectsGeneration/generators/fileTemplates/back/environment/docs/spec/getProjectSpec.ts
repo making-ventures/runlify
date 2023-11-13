@@ -4,6 +4,7 @@ import {
   BaseSavableEntity,
   Catalog,
   Document,
+  Entity,
   IntegrationClient,
   RestApi,
   SumRegistry,
@@ -70,7 +71,7 @@ const getEntityLinksToEntitySpec = (
 const getEntityFieldsSpec = (
   lang: string,
   entity: BaseSavableEntity,
-  catalogs: Catalog[],
+  entities: Entity[],
 ) => {
   let docs = '';
 
@@ -83,7 +84,7 @@ const getEntityFieldsSpec = (
         f.title[lang],
         f.type,
         f.required ? 'Обязательное' : 'Не обязательное',
-        f.category === 'link' ? `ссылается на ${getEntityLink(lang, catalogs.find(c => c.name === f.externalEntity) as Catalog)}` : '',
+        f.category === 'link' ? `ссылается на ${getEntityLink(lang, entities.find(c => c.name === f.externalEntity) as Catalog)}` : '',
       ]),
   ])}`;
 
@@ -128,7 +129,7 @@ const getEntityUniqueConstraintsSpec = (entity: BaseSavableEntity) => {
 const getDocRegistriesSpec = (
   lang: string,
   entity: Document,
-  registries: SumRegistry[],
+  entities: Entity[],
 ) => {
   let docs = '';
 
@@ -137,7 +138,7 @@ const getDocRegistriesSpec = (
 
     docs += titleMd3(`Связанные регистры`);
 
-    docs += `${entity.registries.map(name => `${getEntityLink(lang, registries.find(r => r.name === name) as SumRegistry)}`).join(', ')}\n`;
+    docs += `${entity.registries.map(name => `${getEntityLink(lang, entities.find(r => r.name === name) as SumRegistry)}`).join(', ')}\n`;
   }
 
   return docs;
@@ -166,7 +167,7 @@ const getSumRegistryRegistrarsSpec = (
 const getEntitySpec = (
   lang: string,
   entity: BaseSavableEntity,
-  catalogs: Catalog[],
+  entities: Entity[],
   links: BaseSavableEntity[],
 ) => {
   let docs = '';
@@ -174,7 +175,7 @@ const getEntitySpec = (
   docs += getSavableEntityHeaderSpec(lang, entity);
   docs += getEntityLinksToEntitySpec(lang, links);
   docs += '\n';
-  docs += getEntityFieldsSpec(lang, entity, catalogs);
+  docs += getEntityFieldsSpec(lang, entity, entities);
   docs += getEntityPredefinedSpec(entity);
   docs += getEntityUniqueConstraintsSpec(entity);
 
@@ -184,8 +185,7 @@ const getEntitySpec = (
 const getDocSpec = (
   lang: string,
   entity: Document,
-  catalogs: Catalog[],
-  registries: SumRegistry[],
+  entities: Entity[],
   links: BaseSavableEntity[],
 ) => {
   let docs = '';
@@ -193,10 +193,10 @@ const getDocSpec = (
   docs += getSavableEntityHeaderSpec(lang, entity);
   docs += getEntityLinksToEntitySpec(lang, links);
   docs += '\n';
-  docs += getEntityFieldsSpec(lang, entity, catalogs);
+  docs += getEntityFieldsSpec(lang, entity, entities);
   docs += getEntityPredefinedSpec(entity);
   docs += getEntityUniqueConstraintsSpec(entity);
-  docs += getDocRegistriesSpec(lang, entity, registries);
+  docs += getDocRegistriesSpec(lang, entity, entities);
 
   return docs;
 };
@@ -204,7 +204,7 @@ const getDocSpec = (
 const getSumRegistrySpec = (
   lang: string,
   entity: SumRegistry,
-  catalogs: Catalog[],
+  entities: Entity[],
   documents: Document[],
   links: BaseSavableEntity[],
 ) => {
@@ -213,7 +213,7 @@ const getSumRegistrySpec = (
   docs += getSavableEntityHeaderSpec(lang, entity);
   docs += getEntityLinksToEntitySpec(lang, links);
   docs += '\n';
-  docs += getEntityFieldsSpec(lang, entity, catalogs);
+  docs += getEntityFieldsSpec(lang, entity, entities);
   docs += getEntityPredefinedSpec(entity);
   docs += getEntityUniqueConstraintsSpec(entity);
   docs += getSumRegistryRegistrarsSpec(lang, entity, documents);
@@ -356,7 +356,7 @@ const getProjectSpec = (meta: System) => {
     text += meta.documents.map(entity => {
       const links = findLinksToEntities(entities, entity.name);
 
-      return getDocSpec(meta.defaultLanguage, entity, meta.catalogs, meta.sumRegistries, links);
+      return getDocSpec(meta.defaultLanguage, entity, entities, links);
     }).join('\n');
 
     return text;
@@ -376,7 +376,7 @@ const getProjectSpec = (meta: System) => {
     text += meta.catalogs.map(entity => {
       const links = findLinksToEntities(entities, entity.name);
 
-      return getEntitySpec(meta.defaultLanguage, entity, meta.catalogs, links);
+      return getEntitySpec(meta.defaultLanguage, entity, entities, links);
     }).join('\n');
 
     text += '\n';
@@ -398,7 +398,7 @@ const getProjectSpec = (meta: System) => {
     text += meta.infoRegistries.map(entity => {
       const links = findLinksToEntities(entities, entity.name);
 
-      return getEntitySpec(meta.defaultLanguage, entity, meta.catalogs, links);
+      return getEntitySpec(meta.defaultLanguage, entity, entities, links);
     }).join('\n');
 
     return text;
@@ -418,7 +418,7 @@ const getProjectSpec = (meta: System) => {
     text += meta.sumRegistries.map(entity => {
       const links = findLinksToEntities(entities, entity.name);
 
-      return getSumRegistrySpec(meta.defaultLanguage, entity, meta.catalogs, meta.documents, links);
+      return getSumRegistrySpec(meta.defaultLanguage, entity, entities, meta.documents, links);
     }).join('\n');
 
     return text;
