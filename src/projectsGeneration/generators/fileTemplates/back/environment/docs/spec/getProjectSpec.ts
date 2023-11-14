@@ -384,9 +384,9 @@ const getMenuItemSpec = (item: MenuItem, level: number) => {
     case MenuItemType.Group:
       return item.items.map(i => getMenuItemSpec(i, level + 1)).join('')
     case MenuItemType.Internal:
-      return `${'  '.repeat(level - 1)}* ${item.name} (${item.link})\n`;
+      return `${'  '.repeat(level - 1)}* ${item.label} (${item.link})\n`;
     case MenuItemType.External:
-      return `${'  '.repeat(level - 1)}* ${item.name} (${item.link})\n`;
+      return `${'  '.repeat(level - 1)}* ${item.label} (${item.link})\n`;
   }
 };
 

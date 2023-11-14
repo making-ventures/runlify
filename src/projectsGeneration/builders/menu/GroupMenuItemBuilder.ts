@@ -1,3 +1,4 @@
+import * as R from 'ramda';
 import SystemMetaBuilder from '../SystemMetaBuilder';
 import {GroupMenuItem, MenuItemType} from '../buildedTypes'
 import BaseMenuItemBuilder from './BaseMenuItemBuilder';
@@ -19,8 +20,8 @@ class GroupMenuItemBuilder extends BaseMenuItemBuilder {
     return menuItem
   }
 
-  addInternalItem(pageName: string, label: string) {
-    const menuItem = new InternalMenuItemBuilder(this.system, pageName, label, this.defaultLanguage, this.level + 1)
+  addInternalItem(pageName: string) {
+    const menuItem = new InternalMenuItemBuilder(this.system, pageName, this.defaultLanguage, this.level + 1)
 
     this.items.push(menuItem)
 
@@ -36,10 +37,16 @@ class GroupMenuItemBuilder extends BaseMenuItemBuilder {
   }
 
   build(): GroupMenuItem {
+    const items = this.items.map(i => i.build());
+
     return {
       ...super.build(),
       itemType: MenuItemType.Group,
-      items: this.items.map(i => i.build())
+      items,
+      permissions: R.uniq([
+        ...this.permissions,
+        ...items.flatMap(i => i.permissions),
+      ]),
     }
   }
 }

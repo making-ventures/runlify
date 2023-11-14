@@ -9,7 +9,8 @@ class ReportBuilder extends BaseBuilder {
   constructor(name: string, defaultLanguage: string, title?: string) {
     super(name, defaultLanguage, {singular: title})
 
-    this.page = new PageBuilder(`reports.${name}`, `/reports/${name}`, this.defaultLanguage, title)
+    this.page = new PageBuilder(`reports.${name}`, `/reports/${name}`, `reports.${name}.title`, this.defaultLanguage, title)
+      .addRequiredPermission(`reports.${name}`);
   }
   
   setTitle(title: {singular: string}, language?: string) {

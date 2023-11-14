@@ -705,13 +705,14 @@ class SystemMetaBuilder {
   addPage(
     name: string,
     link: string,
+    label: string,
     title?: string,
   ) {
     if (this.getAllPages().some(p => p.name === name)) {
       throw new Error(`There is already "${name}" page`);
     }
 
-    const page = new PageBuilder(name, link, this.defaultLanguage, title)
+    const page = new PageBuilder(name, link, label, this.defaultLanguage, title)
 
     this.pages.push(page)
 
@@ -750,8 +751,8 @@ class SystemMetaBuilder {
     return menuItem
   }
 
-  addInternalMenuItem(pageName: string, label: string) {
-    const menuItem = new InternalMenuItemBuilder(this, pageName, label, this.defaultLanguage, 1)
+  addInternalMenuItem(pageName: string) {
+    const menuItem = new InternalMenuItemBuilder(this, pageName, this.defaultLanguage, 1)
 
     this.menuItems.push(menuItem)
 

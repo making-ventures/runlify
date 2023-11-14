@@ -74,8 +74,8 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
 
     this.setTitleFieldByName(this.getKey().name)
 
-    this.addPage(`${name}.all`, `/${name}`, this.title[this.defaultLanguage].plural).addRequiredPermission(`${name}.all`);
-    this.addPage(`${name}.create`, `/${name}/create`, `Создать ${this.title[this.defaultLanguage].plural}`).addRequiredPermission(`${name}.create`);
+    this.addPage(`${name}.all`, `/${name}`, `prefix.${this.name}.title.plural`).addRequiredPermission(`${name}.all`);
+    this.addPage(`${name}.create`, `/${name}/create`, `prefix.${this.name}.title.singular`).addRequiredPermission(`${name}.create`);
 
     this.addMethod('all');
     this.addMethod('create');
@@ -417,13 +417,14 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
   addPage(
     name: string,
     link: string,
+    label: string,
     title?: string,
   ) {
     if (this.pages.some(p => p.name === name)) {
       throw new Error(`There is already "${name}" page`);
     }
 
-    const page = new PageBuilder(name, link, this.defaultLanguage, title)
+    const page = new PageBuilder(name, link, label, this.defaultLanguage, title)
 
     this.pages.push(page)
 

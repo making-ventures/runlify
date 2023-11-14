@@ -3,12 +3,14 @@ import BaseBuilder from './BaseBuilder'
 
 class PageBuilder extends BaseBuilder {
   protected link: string;
+  protected label: string;
   protected permissions: string[] = [];
 
-  constructor(name: string, link: string, defaultLanguage: string, title?: string) {
+  constructor(name: string, link: string, label: string, defaultLanguage: string, title?: string) {
     super(name, defaultLanguage, {singular: title})
 
     this.link = link;
+    this.label = label;
   }
 
   addRequiredPermission(permission: string) {
@@ -28,12 +30,16 @@ class PageBuilder extends BaseBuilder {
   getLink() {
     return this.link;
   }
+  getLabel() {
+    return this.label;
+  }
 
   build(): Page {
     return {
       ...super.build(),
       type: 'page',
       link: this.link,
+      label: this.label,
     }
   }
 }

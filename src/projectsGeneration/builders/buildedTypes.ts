@@ -348,6 +348,7 @@ export enum MenuItemType {
 export type Page = BaseEntity & {
   type: 'page'
   link: string
+  label: string
 }
 
 export type BaseMenuItem = BaseEntity & {

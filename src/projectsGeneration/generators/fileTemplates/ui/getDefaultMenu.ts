@@ -1,9 +1,41 @@
-/* eslint-disable max-len */
-import { defaultBootstrapEntityOptions } from '../../../types'
-import { Entity } from '../../../builders/buildedTypes'
-import { ProjectWideGenerationArgs } from '../../../args'
-import { generatedWarning } from '../../../utils'
-import { plural } from 'pluralize'
+import {defaultBootstrapEntityOptions} from '../../../types'
+import {Entity, MenuItem, MenuItemType} from '../../../builders/buildedTypes'
+import {ProjectWideGenerationArgs} from '../../../args'
+import {generatedWarning, pad2} from '../../../utils'
+import {plural } from 'pluralize'
+
+const menuItemTmpl = (item: MenuItem) => {
+  switch (item.itemType) {
+    case MenuItemType.Group:
+      return `{
+  label: '${item.label}',
+  icon: '${item.materialUiIcon}',
+  debugOnly: ${item.debugOnly},
+  permissions: ${item.permissions.length ? `[
+${item.permissions.map(p => `'${p}',`).map(pad2).join('\n')}
+  ]` : '[]'},
+  children: ${item.items.length ? `[
+${item.items.map(i => `${menuItemTmpl(i)},`).map(pad2).join('\n')}
+  ]` : '[]'},
+}`;
+    case MenuItemType.Internal:
+      return `{
+  label: '${item.label}',
+  link: '${item.link}',
+  icon: '${item.materialUiIcon}',
+  debugOnly: ${item.debugOnly},
+  permissions: [${item.permissions.map(p => `'${p}'`).join(', ')}],
+}`;
+    case MenuItemType.External:
+      return `{
+  label: '${item.label}',
+  link: '${item.link}',
+  icon: '${item.materialUiIcon}',
+  debugOnly: ${item.debugOnly},
+  permissions: [${item.permissions.map(p => `'${p}'`).join(', ')}],
+}`;
+  }
+}
 
 export const uiGetDefaultMenuTmpl = ({
   system,
@@ -39,6 +71,7 @@ ${
 }
 const getDefaultMenu = () => {
   const menuData: MenuElement[] = [
+${system.menuItems.map(i => `${menuItemTmpl(i)},`).map(pad2).join('\n')}
     {
       label: 'app.menu.functions',
       link: '/functions',
