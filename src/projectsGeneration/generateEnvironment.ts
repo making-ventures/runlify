@@ -180,7 +180,7 @@ export const generateEnvironment = async (
     const uiDataProviderFolder = join(prjDetachedUiSrcDir, 'dataProvider')
     await write(
       join(uiDataProviderFolder, 'index.ts'),
-      uiDataProviderTmpl(entities, opts)
+      uiDataProviderTmpl(entities, projectWideGenerationArgs.system.additionalServices, opts)
     )
 
     // src/i18nProvider/index.ts

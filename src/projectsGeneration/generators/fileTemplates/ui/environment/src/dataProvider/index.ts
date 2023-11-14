@@ -3,12 +3,14 @@ import {
   BootstrapEntityOptions,
   defaultBootstrapEntityOptions,
 } from '../../../../../../types'
-import { Entity } from '../../../../../../builders/buildedTypes'
+import { AdditionalService, AdditionalServiceMethodType, Entity } from '../../../../../../builders/buildedTypes'
 import { generatedWarning } from '../../../../../../utils'
 import { getKeyField } from '../../../../../../metaUtils'
+import { pascalCase } from 'change-case'
 
 export const uiDataProviderTmpl = (
   entities: Entity[],
+  additionalServices: AdditionalService[],
   options: BootstrapEntityOptions = defaultBootstrapEntityOptions
 ) => `import buildGraphQLProvider, {buildQuery as buildQueryFactory} from 'ra-data-graphql-simple';
 import {IntrospectionResult} from 'ra-data-graphql';
@@ -97,6 +99,18 @@ export default async (client: ApolloClient<unknown>): Promise<DataProvider> => {
   return {
     ...baseDataProvider,
     ...getCustomMethods(client, baseDataProvider),
+${additionalServices.flatMap(service => service.methods.map(method => {
+  const methodName = `${service.name}${pascalCase(method.name)}`;
+
+  return`    ${methodName}: async () => {
+      return client.${method.methodType === AdditionalServiceMethodType.Mutation ? 'mutate' : 'query'}({
+        mutation: gql\`
+          mutation ${methodName} {
+            ${methodName}
+          }
+        \`,
+      });
+    },`})).join('\n')}
   };
 };
 `

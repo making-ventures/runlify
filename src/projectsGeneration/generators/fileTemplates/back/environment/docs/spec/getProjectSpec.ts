@@ -12,6 +12,7 @@ import {
   SumRegistry,
   System,
   Report,
+  AdditionalService,
 } from '../../../../../../builders/buildedTypes';
 import findLinksToEntities from './findLinksToEntities';
 import getAllSavableEntities from './getAllSavableEntities';
@@ -311,6 +312,18 @@ const getIntegrationClientsToCLinks = (lang: string, title: string, cleints: Int
   return text;
 };
 
+const getAdditionalServicesToCLinks = (lang: string, title: string, cleints: AdditionalService[]) => {
+  let text = '';
+  
+  text += getToCSimpleLink(title, 1);
+  text += cleints.map(cleint => [
+    getToCSimpleLink(cleint.title[lang].singular, 2),
+    ...cleint.methods.map(m => getToCLink(m.name, `${cleint.name}.${m.name}`, 3)),
+  ]).flat().join('')
+
+  return text;
+};
+
 const getSavableEntityToCLinks = (lang: string, title: string, entities: BaseSavableEntity[]) => {
   let text = '';
   
@@ -363,6 +376,10 @@ const getTableOfContentsSpec = (meta: System) => {
   
   if (meta.integrationClients.length) {
     text += getIntegrationClientsToCLinks(meta.defaultLanguage, 'Интеграционные клиенты', meta.integrationClients);
+  }
+  
+  if (meta.additionalServices.length) {
+    text += getAdditionalServicesToCLinks(meta.defaultLanguage, 'Дополнительные сервисы', meta.additionalServices);
   }
 
   return text;
@@ -670,6 +687,42 @@ const getIntegrationClientsSpec = (meta: System) => {
   return text;
 };
 
+const getAdditionalServicesSpec = (meta: System) => {
+  if (!meta.additionalServices.length) {
+    return;
+  }
+
+  let text = '';
+
+  text += titleMd1('Дополнителььные сервисы');
+
+  text += meta.additionalServices.map(entity => {
+    if (!entity.methods.length) {
+      return;
+    }
+
+    let docs = '';
+
+    docs += getEntityHeaderSpec(meta.defaultLanguage, entity);
+
+    for (const queryMethod of entity.methods) {
+      
+      docs += titleMd3(`${entity.name}.${queryMethod.name}`);
+      docs += `${queryMethod.title[meta.defaultLanguage].singular}\n\n`;
+      docs += `Экспортируется через апи: ${queryMethod.exportedToApi ? 'да' : 'нет'}\n\n`;
+      docs += `Тип: \`${queryMethod.methodType}\`\n\n`;
+
+      if (queryMethod.needFor[meta.defaultLanguage]) {
+        docs += `Нужен для: ${queryMethod.needFor[meta.defaultLanguage]}\n\n`;
+      }
+    }
+
+    return docs;
+  }).filter(Boolean).join('\n');
+
+  return text;
+};
+
 const getSystemAdditionalPagesSpec = (meta: System) => {
   if (!meta.pages.length) {
     return;
@@ -707,6 +760,7 @@ const getProjectSpec = (meta: System) => {
     getReportsSpec(meta),
     getRestApisSpec(meta),
     getIntegrationClientsSpec(meta),
+    getAdditionalServicesSpec(meta),
     getSystemAdditionalPagesSpec(meta),
     getMethodsSpec(meta),
     getLabelsSpec(meta),

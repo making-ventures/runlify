@@ -351,6 +351,30 @@ export type Page = BaseEntity & {
   label: string
 }
 
+export type AdditionalServiceArgsModel = TsModel
+
+export type AdditionalServiceReturnModel = TsModel & {
+  array: boolean
+}
+
+export enum AdditionalServiceMethodType {
+  Query = 'query',
+  Mutation = 'mutation',
+}
+
+export type AdditionalServiceMethod = BaseEntity & {
+  argsModel: AdditionalServiceArgsModel
+  returnModel: AdditionalServiceReturnModel
+  exportedToApi: boolean
+  methodType: AdditionalServiceMethodType
+}
+
+export type AdditionalService = BaseEntity & {
+  type: 'additionalService'
+  models: TsModel[]
+  methods: AdditionalServiceMethod[]
+}
+
 export type BaseMenuItem = BaseEntity & {
   type: 'menuItem'
   label: string
@@ -488,6 +512,7 @@ export type System = {
   pages: Page[]
   methods: string[]
   labels: string[]
+  additionalServices: AdditionalService[]
 
   reports: Report[]
   telegramBots: TelegramBot[]

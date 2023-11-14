@@ -33,6 +33,7 @@ import ExternalMenuItemBuilder from './menu/ExternalMenuItemBuilder'
 import InternalMenuItemBuilder from './menu/InternalMenuItemBuilder'
 import GroupMenuItemBuilder from './menu/GroupMenuItemBuilder'
 import PageBuilder from './PageBuilder'
+import AdditionalServiceBuilder from './additionalServices/AdditionalServiceBuilder'
 
 export const defaultConfigVar: Omit<ConfigVar, 'name' | 'type'> = {
   needFor: '',
@@ -65,6 +66,7 @@ class SystemMetaBuilder {
   pages: PageBuilder[] = [];
   methods: string[] = [];
   labels: string[] = [];
+  additionalServices: AdditionalServiceBuilder[] = [];
 
   name: string
   prefix: string
@@ -630,7 +632,7 @@ class SystemMetaBuilder {
       this.integrationClients.some((f) => f.name === name)
     ) {
       throw new Error(
-        `There is already entity with name "${name}". Entity ${this.name}`
+        `There is already integration client with name "${name}". Entity ${this.name}`
       )
     }
 
@@ -639,6 +641,25 @@ class SystemMetaBuilder {
     this.integrationClients.push(integrationClient)
 
     return integrationClient;
+  }
+
+  addAdditionalService(
+    name: string,
+    title?: string,
+  ) {
+    if (
+      this.additionalServices.some((f) => f.name === name)
+    ) {
+      throw new Error(
+        `There is already additional service with name "${name}". Entity ${this.name}`
+      )
+    }
+
+    const additionalService = new AdditionalServiceBuilder(name, this.defaultLanguage, title)
+
+    this.additionalServices.push(additionalService)
+
+    return additionalService;
   }
 
   addWorker(name: string, title?: string) {
@@ -1000,6 +1021,7 @@ class SystemMetaBuilder {
       back: this.back.build(),
       methods: this.methods,
       labels: this.labels,
+      additionalServices: this.additionalServices.map(p => p.build()),
     }
   }
 
