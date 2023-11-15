@@ -1,7 +1,5 @@
 import {join} from 'path'
-import {
-  // pascalPlural,
-} from '../utils/cases'
+import { pascal } from '../utils/cases'
 // import {backBaseTypesTmpl} from './generators/fileTemplates/back/graph/types'
 // import {backBaseResolversTmpl} from './generators/fileTemplates/back/graph/resolvers'
 import {printSchema} from 'graphql'
@@ -14,9 +12,10 @@ import {write} from 'fs-jetpack'
 // import {backAdditionalTypesTmpl} from './generators/fileTemplates/back/graph/additionalTypes'
 import {AdditionalServiceWideGenerationArgs} from './args'
 import {backAdditionalServiceResolversTmpl} from './generators/fileTemplates/back/graph/additionalService/resolvers'
-import {backAdditionalServiceTypesTmpl} from './generators/fileTemplates/back/graph/additionalService/typeDefs'
+import {backAdditionalServiceTypeDefsTmpl} from './generators/fileTemplates/back/graph/additionalService/typeDefs'
 import { backAdditionalServicePermissionToGraphqlTmpl } from './generators/fileTemplates/back/graph/additionalService/permissionToGraphql'
 import { genGraphAdditionalServiceSchema } from './generators/graph/genGraphAdditionalServiceSchema'
+import { backAdditionalServiceTypesTmpl } from './generators/fileTemplates/back/services/additionalService/types'
 // import {prismaServiceBaseClassTmpl} from './generators/fileTemplates/back/services/service/class'
 // import {prismaAdditionalServiceClassTmpl} from './generators/fileTemplates/back/services/service/additionalClass'
 
@@ -32,9 +31,10 @@ export const generateAdditionalService = async (
 
   prjBackSrcPrefixedDir = join(prjDetachedBackSrcDir, 'adm')
 
+  const serviceName = `${pascal(service.name)}Service`
+  const serviceDir = join(prjBackSrcPrefixedDir, 'services', serviceName)
+
   // if (options.genPrismaServices && !options.typesOnly) {
-  //   const serviceName = `${pascalPlural(service.name)}Service`
-  //   const serviceDir = join(prjBackSrcPrefixedDir, 'services', serviceName)
   //   const servicePath = join(serviceDir, `${serviceName}.ts`)
   //   const additionalServicePath = join(serviceDir, `Additional${serviceName}.ts`)
 
@@ -44,6 +44,11 @@ export const generateAdditionalService = async (
   //   const generatedClassService = prismaServiceBaseClassTmpl(serviceWideGenerationArgs)
   //   await write(servicePath, generatedClassService)
   // }
+  
+  await write(
+    join(serviceDir, 'types.ts'),
+    backAdditionalServiceTypesTmpl(serviceWideGenerationArgs)
+  )
 
   // Graph
   const graphServiceDir = join(
@@ -57,7 +62,7 @@ export const generateAdditionalService = async (
   if (options.genGraphSchema) {
     await write(
       join(graphServiceDir, 'typeDefs.ts'),
-      backAdditionalServiceTypesTmpl(printSchema(genGraphAdditionalServiceSchema(service)), options)
+      backAdditionalServiceTypeDefsTmpl(printSchema(genGraphAdditionalServiceSchema(service)), options)
     )
   }
 

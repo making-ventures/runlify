@@ -4,7 +4,7 @@ import {
 } from '../../../../../types'
 import {generatedWarning, pad1} from '../../../../../utils'
 
-export const backAdditionalServiceTypesTmpl = (
+export const backAdditionalServiceTypeDefsTmpl = (
   printedSchema: string,
   options: BootstrapEntityOptions = defaultBootstrapEntityOptions
 ) => {
