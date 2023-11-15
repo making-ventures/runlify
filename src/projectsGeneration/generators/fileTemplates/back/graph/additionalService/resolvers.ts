@@ -18,8 +18,8 @@ ${
 }
 const queryResolvers: Resolvers = {
   Query: {},
-  Mutation: ${service.methods.length ? `{
-${service.methods.map(method => `    ${service.name}${pascal(method.name)}:
+  Mutation: ${service.methods.filter(m => m.exportedToApi).length ? `{
+${service.methods.filter(m => m.exportedToApi).map(method => `    ${service.name}${pascal(method.name)}:
       (_, __, {context}: {context: Context}) =>
         context.service('${service.name}').${method.name}(),`).join('\n')}
   },` : '{},'}

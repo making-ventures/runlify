@@ -23,8 +23,8 @@ const ${
     service.name
   }PermissionToGraphql: Partial<PermissionToGraphql<${pascal(
     service.name
-  )}Service>> = ${service.methods.length ? `{
-${service.methods.map(method => `  ${method.name}: '${service.name}${pascal(method.name)}',`).join('\n')}
+  )}Service>> = ${service.methods.filter(m => m.exportedToApi).length ? `{
+${service.methods.filter(m => m.exportedToApi).map(method => `  ${method.name}: '${service.name}${pascal(method.name)}',`).join('\n')}
 };` : '{};'}
 
 export default ${service.name}PermissionToGraphql;

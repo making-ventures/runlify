@@ -34,6 +34,18 @@ class AdditionalServiceMethodsBuilder extends BaseBuilder {
     return this.returnModel
   }
 
+  setExportedToApi(exportedToApi = true) {
+    this.exportedToApi = exportedToApi;
+
+    return this
+  }
+
+  setMethodType(methodType: AdditionalServiceMethodType) {
+    this.methodType = methodType;
+
+    return this
+  }
+
   build(): AdditionalServiceMethod {
     return {
       ...super.build(),
