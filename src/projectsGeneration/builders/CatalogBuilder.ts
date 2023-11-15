@@ -1,7 +1,9 @@
-import { Catalog } from './buildedTypes'
+import {Catalog} from './buildedTypes'
 import BaseSavableEntityBuilder from './BaseSavableEntityBuilder'
 
 class CatalogBuilder extends BaseSavableEntityBuilder {
+  protected type = 'catalog' as const
+
   constructor(name: string, defaultLanguage: string, title?: {singular?: string, plural?: string}) {
     super(name, defaultLanguage, title)
 
@@ -17,7 +19,7 @@ class CatalogBuilder extends BaseSavableEntityBuilder {
   build(): Catalog {
     return {
       ...super.build(),
-      type: 'catalog',
+      type: this.type,
       deletable: this.deletable,
       editable: this.editable,
     }

@@ -30,6 +30,7 @@ class PageBuilder extends BaseBuilder {
   getLink() {
     return this.link;
   }
+
   getLabel() {
     return this.label;
   }

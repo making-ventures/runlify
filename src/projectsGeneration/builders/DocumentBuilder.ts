@@ -3,6 +3,7 @@ import BaseSavableEntityBuilder from './BaseSavableEntityBuilder'
 import { DocumentationOfDocumentBuilder } from './docs/DocumentationOfDocumentBuilder'
 
 class DocumentBuilder extends BaseSavableEntityBuilder {
+  protected type = 'document' as const
   registries: string[] = []
   documentation: DocumentationOfDocumentBuilder =
     new DocumentationOfDocumentBuilder(() => this)
@@ -36,7 +37,7 @@ class DocumentBuilder extends BaseSavableEntityBuilder {
   build(): Document {
     return {
       ...super.build(),
-      type: 'document',
+      type: this.type,
       deletable: this.deletable,
       editable: this.editable,
       registries: this.registries,

@@ -15,6 +15,7 @@ export const defaultRegistryOptions: RegistryOptions = {
 }
 
 class SumRegistryBuilder extends BaseSavableEntityBuilder {
+  protected type = 'sumRegistry' as const
   registrarDepended = false
   dimensions: FieldBuilder[] = []
   resources: FieldBuilder[] = []
@@ -98,7 +99,7 @@ class SumRegistryBuilder extends BaseSavableEntityBuilder {
   build(): SumRegistry {
     return {
       ...super.build(),
-      type: 'sumRegistry',
+      type: this.type,
       registrarDepended: this.registrarDepended,
       dimensions: this.dimensions.map((f) => f.build()),
       resources: this.resources.map((f) => f.build()),

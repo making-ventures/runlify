@@ -7,6 +7,7 @@ import ViewLinkFieldBuilder from './fields/ViewLinkFieldBuilder'
 import { defaultRegistryOptions, RegistryOptions } from './SumRegistryBuilder'
 
 export class InfoRegistryBuilder extends BaseSavableEntityBuilder {
+  protected type = 'infoRegistry' as const
   registrarDepended = false
   dimensions: FieldBuilder[] = []
   resources: FieldBuilder[] = []
@@ -71,7 +72,7 @@ export class InfoRegistryBuilder extends BaseSavableEntityBuilder {
 
     return {
       ...super.build(),
-      type: 'infoRegistry',
+      type: this.type,
       registrarDepended: this.registrarDepended,
       dimensions: this.dimensions.map((f) => f.build()),
       resources: this.resources.map((f) => f.build()),

@@ -1,13 +1,13 @@
 import ScalarFieldBuilder from './fields/ScalarFieldBuilder'
 import IdFieldBuilder from './fields/IdFieldBuilder'
 import LinkFieldBuilder from './fields/LinkFieldBuilder'
-import {EtityType, TKeyFieldType, Multitenancy, BaseSavableEntity, PermissionType} from './buildedTypes'
+import {TKeyFieldType, Multitenancy, BaseSavableEntity, PermissionType} from './buildedTypes'
 import CatalogBuilder from './CatalogBuilder'
 import BaseBuilder from './BaseBuilder'
 import FormsBuilder from './ui/FormsBuilder'
 import { FieldBuilder } from './types'
 import ViewLinkFieldBuilder from './fields/ViewLinkFieldBuilder'
-import { pascal } from '../../utils/cases'
+import { camelPlural, pascal } from '../../utils/cases'
 import * as R from 'ramda'
 import PermissionBuilder from './PermissionBuilder'
 import PageBuilder from './PageBuilder'
@@ -31,7 +31,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
   permissions: PermissionBuilder[] = []
   fields: FieldBuilder[] = []
   uniqueConstraints: string[][] = []
-  type: EtityType = 'catalog'
+  protected type = 'catalog'
   titleField: ScalarFieldBuilder | IdFieldBuilder
   deletable = false
   editable = true
@@ -74,16 +74,16 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
 
     this.setTitleFieldByName(this.getKey().name)
 
-    this.addPage(`${name}.all`, `/${name}`, `prefix.${this.name}.title.plural`).addRequiredPermission(`${name}.all`);
-    this.addPage(`${name}.create`, `/${name}/create`, `prefix.${this.name}.title.singular`).addRequiredPermission(`${name}.create`);
+    this.addPage(`${name}.all`, `/${name}`, `${camelPlural(this.type)}.${this.name}.title.plural`).addRequiredPermission(`${name}.all`);
+    this.addPage(`${name}.create`, `/${name}/create`, `${camelPlural(this.type)}.${this.name}.title.singular`).addRequiredPermission(`${name}.create`);
 
     this.addMethod('all');
     this.addMethod('create');
     this.addMethod('update');
     this.addMethod('delete');
 
-    this.addLabel(`prefix.${this.name}.title.plural`);
-    this.addLabel(`prefix.${this.name}.title.singular`);
+    this.addLabel(`${camelPlural(this.type)}.${this.name}.title.plural`);
+    this.addLabel(`${camelPlural(this.type)}.${this.name}.title.singular`);
   }
 
   setTitle(title: {plural: string, singular: string}, language?: string) {
@@ -214,7 +214,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
       this.setTitleFieldByName(name)
     }
     
-    this.addLabel(`prefix.${this.name}.fields.${name}`);
+    this.addLabel(`${camelPlural(this.type)}.${this.name}.fields.${name}`);
 
     return field
   }
