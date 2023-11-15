@@ -1,17 +1,24 @@
-/* eslint-disable max-len */
-import { pascal } from '../../../../../utils/cases'
-import { ProjectWideGenerationArgs } from '../../../../args'
-import { generatedWarning } from '../../../../utils'
+import {pascal} from '../../../../../utils/cases'
+import {ProjectWideGenerationArgs} from '../../../../args'
+import {generatedWarning} from '../../../../utils'
 
 const graphBaseServicesTmpl = ({
+  system: {
+    additionalServices,
+  },
   entities,
   options,
 }: ProjectWideGenerationArgs) => `${entities.map(
   (m) =>
     `import {Additional${pascal(m.name)}Service} from './${pascal(
       m.name
-    )}Service/Additional${pascal(m.name)}Service';`
-).join('\n')}
+    )}Service/Additional${pascal(m.name)}Service';\n`
+).join('')}${additionalServices.map(
+  (s) =>
+    `import ${pascal(s.name)}Service from './${pascal(
+      s.name
+    )}Service/${pascal(s.name)}Service';\n`
+).join('')}
 import {HelpService} from './HelpService/HelpService';
 ${
   options.skipWarningThisIsGenerated
@@ -23,6 +30,7 @@ ${
 export interface BaseServices {
   help: HelpService;
   ${entities.map((m) => `${m.name}: Additional${pascal(m.name)}Service;`).join('\n  ')}
+  ${additionalServices.map((s) => `${s.name}: ${pascal(s.name)}Service;`).join('\n  ')}
 }
 `
 
