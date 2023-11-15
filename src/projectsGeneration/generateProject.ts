@@ -31,6 +31,7 @@ import { uiTranslationsLangInfoRegistriesTmpl } from './generators/fileTemplates
 import { uiTranslationsLangSumRegistriesTmpl } from './generators/fileTemplates/ui/i18n/lang/uiLangSumRegistriesTmpl'
 import {
   EntityWideGenerationArgs,
+  prepareAdditionalServiceWideGenerationArgs,
   prepareEntityWideGenerationArgs,
   prepareProjectWideGenerationArgs,
   ProjectWideGenerationArgs,
@@ -60,6 +61,7 @@ import backIntegrationClientTmpl from './generators/fileTemplates/back/environme
 import { pascalCase } from 'change-case'
 import backIntegrationClientTypesTmpl from './generators/fileTemplates/back/environment/src/integrationClients/types'
 import backDocSpec from './generators/fileTemplates/back/environment/docs/backDocSpec'
+import { generateAdditionalService } from './generateAdditionalService'
 
 // Бек (generateBack)
 //  Исходники бека (generateBackSrc)
@@ -619,8 +621,8 @@ const generateProject = async (
   // }
 
   // Pre grapgql types compose generation
-  await Promise.all(
-    entities.map((entity) =>
+  await Promise.all([
+    ...entities.map((entity) =>
       generateEntity(
         prepareEntityWideGenerationArgs(
           {
@@ -633,8 +635,22 @@ const generateProject = async (
           entity
         )
       )
-    )
-  )
+    ),
+    ...system.additionalServices.map((service) =>
+      generateAdditionalService(
+        prepareAdditionalServiceWideGenerationArgs(
+          {
+            ...args,
+            options: {
+              ...opts,
+              typesOnly: true,
+            },
+          },
+          service
+        )
+      )
+    ),
+  ])
 
   const graphMetaServiceDir = join(
     prjBackSrcPrefixedDir,
@@ -649,8 +665,8 @@ const generateProject = async (
   await generateHelpService(args, false)
 
   // Full generation
-  await Promise.all(
-    entities.map((entity) =>
+  await Promise.all([
+    ...entities.map((entity) =>
       generateEntity(
         prepareEntityWideGenerationArgs(
           {
@@ -662,8 +678,21 @@ const generateProject = async (
           entity
         )
       )
-    )
-  )
+    ),
+    ...system.additionalServices.map((service) =>
+      generateAdditionalService(
+        prepareAdditionalServiceWideGenerationArgs(
+          {
+            ...args,
+            options: {
+              ...opts,
+            },
+          },
+          service
+        )
+      )
+    ),
+  ])
 
   // Prisma schema
   const servicesDir = join(prjBackSrcPrefixedDir, 'services')

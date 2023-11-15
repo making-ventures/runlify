@@ -6,14 +6,14 @@ import {
   GraphQLSchema,
   GraphQLOutputType,
 } from 'graphql'
-import { pascalPlural, pascalSingular } from '../../../utils/cases'
-import { genGraphFilterType } from './genGraphFilterType'
-import { genGraphType } from './genGraphType'
-import { genGraphIdField } from './fields/genGraphIdField'
-import { genGraphField } from './fields/genGraphField'
-import { Entity } from '../../builders/buildedTypes'
-import { GraphQLVoid } from 'graphql-scalars'
-import { getKeyField } from '../../metaUtils'
+import {pascalPlural, pascalSingular} from '../../../utils/cases'
+import {genGraphFilterType} from './genGraphFilterType'
+import {genGraphType} from './genGraphType'
+import {genGraphIdField} from './fields/genGraphIdField'
+import {genGraphField} from './fields/genGraphField'
+import {Entity} from '../../builders/buildedTypes'
+import {GraphQLVoid} from 'graphql-scalars'
+import {getKeyField} from '../../metaUtils'
 
 export const genGraphCrudSchema = (entity: Entity) => {
   const entitySchema = genGraphType(entity)

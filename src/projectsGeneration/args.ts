@@ -7,6 +7,7 @@ import {
   System,
   Document,
   Catalog,
+  AdditionalService,
 } from './builders/buildedTypes'
 import { getLinksToExternalEntities } from './links/getLinksToExternalEntities'
 import { getLinksFromExternalEntities } from './links/getLinksFromExternalEntities'
@@ -28,6 +29,10 @@ export interface EntityWideGenerationArgs extends ProjectWideGenerationArgs {
   entity: Entity
   fromLinks: LinkedEntities[]
   toLinks: LinkedEntities[]
+}
+
+export interface AdditionalServiceWideGenerationArgs extends ProjectWideGenerationArgs {
+  service: AdditionalService
 }
 
 export const prepareProjectWideGenerationArgs = (
@@ -103,4 +108,12 @@ export const prepareEntityWideGenerationArgs = (
     entity,
     projectWideGenerationArgs.allLinks
   ),
+})
+
+export const prepareAdditionalServiceWideGenerationArgs = (
+  projectWideGenerationArgs: ProjectWideGenerationArgs,
+  service: AdditionalService
+): AdditionalServiceWideGenerationArgs => ({
+  ...projectWideGenerationArgs,
+  service,
 })
