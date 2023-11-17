@@ -230,7 +230,7 @@ ${system.deployEnvironments
 
 .deploy:
   image:
-    name: alpine/helm:3.9.0
+    name: alpine/helm:3.13.1
     entrypoint: [""]
   before_script:
     - mkdir -p /etc/deploy
