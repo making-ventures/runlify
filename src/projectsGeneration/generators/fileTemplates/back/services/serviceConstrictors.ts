@@ -30,8 +30,8 @@ ${
 }
 export const baseServiceConstrictors: BaseServiceConstrictors = {
   help: getHelpService,
-  ${entities.map((m) => `${m.name}: (ctx) => new Additional${pascal(m.name)}Service(ctx),`).join('\n  ')}
-${additionalServices.map((s) => `${s.name}: (ctx) => new ${pascal(s.name)}Service(ctx),`).join('\n  ').trim()}
+${entities.map((m) => `  ${m.name}: (ctx) => new Additional${pascal(m.name)}Service(ctx),`).join('\n')}${additionalServices.length ? `
+${additionalServices.map((s) => `  ${s.name}: (ctx) => new ${pascal(s.name)}Service(ctx),`).join('\n')}` : ''}
 };
 
 const serviceConstrictors: ServiceConstrictors = {
