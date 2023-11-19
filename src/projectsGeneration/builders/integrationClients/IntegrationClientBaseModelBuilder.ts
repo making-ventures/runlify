@@ -37,7 +37,7 @@ class IntegrationClientBaseModelBuilder extends BaseBuilder {
       throw new Error(`There is already field with name "${name}" in args model`)
     }
     
-    if (!this.client.models.some((f) => f.name === model)) {
+    if (!this.client.getModels().some((m) => m.name === model)) {
       throw new Error(`There is no model with name "${model}" in "${this.client.name}"`)
     }
 

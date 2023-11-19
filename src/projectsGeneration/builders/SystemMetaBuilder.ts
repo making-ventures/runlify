@@ -16,6 +16,7 @@ import {
   FieldType,
   Glossary,
   Language,
+  MethodType,
   ProjectCategory,
   System,
 } from './buildedTypes'
@@ -33,7 +34,9 @@ import ExternalMenuItemBuilder from './menu/ExternalMenuItemBuilder'
 import InternalMenuItemBuilder from './menu/InternalMenuItemBuilder'
 import GroupMenuItemBuilder from './menu/GroupMenuItemBuilder'
 import PageBuilder from './PageBuilder'
-import AdditionalServiceBuilder from './additionalServices/AdditionalServiceBuilder'
+import AdditionalServiceBuilder from './AdditionalServiceBuilder'
+import BaseModelBuilder from './mehods/BaseModelBuilder'
+import MethodBuilder, { MethodsModelsHolder } from './mehods/MethodBuilder'
 
 export const defaultConfigVar: Omit<ConfigVar, 'name' | 'type'> = {
   needFor: '',
@@ -44,7 +47,7 @@ export const defaultConfigVar: Omit<ConfigVar, 'name' | 'type'> = {
   editable: true,
 }
 
-class SystemMetaBuilder {
+class SystemMetaBuilder implements MethodsModelsHolder {
   catalogs: EntityBuilderWithOptions<CatalogBuilder>[] = []
   reports: EntityBuilderWithOptions<ReportBuilder>[] = []
   documents: EntityBuilderWithOptions<DocumentBuilder>[] = []
@@ -64,7 +67,8 @@ class SystemMetaBuilder {
   defOpts: BootstrapEntityOptions
   menuItems: (GroupMenuItemBuilder | InternalMenuItemBuilder | ExternalMenuItemBuilder)[] = [];
   pages: PageBuilder[] = [];
-  methods: string[] = [];
+  protected methods: MethodBuilder[] = []
+  protected models: BaseModelBuilder[] = []
   labels: string[] = [];
   additionalServices: AdditionalServiceBuilder[] = [];
 
@@ -937,12 +941,19 @@ class SystemMetaBuilder {
       .filter((e) => e.externalSearch)
   }
 
-  addMethod(method: string) {
-    if (this.methods.some(m => m === method)) {
-      throw new Error(`There is already system method "${method}"`);
+  addMethod(
+    name: string,
+    methodType: MethodType,
+    title?: string,
+  ): MethodBuilder {
+    if (this.methods.some((f) => f.name === name)) {
+      throw new Error(`There is already field with name "${name}" in args model`)
     }
 
-    this.methods.push(method);
+    const field = new MethodBuilder(this, name, methodType, this.defaultLanguage, title)
+    this.methods.push(field)
+
+    return field
   }
 
   addLabel(label: string) {
@@ -951,6 +962,14 @@ class SystemMetaBuilder {
     }
 
     this.labels.push(label);
+  }
+
+  getMethods() {
+    return this.methods;
+  }
+
+  getModels() {
+    return this.models;
   }
 
   // setMemory(request: string, limit?: string) {
@@ -977,7 +996,7 @@ class SystemMetaBuilder {
   //   return this
   // }
 
-  build(): System {
+  private _build(): System {
     const sortByName = <T extends { entity: { name: string } }>(entries: T[]) =>
       R.sortBy(
         R.compose(R.prop('name') as any, R.prop('entity')),
@@ -1019,10 +1038,22 @@ class SystemMetaBuilder {
       menuItems: this.menuItems.map((item) => item.build()),
       pages: this.pages.map(p => p.build()),
       back: this.back.build(),
-      methods: this.methods,
+      models: this.models.map(m => m.build()),
+      methods: this.methods.map(m => m.build()),
       labels: this.labels,
       additionalServices: this.additionalServices.map(p => p.build()),
     }
+  }
+
+  validate() {
+
+    return this._build();
+  }
+
+  build(): System {
+    this.validate();
+
+    return this._build();
   }
 
   initDefaultCatalogs(): EntityBuilderWithOptions<CatalogBuilder>[] {

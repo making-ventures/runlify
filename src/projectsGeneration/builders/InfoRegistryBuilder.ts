@@ -62,14 +62,6 @@ export class InfoRegistryBuilder extends BaseSavableEntityBuilder {
   }
 
   build(): InfoRegistry {
-    const uniqueConstraints: string[][] = [];
-    if (this.dimensions.length) {
-      uniqueConstraints.push(this.dimensions.map((d) => d.name))
-    }
-    if (this.uniqueConstraints.length) {
-      uniqueConstraints.push(...this.uniqueConstraints)
-    }
-
     return {
       ...super.build(),
       type: this.type,

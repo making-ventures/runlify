@@ -2,16 +2,21 @@ import BaseBuilder from '../BaseBuilder';
 import {TsModel} from '../buildedTypes'
 import ModelFieldBuilder from '../fields/ModelFieldBuilder'
 import ScalarFieldBuilder from '../fields/ScalarFieldBuilder'
-import AdditionalServiceBuilder from './AdditionalServiceBuilder';
+import {MethodsModelsHolder} from './MethodBuilder';
 
-class AdditionalServiceBaseModelBuilder extends BaseBuilder {
-  protected client: AdditionalServiceBuilder;
+class BaseModelBuilder extends BaseBuilder {
+  protected service: MethodsModelsHolder;
   protected fields: (ScalarFieldBuilder | ModelFieldBuilder)[] = []
 
-  constructor(client: AdditionalServiceBuilder, name: string, title: string, defaultLanguage: string) {
+  constructor(
+    service: MethodsModelsHolder,
+    name: string,
+    title: string,
+    defaultLanguage: string,
+  ) {
     super(name, defaultLanguage, {singular: title})
 
-    this.client = client
+    this.service = service
   }
 
   addField(
@@ -37,8 +42,8 @@ class AdditionalServiceBaseModelBuilder extends BaseBuilder {
       throw new Error(`There is already field with name "${name}" in args model`)
     }
     
-    if (!this.client.models.some((f) => f.name === model)) {
-      throw new Error(`There is no model with name "${model}" in "${this.client.name}"`)
+    if (!this.service.getModels().some((m) => m.name === model)) {
+      throw new Error(`There is no model with name "${model}" in "${this.service.name}"`)
     }
 
     const field = new ModelFieldBuilder(model, name, this.defaultLanguage, title)
@@ -62,4 +67,4 @@ class AdditionalServiceBaseModelBuilder extends BaseBuilder {
   }
 }
 
-export default AdditionalServiceBaseModelBuilder
+export default BaseModelBuilder

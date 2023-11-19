@@ -1,7 +1,7 @@
 import ScalarFieldBuilder from './fields/ScalarFieldBuilder'
 import IdFieldBuilder from './fields/IdFieldBuilder'
 import LinkFieldBuilder from './fields/LinkFieldBuilder'
-import {TKeyFieldType, Multitenancy, BaseSavableEntity, PermissionType} from './buildedTypes'
+import {TKeyFieldType, Multitenancy, BaseSavableEntity, PermissionType, MethodType} from './buildedTypes'
 import CatalogBuilder from './CatalogBuilder'
 import BaseBuilder from './BaseBuilder'
 import FormsBuilder from './ui/FormsBuilder'
@@ -11,6 +11,8 @@ import { camelPlural, pascal } from '../../utils/cases'
 import * as R from 'ramda'
 import PermissionBuilder from './PermissionBuilder'
 import PageBuilder from './PageBuilder'
+import BaseModelBuilder from './mehods/BaseModelBuilder'
+import MethodBuilder, { MethodsModelsHolder } from './mehods/MethodBuilder'
 
 // const readPermissions: string[] = [
 //   'all',
@@ -26,7 +28,7 @@ import PageBuilder from './PageBuilder'
 //   'delete',
 // ]
 
-abstract class BaseSavableEntityBuilder extends BaseBuilder {
+abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsModelsHolder {
   id: IdFieldBuilder
   permissions: PermissionBuilder[] = []
   fields: FieldBuilder[] = []
@@ -60,7 +62,8 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
   clearDBAfter: number | undefined
   allowedToChange: string = ''
   pages: PageBuilder[] = [];
-  methods: string[] = [];
+  protected methods: MethodBuilder[] = []
+  protected models: BaseModelBuilder[] = []
   labels: string[] = [];
 
   constructor(name: string, defaultLanguage: string, title?: {singular?: string, plural?: string}) {
@@ -77,10 +80,10 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
     this.addPage(`${name}.all`, `/${name}`, `${camelPlural(this.type)}.${this.name}.title.plural`).addRequiredPermission(`${name}.all`);
     this.addPage(`${name}.create`, `/${name}/create`, `${camelPlural(this.type)}.${this.name}.title.singular`).addRequiredPermission(`${name}.create`);
 
-    this.addMethod('all');
-    this.addMethod('create');
-    this.addMethod('update');
-    this.addMethod('delete');
+    this.addMethod('all', MethodType.Query).setExportedToApi();
+    this.addMethod('create', MethodType.Mutation).setExportedToApi();
+    this.addMethod('update', MethodType.Mutation).setExportedToApi();
+    this.addMethod('delete', MethodType.Mutation).setExportedToApi();
 
     this.addLabel(`${camelPlural(this.type)}.${this.name}.title.plural`);
     this.addLabel(`${camelPlural(this.type)}.${this.name}.title.singular`);
@@ -162,15 +165,17 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
   }
 
   getUniqueConstraints (registrarDependent = false): string[][] {
+    const uniqueConstraints = [...this.uniqueConstraints];
+
     const uniqKeys = this.getShardedFields().map(f => f.name)
 
     const isRegistrarDependentSumRegistry = this.type === 'sumRegistry' && registrarDependent;
 
     if (!isRegistrarDependentSumRegistry && !R.isEmpty(uniqKeys) && !R.equals(uniqKeys, ['id'])) {
-      this.uniqueConstraints.push(uniqKeys);
+      uniqueConstraints.push(uniqKeys);
     }
 
-    return this.uniqueConstraints;
+    return uniqueConstraints;
   }
 
   getFileds(): FieldBuilder[] {
@@ -449,12 +454,41 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
     return this.getPageByName(`${this.name}.create`);
   }
 
-  addMethod(method: string) {
-    if (this.methods.some(m => m === method)) {
-      throw new Error(`There is already method "${method}" in "${this.name}" entity`);
+  addMethod(
+    name: string,
+    methodType: MethodType,
+    title?: string,
+  ): MethodBuilder {
+    if (this.methods.some((f) => f.name === name)) {
+      throw new Error(`There is already field with name "${name}" in args model`)
     }
 
-    this.methods.push(method);
+    const field = new MethodBuilder(this, name, methodType, this.defaultLanguage, title)
+    this.methods.push(field)
+
+    return field
+  }
+
+  addModel(
+    name: string,
+    title?: string,
+  ): BaseModelBuilder {
+    if (this.models.some((f) => f.name === name)) {
+      throw new Error(`There is already field with name "${name}" in args model`)
+    }
+
+    const model = new BaseModelBuilder(this, name, title ?? name, this.defaultLanguage)
+    this.models.push(model)
+
+    return model
+  }
+
+  getMethods() {
+    return this.methods;
+  }
+
+  getModels() {
+    return this.models;
   }
   
   addLabel(label: string) {
@@ -498,7 +532,8 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder {
       allowedToChange: this.allowedToChange,
       permissions: this.permissions.map(p => p.build()),
       pages: this.pages.map(p => p.build()),
-      methods: this.methods,
+      models: this.models.map(m => m.build()),
+      methods: this.methods.map(m => m.build()),
       labels: this.labels,
     }
   }

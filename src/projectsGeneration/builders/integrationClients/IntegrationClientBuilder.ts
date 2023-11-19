@@ -5,7 +5,7 @@ import IntegrationClientBaseModelBuilder from './IntegrationClientBaseModelBuild
 
 class IntegrationClientBuilder extends BaseBuilder {
   protected queryMethods: IntegrationClientQueryMethodsBuilder[] = []
-  public models: IntegrationClientBaseModelBuilder[] = []
+  protected models: IntegrationClientBaseModelBuilder[] = []
 
   constructor(name: string, defaultLanguage: string, title?: string) {
     super(name, defaultLanguage, {singular: title})
@@ -37,6 +37,10 @@ class IntegrationClientBuilder extends BaseBuilder {
     this.models.push(model)
 
     return model
+  }
+
+  getModels() {
+    return this.models;
   }
 
   build(): IntegrationClient {

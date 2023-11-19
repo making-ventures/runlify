@@ -3,7 +3,7 @@ import {
   BootstrapEntityOptions,
   defaultBootstrapEntityOptions,
 } from '../../../../../../types'
-import { AdditionalService, AdditionalServiceMethodType, Entity } from '../../../../../../builders/buildedTypes'
+import { AdditionalService, MethodType, Entity } from '../../../../../../builders/buildedTypes'
 import { generatedWarning } from '../../../../../../utils'
 import { getKeyField } from '../../../../../../metaUtils'
 import { pascalCase } from 'change-case'
@@ -103,7 +103,7 @@ ${additionalServices.flatMap(service => service.methods.map(method => {
   const methodName = `${service.name}${pascalCase(method.name)}`;
 
   return`    ${methodName}: async () => {
-      return client.${method.methodType === AdditionalServiceMethodType.Mutation ? 'mutate' : 'query'}({
+      return client.${method.methodType === MethodType.Mutation ? 'mutate' : 'query'}({
         mutation: gql\`
           mutation ${methodName} {
             ${methodName}

@@ -295,7 +295,8 @@ export type BaseSavableEntity = BaseEntity & {
   allowedToChange: string
   permissions: Permission[]
   pages: Page[]
-  methods: string[]
+  models: TsModel[]
+  methods: ServiceMethod[]
   labels: string[]
 }
 
@@ -357,22 +358,23 @@ export type AdditionalServiceReturnModel = TsModel & {
   array: boolean
 }
 
-export enum AdditionalServiceMethodType {
+export enum MethodType {
   Query = 'query',
   Mutation = 'mutation',
 }
 
-export type AdditionalServiceMethod = BaseEntity & {
+export type ServiceMethod = BaseEntity & {
   argsModel: AdditionalServiceArgsModel
   returnModel: AdditionalServiceReturnModel
   exportedToApi: boolean
-  methodType: AdditionalServiceMethodType
+  queable: boolean
+  methodType: MethodType
 }
 
 export type AdditionalService = BaseEntity & {
   type: 'additionalService'
   models: TsModel[]
-  methods: AdditionalServiceMethod[]
+  methods: ServiceMethod[]
 }
 
 export type BaseMenuItem = BaseEntity & {
@@ -510,7 +512,8 @@ export type System = {
   roles: Role[]
   menuItems: MenuItem[]
   pages: Page[]
-  methods: string[]
+  models: TsModel[]
+  methods: ServiceMethod[]
   labels: string[]
   additionalServices: AdditionalService[]
 

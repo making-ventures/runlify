@@ -13,6 +13,7 @@ import {
   System,
   Report,
   AdditionalService,
+  ServiceMethod,
 } from '../../../../../../builders/buildedTypes';
 import findLinksToEntities from './findLinksToEntities';
 import getAllSavableEntities from './getAllSavableEntities';
@@ -98,6 +99,7 @@ const getEntityFieldsSpec = (
 };
 
 const getSavableEntityMethodsSpec = (
+  lang: string,
   entity: BaseSavableEntity,
 ) => {
   let docs = '';
@@ -107,7 +109,9 @@ const getSavableEntityMethodsSpec = (
 
     docs += titleMd3(`Методы`);
 
-    docs += entity.methods.map(method => `* ${method}\n`).join('');
+    for (const method of entity.methods) {
+      docs += getServiceMethodSpec(lang, entity, method);
+    }
   }
 
   return docs;
@@ -159,6 +163,8 @@ const getEntityPredefinedSpec = (entity: BaseSavableEntity) => {
         (f) => entity.fields.filter(f => !f.hidden).map(field => f[field.name]),
       ),
     ])}`;
+
+    docs += '\n';
   }
 
   return docs;
@@ -230,7 +236,7 @@ const getEntitySpec = (
   docs += getEntityFieldsSpec(lang, entity, entities);
   docs += getEntityPredefinedSpec(entity);
   docs += getEntityUniqueConstraintsSpec(entity);
-  docs += getSavableEntityMethodsSpec(entity);
+  docs += getSavableEntityMethodsSpec(lang, entity);
   docs += getSavableEntityLabelsSpec(entity);
 
   return docs;
@@ -251,7 +257,7 @@ const getDocSpec = (
   docs += getEntityPredefinedSpec(entity);
   docs += getEntityUniqueConstraintsSpec(entity);
   docs += getDocRegistriesSpec(lang, entity, entities);
-  docs += getSavableEntityMethodsSpec(entity);
+  docs += getSavableEntityMethodsSpec(lang, entity);
   docs += getSavableEntityLabelsSpec(entity);
 
   return docs;
@@ -273,7 +279,7 @@ const getSumRegistrySpec = (
   docs += getEntityPredefinedSpec(entity);
   docs += getEntityUniqueConstraintsSpec(entity);
   docs += getSumRegistryRegistrarsSpec(lang, entity, documents);
-  docs += getSavableEntityMethodsSpec(entity);
+  docs += getSavableEntityMethodsSpec(lang, entity);
   docs += getSavableEntityLabelsSpec(entity);
 
   return docs;
@@ -687,6 +693,26 @@ const getIntegrationClientsSpec = (meta: System) => {
   return text;
 };
 
+const getServiceMethodSpec = (
+  lang: string,
+  service: AdditionalService | BaseSavableEntity,
+  method: ServiceMethod,
+) => {
+  let text = '';
+
+  text += titleMd3(`${service.name}.${method.name}`);
+  text += `${method.title[lang].singular}\n\n`;
+  text += `Экспортируется через апи: ${method.exportedToApi ? 'да' : 'нет'}\n\n`;
+  text += `Можно запускать через очередь: ${method.queable ? 'да' : 'нет'}\n\n`;
+  text += `Тип: \`${method.methodType}\`\n\n`;
+
+  if (method.needFor[lang]) {
+    text += `Нужен для: ${method.needFor[lang]}\n\n`;
+  }
+
+  return text;
+};
+
 const getAdditionalServicesSpec = (meta: System) => {
   if (!meta.additionalServices.length) {
     return;
@@ -705,16 +731,8 @@ const getAdditionalServicesSpec = (meta: System) => {
 
     docs += getEntityHeaderSpec(meta.defaultLanguage, entity);
 
-    for (const queryMethod of entity.methods) {
-      
-      docs += titleMd3(`${entity.name}.${queryMethod.name}`);
-      docs += `${queryMethod.title[meta.defaultLanguage].singular}\n\n`;
-      docs += `Экспортируется через апи: ${queryMethod.exportedToApi ? 'да' : 'нет'}\n\n`;
-      docs += `Тип: \`${queryMethod.methodType}\`\n\n`;
-
-      if (queryMethod.needFor[meta.defaultLanguage]) {
-        docs += `Нужен для: ${queryMethod.needFor[meta.defaultLanguage]}\n\n`;
-      }
+    for (const method of entity.methods) {
+      docs += getServiceMethodSpec(meta.defaultLanguage, entity, method);
     }
 
     return docs;

@@ -1,11 +1,11 @@
-import {AdditionalService, AdditionalServiceMethodType} from '../buildedTypes'
-import BaseBuilder from '../BaseBuilder'
-import AdditionalServiceMethodsBuilder from './AdditionalServiceMethodsBuilder'
-import AdditionalServiceBaseModelBuilder from './AdditionalServiceBaseModelBuilder'
+import {AdditionalService, MethodType} from './buildedTypes'
+import BaseBuilder from './BaseBuilder'
+import MethodBuilder, {MethodsModelsHolder} from './mehods/MethodBuilder'
+import BaseModelBuilder from './mehods/BaseModelBuilder'
 
-class AdditionalServiceBuilder extends BaseBuilder {
-  protected methods: AdditionalServiceMethodsBuilder[] = []
-  public models: AdditionalServiceBaseModelBuilder[] = []
+class AdditionalServiceBuilder extends BaseBuilder implements MethodsModelsHolder {
+  protected methods: MethodBuilder[] = []
+  protected models: BaseModelBuilder[] = []
 
   constructor(name: string, defaultLanguage: string, title?: string) {
     super(name, defaultLanguage, {singular: title})
@@ -13,14 +13,14 @@ class AdditionalServiceBuilder extends BaseBuilder {
 
   addMethod(
     name: string,
-    methodType: AdditionalServiceMethodType,
+    methodType: MethodType,
     title?: string,
-  ): AdditionalServiceMethodsBuilder {
+  ): MethodBuilder {
     if (this.methods.some((f) => f.name === name)) {
       throw new Error(`There is already field with name "${name}" in args model`)
     }
 
-    const field = new AdditionalServiceMethodsBuilder(this, name, methodType, this.defaultLanguage, title)
+    const field = new MethodBuilder(this, name, methodType, this.defaultLanguage, title)
     this.methods.push(field)
 
     return field
@@ -29,15 +29,23 @@ class AdditionalServiceBuilder extends BaseBuilder {
   addModel(
     name: string,
     title?: string,
-  ): AdditionalServiceBaseModelBuilder {
+  ): BaseModelBuilder {
     if (this.models.some((f) => f.name === name)) {
       throw new Error(`There is already field with name "${name}" in args model`)
     }
 
-    const model = new AdditionalServiceBaseModelBuilder(this, name, title ?? name, this.defaultLanguage)
+    const model = new BaseModelBuilder(this, name, title ?? name, this.defaultLanguage)
     this.models.push(model)
 
     return model
+  }
+
+  getMethods() {
+    return this.methods;
+  }
+
+  getModels() {
+    return this.models;
   }
 
   build(): AdditionalService {
