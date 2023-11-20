@@ -612,7 +612,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsMo
     return this
   }
   setClearDBAfter (count: number, periodType: string) {
-    const allowedPeriodTypes = ['hour', 'day', 'week', 'month', 'year'];
+    const allowedPeriodTypes = ['year', 'month', 'day', 'hour', 'minute'];
     if (!allowedPeriodTypes.includes(periodType)) {
       throw new Error(`Entity: ${this.name}. Allowed period types: ${allowedPeriodTypes}`)
     }
