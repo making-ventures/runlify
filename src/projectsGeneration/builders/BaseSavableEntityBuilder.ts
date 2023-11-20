@@ -59,7 +59,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsMo
   externalSearchName: string | undefined = undefined
   sharded = false
   isExternalSearch = false
-  clearDBAfter: number | undefined
+  clearDBAfter: {count: number, periodType: string}[] = [];
   allowedToChange: string = ''
   pages: PageBuilder[] = [];
   protected methods: MethodBuilder[] = []
@@ -611,12 +611,13 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsMo
     this.isExternalSearch = true
     return this
   }
-  setClearDBAfter (days?: number) {
-    if (!this.externalSearch) {
-      throw new Error('You can only clear the database when it is synchronized with Elastic!')
+  setClearDBAfter (count: number, periodType: string) {
+    const allowedPeriodTypes = ['hour', 'day', 'week', 'month', 'year'];
+    if (!allowedPeriodTypes.includes(periodType)) {
+      throw new Error(`Entity: ${this.name}. Allowed period types: ${allowedPeriodTypes}`)
     }
-
-    this.clearDBAfter = days
+    
+    this.clearDBAfter.push({'count': count, 'periodType': periodType});
 
     return this
   }
