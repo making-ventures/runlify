@@ -33,7 +33,7 @@ export const prismaServiceBaseClassTmpl = ({
   const isDocument = entity.type === 'document';
   const isSumRegistry = entity.type === 'sumRegistry';
   const isInfoRegistry = entity.type === 'infoRegistry';
-  const isClearFromDB = entity.clearDBAfter !== undefined;
+  const isClearFromDB = entity.clearDBAfter.length > 0;
 
   let extendedType = 'BaseService';
   if (isExternalSearch) {
