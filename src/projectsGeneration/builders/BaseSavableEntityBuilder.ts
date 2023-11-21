@@ -1,7 +1,7 @@
 import ScalarFieldBuilder from './fields/ScalarFieldBuilder'
 import IdFieldBuilder from './fields/IdFieldBuilder'
 import LinkFieldBuilder from './fields/LinkFieldBuilder'
-import {TKeyFieldType, Multitenancy, BaseSavableEntity, PermissionType, MethodType} from './buildedTypes'
+import {TKeyFieldType, Multitenancy, BaseSavableEntity, PermissionType, MethodType, DateUnit} from './buildedTypes'
 import CatalogBuilder from './CatalogBuilder'
 import BaseBuilder from './BaseBuilder'
 import FormsBuilder from './ui/FormsBuilder'
@@ -59,7 +59,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsMo
   externalSearchName: string | undefined = undefined
   sharded = false
   isExternalSearch = false
-  clearDBAfter: {count: number, periodType: string}[] = [];
+  clearDBAfter: {count: number, unit: DateUnit}[] = [];
   allowedToChange: string = ''
   pages: PageBuilder[] = [];
   protected methods: MethodBuilder[] = []
@@ -611,13 +611,8 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsMo
     this.isExternalSearch = true
     return this
   }
-  setClearDBAfter (count: number, periodType: string) {
-    const allowedPeriodTypes = ['year', 'month', 'day', 'hour', 'minute'];
-    if (!allowedPeriodTypes.includes(periodType)) {
-      throw new Error(`Entity: ${this.name}. Allowed period types: ${allowedPeriodTypes}`)
-    }
-    
-    this.clearDBAfter.push({'count': count, 'periodType': periodType});
+  setClearDBAfter (count: number, unit: DateUnit) {
+    this.clearDBAfter.push({'count': count, 'unit': unit});
 
     return this
   }
