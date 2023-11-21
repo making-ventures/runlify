@@ -159,7 +159,7 @@ const getSavableEntityClearDBAfterSpec = (
 
     docs += titleMd3(`Периоды автоочистки`);
 
-    docs += entity.clearDBAfter.map(clearDBAfter => `* ${clearDBAfter.count} ${clearDBAfter.periodType}\n`).join('');
+    docs += entity.clearDBAfter.map(clearDBAfter => `* ${clearDBAfter.count} ${clearDBAfter.unit}\n`).join('');
   }
 
   return docs;

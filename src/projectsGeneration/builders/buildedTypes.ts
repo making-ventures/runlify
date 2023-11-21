@@ -291,7 +291,7 @@ export type BaseSavableEntity = BaseEntity & {
   externalSearchName: string | undefined
   sharded: boolean
   isExternalSearch: boolean
-  clearDBAfter: {count: number, periodType: string}[]
+  clearDBAfter: {count: number, unit: 'year' | 'month' | 'day' | 'hour' | 'minute'}[]
   allowedToChange: string
   permissions: Permission[]
   pages: Page[]
