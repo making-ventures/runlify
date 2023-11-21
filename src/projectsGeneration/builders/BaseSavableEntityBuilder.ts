@@ -226,6 +226,8 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsMo
 
   delField(name: string) {
     this.fields = this.fields.filter((f) => f.name !== name)
+    
+    this.delLabel(`${camelPlural(this.type)}.${this.name}.fields.${name}`);
 
     return this
   }
@@ -497,6 +499,12 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsMo
     }
 
     this.labels.push(label);
+  }
+
+  delLabel(label: string) {
+    this.labels = this.labels.filter((l) => l !== label)
+
+    return this
   }
 
   build (): BaseSavableEntity {
