@@ -149,6 +149,22 @@ const getReportLabelsSpec = (
   return docs;
 };
 
+const getSavableEntityClearDBAfterSpec = (
+  entity: BaseSavableEntity,
+) => {
+  let docs = '';
+
+  if (entity.clearDBAfter.length) {
+    docs += '\n';
+
+    docs += titleMd3(`Периоды автоочистки`);
+
+    docs += entity.clearDBAfter.map(clearDBAfter => `* ${clearDBAfter.count} ${clearDBAfter.periodType}\n`).join('');
+  }
+
+  return docs;
+};
+
 const getEntityPredefinedSpec = (entity: BaseSavableEntity) => {
   let docs = '';
 
@@ -238,6 +254,7 @@ const getEntitySpec = (
   docs += getEntityUniqueConstraintsSpec(entity);
   docs += getSavableEntityMethodsSpec(lang, entity);
   docs += getSavableEntityLabelsSpec(entity);
+  docs += getSavableEntityClearDBAfterSpec(entity);
 
   return docs;
 };
