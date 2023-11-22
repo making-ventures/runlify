@@ -44,17 +44,11 @@ export const configTmpl = ({
   let configType = 'ServiceConfig'
   if (isSharded) {
     configType = 'ServiceShardConfig'
-    if (isClearFromDB) {
-      configType = 'ServiceClearDBShardConfig'
-    }
   }
   if (isDocument) {
     configType = 'DocumentConfig'
     if (isSharded) {
       configType = 'DocumentShardConfig'
-      if (isClearFromDB) {
-        configType = 'DocumentClearDBShardConfig'
-      }
     }
   } else if (isInfoRegistry) {
     configType = 'InfoRegistryConfig'
