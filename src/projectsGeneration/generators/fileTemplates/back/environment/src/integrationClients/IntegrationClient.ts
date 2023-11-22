@@ -30,17 +30,17 @@ class ${pascalCase(client.name)}Client extends IntegrationClient implements I${p
     this.ax = axios.create();
   }
 
-  async beforeRequest(_args: ClientBeforeRequestArgs) {
+  protected async beforeRequest(_args: ClientBeforeRequestArgs) {
     log.info(\`!!!!!! beforeRequest, managers count: \${await this.ctx.service('managers').count()}\`);
     // log.info(args);
   }
 
-  async afterRequest(_args: ClientAfterRequestArgs) {
+  protected async afterRequest(_args: ClientAfterRequestArgs) {
     log.info(\`!!!!!! afterRequest, managers count: \${await this.ctx.service('managers').count()}\`);
     // log.info(args);
   }
 
-  async onError(_args: ClientOnErrorArgs) {
+  protected async onError(_args: ClientOnErrorArgs) {
     log.info(\`!!!!!! onError, managers count: \${await this.ctx.service('managers').count()}\`);
     // log.info(args);
   }

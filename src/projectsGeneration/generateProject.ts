@@ -62,6 +62,8 @@ import { pascalCase } from 'change-case'
 import backIntegrationClientTypesTmpl from './generators/fileTemplates/back/environment/src/integrationClients/types'
 import backDocSpec from './generators/fileTemplates/back/environment/docs/backDocSpec'
 import { generateAdditionalService } from './generateAdditionalService'
+import genIntegrationClientsTmpl from './generators/fileTemplates/back/environment/src/integrationClients/IntegrationClients'
+import genIntegrationClientConstrictorsTmpl from './generators/fileTemplates/back/environment/src/integrationClients/integrationClientConstrictors'
 
 // Бек (generateBack)
 //  Исходники бека (generateBackSrc)
@@ -731,6 +733,16 @@ const generateProject = async (
       graphServiceConstrictorsTmpl(args)
     )
   }
+  
+  write(
+    join(servicesDir, 'IntegrationClients.ts'),
+    genIntegrationClientsTmpl(args)
+  )
+  
+  write(
+    join(servicesDir, 'integrationClientConstrictors.ts'),
+    genIntegrationClientConstrictorsTmpl(args)
+  )
 
   const generatedAdditionalServices = additionalServicesTmpl()
   await writeFileIfNotExists(
