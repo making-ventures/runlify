@@ -12,7 +12,7 @@ export const addElasticSearch = (system: SystemMetaBuilder) => {
       throw new Error(`Entity ${externalSearchEntity.name} with external search have to be with string type in id field`);
     }
 
-    const registrarDepended = externalSearchEntity.name === 'spendings';
+    const registrarDepended = 'registrarDepended' in externalSearchEntity && externalSearchEntity.registrarDepended;
 
     const externalSearchTrackings = system.addInfoRegistry(externalSearchEntity.externalSearchName, false, {plural: `External ${externalSearchEntity.name} search tracking`, singular: `External ${externalSearchEntity.name} search tracking`})
     externalSearchTrackings.setTitles({
