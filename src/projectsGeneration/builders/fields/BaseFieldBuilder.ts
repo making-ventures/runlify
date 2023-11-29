@@ -8,6 +8,15 @@ import {
   BaseField,
 } from '../buildedTypes'
 
+const allowedFiltersForType = {
+  int: ['equal', 'defined', 'in', 'not_in', 'lte', 'gte', 'lt', 'gt'],
+  float: ['equal', 'defined', 'in', 'not_in', 'lte', 'gte', 'lt', 'gt'],
+  date: ['equal', 'defined', 'lte', 'gte', 'lt', 'gt'],
+  datetime: ['equal', 'defined', 'lte', 'gte', 'lt', 'gt'],
+  string: ['equal', 'defined', 'in', 'not_in'],
+  bool: ['equal', 'defined'],
+}
+
 abstract class BaseFieldBuilder {
   defaultLanguage: string
   category: 'trivial' | 'link' = 'trivial'
@@ -36,6 +45,7 @@ abstract class BaseFieldBuilder {
   showInEdit = true
   showInShow = true
   sharded = false
+  filters: string[] = ['equal']
 
   constructor(name: string, defaultLanguage: string, title?: string) {
     this.defaultLanguage = defaultLanguage
@@ -66,6 +76,7 @@ abstract class BaseFieldBuilder {
       defaultValueExpression: this.defaultValueExpression,
       defaultBackendValueExpression: this.defaultBackendValueExpression,
       sharded: this.sharded,
+      filters: this.filters,
     }
   }
 
@@ -106,6 +117,12 @@ abstract class BaseFieldBuilder {
       this.setSearchable(false)
       // this.setDefaultValueExpression('false')
     }
+
+    this.filters.some((f) => {
+      if(!allowedFiltersForType[type].includes(f)) {
+        throw new Error(`Filter "${f}" is not allowed to field type ${this.type}`);
+      }
+    });
 
     return this
   }
@@ -304,6 +321,28 @@ abstract class BaseFieldBuilder {
     this.sharded = value
 
     return this
+  }
+  setFilters (filters: string[]) {
+    filters.some((f) => {
+      if(!allowedFiltersForType[this.type].includes(f)) {
+        throw new Error(`Filter "${f}" is not allowed to field type ${this.type}`);
+      }
+    });
+
+    this.filters = filters;
+    
+    return this;
+  }
+  addFilters (filters: string[]) {
+    filters.some((f) => {
+      if(!allowedFiltersForType[this.type].includes(f)) {
+        throw new Error(`Filter "${f}" is not allowed to field type ${this.type}`);
+      }
+    });
+
+    this.filters.push(...filters);
+
+    return this;
   }
 }
 

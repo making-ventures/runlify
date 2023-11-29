@@ -102,6 +102,7 @@ export type BaseField = {
   defaultValueExpression?: string
   defaultBackendValueExpression?: string
   sharded: boolean
+  filters: string[]
 }
 
 type ScalarBaseField = BaseField & {

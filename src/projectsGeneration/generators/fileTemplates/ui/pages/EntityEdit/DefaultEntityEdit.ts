@@ -112,6 +112,19 @@ export const getEditComponent = (
     additionalProps.push('disabled');
   }
 
+  if (type == 'filter' && field.filters.length > 0) {
+    let filters: string[] = [];
+    field.filters.forEach((f) => {
+      let postfix = {source: '', label: ''};
+      if (['in', 'not_in', 'lt', 'lte', 'gt', 'gte', 'defined'].includes(f)) {
+        postfix.source = `_${f}`;
+        postfix.label = f;
+      }
+      filters.push(getTrivialEditComponent(entity, field, type, additionalProps, postfix));
+    });
+    return filters.join('\n');
+  }
+
   return getTrivialEditComponent(entity, field, type, additionalProps, postfix);
 };
 
