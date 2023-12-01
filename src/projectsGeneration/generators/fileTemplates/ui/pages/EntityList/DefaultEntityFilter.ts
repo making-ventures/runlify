@@ -20,7 +20,11 @@ export const uiDefaultFilterTmpl = ({
 
   const useTranslate = fields.some((f) => {
     const field = getEntityField(entity, f.name);
-    return field.filters.some(filter => ['in', 'not_in', 'lt', 'lte', 'gt', 'gte', 'defined'].includes(filter));
+    return field.filters.some(filter => ['in', 'not_in', 'lt', 'lte', 'gt', 'gte', 'defined', 'not_defined'].includes(filter));
+  });
+  const useReferenceArray = fields.some((f) => {
+    const field = getEntityField(entity, f.name);
+    return field.category == 'link' && field.filters.some(filter => ['in', 'not_in'].includes(filter));
   });
 
   const fieldsToImport = fields.map((f) => getEntityField(entity, f.name))
@@ -34,6 +38,7 @@ export const uiDefaultFilterTmpl = ({
     'Filter',
     ...(useTranslate ? ['useTranslate'] : []),
     ...(hasSearch ? ['TextInput'] : []),
+    ...(useReferenceArray ? ['ReferenceArrayInput', 'AutocompleteArrayInput'] : []),
 
     ...R.flatten(
       notDateFieldsToImport.map((f) => getCompNamesToEditField(f, allEntities))

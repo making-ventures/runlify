@@ -102,7 +102,7 @@ export type BaseField = {
   defaultValueExpression?: string
   defaultBackendValueExpression?: string
   sharded: boolean
-  filters: string[]
+  filters: Filter[]
 }
 
 type ScalarBaseField = BaseField & {
@@ -535,3 +535,5 @@ export type EtityType = 'catalog' | 'document' | 'infoRegistry' | 'sumRegistry'
 export type PreviewFeature = never;
 
 export type DateUnit = 'year' | 'month' | 'day' | 'hour' | 'minute';
+
+export type Filter = 'equal' | 'defined' | 'not_defined' | 'in' | 'not_in' | 'lte' | 'gte' | 'lt' | 'gt'
