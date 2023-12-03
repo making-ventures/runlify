@@ -217,10 +217,9 @@ export type StringField =
   | RichEditStringField
   | JsonStringField
 
-export type FloatFilter = BaseFilter | 'in' | 'not_in' | 'lte' | 'gte' | 'lt' | 'gt';
 export type FloatField = ScalarBaseField & {
   type: 'float'
-  filters: FloatFilter[]
+  filters: IntFilter[]
 }
 
 export type BoolField = ScalarBaseField & {
