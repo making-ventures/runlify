@@ -102,7 +102,6 @@ export type BaseField = {
   defaultValueExpression?: string
   defaultBackendValueExpression?: string
   sharded: boolean
-  filters: Filter[]
 }
 
 type ScalarBaseField = BaseField & {
@@ -137,14 +136,21 @@ type LinkBaseField = NotPredefinedLinkBaseField | FilePredefinedLinkBaseField
 // export type ConstantOnCreateDate = false | 'now'
 // export type ConstantOnUpdateDate = false | 'now'
 
+export type BaseFilter = 'equal' | 'defined' | 'not_defined'
+
+export type Filter = BaseFilter | 'in' | 'not_in' | 'lte' | 'gte' | 'lt' | 'gt';
+
+export type DateFilter = BaseFilter | 'lte' | 'gte' | 'lt' | 'gt';
 export type DateTimeField = ScalarBaseField & {
   type: 'datetime'
+  filters: DateFilter[]
   // constantOnCreate: ConstantOnCreateDate
   // constantOnUpdate: ConstantOnUpdateDate
 }
 
 export type DateField = ScalarBaseField & {
   type: 'date'
+  filters: DateFilter[]
   // constantOnCreate: ConstantOnCreateDate
   // constantOnUpdate: ConstantOnUpdateDate
 }
@@ -155,20 +161,25 @@ export type DateField = ScalarBaseField & {
 // export type ConstantOnCreate = ConstantOnCreateInt | ConstantOnCreateDate
 // export type ConstantOnUpdate = ConstantOnUpdateInt | ConstantOnUpdateDate
 
+export type IntFilter = BaseFilter | 'in' | 'not_in' | 'lte' | 'gte' | 'lt' | 'gt';
 export type IntField = ScalarBaseField & {
   type: 'int'
+  filters: IntFilter[]
   // constantOnCreate: ConstantOnCreateInt
   // constantOnUpdate: ConstantOnUpdateInt
 }
 
 export type BigIntField = ScalarBaseField & {
   type: 'bigint'
+  filters: IntFilter[]
   // constantOnCreate: ConstantOnCreateInt
   // constantOnUpdate: ConstantOnUpdateInt
 }
 
+export type StringFilter = BaseFilter | 'in' | 'not_in';
 export type BaseStringField = ScalarBaseField & {
   type: 'string'
+  filters: StringFilter[]
 }
 
 export enum StringType {
@@ -206,21 +217,33 @@ export type StringField =
   | RichEditStringField
   | JsonStringField
 
+export type FloatFilter = BaseFilter | 'in' | 'not_in' | 'lte' | 'gte' | 'lt' | 'gt';
 export type FloatField = ScalarBaseField & {
   type: 'float'
+  filters: FloatFilter[]
 }
 
 export type BoolField = ScalarBaseField & {
   type: 'bool'
+  filters: BaseFilter[]
 }
 
 export type BigIntIdField = IdBaseField & Omit<BigIntField, 'category'>
 export type IntIdField = IdBaseField & Omit<IntField, 'category'>
 export type StringIdField = IdBaseField & Omit<StringField, 'category'>
 
-export type IntLinkField = LinkBaseField & { type: 'int' }
-export type BigIntLinkField = LinkBaseField & { type: 'bigint' }
-export type StringLinkField = LinkBaseField & { type: 'string' }
+export type IntLinkField = LinkBaseField & { 
+  type: 'int'
+  filters: IntFilter[]
+}
+export type BigIntLinkField = LinkBaseField & { 
+  type: 'bigint'
+  filters: IntFilter[]
+}
+export type StringLinkField = LinkBaseField & { 
+  type: 'string'
+  filters: StringFilter[]
+}
 
 export type ScalarField =
   | DateTimeField
@@ -535,5 +558,3 @@ export type EtityType = 'catalog' | 'document' | 'infoRegistry' | 'sumRegistry'
 export type PreviewFeature = never;
 
 export type DateUnit = 'year' | 'month' | 'day' | 'hour' | 'minute';
-
-export type Filter = 'equal' | 'defined' | 'not_defined' | 'in' | 'not_in' | 'lte' | 'gte' | 'lt' | 'gt'

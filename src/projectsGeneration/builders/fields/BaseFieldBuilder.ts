@@ -68,7 +68,6 @@ abstract class BaseFieldBuilder {
       defaultValueExpression: this.defaultValueExpression,
       defaultBackendValueExpression: this.defaultBackendValueExpression,
       sharded: this.sharded,
-      filters: this.filters,
     }
   }
 
@@ -339,6 +338,7 @@ abstract class BaseFieldBuilder {
   filtersAllowedForType(filters: Filter[], type: FieldType) {
     const allowedFiltersForType = {
       int: ['equal', 'defined', 'not_defined', 'in', 'not_in', 'lte', 'gte', 'lt', 'gt'],
+      bigInt: ['equal', 'defined', 'not_defined', 'in', 'not_in', 'lte', 'gte', 'lt', 'gt'],
       float: ['equal', 'defined', 'not_defined', 'in', 'not_in', 'lte', 'gte', 'lt', 'gt'],
       date: ['equal', 'defined', 'not_defined', 'lte', 'gte', 'lt', 'gt'],
       datetime: ['equal', 'defined', 'not_defined', 'lte', 'gte', 'lt', 'gt'],

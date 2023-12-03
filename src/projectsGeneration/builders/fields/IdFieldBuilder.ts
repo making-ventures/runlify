@@ -1,5 +1,7 @@
 import {
   IdField,
+  IntFilter,
+  StringFilter,
   TKeyFieldType,
 } from '../buildedTypes'
 import BaseFieldBuilder from './BaseFieldBuilder'
@@ -42,6 +44,7 @@ class IdFieldBuilder extends BaseFieldBuilder {
         showInEdit: this.showInEdit,
         showInFilter: this.showInFilter,
         defaultDbValue: this.defaultDbValue,
+        filters: this.filters as IntFilter[],
       }
     } else if (this.type === 'string') {
       return {
@@ -56,6 +59,7 @@ class IdFieldBuilder extends BaseFieldBuilder {
         showInFilter: this.showInFilter,
         defaultDbValue: this.defaultDbValue,
         stringType: this.stringType,
+        filters: this.filters as StringFilter[],
       }
     }
 

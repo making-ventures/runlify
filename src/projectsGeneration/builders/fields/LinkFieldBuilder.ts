@@ -1,8 +1,10 @@
 /* eslint-disable no-lonely-if */
 import {
   FileType,
+  IntFilter,
   LinkField,
   PredefinedLinkedEntity,
+  StringFilter,
   TKeyFieldType,
 } from '../buildedTypes'
 import BaseFieldBuilder from './BaseFieldBuilder'
@@ -81,6 +83,7 @@ class LinkFieldBuilder extends BaseFieldBuilder {
           defaultDbValue: this.defaultDbValue,
           predefinedLinkedEntity: this.predefinedLinkedEntity,
           fileType: this.fileType,
+          filters: this.filters as StringFilter[],
         }
       } else {
         return {
@@ -96,6 +99,7 @@ class LinkFieldBuilder extends BaseFieldBuilder {
           linkCategory: 'entity',
           defaultDbValue: this.defaultDbValue,
           predefinedLinkedEntity: this.predefinedLinkedEntity,
+          filters: this.filters as IntFilter[],
         }
       }
     } else {
@@ -114,6 +118,7 @@ class LinkFieldBuilder extends BaseFieldBuilder {
           defaultDbValue: this.defaultDbValue,
           predefinedLinkedEntity: this.predefinedLinkedEntity,
           fileType: this.fileType,
+          filters: this.filters as StringFilter[],
         }
       } else {
         return {
@@ -129,6 +134,7 @@ class LinkFieldBuilder extends BaseFieldBuilder {
           linkCategory: 'entity',
           defaultDbValue: this.defaultDbValue,
           predefinedLinkedEntity: this.predefinedLinkedEntity,
+          filters: this.filters as StringFilter[],
         }
       }
     }

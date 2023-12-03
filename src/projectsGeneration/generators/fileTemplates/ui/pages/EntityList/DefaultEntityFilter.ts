@@ -32,7 +32,7 @@ export const uiDefaultFilterTmpl = ({
     ['datetime', 'date'].includes(f.type)
   )
   const notDateFieldsToImport = fieldsToImport.filter(
-    (f) => !['datetime', 'date'].includes(f.type)
+    (f) => !['datetime', 'date'].includes(f.type) && (f.category !== 'link' || ['equal', 'lt', 'lte', 'gt', 'gte', 'defined', 'not_defined'].some(filter => f.filters.some(item => item === filter)))
   )
   const reactAdminImports: string[] = [
     'Filter',

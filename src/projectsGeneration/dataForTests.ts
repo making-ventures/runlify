@@ -15,5 +15,4 @@ export const baseField: BaseField = {
     showInShow: true,
     defaultDbValue: undefined,
     sharded: false,
-    filters: [],
 };

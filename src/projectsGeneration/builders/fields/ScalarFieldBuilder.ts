@@ -1,5 +1,9 @@
 import {
+  BaseFilter,
+  DateFilter,
+  IntFilter,
   ScalarField,
+  StringFilter,
 } from '../buildedTypes'
 import BaseFieldBuilder from './BaseFieldBuilder'
 
@@ -20,8 +24,9 @@ class ScalarFieldBuilder extends BaseFieldBuilder {
         showInEdit: this.showInEdit,
         showInFilter: this.showInFilter,
         defaultDbValue: this.defaultDbValue,
+        filters: this.filters as DateFilter[]
       }
-    } else if (this.type === 'int' || this.type === 'bigint') {
+    } else if (this.type === 'int' || this.type === 'bigint' || this.type === 'float') {
       return {
         ...base,
         type: this.type,
@@ -34,6 +39,7 @@ class ScalarFieldBuilder extends BaseFieldBuilder {
         showInEdit: this.showInEdit,
         showInFilter: this.showInFilter,
         defaultDbValue: this.defaultDbValue,
+        filters: this.filters as IntFilter[],
       }
     } else if (this.type === 'string') {
       return {
@@ -47,6 +53,7 @@ class ScalarFieldBuilder extends BaseFieldBuilder {
         showInFilter: this.showInFilter,
         defaultDbValue: this.defaultDbValue,
         stringType: this.stringType,
+        filters: this.filters as StringFilter[],
       }
     } else {
       return {
@@ -59,6 +66,7 @@ class ScalarFieldBuilder extends BaseFieldBuilder {
         showInEdit: this.showInEdit,
         showInFilter: this.showInFilter,
         defaultDbValue: this.defaultDbValue,
+        filters: this.filters as BaseFilter[],
       }
     }
   }
