@@ -6,6 +6,7 @@ import {
   DefaultDbValue,
   StringType,
   BaseField,
+  Filter,
 } from '../buildedTypes'
 
 abstract class BaseFieldBuilder {
@@ -36,6 +37,7 @@ abstract class BaseFieldBuilder {
   showInEdit = true
   showInShow = true
   sharded = false
+  filters: Filter[] = ['equal']
 
   constructor(name: string, defaultLanguage: string, title?: string) {
     this.defaultLanguage = defaultLanguage
@@ -100,7 +102,9 @@ abstract class BaseFieldBuilder {
     return this
   }
   setType(type: FieldType) {
-    this.type = type
+    if (this.filtersAllowedForType(this.filters, type)) {
+      this.type = type 
+    }
 
     if (['bool'].includes(type)) {
       this.setSearchable(false)
@@ -304,6 +308,57 @@ abstract class BaseFieldBuilder {
     this.sharded = value
 
     return this
+  }
+  setFilters (filters: Filter[]) {
+    if (this.filtersAllowedForType(filters, this.type)) {
+      this.filters = filters;
+    }
+    
+    return this;
+  }
+  addFilters (filters: Filter[]) {
+    if (this.filtersAllowedForType(filters, this.type)) {
+      this.filters.push(...filters);
+    }
+
+    return this;
+  }
+  addFilter (filter: Filter) {
+    if (this.filtersAllowedForType([filter], this.type)) {
+      this.filters.push(filter);
+    }
+
+    return this;
+  } 
+  delFilter (filter: Filter) {
+    this.filters = this.filters.filter((item: Filter) => item !== filter);
+
+    return this;
+  }
+  filtersAllowedForType(filters: Filter[], type: FieldType) {
+    const allowedFiltersForType = {
+      int: ['equal', 'defined', 'not_defined', 'in', 'not_in', 'lte', 'gte', 'lt', 'gt'],
+      bigInt: ['equal', 'defined', 'not_defined', 'in', 'not_in', 'lte', 'gte', 'lt', 'gt'],
+      float: ['equal', 'defined', 'not_defined', 'in', 'not_in', 'lte', 'gte', 'lt', 'gt'],
+      date: ['equal', 'defined', 'not_defined', 'lte', 'gte', 'lt', 'gt'],
+      datetime: ['equal', 'defined', 'not_defined', 'lte', 'gte', 'lt', 'gt'],
+      string: ['equal', 'defined', 'not_defined', 'in', 'not_in'],
+      bool: ['equal', 'defined', 'not_defined'],
+    }
+    
+    filters.some((f) => {
+      if(!allowedFiltersForType[type].includes(f)) {
+        throw new Error(`Filter '${f}' is not allowed to field type ${type}`);
+      }
+    });
+
+    filters.some((f) => {
+      if (['in', 'not_in'].includes(f) && this.category !== 'link') {
+        throw new Error(`Filters 'in' and 'not_in' allowed only for linked fields`);
+      }
+    });
+
+    return true;
   }
 }
 

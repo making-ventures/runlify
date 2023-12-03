@@ -4,6 +4,8 @@ import {
   TKeyFieldType,
   PredefinedLinkedEntity,
   FileType,
+  StringFilter,
+  IntFilter,
 } from '../buildedTypes'
 import BaseFieldBuilder from './BaseFieldBuilder'
 
@@ -67,6 +69,7 @@ class ViewLinkFieldBuilder extends BaseFieldBuilder {
           defaultDbValue: this.defaultDbValue,
           predefinedLinkedEntity: this.predefinedLinkedEntity,
           fileType: this.fileType,
+          filters: this.filters as StringFilter[],
         }
       } else {
         return {
@@ -82,6 +85,7 @@ class ViewLinkFieldBuilder extends BaseFieldBuilder {
           linkCategory: 'view',
           defaultDbValue: this.defaultDbValue,
           predefinedLinkedEntity: this.predefinedLinkedEntity,
+          filters: this.filters as IntFilter[],
         }
       }
     } else {
@@ -100,6 +104,7 @@ class ViewLinkFieldBuilder extends BaseFieldBuilder {
           defaultDbValue: this.defaultDbValue,
           predefinedLinkedEntity: this.predefinedLinkedEntity,
           fileType: this.fileType,
+          filters: this.filters as StringFilter[],
         }
       } else {
         return {
@@ -115,6 +120,7 @@ class ViewLinkFieldBuilder extends BaseFieldBuilder {
           linkCategory: 'view',
           defaultDbValue: this.defaultDbValue,
           predefinedLinkedEntity: this.predefinedLinkedEntity,
+          filters: this.filters as StringFilter[],
         }
       }
     }

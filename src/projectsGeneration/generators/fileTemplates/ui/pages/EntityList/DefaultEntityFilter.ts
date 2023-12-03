@@ -18,16 +18,27 @@ export const uiDefaultFilterTmpl = ({
 
   const hasSearch = entity.type === 'catalog' || entity.type === 'document' && entity.searchEnabled
 
+  const useTranslate = fields.some((f) => {
+    const field = getEntityField(entity, f.name);
+    return field.filters.some(filter => ['in', 'not_in', 'lt', 'lte', 'gt', 'gte', 'defined', 'not_defined'].includes(filter));
+  });
+  const useReferenceArray = fields.some((f) => {
+    const field = getEntityField(entity, f.name);
+    return field.category == 'link' && field.filters.some(filter => ['in', 'not_in'].includes(filter));
+  });
+
   const fieldsToImport = fields.map((f) => getEntityField(entity, f.name))
   const dateFieldsToImport = fieldsToImport.filter((f) =>
     ['datetime', 'date'].includes(f.type)
   )
   const notDateFieldsToImport = fieldsToImport.filter(
-    (f) => !['datetime', 'date'].includes(f.type)
+    (f) => !['datetime', 'date'].includes(f.type) && (f.category !== 'link' || ['equal', 'lt', 'lte', 'gt', 'gte', 'defined', 'not_defined'].some(filter => f.filters.some(item => item === filter)))
   )
   const reactAdminImports: string[] = [
     'Filter',
+    ...(useTranslate ? ['useTranslate'] : []),
     ...(hasSearch ? ['TextInput'] : []),
+    ...(useReferenceArray ? ['ReferenceArrayInput', 'AutocompleteArrayInput'] : []),
 
     ...R.flatten(
       notDateFieldsToImport.map((f) => getCompNamesToEditField(f, allEntities))
@@ -58,7 +69,7 @@ ${
 // ${generatedWarning}
 `
 }
-const Default${pascalSingular(entity.name)}Filter: FC<any> = (props) => {
+const Default${pascalSingular(entity.name)}Filter: FC<any> = (props) => {${useTranslate ? `\n  const translate = useTranslate();` : ''}
   return (
     <Filter {...props}>${
       hasSearch

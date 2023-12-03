@@ -4,7 +4,7 @@ import {
   getCompNamesToEditField,
 } from '../../../../ui/componentNames/edit/getCompNamesToEditField';
 import * as R from 'ramda';
-import {Entity, Field} from '../../../../../builders/buildedTypes';
+import {Entity, Field, LinkField} from '../../../../../builders/buildedTypes';
 import {getCompNameToEditScalar} from '../../../../ui/componentNames/edit/getCompNameToEditScalar';
 import {EntityWideGenerationArgs} from '../../../../../args';
 import { generatedWarning, pad } from '../../../../../utils'
@@ -56,27 +56,14 @@ export const getTrivialEditComponent = (
 />`;
 };
 
-export const getEditComponent = (
+export const getLinkEditComponent = (
   entity: Entity,
-  allEntities: Map<string, Entity>,
-  field: Field,
+  field: LinkField,
   type: 'create' | 'edit' | 'filter',
   additionalProps: string[] = [],
-  postfix?: {source: string, label: string},
+  isDisabled: boolean = false,
 ) => {
-  const isDisabled = field.sharded && type === 'edit'
-  if (field.category === 'link') {
-    const linkedEntity = allEntities.get(field.externalEntity);
-    if (linkedEntity) {
-      if (isImageFileRef(field)) {
-        if (type === 'edit') {
-          return `<FileInput source='${field.name}' type='image' />`;
-        } else if (type === 'create') {
-          return `<FileInput source='${field.name}' type='image' />`;
-        }
-      }
-
-    return `<ReferenceInput${additionalProps.map(p => `\n  ${p}`)}
+  return `<ReferenceInput${additionalProps.map(p => `\n  ${p}`)}
   source='${field.name}'
   reference='${field.externalEntity}'
   sort={{field: '${entity.sortField}', order: '${entity.sortOrder}'}}
@@ -95,6 +82,49 @@ export const getEditComponent = (
     noOptionsText='ra.message.noOptions'
   />
 </ReferenceInput>`;
+}
+
+export const getLinkArrayEditComponent = (
+  entity: Entity,
+  field: LinkField,
+  type: 'create' | 'edit' | 'filter',
+  additionalProps: string[] = [],
+  postfix?: {source: string, label: string}
+) => {
+  return `<ReferenceArrayInput${additionalProps.map(p => `\n  ${p}`)}
+  source='${field.name}${postfix ? postfix.source : ''}'
+  reference='${field.externalEntity}'
+  sort={{field: '${entity.sortField}', order: '${entity.sortOrder}'}}
+  ${getFieldLabel(entity, field, postfix?.label)}
+>
+  <AutocompleteArrayInput
+    fullWidth
+    sx={{m: 1}}
+    size='small'
+    ${getFieldLabel(entity, field, postfix?.label)}
+    optionText='title'
+    parse={val => val || null}${field.required && type !== 'filter' ? `
+    isRequired` : ''}
+  />
+</ReferenceArrayInput>`;
+};
+
+export const getEditComponent = (
+  entity: Entity,
+  allEntities: Map<string, Entity>,
+  field: Field,
+  type: 'create' | 'edit' | 'filter',
+  additionalProps: string[] = [],
+) => {
+  const isDisabled = field.sharded && type === 'edit'
+
+  if (field.category === 'link' && type !== 'filter') {
+    const linkedEntity = allEntities.get(field.externalEntity);
+    if (linkedEntity) {
+      if (isImageFileRef(field)) {
+        return `<FileInput source='${field.name}' type='image' />`;
+      }
+      return getLinkEditComponent(entity, field, type, additionalProps, isDisabled);
     }
   }
 
@@ -112,7 +142,30 @@ export const getEditComponent = (
     additionalProps.push('disabled');
   }
 
-  return getTrivialEditComponent(entity, field, type, additionalProps, postfix);
+  if (type == 'filter' && field.filters.length > 0) {
+    let filters: string[] = [];
+    field.filters.forEach((f) => {
+      let postfix = {source: '', label: ''};
+      if (['in', 'not_in', 'lt', 'lte', 'gt', 'gte', 'defined', 'not_defined'].includes(f)) {
+        postfix.source = `_${f}`;
+        postfix.label = f;
+      }
+      if (field.category === 'link') {
+        if (['in', 'not_in'].includes(f)) {
+          filters.push(getLinkArrayEditComponent(entity, field, type, additionalProps, postfix));
+        } else {
+          filters.push(getLinkEditComponent(entity, field, type, additionalProps));
+        }
+      } else {
+        filters.push(getTrivialEditComponent(entity, field, type, additionalProps, postfix));
+      }
+    });
+    return filters.join('\n');
+  } else if (type == 'filter' && field.filters.length == 0) {
+    return '';
+  }
+
+  return getTrivialEditComponent(entity, field, type, additionalProps);
 };
 
 export const uiDefaultEditTmpl = ({

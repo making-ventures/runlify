@@ -11,6 +11,8 @@ export type LinkEditComponentName =
   | 'ReferenceInput'
   | 'SelectInput'
   | 'AutocompleteInput'
+  | 'ReferenceArrayInput'
+  | 'AutocompleteArrayInput'
 
 export type EditComponentName =
   | 'TextInput'

@@ -18,6 +18,7 @@ describe('genPrismaFieldFromExternalEntity', () => {
           type: 'string',
           linkCategory: 'entity',
           predefinedLinkedEntity: 'none',
+          filters: [],
         },
         externalEntityName: 'users',
       })
