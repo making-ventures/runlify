@@ -102,9 +102,8 @@ abstract class BaseFieldBuilder {
     return this
   }
   setType(type: FieldType) {
-    if (this.filtersAllowedForType(this.filters, type)) {
-      this.type = type 
-    }
+    this.assertFiltersAllowedForType(this.filters, type);
+    this.type = type 
 
     if (['bool'].includes(type)) {
       this.setSearchable(false)
@@ -310,23 +309,20 @@ abstract class BaseFieldBuilder {
     return this
   }
   setFilters (filters: Filter[]) {
-    if (this.filtersAllowedForType(filters, this.type)) {
-      this.filters = filters;
-    }
+    this.assertFiltersAllowedForType(filters, this.type);
+    this.filters = filters;
     
     return this;
   }
   addFilters (filters: Filter[]) {
-    if (this.filtersAllowedForType(filters, this.type)) {
-      this.filters.push(...filters);
-    }
+    this.assertFiltersAllowedForType(filters, this.type);
+    this.filters.push(...filters);
 
     return this;
   }
   addFilter (filter: Filter) {
-    if (this.filtersAllowedForType([filter], this.type)) {
-      this.filters.push(filter);
-    }
+    this.assertFiltersAllowedForType([filter], this.type);
+    this.filters.push(filter);
 
     return this;
   } 
@@ -335,7 +331,7 @@ abstract class BaseFieldBuilder {
 
     return this;
   }
-  filtersAllowedForType(filters: Filter[], type: FieldType) {
+  assertFiltersAllowedForType(filters: Filter[], type: FieldType) {
     const allowedFiltersForType = {
       int: ['equal', 'defined', 'not_defined', 'in', 'not_in', 'lte', 'gte', 'lt', 'gt'],
       bigInt: ['equal', 'defined', 'not_defined', 'in', 'not_in', 'lte', 'gte', 'lt', 'gt'],
@@ -357,8 +353,6 @@ abstract class BaseFieldBuilder {
         throw new Error(`Filters 'in' and 'not_in' allowed only for linked fields`);
       }
     });
-
-    return true;
   }
 }
 
