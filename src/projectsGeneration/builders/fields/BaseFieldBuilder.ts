@@ -331,10 +331,10 @@ abstract class BaseFieldBuilder {
 
     return this;
   }
-  assertFiltersAllowedForType(filters: Filter[], type: FieldType) {
-    const allowedFiltersForType = {
+  assertFiltersAllowedForType (filters: Filter[], type: FieldType) {
+    const allowedFiltersForType: Record<FieldType, string[]> = {
       int: ['equal', 'defined', 'not_defined', 'in', 'not_in', 'lte', 'gte', 'lt', 'gt'],
-      bigInt: ['equal', 'defined', 'not_defined', 'in', 'not_in', 'lte', 'gte', 'lt', 'gt'],
+      bigint: ['equal', 'defined', 'not_defined', 'in', 'not_in', 'lte', 'gte', 'lt', 'gt'],
       float: ['equal', 'defined', 'not_defined', 'in', 'not_in', 'lte', 'gte', 'lt', 'gt'],
       date: ['equal', 'defined', 'not_defined', 'lte', 'gte', 'lt', 'gt'],
       datetime: ['equal', 'defined', 'not_defined', 'lte', 'gte', 'lt', 'gt'],
