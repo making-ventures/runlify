@@ -88,6 +88,7 @@ describe('getLinksFromExternalEntities', () => {
           type: 'string',
           linkCategory: 'entity',
           predefinedLinkedEntity: 'none',
+          filters: [],
         },
         entityOwnerName: 'secondEntities',
         type: 'oneToMany',
