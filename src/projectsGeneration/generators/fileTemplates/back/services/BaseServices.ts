@@ -29,8 +29,10 @@ ${
 }
 export interface BaseServices {
   help: HelpService;
-  ${entities.map((m) => `${m.name}: Additional${pascal(m.name)}Service;`).join('\n  ')}
-  ${additionalServices.map((s) => `${s.name}: ${pascal(s.name)}Service;`).join('\n  ')}
+  ${[
+    ...(entities.length ? entities.map((m) => `${m.name}: Additional${pascal(m.name)}Service;`) : []),
+    ...(additionalServices.length ? additionalServices.map((s) => `${s.name}: ${pascal(s.name)}Service;`) : [])
+  ].join('\n  ')}
 }
 `
 
