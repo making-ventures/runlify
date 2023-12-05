@@ -7,7 +7,7 @@ const genIntegrationClientConstrictorsTmpl = ({
     integrationClients,
   },
   options,
-}: ProjectWideGenerationArgs) => `import {IntegrationClientsConstrictors, Context} from './types';
+}: ProjectWideGenerationArgs) => `import {IntegrationClientsConstrictors${integrationClients.length ? ', Context' : '' }} from './types';
 ${integrationClients.map(client => `import ${pascal(client.name)}Client from '../../integrationClients/${client.name}/${pascal(client.name)}Client';\n`).join('')}${
   options.skipWarningThisIsGenerated
     ? '\n'
