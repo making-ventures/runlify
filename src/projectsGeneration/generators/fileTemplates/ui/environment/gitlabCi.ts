@@ -43,7 +43,19 @@ check:
     - yarn install --frozen-lockfile
   script:
     - ./check.sh
-
+${
+  options.genBackCiNotify
+? `  after_script:
+    - chmod +x ci-notify.sh
+    - >
+      if [ $CI_JOB_STATUS != 'success' ]; then
+        sh ci-notify.sh "🆘 $CI_JOB_NAME failed"
+      else
+        sh ci-notify.sh "✅ $CI_JOB_NAME success"
+      fi
+`
+: ''
+}
 tag-previous-with-sha:
   extends: .tag-image
   stage: previous-image
@@ -74,6 +86,17 @@ build:
       --destination \${CI_REGISTRY_IMAGE}:\${CI_COMMIT_REF_SLUG}
       --destination \${CI_REGISTRY_IMAGE}:\${CI_COMMIT_REF_SLUG}-\${CI_COMMIT_SHA}
       --single-snapshot
+${
+  options.genBackCiNotify
+? `  after_script:
+    - >
+      if [ $CI_JOB_STATUS != 'success' ]; then
+        sh ci-notify.sh "🆘 $CI_JOB_NAME failed"
+      else
+        sh ci-notify.sh "✅ $CI_JOB_NAME success"
+      fi`
+: ''
+}
   only:${system.deployEnvironments
     .map((e) => `\n    - ${e.branchName}\n    - /^${e.branchName}-.*$/`).join('')}
 
@@ -183,4 +206,15 @@ ${system.deployEnvironments
         .filter((v) => v.scopes.includes('admin-app') || v.scopes.includes('ci'))
         .map((v) => `\n      --set "${v.name}=\${${constantCase(v.name)}}"`)
         .join('')}
+${
+  options.genBackCiNotify
+? `  after_script:
+    - >
+      if [ $CI_JOB_STATUS != 'success' ]; then
+        sh ci-notify.sh "🆘 $CI_JOB_NAME failed"
+      else
+        sh ci-notify.sh "✅ $CI_JOB_NAME success"
+      fi`
+: ''
+}
 `
