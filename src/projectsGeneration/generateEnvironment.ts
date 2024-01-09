@@ -25,6 +25,8 @@ import { Entity } from './builders'
 import { ProjectWideGenerationArgs } from './args'
 import { dockerfileTmplUI } from './generators/fileTemplates/back/environment/dockerfileTmplUI'
 import { dockerfileTmplBack } from './generators/fileTemplates/back/environment/dockerfileTmplBack'
+import { uiCiNotifyTmpl } from './generators/fileTemplates/ui/environment/ciNotify'
+import { ciNotifyTmpl } from './generators/fileTemplates/back/environment/ciNotify'
 
 export const generateEnvironment = async (
   projectWideGenerationArgs: ProjectWideGenerationArgs
@@ -140,6 +142,15 @@ export const generateEnvironment = async (
       )
     }
 
+    // ci-notify
+    // ci-notify.sh
+    if (opts.genBackCiNotify) {
+      await write(
+        join(opts.detachedBackProject, 'ci-notify.sh'),
+        ciNotifyTmpl(projectWideGenerationArgs)
+      )
+    }
+
     // dockerfileTmplBack
     await write(
       join(opts.detachedBackProject, 'Dockerfile'),
@@ -234,6 +245,15 @@ export const generateEnvironment = async (
       await write(
         join(opts.detachedUiProject, '.gitlab-ci.yml'),
         uiGitlabCiTmpl(projectWideGenerationArgs)
+      )
+    }
+
+    // ci-notify
+    // ci-notify.sh
+    if (opts.genUiCiNotify) {
+      await write(
+        join(opts.detachedUiProject, 'ci-notify.sh'),
+        uiCiNotifyTmpl(projectWideGenerationArgs)
       )
     }
 
