@@ -88,17 +88,6 @@ build:
       --destination \${CI_REGISTRY_IMAGE}:\${CI_COMMIT_REF_SLUG}
       --destination \${CI_REGISTRY_IMAGE}:\${CI_COMMIT_REF_SLUG}-\${CI_COMMIT_SHA}
       --single-snapshot
-${
-  options.genBackCiNotify
-? `  after_script:
-    - >
-      if [ $CI_JOB_STATUS != 'success' ]; then
-        sh ci-notify.sh "🆘 $CI_JOB_NAME failed"
-      else
-        sh ci-notify.sh "✅ $CI_JOB_NAME success"
-      fi`
-: ''
-}
   only:${system.deployEnvironments
       .map((e) => `\n    - ${e.branchName}\n    - /^${e.branchName}-.*$/`).join('')}
 
