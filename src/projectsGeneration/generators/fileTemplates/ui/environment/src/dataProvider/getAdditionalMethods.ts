@@ -2,7 +2,7 @@ import {
   BootstrapEntityOptions,
   defaultBootstrapEntityOptions,
 } from '../../../../../../types'
-import { AdditionalService, MethodType, Entity, ScalarField } from '../../../../../../builders/buildedTypes'
+import { AdditionalService, MethodType, ScalarField } from '../../../../../../builders/buildedTypes'
 import { generatedWarning } from '../../../../../../utils'
 import { pascalCase } from 'change-case'
 import fieldTypeToGraphScalarStringified from '../../../../../graph/fieldTypeToGraphScalarStringified'
