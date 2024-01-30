@@ -3,14 +3,12 @@ import {
   BootstrapEntityOptions,
   defaultBootstrapEntityOptions,
 } from '../../../../../../types'
-import { AdditionalService, MethodType, Entity } from '../../../../../../builders/buildedTypes'
+import { Entity } from '../../../../../../builders/buildedTypes'
 import { generatedWarning } from '../../../../../../utils'
 import { getKeyField } from '../../../../../../metaUtils'
-import { pascalCase } from 'change-case'
 
 export const uiDataProviderTmpl = (
   entities: Entity[],
-  additionalServices: AdditionalService[],
   options: BootstrapEntityOptions = defaultBootstrapEntityOptions
 ) => `import buildGraphQLProvider, {buildQuery as buildQueryFactory} from 'ra-data-graphql-simple';
 import {IntrospectionResult} from 'ra-data-graphql';
@@ -21,6 +19,7 @@ import {mapping} from '../adm/entityMapping';
 import sch from '../generated/graphql.schema.json';
 import {ApolloClient} from '@apollo/client';
 import getCustomMethods from './getCustomMethods';
+import getAdditionalMethods from './getAdditionalMethods';
 import {DataProvider} from './types';
 ${
   options.skipWarningThisIsGenerated
@@ -99,18 +98,7 @@ export default async (client: ApolloClient<unknown>): Promise<DataProvider> => {
   return {
     ...baseDataProvider,
     ...getCustomMethods(client, baseDataProvider),
-${additionalServices.flatMap(service => service.methods.map(method => {
-  const methodName = `${service.name}${pascalCase(method.name)}`;
-
-  return`    ${methodName}: async () => {
-      return client.${method.methodType === MethodType.Mutation ? 'mutate' : 'query'}({
-        mutation: gql\`
-          mutation ${methodName} {
-            ${methodName}
-          }
-        \`,
-      });
-    },`})).join('\n')}
+    ...getAdditionalMethods(client),
   };
 };
 `

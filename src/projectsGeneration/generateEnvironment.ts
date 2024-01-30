@@ -27,6 +27,7 @@ import { dockerfileTmplUI } from './generators/fileTemplates/back/environment/do
 import { dockerfileTmplBack } from './generators/fileTemplates/back/environment/dockerfileTmplBack'
 import { uiCiNotifyTmpl } from './generators/fileTemplates/ui/environment/ciNotify'
 import { ciNotifyTmpl } from './generators/fileTemplates/back/environment/ciNotify'
+import { uiGetAdditionalMethodsTmpl } from './generators/fileTemplates/ui/environment/src/dataProvider/getAdditionalMethods'
 
 export const generateEnvironment = async (
   projectWideGenerationArgs: ProjectWideGenerationArgs
@@ -191,7 +192,13 @@ export const generateEnvironment = async (
     const uiDataProviderFolder = join(prjDetachedUiSrcDir, 'dataProvider')
     await write(
       join(uiDataProviderFolder, 'index.ts'),
-      uiDataProviderTmpl(entities, projectWideGenerationArgs.system.additionalServices, opts)
+      uiDataProviderTmpl(entities, opts)
+    )
+
+    // src/dataProvider/getAdditionalMethods.ts
+    await write(
+      join(uiDataProviderFolder, 'getAdditionalMethods.ts'),
+      uiGetAdditionalMethodsTmpl(entities, projectWideGenerationArgs.system.additionalServices, opts)
     )
 
     // src/i18nProvider/index.ts

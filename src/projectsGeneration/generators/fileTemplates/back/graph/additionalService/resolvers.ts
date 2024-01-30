@@ -8,6 +8,7 @@ export const backAdditionalServiceResolversTmpl = ({
   options,
 }: AdditionalServiceWideGenerationArgs) => {
   const modelsToImport = service.methods.flatMap(q => [q.argsModel, q.returnModel]).flat().filter(m => m.fields.length);
+
   return `import {
   Resolvers,
 } from '../../../../generated/graphql';${modelsToImport.length ? modelsToImport.map(m => `\nimport {${pascalCase(m.name)}} from '../../../services/${pascalCase(service.name)}Service/types';`).join('') : ''}
