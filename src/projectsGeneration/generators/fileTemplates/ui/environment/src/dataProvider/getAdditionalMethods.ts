@@ -8,7 +8,6 @@ import { pascalCase } from 'change-case'
 import fieldTypeToGraphScalarStringified from '../../../../../graph/fieldTypeToGraphScalarStringified'
 
 export const uiGetAdditionalMethodsTmpl = (
-  entities: Entity[],
   additionalServices: AdditionalService[],
   options: BootstrapEntityOptions = defaultBootstrapEntityOptions
 ) => {

@@ -198,7 +198,7 @@ export const generateEnvironment = async (
     // src/dataProvider/getAdditionalMethods.ts
     await write(
       join(uiDataProviderFolder, 'getAdditionalMethods.ts'),
-      uiGetAdditionalMethodsTmpl(entities, projectWideGenerationArgs.system.additionalServices, opts)
+      uiGetAdditionalMethodsTmpl(projectWideGenerationArgs.system.additionalServices, opts)
     )
 
     // src/i18nProvider/index.ts
