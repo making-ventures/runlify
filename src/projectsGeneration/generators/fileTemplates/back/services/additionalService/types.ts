@@ -1,6 +1,8 @@
+import { pascalCase } from 'change-case'
 import {pascal} from '../../../../../../utils/cases'
 import {AdditionalServiceWideGenerationArgs} from '../../../../../args'
 import {generatedWarning} from '../../../../../utils'
+import tsModelTmpl from '../../environment/src/integrationClients/tsModelTmpl'
 
 export const backAdditionalServiceTypesTmpl = ({
   service,
@@ -11,8 +13,12 @@ export const backAdditionalServiceTypesTmpl = ({
     : `// ${generatedWarning}
 `
 }
+${[
+  service.methods.flatMap(q => [q.argsModel, q.returnModel]),
+].flat().filter(m => m.fields.length).map(m => tsModelTmpl(m)).join('\n\n')}
+
 export interface I${pascal(service.name)}Service ${service.methods.filter(m => m.exportedToApi).length ? `{
-${service.methods.filter(m => m.exportedToApi).map(method => `  ${method.name}: () => Promise<void>`).join('\n')}
+${service.methods.filter(m => m.exportedToApi).map(m => `  ${m.name}: (${m.argsModel.fields.length ? `args: ${pascalCase(m.name)}Args` : ''}) => Promise<${m.returnModel.fields.length ? `${pascalCase(m.name)}Result` : 'void'}>`).join('\n')}
 }` : '{}'}
 
 `

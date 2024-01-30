@@ -1,14 +1,7 @@
 import {pascalCase} from 'change-case'
 import {ProjectWideGenerationArgs} from '../../../../../../args'
-import {IntegrationClient, TsModel, TsModelField} from '../../../../../../builders/buildedTypes'
-import { fieldTypeToTsType } from '../../../../../fieldTypeToTsType'
-
-const fieldsToTsTypeFields = (fields: TsModelField[]) =>
-  fields.map(f => `${f.name}${f.required ? '' : '?'}: ${f.category === 'model' ? `${pascalCase(f.model)}${f.array ? '[]' : ''}` : fieldTypeToTsType(f.type)}`)
-
-const tsModelTmpl = (model: TsModel) => `export interface ${pascalCase(model.name)} ${model.fields.length ? `{
-${fieldsToTsTypeFields(model.fields).map(r => `  ${r},`).join('\n')}
-}` : '{}'}`
+import {IntegrationClient} from '../../../../../../builders/buildedTypes'
+import tsModelTmpl from './tsModelTmpl'
  
 const backIntegrationClientTypesTmpl = (
   _args: ProjectWideGenerationArgs,
