@@ -8,10 +8,12 @@ export const backAdditionalServiceResolversTmpl = ({
   options,
 }: AdditionalServiceWideGenerationArgs) => {
   const modelsToImport = service.methods.flatMap(q => [q.argsModel, q.returnModel]).flat().filter(m => m.fields.length);
+  // return `import {ApolloClient, gql} from '@apollo/client';${serviceWithModelsToImport.length ? `\nimport {\n${serviceWithModelsToImport.flatMap(s => s.models.map(m => `  Mutation${pascalCase(s.service.name)}${pascalCase(m.name)},\n`)).join('')}} from '../generated/graphql';` : ''}
+
 
   return `import {
   Resolvers,
-} from '../../../../generated/graphql';${modelsToImport.length ? modelsToImport.map(m => `\nimport {${pascalCase(m.name)}} from '../../../services/${pascalCase(service.name)}Service/types';`).join('') : ''}
+} from '../../../../generated/graphql';${modelsToImport.length ? `\nimport {\n${modelsToImport.map(m => `  ${pascalCase(m.name)},\n`).join('')}} from '../../../services/${pascalCase(service.name)}Service/types';` : ''}
 import {Context} from '../../../services/types';
 ${
   options.skipWarningThisIsGenerated
