@@ -17,7 +17,7 @@ export const uiGetAdditionalMethodsTmpl = (
     )
     .filter(m => m.models.length);
 
-  return `import {ApolloClient, gql} from '@apollo/client';${serviceWithModelsToImport.length ? serviceWithModelsToImport.flatMap(s => s.models.map(m => `\nimport {Mutation${pascalCase(s.service.name)}${pascalCase(m.name)}} from '../generated/graphql';`)).join('') : ''}
+  return `import {ApolloClient, gql} from '@apollo/client';${serviceWithModelsToImport.length ? `\nimport {\n${serviceWithModelsToImport.flatMap(s => s.models.map(m => `  Mutation${pascalCase(s.service.name)}${pascalCase(m.name)},\n`)).join('')}} from '../generated/graphql';` : ''}
 ${
   options.skipWarningThisIsGenerated
     ? ''
