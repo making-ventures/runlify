@@ -11,6 +11,24 @@ export const uiGetAdditionalMethodsTmpl = (
   additionalServices: AdditionalService[],
   options: BootstrapEntityOptions = defaultBootstrapEntityOptions
 ) => {
+
+  if (!additionalServices.length) {
+    return `import {ApolloClient} from '@apollo/client';
+${
+  options.skipWarningThisIsGenerated
+    ? ''
+    : `
+// ${generatedWarning}
+`
+}
+const getAdditionalMethods = (
+  _client: ApolloClient<unknown>,
+) => ({});
+
+export default getAdditionalMethods;
+`;
+  }
+
   const serviceWithModelsToImport = additionalServices
     .flatMap(
       service => service.methods.flatMap(q => ({service, models: [q.argsModel, q.returnModel].filter(m => m.fields.length)}))
