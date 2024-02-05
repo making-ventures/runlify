@@ -169,7 +169,7 @@ export const generateBackIntegrationClients = async (
       `${client.name}`,
     )
 
-    write(join(clientFolder, `${pascalCase(client.name)}Client.ts`), backIntegrationClientTmpl(args, client));
+    writeFileIfNotExists(join(clientFolder, `${pascalCase(client.name)}Client.ts`), backIntegrationClientTmpl(args, client));
     write(join(clientFolder, `types.ts`), backIntegrationClientTypesTmpl(args, client));
   }
 }
