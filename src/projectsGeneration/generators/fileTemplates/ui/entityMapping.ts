@@ -18,6 +18,6 @@ export const uiEntityMappingTmpl = (
 }export const mapping = {
   ${entities.map((m) => `${camelPlural(m.name)}: '${pascalSingular(m.name)}',`)
     .join(`
-  `)}
+  `)}${options.projectPrefix === 'rlw' ? `\n  elasticMailingMessages: 'ElasticMailingMessage',`: ''}
 };
 `
