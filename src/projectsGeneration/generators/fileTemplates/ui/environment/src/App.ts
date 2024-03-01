@@ -39,8 +39,6 @@ ${
 }
 onStart();
 
-const keycloakInitOptions: KeycloakInitOptions = {onLoad: 'login-required'};
-
 const getPermissions = (decoded: KeycloakTokenParsed) => {
   const roles = decoded?.realm_access?.roles;
   if (!roles) {
@@ -77,6 +75,11 @@ const App = () => {
       };
 
       const keycloakClient = new Keycloak(keycloakConfig);
+
+      const keycloakInitOptions: KeycloakInitOptions = {
+        onLoad: 'login-required',
+        checkLoginIframe: config.checkLoginIframe
+      };
 
       keycloakClient.onAuthError =
         (errorData: KeycloakError) => log.info(\`onAuthError. error: \${errorData?.error}, description: \${errorData?.error_description}\`);
