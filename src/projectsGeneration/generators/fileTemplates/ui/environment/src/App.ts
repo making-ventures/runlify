@@ -78,7 +78,7 @@ const App = () => {
 
       const keycloakInitOptions: KeycloakInitOptions = {
         onLoad: 'login-required',
-        checkLoginIframe: config.checkLoginIframe,
+        checkLoginIframe: Boolean(config.checkLoginIframe),
       };
 
       keycloakClient.onAuthError =
