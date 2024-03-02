@@ -351,7 +351,7 @@ class SystemMetaBuilder implements MethodsModelsHolder {
     this.addConfigVar('keycloak.app.cli.secret', 'string', false, undefined, 'Секрет для доступа в api keycloak приложения пользователя');
 
     // login check
-    this.addConfigVar('checkLoginIframe', 'bool', false, false, 'Проверка авторизации во фрейме включена', ['admin-app']);
+    this.addConfigVar('checkLoginIframe', 'bool', false, false, 'Проверка авторизации во фрейме включена', ['back', 'admin-app']);
 
     // 'admin-app'
 
