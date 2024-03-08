@@ -340,6 +340,7 @@ class SystemMetaBuilder implements MethodsModelsHolder {
     // oidc
     this.addConfigVar('oidc.adm.url', 'string', false, undefined, 'Хост oidc для админки', ['back', 'admin-app']);
     this.addConfigVar('oidc.adm.realm', 'string', false, undefined, 'Реалм oidc для админки', ['back', 'admin-app']);
+    this.addConfigVar('oidc.adm.issuer', 'string', false, undefined, 'Issuer oidc для админки', ['admin-app']);
     this.addConfigVar('oidc.adm.clientId', 'string', false, undefined, 'Идентификатор клиента oidc для админки', ['admin-app']);
     this.addConfigVar('oidc.app.url', 'string', false, undefined, 'Хост oidc для приложения пользователя', ['back', 'cutomer-app']);
     this.addConfigVar('oidc.app.realm', 'string', false, undefined, 'Реалм oidc для приложения пользователя', ['back', 'cutomer-app']);
