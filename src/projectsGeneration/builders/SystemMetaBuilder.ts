@@ -338,6 +338,7 @@ class SystemMetaBuilder implements MethodsModelsHolder {
     this.addConfigVar('sentry.dsn', 'string', false, '', 'Sentry dsn');
 
     // oidc
+    this.addConfigVar('oidc.adm.jwksRejectUnauthorized', 'bool', false, false, 'Запрещать невалидный ssl сертификат');
     this.addConfigVar('oidc.adm.url', 'string', false, undefined, 'Хост oidc для админки', ['back', 'admin-app']);
     this.addConfigVar('oidc.adm.realm', 'string', false, undefined, 'Реалм oidc для админки', ['back', 'admin-app']);
     this.addConfigVar('oidc.adm.jwksUri', 'string', false, undefined, 'Uri jwks oidc для проверки авторизации админки', ['back']);
