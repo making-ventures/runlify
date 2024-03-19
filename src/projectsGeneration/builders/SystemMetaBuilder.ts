@@ -179,6 +179,13 @@ class SystemMetaBuilder implements MethodsModelsHolder {
       's3.eu-central-1.wasabisys.com',
       'Эндпоинт S3, который использует бекенд',
     ).setSecure()
+    this.addConfigVar(
+      's3.public.endpoint',
+      'string',
+      false,
+      undefined,
+      'Эндпоинт S3, доступный для фронтенда',
+    ).setSecure()
     // this.addConfigVar(
     //   's3.publicEndpoint',
     //   'string',
