@@ -12,7 +12,6 @@ export const uiAppTmpl = (
 import {useEffect, useRef, useState} from 'react';
 import {Admin, AuthProvider, CustomRoutes, DataProvider, localStorageStore, useTranslate} from 'react-admin';
 import {ApolloClient, ApolloProvider, NormalizedCacheObject} from '@apollo/client';
-import Keycloak, {KeycloakConfig, KeycloakError, KeycloakInitOptions, KeycloakTokenParsed} from 'keycloak-js';
 import './App.css';
 import Layout from './layout/Layout';
 import Login from './layout/Login';
@@ -28,8 +27,8 @@ import Loader from './shared/Loader';
 import {lightTheme${options.themesEnabled ? ', darkTheme': ''}} from './layout/themes';
 import {routes} from './adm/routes';
 import i18nProvider from './i18nProvider';
-import log from './utils/log';
 import {BrowserRouter} from 'react-router-dom';
+import {LogoutType} from './authProvider/types';
 ${
   options.skipWarningThisIsGenerated
     ? ''
@@ -39,100 +38,37 @@ ${
 }
 onStart();
 
-const getPermissions = (decoded: KeycloakTokenParsed) => {
-  const roles = decoded?.realm_access?.roles;
-  if (!roles) {
-    return false;
-  }
-
-  if (roles.includes('admin')) {
-    return 'admin';
-  }
-
-  if (roles.includes('user')) {
-    return 'user';
-  }
-
-  return false;
-};
-
 const App = () => {
   const dataProvider = useRef<DataProvider | undefined>(undefined);
   const authProvider = useRef<AuthProvider | undefined>(undefined);
-  // const client = useRef<ApolloClient<NormalizedCacheObject> | undefined>(undefined);
   const [client, setClient] = useState<ApolloClient<NormalizedCacheObject> | null>(null);
-  const [keycloak, setKeycloak] = useState<Keycloak | undefined>(undefined);
   const translate = useTranslate();
 
   useEffect(() => {
     const fetchDataProvider = async () => {
       const config = await getConfig();
 
-      const keycloakConfig: KeycloakConfig = {
-        url: config.oidcAdmUrl,
-        realm: config.oidcAdmRealm,
+      authProvider.current = getAuthProvider({
+        backEndpoint: config.endpoint,
+        issuer: config.oidcAdmIssuer,
         clientId: config.oidcAdmClientId,
-      };
+        loginRedirectUri: \`\${window.location.origin}/auth-callback\`,
+        logoutRedirectUri: \`\${window.location.origin}/login\`,
+        logout: config.oidcAdmLogoutType as LogoutType,
+      });
 
-      const keycloakClient = new Keycloak(keycloakConfig);
+      const userFromAuthProvider = await authProvider.current.getUser();
 
-      const keycloakInitOptions: KeycloakInitOptions = {
-        onLoad: 'login-required',
-        checkLoginIframe: Boolean(config.checkLoginIframe),
-      };
-
-      keycloakClient.onAuthError =
-        (errorData: KeycloakError) => log.info(\`onAuthError. error: \${errorData?.error}, description: \${errorData?.error_description}\`);
-
-      keycloakClient.onAuthRefreshError = () => log.info('onAuthRefreshError');
-      keycloakClient.onActionUpdate = (status: string) => log.info(\`onActionUpdate. status: \${status}\`);
-      keycloakClient.onAuthLogout = () => log.info('onAuthLogout');
-      keycloakClient.onAuthRefreshSuccess = () => log.info('onAuthRefreshSuccess');
-      keycloakClient.onAuthSuccess = () => log.info('onAuthSuccess');
-      keycloakClient.onReady = (authenticated?: boolean) => log.info(\`onReady. authenticated: \${authenticated}\`);
-
-      const refresh = async () => {
-        const ok = await keycloakClient.updateToken(3000);
-        if (ok) {
-          const {endpoint} = await getConfig();
-          updateApolloLinks(endpoint, keycloakClient);
-        }
-      };
-
-      // eslint-disable-next-line require-atomic-updates
-      keycloakClient.onTokenExpired = () => {
-        refresh().catch(log.warn);
-        log.info('onTokenExpired');
-      };
-
-      keycloakClient.onAuthRefreshError = () => log.info('onAuthRefreshError');
-
-      await keycloakClient.init(keycloakInitOptions);
-
-      log.info(\`token: \${keycloakClient.token}\`);
-
-      authProvider.current = getAuthProvider(
-        config.endpoint,
-        keycloakClient,
-        {
-          onPermissions: getPermissions,
-        },
-      );
-
-      const client = getApollo(config.endpoint, keycloakClient);
+      const client = getApollo(config.endpoint, userFromAuthProvider?.access_token ?? '');
       setClient(client);
 
       dataProvider.current = await dataProviderFactory(client);
 
-      updateApolloLinks(config.endpoint, keycloakClient);
-
-      setKeycloak(keycloakClient);
+      updateApolloLinks(config.endpoint, userFromAuthProvider?.access_token ?? '');
     };
 
-    if (!keycloak) {
-      fetchDataProvider();
-    }
-  }, [keycloak]);
+    fetchDataProvider();
+  }, []);
 
   if (!dataProvider.current || !client || !authProvider.current) {
     return (
