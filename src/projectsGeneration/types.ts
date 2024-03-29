@@ -80,6 +80,7 @@ export const defaultBootstrapEntityOptions = {
   k8sSubdomainPrefix: '',
   k8sImagePullSecrets: 'docker-registry',
   ciDockerRegistry: 'registry.service.making.ventures',
+  telemetry: false,
 
   // Back
 

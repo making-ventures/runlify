@@ -93,7 +93,8 @@ const App = () => {
               theme={lightTheme}
               store={localStorageStore('3')}
               lightTheme={lightTheme}${options.themesEnabled ? `
-              darkTheme={darkTheme}`: ''}
+              darkTheme={darkTheme}`: ''}${options.telemetry ? '': `
+              disableTelemetry`}
             >
               {permissions => [
                 (
