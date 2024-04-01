@@ -10,6 +10,7 @@ import {
   Route,
 } from 'react-router-dom';
 import Loadable from '../shared/Loadable';
+import Guard from '../raUiLib/Guard';
 import additionalRoutes from './additionalRoutes';
 ${
   options.skipWarningThisIsGenerated
@@ -26,11 +27,11 @@ const LoadableDebugPage = Loadable(() => import('./utility/DebugPage'));${system
 ${system.pages.map(p => `const Loadable${pascalCase(p.name)} = Loadable(() => import('./standalonePages/${pascalCase(p.name)}/${pascalCase(p.name)}'));`).join('\n')}` : ''}
 
 export const routes = [
-  <Route element={<LoadableDashboard />} key='dashboard' path='/dashboard' />,
-  <Route element={<LoadableFunctions />} key='functions' path='/functions' />,
-  <Route element={<LoadableResourcesPage />} key='resources' path='/resources' />,
-  <Route element={<LoadableMetaPage />} key='meta' path='/meta' />,
-  <Route element={<LoadableDebugPage />} key='debug' path='/debug' />,
+  <Route element={<Guard shouldHave='dashboard'><LoadableDashboard /></Guard>} key='dashboard' path='/dashboard' />,
+  <Route element={<Guard shouldHave='functions'><LoadableFunctions /></Guard>} key='functions' path='/functions' />,
+  <Route element={<Guard shouldHave='resources'><LoadableResourcesPage /></Guard>} key='resources' path='/resources' />,
+  <Route element={<Guard shouldHave='meta'><LoadableMetaPage /></Guard>} key='meta' path='/meta' />,
+  <Route element={<Guard shouldHave='debug'><LoadableDebugPage /></Guard>} key='debug' path='/debug' />,
 ${system.pages.map(p => `  <Route element={<Loadable${pascalCase(p.name)} />} key='${p.name}' path='${p.link}' />,`).join('\n')}
   ...additionalRoutes,
 ];
