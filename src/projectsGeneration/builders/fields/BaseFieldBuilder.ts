@@ -134,7 +134,7 @@ abstract class BaseFieldBuilder {
   }
 
   setNumberType(numberType: NumberType) {
-    if (this.type !== 'int' && this.type !== 'bigint' && this.type !== 'float') {
+    if (!['int', 'bigint', 'float'].includes(this.type)) {
       throw new Error(
         `numberType May be set only for number (int, bigint, float) field. Current type: ${this.type}`
       )
