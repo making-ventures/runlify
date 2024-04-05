@@ -161,10 +161,16 @@ export type DateField = ScalarBaseField & {
 // export type ConstantOnCreate = ConstantOnCreateInt | ConstantOnCreateDate
 // export type ConstantOnUpdate = ConstantOnUpdateInt | ConstantOnUpdateDate
 
+export enum NumberType {
+  Manual = 'manual',
+  Money = 'money',
+}
+
 export type IntFilter = BaseFilter | 'in' | 'not_in' | 'lte' | 'gte' | 'lt' | 'gt';
 export type IntField = ScalarBaseField & {
   type: 'int'
   filters: IntFilter[]
+  numberType: NumberType
   // constantOnCreate: ConstantOnCreateInt
   // constantOnUpdate: ConstantOnUpdateInt
 }
@@ -172,6 +178,7 @@ export type IntField = ScalarBaseField & {
 export type BigIntField = ScalarBaseField & {
   type: 'bigint'
   filters: IntFilter[]
+  numberType: NumberType
   // constantOnCreate: ConstantOnCreateInt
   // constantOnUpdate: ConstantOnUpdateInt
 }
@@ -220,6 +227,7 @@ export type StringField =
 export type FloatField = ScalarBaseField & {
   type: 'float'
   filters: IntFilter[]
+  numberType: NumberType
 }
 
 export type BoolField = ScalarBaseField & {

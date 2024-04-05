@@ -7,6 +7,7 @@ import {
   StringType,
   BaseField,
   Filter,
+  NumberType,
 } from '../buildedTypes'
 
 abstract class BaseFieldBuilder {
@@ -16,6 +17,7 @@ abstract class BaseFieldBuilder {
   meaning?: Meaning
   name: string
   stringType: StringType = StringType.Plain
+  numberType: NumberType = NumberType.Manual
   entity = ''
   title: Record<string, string> = {}
   translationKey = ''
@@ -127,6 +129,18 @@ abstract class BaseFieldBuilder {
       this.showInFilter = false
       this.showInList = false
     }
+
+    return this
+  }
+
+  setNumberType(numberType: NumberType) {
+    if (this.type !== 'int' && this.type !== 'bigint' && this.type !== 'float') {
+      throw new Error(
+        `numberType May be set only for number (int, bigint, float) field. Current type: ${this.type}`
+      )
+    }
+
+    this.numberType = numberType
 
     return this
   }

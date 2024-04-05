@@ -7,7 +7,7 @@ import {
   LinkField,
   ScalarField,
 } from '../../builders/buildedTypes'
-import { isImageFileRef } from '../../metaUtils'
+import { isImageFileRef, isMoneyField } from '../../metaUtils'
 import { getCompNameToShowScalar } from './componentNames/show/getCompNameToShowScalar'
 
 export const getFieldLabel = (entity: Entity, field: Field, postfix?: string) => postfix
@@ -19,6 +19,8 @@ export const getScalarShowComponent = (entity: Entity, field: ScalarField) => {
     field.name
   }' ${getFieldLabel(entity, field)}${
     field.type === 'datetime' ? ' showTime' : ''
+  }${
+    isMoneyField(field) ? ' transform={(val: number) => Number(val) / 100}' : ''
   } />`
 }
 
