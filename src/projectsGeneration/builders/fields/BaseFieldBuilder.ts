@@ -17,7 +17,7 @@ abstract class BaseFieldBuilder {
   meaning?: Meaning
   name: string
   stringType: StringType = StringType.Plain
-  numberType: NumberType = NumberType.Manual
+  numberType: NumberType = NumberType.Base
   entity = ''
   title: Record<string, string> = {}
   translationKey = ''

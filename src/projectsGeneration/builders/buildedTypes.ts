@@ -162,7 +162,7 @@ export type DateField = ScalarBaseField & {
 // export type ConstantOnUpdate = ConstantOnUpdateInt | ConstantOnUpdateDate
 
 export enum NumberType {
-  Manual = 'manual',
+  Base = 'base',
   Money = 'money',
 }
 
