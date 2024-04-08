@@ -40,6 +40,7 @@ class ScalarFieldBuilder extends BaseFieldBuilder {
         showInFilter: this.showInFilter,
         defaultDbValue: this.defaultDbValue,
         filters: this.filters as IntFilter[],
+        numberType: this.numberType
       }
     } else if (this.type === 'string') {
       return {
