@@ -34,17 +34,17 @@ ${
 const queryResolvers: Resolvers = {
   Query: {
     ${pascalSingular(entity.name)}: (_, {id}, {context}: {context: Context}) =>
-      context.service('${camelPlural(entity.name)}').get(id),
+      context.service('${camelPlural(entity.name)}').get(id, true),
     all${pascalPlural(entity.name)}:
       (_, params: QueryAll${pascalPlural(
     entity.name
   )}Args, {context}: {context: Context}) =>
-        context.service('${camelPlural(entity.name)}').all(params),
+        context.service('${camelPlural(entity.name)}').all(params, true),
     _all${pascalPlural(entity.name)}Meta:
       (_, params: Query_All${pascalPlural(
     entity.name
   )}MetaArgs, {context}: {context: Context}) =>
-        context.service('${camelPlural(entity.name)}').meta(params),
+        context.service('${camelPlural(entity.name)}').meta(params, true),
   },
   Mutation: {
     create${pascalSingular(
@@ -67,7 +67,7 @@ const queryResolvers: Resolvers = {
       (_, params: MutationRemove${pascalSingular(
     entity.name
   )}Args, {context}: {context: Context}) =>
-        context.service('${camelPlural(entity.name)}').delete(params),${
+        context.service('${camelPlural(entity.name)}').delete(params, true),${
   entity.type === 'document'
     ? `
     rePost${pascalSingular(
@@ -76,7 +76,7 @@ const queryResolvers: Resolvers = {
       (_, params: MutationRePost${pascalSingular(
           entity.name
         )}Args, {context}: {context: Context}) =>
-        context.service('${camelPlural(entity.name)}').rePost(params.id),`
+        context.service('${camelPlural(entity.name)}').rePost(params.id, true),`
     : ''
 }
   },
