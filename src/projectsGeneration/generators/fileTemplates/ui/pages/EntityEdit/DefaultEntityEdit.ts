@@ -51,7 +51,7 @@ export const getTrivialEditComponent = (
   return `<${getCompNameToEditScalar(field.type)}${additionalProps.map(p => `\n  ${p}`).join('')}
   fullWidth
   sx={{m: 1}}
-  source='${field.name}${postfix ? postfix.source : ''}'${field.required ? '' : '\n  defaultValue={null}'}
+  source='${field.name}${postfix ? postfix.source : ''}'${field.required ? '' : '\n  defaultValue={null}'}${field.required && type !== 'filter' && field.type !== 'bool' && field.requiredOnInput !== false ? `\n  required` : ''}
   ${getFieldLabel(entity, field, postfix?.label)}${isMoneyField(field) && type === 'create' ? `
   parse={(value) => value * 100}` : ''}${isMoneyField(field) && type === 'edit' ? `
   format={(value) => value / 100}
