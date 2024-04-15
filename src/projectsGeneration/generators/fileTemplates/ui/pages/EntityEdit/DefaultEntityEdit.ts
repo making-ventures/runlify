@@ -52,8 +52,7 @@ export const getTrivialEditComponent = (
   fullWidth
   sx={{m: 1}}
   source='${field.name}${postfix ? postfix.source : ''}'${field.required ? '' : '\n  defaultValue={null}'}${field.required && type !== 'filter' && field.type !== 'bool' && field.requiredOnInput !== false ? `\n  isRequired` : ''}
-  ${getFieldLabel(entity, field, postfix?.label)}${isMoneyField(field) && type === 'create' ? `
-  parse={(value) => value * 100}` : ''}${isMoneyField(field) && type === 'edit' ? `
+  ${getFieldLabel(entity, field, postfix?.label)}${isMoneyField(field) ? `
   format={(value) => value / 100}
   parse={(value) => value * 100}` : ''}
 />`;
