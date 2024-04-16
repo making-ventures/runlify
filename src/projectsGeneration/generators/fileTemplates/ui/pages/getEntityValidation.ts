@@ -2,6 +2,7 @@
 import { pascalSingular } from '../../../../../utils/cases'
 import { EntityWideGenerationArgs } from '../../../../args'
 import { Field } from '../../../../builders/buildedTypes'
+import { isMoneyField } from '../../../../metaUtils'
 import { generatedWarning } from '../../../../utils'
 
 // import {fieldTypeToTsType} from '../../../fieldTypeToTsType';
@@ -16,6 +17,12 @@ const getFieldValidation = (field: Field): string | null => {
       case 'datetime':
         return "Yup.date().required()"
       case 'int':
+        if (isMoneyField(field)) {
+          return `Yup
+    .number()
+    .required()
+    .max(2147483647)`
+        }
         if (field.category === 'scalar') {
           return `Yup
     .number()
@@ -36,6 +43,12 @@ const getFieldValidation = (field: Field): string | null => {
   } else {
     switch (field.type) {
       case 'int':
+        if (isMoneyField(field)) {
+          return `Yup
+    .number()
+    .max(2147483647)
+    .nullable()`
+        }
         if (field.category === 'scalar') {
           return `Yup
     .number()
