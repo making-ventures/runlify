@@ -35,7 +35,7 @@ export const uiDefaultFilterTmpl = ({
     (f) => !['datetime', 'date'].includes(f.type) && (f.category !== 'link' || ['equal', 'lt', 'lte', 'gt', 'gte', 'defined', 'not_defined'].some(filter => f.filters.some(item => item === filter)))
   )
   const reactAdminImports: string[] = [
-    'Filter',
+    ...(options.useSortedFilter ? [] : ['Filter']),
     ...(useTranslate ? ['useTranslate'] : []),
     ...(hasSearch ? ['TextInput'] : []),
     ...(useReferenceArray ? ['ReferenceArrayInput', 'AutocompleteArrayInput'] : []),
@@ -61,6 +61,11 @@ import DateTimeInput from '../../../../uiLib/DateTimeInput';`
       ? `
 import DateInput from '../../../../uiLib/DateInput';`
       : ''
+  }${
+    options.useSortedFilter
+      ? `
+import {SortedFilter} from '../../../../uiLib/SortedFilters';`
+      : ''
   }
 ${
   options.skipWarningThisIsGenerated
@@ -71,7 +76,7 @@ ${
 }
 const Default${pascalSingular(entity.name)}Filter: FC<any> = (props) => {${useTranslate ? `\n  const translate = useTranslate();` : ''}
   return (
-    <Filter {...props}>${
+    <${options.useSortedFilter ? 'SortedFilter' : 'Filter'} {...props}>${
       hasSearch
         ? `
       <TextInput
@@ -95,7 +100,7 @@ ${fields
   )
   .map(pad3)
   .join('\n')}
-    </Filter>
+    </${options.useSortedFilter ? 'SortedFilter' : 'Filter'}>
   );
 };
 

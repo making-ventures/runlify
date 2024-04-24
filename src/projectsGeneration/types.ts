@@ -81,6 +81,7 @@ export const defaultBootstrapEntityOptions = {
   k8sImagePullSecrets: 'docker-registry',
   ciDockerRegistry: 'registry.service.making.ventures',
   telemetry: false,
+  useSortedFilter: false,
 
   // Back
 
