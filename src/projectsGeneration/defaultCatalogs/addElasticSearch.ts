@@ -71,5 +71,12 @@ export const addElasticSearch = (system: SystemMetaBuilder) => {
       })
       .setType('datetime')
       .setRequired()
+    externalSearchTrackings
+      .addResource('lastFailedSync')
+      .setTitles({
+        en: 'Last failed sync',
+        ru: 'Последняя неудачная синхронизация',
+      })
+      .setType('datetime');
   }
 }
