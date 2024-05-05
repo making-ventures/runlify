@@ -23,8 +23,8 @@ const LoadableDashboard = Loadable(() => import('./Dashboard'));
 const LoadableFunctions = Loadable(() => import('./functions/Functions'));
 // const LoadableResourcesPage = Loadable(() => import('./ResourcesPage'));
 const LoadableMetaPage = Loadable(() => import('./MetaPage'));
-const LoadableDebugPage = Loadable(() => import('./utility/DebugPage'));${system.pages.length ? `
-const LoadableErrorMessage = Loadable(() => import('./utility/ErrorMessage'));
+const LoadableDebugPage = Loadable(() => import('./utility/DebugPage'));
+const LoadableErrorMessage = Loadable(() => import('./utility/ErrorMessage'));${system.pages.length ? `
 ${system.pages.map(p => `const Loadable${pascalCase(p.name)} = Loadable(() => import('./standalonePages/${pascalCase(p.name)}/${pascalCase(p.name)}'));`).join('\n')}` : ''}
 
 export const routes = [
