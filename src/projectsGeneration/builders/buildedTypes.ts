@@ -374,6 +374,7 @@ export type IntegrationClient = BaseEntity & {
 export enum MenuItemType {
   Group = 'group',
   External = 'external',
+  ExternalEnv = 'externalEnv',
   Internal = 'internal',
 }
 
@@ -429,10 +430,14 @@ export type InternalMenuItem = BaseMenuItem & {
 export type ExternalMenuItem = BaseMenuItem & {
   itemType: MenuItemType.External
   link: string
-  envVarConfig?: boolean
 }
 
-export type MenuItem = GroupMenuItem | InternalMenuItem | ExternalMenuItem
+export type ExternalEnvMenuItem = BaseMenuItem & {
+  itemType: MenuItemType.ExternalEnv
+  env: string
+}
+
+export type MenuItem = GroupMenuItem | InternalMenuItem | ExternalMenuItem | ExternalEnvMenuItem
 
 export type Role = BaseEntity & {
   type: 'role'

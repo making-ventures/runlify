@@ -4,11 +4,12 @@ import {GroupMenuItem, MenuItemType} from '../buildedTypes'
 import BaseMenuItemBuilder from './BaseMenuItemBuilder';
 import ExternalMenuItemBuilder from './ExternalMenuItemBuilder';
 import InternalMenuItemBuilder from './InternalMenuItemBuilder';
+import ExternalEnvMenuItemBuilder from './ExternalEnvMenuItemBuilder';
 
 class GroupMenuItemBuilder extends BaseMenuItemBuilder {
-  protected items: (GroupMenuItemBuilder | InternalMenuItemBuilder | ExternalMenuItemBuilder)[] = [];
+  protected items: (GroupMenuItemBuilder | InternalMenuItemBuilder | ExternalMenuItemBuilder | ExternalEnvMenuItemBuilder)[] = [];
 
-  constructor(system: SystemMetaBuilder, label: string, defaultLanguage: string, level?: number, ) {
+  constructor(system: SystemMetaBuilder, label: string, defaultLanguage: string, level?: number) {
     super(system, label, defaultLanguage, level);
   }
 
@@ -28,8 +29,16 @@ class GroupMenuItemBuilder extends BaseMenuItemBuilder {
     return menuItem
   }
 
-  addExternalItem(label: string, url: string, envVarConfig?: boolean) {
-    const menuItem = new ExternalMenuItemBuilder(this.system, label, url, this.defaultLanguage, this.level + 1, envVarConfig)
+  addExternalItem(label: string, url: string) {
+    const menuItem = new ExternalMenuItemBuilder(this.system, label, url, this.defaultLanguage, this.level + 1)
+
+    this.items.push(menuItem)
+
+    return menuItem
+  }
+
+  addExternalEnvItem(label: string, env: string) {
+    const menuItem = new ExternalEnvMenuItemBuilder(this.system, label, env, this.defaultLanguage, this.level + 1)
 
     this.items.push(menuItem)
 

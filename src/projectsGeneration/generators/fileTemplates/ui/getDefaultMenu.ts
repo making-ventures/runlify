@@ -4,19 +4,28 @@ import {ProjectWideGenerationArgs} from '../../../args'
 import {generatedWarning, pad2} from '../../../utils'
 import {plural} from 'pluralize'
 
-const menuItemLinks = (item: MenuItem) => {
+const menuItemEnv = (item: MenuItem) => {
   switch (item.itemType) {
-    case MenuItemType.External:
-      return { link: item.envVarConfig ? item.link : '', hasEnvVarConfig: item.envVarConfig };
+    case MenuItemType.ExternalEnv:
+      return item.env;
     case MenuItemType.Group:
-      const childData = item.items.map(menuItemLinks);
-      const links = childData.filter(data => data.hasEnvVarConfig).map(data => data.link).join(', ');
-      const hasEnvVarConfig = childData.some(data => data.hasEnvVarConfig);
-      return { link: links, hasEnvVarConfig };
+      return item.items.map(menuItemEnv).filter(env => env !== '').join(', ');
     default:
-      return { link: '', hasEnvVarConfig: false };
+      return '';
   }
 }
+
+// const menuItemLinks = (item: MenuItem) => {
+//   switch (item.itemType) {
+//     case MenuItemType.External:
+//       return item.envVarConfig ? item.link : '';
+//     case MenuItemType.Group:
+//       const links = item.items.map(menuItemLinks).filter(link => link !== '').join(', ');
+//       return links;
+//     default:
+//       return '';
+//   }
+// }
 
 const menuItemTmpl = (item: MenuItem) => {
   switch (item.itemType) {
@@ -43,11 +52,19 @@ ${item.items.map(i => `${menuItemTmpl(i)},`).map(pad2).join('\n')}
     case MenuItemType.External:
       return `{
   label: '${item.label}',
-  link: ${item.envVarConfig === true ? item.link : `'${item.link}'`},
+  link: '${item.link}',
   icon: '${item.materialUiIcon}',
   debugOnly: ${item.debugOnly},
   permissions: [${item.permissions.map(p => `'${p}'`).join(', ')}],
-}`; 
+}`;
+    case MenuItemType.ExternalEnv:
+      return `{
+  label: '${item.label}',
+  env: ${item.env},
+  icon: '${item.materialUiIcon}',
+  debugOnly: ${item.debugOnly},
+  permissions: [${item.permissions.map(p => `'${p}'`).join(', ')}],
+}`;  
   }
 }
 
@@ -68,9 +85,7 @@ export const uiGetDefaultMenuTmpl = ({
   const documents = entitiesToShow.filter((m) => m.type === 'document')
   const catalogs = entitiesToShow.filter((m) => m.type === 'catalog')
 
-  const menuItemData = system.menuItems.map(menuItemLinks);
-  const links = menuItemData.map(data => data.link).filter(link => link !== '').join(', ');
-  const hasEnvVarConfig = menuItemData.some(data => data.hasEnvVarConfig); 
+  const links = system.menuItems.map(menuItemEnv).filter(env => env && env !== '[]');
 
   const renderEntity = (entity: Entity) => `    {
       label: '${plural(entity.type)}.${entity.name}.title.plural',
@@ -79,14 +94,14 @@ export const uiGetDefaultMenuTmpl = ({
       debugOnly: true,
     },`
 
-  return `import {MenuElement} from '../uiLib/menu/MenuItem';${hasEnvVarConfig ? "\nimport getConfig from '../config/config';" : ''}
+  return `import {MenuElement} from '../uiLib/menu/MenuItem';${links ? "\nimport getConfig from '../config/config';" : ''}
 ${
   options.skipWarningThisIsGenerated
     ? ''
     : `
 // ${generatedWarning}
 `
-}${hasEnvVarConfig ? `\nconst {${links}} = await getConfig();\n` : ''}
+}${links ? `\nconst {${links}} = await getConfig();\n` : ''}
 const getDefaultMenu = () => {
   const menuData: MenuElement[] = [
 ${system.menuItems.map(i => `${menuItemTmpl(i)},`).map(pad2).join('\n')}

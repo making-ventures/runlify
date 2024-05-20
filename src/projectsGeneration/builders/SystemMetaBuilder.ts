@@ -31,6 +31,7 @@ import {ConfigVarBuilder} from './ConfigVarBuilder';
 import log from '../../log';
 import IntegrationClientBuilder from './integrationClients/IntegrationClientBuilder'
 import ExternalMenuItemBuilder from './menu/ExternalMenuItemBuilder'
+import ExternalEnvMenuItemBuilder from './menu/ExternalEnvMenuItemBuilder'
 import InternalMenuItemBuilder from './menu/InternalMenuItemBuilder'
 import GroupMenuItemBuilder from './menu/GroupMenuItemBuilder'
 import PageBuilder from './PageBuilder'
@@ -65,7 +66,7 @@ class SystemMetaBuilder implements MethodsModelsHolder {
   roles: RoleBuilder[] = []
   defaultLanguage: string
   defOpts: BootstrapEntityOptions
-  menuItems: (GroupMenuItemBuilder | InternalMenuItemBuilder | ExternalMenuItemBuilder)[] = [];
+  menuItems: (GroupMenuItemBuilder | InternalMenuItemBuilder | ExternalMenuItemBuilder | ExternalEnvMenuItemBuilder)[] = [];
   pages: PageBuilder[] = [];
   protected methods: MethodBuilder[] = []
   protected models: BaseModelBuilder[] = []
@@ -803,6 +804,17 @@ class SystemMetaBuilder implements MethodsModelsHolder {
     url: string,
   ) {
     const menuItem = new ExternalMenuItemBuilder(this, label, url, this.defaultLanguage, 1)
+
+    this.menuItems.push(menuItem)
+
+    return menuItem
+  }
+
+  addExternalEnvMenuItem(
+    label: string,
+    env: string,
+  ) {
+    const menuItem = new ExternalEnvMenuItemBuilder(this, label, env, this.defaultLanguage, 1)
 
     this.menuItems.push(menuItem)
 
