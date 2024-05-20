@@ -15,18 +15,6 @@ const menuItemEnv = (item: MenuItem) => {
   }
 }
 
-// const menuItemLinks = (item: MenuItem) => {
-//   switch (item.itemType) {
-//     case MenuItemType.External:
-//       return item.envVarConfig ? item.link : '';
-//     case MenuItemType.Group:
-//       const links = item.items.map(menuItemLinks).filter(link => link !== '').join(', ');
-//       return links;
-//     default:
-//       return '';
-//   }
-// }
-
 const menuItemTmpl = (item: MenuItem) => {
   switch (item.itemType) {
     case MenuItemType.Group:
@@ -85,7 +73,7 @@ export const uiGetDefaultMenuTmpl = ({
   const documents = entitiesToShow.filter((m) => m.type === 'document')
   const catalogs = entitiesToShow.filter((m) => m.type === 'catalog')
 
-  const links = system.menuItems.map(menuItemEnv).filter(env => env && env !== '[]');
+  const links = system.menuItems.map(menuItemEnv).filter(env => env);
 
   const renderEntity = (entity: Entity) => `    {
       label: '${plural(entity.type)}.${entity.name}.title.plural',
