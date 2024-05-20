@@ -8,7 +8,7 @@ import InternalMenuItemBuilder from './InternalMenuItemBuilder';
 class GroupMenuItemBuilder extends BaseMenuItemBuilder {
   protected items: (GroupMenuItemBuilder | InternalMenuItemBuilder | ExternalMenuItemBuilder)[] = [];
 
-  constructor(system: SystemMetaBuilder, label: string, defaultLanguage: string, level?: number) {
+  constructor(system: SystemMetaBuilder, label: string, defaultLanguage: string, level?: number, ) {
     super(system, label, defaultLanguage, level);
   }
 
@@ -28,8 +28,8 @@ class GroupMenuItemBuilder extends BaseMenuItemBuilder {
     return menuItem
   }
 
-  addExternalItem(label: string, url: string) {
-    const menuItem = new ExternalMenuItemBuilder(this.system, label, url, this.defaultLanguage, this.level + 1)
+  addExternalItem(label: string, url: string, envVarConfig?: boolean) {
+    const menuItem = new ExternalMenuItemBuilder(this.system, label, url, this.defaultLanguage, this.level + 1, envVarConfig)
 
     this.items.push(menuItem)
 

@@ -429,6 +429,7 @@ export type InternalMenuItem = BaseMenuItem & {
 export type ExternalMenuItem = BaseMenuItem & {
   itemType: MenuItemType.External
   link: string
+  envVarConfig?: boolean
 }
 
 export type MenuItem = GroupMenuItem | InternalMenuItem | ExternalMenuItem
