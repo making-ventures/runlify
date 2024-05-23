@@ -48,7 +48,7 @@ ${item.items.map(i => `${menuItemTmpl(i)},`).map(pad2).join('\n')}
     case MenuItemType.ExternalEnv:
       return `{
   label: '${item.label}',
-  env: ${item.env},
+  env: getEnv('${item.env}'),
   icon: '${item.materialUiIcon}',
   debugOnly: ${item.debugOnly},
   permissions: [${item.permissions.map(p => `'${p}'`).join(', ')}],
@@ -82,14 +82,14 @@ export const uiGetDefaultMenuTmpl = ({
       debugOnly: true,
     },`
 
-  return `import {MenuElement} from '../uiLib/menu/MenuItem';${links ? "\nimport getConfig from '../config/config';" : ''}
+  return `import {MenuElement} from '../uiLib/menu/MenuItem';${links ? "\nimport getEnv from '../config/getEnv';" : ''}
 ${
   options.skipWarningThisIsGenerated
     ? ''
     : `
 // ${generatedWarning}
 `
-}${links ? `\nconst {${links}} = await getConfig();\n` : ''}
+}
 const getDefaultMenu = () => {
   const menuData: MenuElement[] = [
 ${system.menuItems.map(i => `${menuItemTmpl(i)},`).map(pad2).join('\n')}
