@@ -73,7 +73,7 @@ export const uiGetDefaultMenuTmpl = ({
   const documents = entitiesToShow.filter((m) => m.type === 'document')
   const catalogs = entitiesToShow.filter((m) => m.type === 'catalog')
 
-  const hasExternalEnv = system.menuItems.some(checkHasMenuItemEnv);
+  const hasMenuExternalEnv = system.menuItems.some(checkHasMenuItemEnv);
 
   const renderEntity = (entity: Entity) => `    {
       label: '${plural(entity.type)}.${entity.name}.title.plural',
@@ -82,7 +82,7 @@ export const uiGetDefaultMenuTmpl = ({
       debugOnly: true,
     },`
 
-  return `import {MenuElement} from '../uiLib/menu/MenuItem';${hasExternalEnv ? "\nimport getConfigByName from '../config/getConfigByName';" : ''}
+  return `import {MenuElement} from '../uiLib/menu/MenuItem';${hasMenuExternalEnv ? "\nimport getConfigByName from '../config/getConfigByName';" : ''}
 ${
   options.skipWarningThisIsGenerated
     ? ''
