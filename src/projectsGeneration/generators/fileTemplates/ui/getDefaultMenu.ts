@@ -9,9 +9,9 @@ const menuItemEnv = (item: MenuItem) => {
     case MenuItemType.ExternalEnv:
       return item.env;
     case MenuItemType.Group:
-      return item.items.map(menuItemEnv).filter(env => env !== '').join(', ');
+      return item.items.some(menuItemEnv);
     default:
-      return '';
+      return false;
   }
 }
 
@@ -48,7 +48,7 @@ ${item.items.map(i => `${menuItemTmpl(i)},`).map(pad2).join('\n')}
     case MenuItemType.ExternalEnv:
       return `{
   label: '${item.label}',
-  env: getEnv('${item.env}'),
+  env: getConfigByName('${item.env}'),
   icon: '${item.materialUiIcon}',
   debugOnly: ${item.debugOnly},
   permissions: [${item.permissions.map(p => `'${p}'`).join(', ')}],
@@ -73,7 +73,7 @@ export const uiGetDefaultMenuTmpl = ({
   const documents = entitiesToShow.filter((m) => m.type === 'document')
   const catalogs = entitiesToShow.filter((m) => m.type === 'catalog')
 
-  const links = system.menuItems.map(menuItemEnv).filter(env => env);
+  const isExternalEnv = system.menuItems.some(menuItemEnv);
 
   const renderEntity = (entity: Entity) => `    {
       label: '${plural(entity.type)}.${entity.name}.title.plural',
@@ -82,7 +82,7 @@ export const uiGetDefaultMenuTmpl = ({
       debugOnly: true,
     },`
 
-  return `import {MenuElement} from '../uiLib/menu/MenuItem';${links ? "\nimport getEnv from '../config/getEnv';" : ''}
+  return `import {MenuElement} from '../uiLib/menu/MenuItem';${isExternalEnv ? "\nimport getConfigByName from '../config/getConfigByName';" : ''}
 ${
   options.skipWarningThisIsGenerated
     ? ''
