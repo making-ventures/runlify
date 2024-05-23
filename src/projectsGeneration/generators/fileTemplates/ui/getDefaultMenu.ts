@@ -4,14 +4,14 @@ import {ProjectWideGenerationArgs} from '../../../args'
 import {generatedWarning, pad2} from '../../../utils'
 import {plural} from 'pluralize'
 
-const menuItemEnv = (item: MenuItem) => {
+const checkHasMenuItemEnv = (item: MenuItem) => {
   switch (item.itemType) {
     case MenuItemType.ExternalEnv:
       return item.env;
     case MenuItemType.Group:
-      return item.items.some(menuItemEnv);
+      return item.items.some(checkHasMenuItemEnv);
     default:
-      return false;
+      return true;
   }
 }
 
@@ -73,7 +73,7 @@ export const uiGetDefaultMenuTmpl = ({
   const documents = entitiesToShow.filter((m) => m.type === 'document')
   const catalogs = entitiesToShow.filter((m) => m.type === 'catalog')
 
-  const isExternalEnv = system.menuItems.some(menuItemEnv);
+  const hasExternalEnv = system.menuItems.some(checkHasMenuItemEnv);
 
   const renderEntity = (entity: Entity) => `    {
       label: '${plural(entity.type)}.${entity.name}.title.plural',
@@ -82,7 +82,7 @@ export const uiGetDefaultMenuTmpl = ({
       debugOnly: true,
     },`
 
-  return `import {MenuElement} from '../uiLib/menu/MenuItem';${isExternalEnv ? "\nimport getConfigByName from '../config/getConfigByName';" : ''}
+  return `import {MenuElement} from '../uiLib/menu/MenuItem';${hasExternalEnv ? "\nimport getConfigByName from '../config/getConfigByName';" : ''}
 ${
   options.skipWarningThisIsGenerated
     ? ''
