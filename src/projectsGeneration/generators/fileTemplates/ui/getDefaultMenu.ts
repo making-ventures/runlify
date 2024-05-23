@@ -2,7 +2,18 @@ import {defaultBootstrapEntityOptions} from '../../../types'
 import {Entity, MenuItem, MenuItemType} from '../../../builders/buildedTypes'
 import {ProjectWideGenerationArgs} from '../../../args'
 import {generatedWarning, pad2} from '../../../utils'
-import {plural } from 'pluralize'
+import {plural} from 'pluralize'
+
+const checkHasMenuItemEnv = (item: MenuItem) => {
+  switch (item.itemType) {
+    case MenuItemType.ExternalEnv:
+      return item.env;
+    case MenuItemType.Group:
+      return item.items.some(checkHasMenuItemEnv);
+    default:
+      return true;
+  }
+}
 
 const menuItemTmpl = (item: MenuItem) => {
   switch (item.itemType) {
@@ -34,6 +45,14 @@ ${item.items.map(i => `${menuItemTmpl(i)},`).map(pad2).join('\n')}
   debugOnly: ${item.debugOnly},
   permissions: [${item.permissions.map(p => `'${p}'`).join(', ')}],
 }`;
+    case MenuItemType.ExternalEnv:
+      return `{
+  label: '${item.label}',
+  env: getConfigByName('${item.env}'),
+  icon: '${item.materialUiIcon}',
+  debugOnly: ${item.debugOnly},
+  permissions: [${item.permissions.map(p => `'${p}'`).join(', ')}],
+}`;  
   }
 }
 
@@ -54,6 +73,8 @@ export const uiGetDefaultMenuTmpl = ({
   const documents = entitiesToShow.filter((m) => m.type === 'document')
   const catalogs = entitiesToShow.filter((m) => m.type === 'catalog')
 
+  const hasMenuExternalEnv = system.menuItems.some(checkHasMenuItemEnv);
+
   const renderEntity = (entity: Entity) => `    {
       label: '${plural(entity.type)}.${entity.name}.title.plural',
       link: '/${entity.name}',
@@ -61,7 +82,7 @@ export const uiGetDefaultMenuTmpl = ({
       debugOnly: true,
     },`
 
-  return `import {MenuElement} from '../uiLib/menu/MenuItem';
+  return `import {MenuElement} from '../uiLib/menu/MenuItem';${hasMenuExternalEnv ? "\nimport getConfigByName from '../config/getConfigByName';" : ''}
 ${
   options.skipWarningThisIsGenerated
     ? ''
