@@ -11,7 +11,7 @@ const checkHasMenuItemEnv = (item: MenuItem) => {
     case MenuItemType.Group:
       return item.items.some(checkHasMenuItemEnv);
     default:
-      return true;
+      return false;
   }
 }
 
