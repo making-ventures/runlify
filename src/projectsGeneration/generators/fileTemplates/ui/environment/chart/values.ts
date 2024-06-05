@@ -53,7 +53,7 @@ ingress:
     nginx.ingress.kubernetes.io/limit-rps: "300"
     nginx.ingress.kubernetes.io/limit-rpm: "5000"
     nginx.ingress.kubernetes.io/affinity: "cookie"
-    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+    nginx.ingress.kubernetes.io/proxy-body-size: "${options.ingressAnnotationBodySize}"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "7200"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "7200"
   host: "${options.k8sAppsDomain}"

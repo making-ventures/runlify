@@ -103,6 +103,7 @@ export const defaultBootstrapEntityOptions = {
   genBackChartBack: true,
   genUiChartIngress: true,
   genUiChartFront: true,
+  ingressAnnotationBodySize: '50m',
 
   // Environment
   corePrismaGetter: true,
