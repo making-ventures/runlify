@@ -31,7 +31,7 @@ export default getAdditionalMethods;
 
   const serviceWithModelsToImport = additionalServices
     .flatMap(
-      service => service.methods.flatMap(q => ({service, models: [q.argsModel, q.returnModel].filter(m => m.fields.length)}))
+      service => service.methods.flatMap(q => ({service, models: [q.argsModel].filter(m => m.fields.length)}))
     )
     .filter(m => m.models.length);
 
@@ -52,8 +52,17 @@ ${additionalServices.flatMap(service => service.methods.map(method => {
   return`  ${methodName}: async (${method.argsModel.fields.length ? `args: Mutation${pascalCase(service.name)}${pascalCase(method.name)}Args` : ``}) => {
     return client.${method.methodType === MethodType.Mutation ? 'mutate' : 'query'}({
       mutation: gql\`
-        mutation ${methodName}${method.argsModel.fields.length ? `(${method.argsModel.fields.map(f => `$${f.name}: ${fieldTypeToGraphScalarStringified(f as ScalarField)}`).join(', ')})` : ``} {
-          ${methodName}${method.argsModel.fields.length ? `(${method.argsModel.fields.map(f => `${f.name}: $${f.name}`).join(', ')})` : ``}
+        mutation ${methodName}${method.argsModel.fields.length ? `(
+          ${method.argsModel.fields.map(f => `$${f.name}: ${fieldTypeToGraphScalarStringified(f as ScalarField)}`).join(`,
+          `)}
+        )` : ``} {
+          ${methodName}${method.argsModel.fields.length ? `(
+            ${method.argsModel.fields.map(f => `${f.name}: $${f.name}`).join(`,
+            `)}
+          )` : ``}${method.returnModel.fields.length ? ` {
+            ${method.returnModel.fields.map(f => f.name).join(`
+            `)}
+          }` : ``}
         }
       \`,${method.argsModel.fields.length ? `
       variables: args,` : ``}

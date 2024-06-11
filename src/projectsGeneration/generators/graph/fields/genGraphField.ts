@@ -1,11 +1,11 @@
-import { Field } from '../../../builders/buildedTypes'
+import { Field, TsModelField } from '../../../builders/buildedTypes'
 import { genGraphIdField } from './genGraphIdField'
 import { genGraphLinkField } from './genGraphLinkField'
 import { genGraphScalarField } from './genGraphScalarField'
 
 export type GraphFieldPurpose = 'entity' | 'mutation'
 
-export const genGraphField = (field: Field, purpose: GraphFieldPurpose) => {
+export const genGraphField = (field: Field | TsModelField, purpose: GraphFieldPurpose) => {
   const { category } = field
   switch (category) {
     case 'id':

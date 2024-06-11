@@ -10,7 +10,7 @@ const fieldTypeToGraphScalarStringifiedPlain = (field: Field) => {
       return 'GraphQLFloat'
     case 'string':
       if ('stringType' in field && field.stringType == 'json') {
-        return 'GraphQLJSON'
+        return 'JSON'
       }
       return 'String'
     case 'bool':
