@@ -247,7 +247,7 @@ import {hasPermission} from '../../../../utils/permissions';` : ''}
 import {LoadingContext} from '../../../../contexts/LoadingContext';${withFileRef ? `
 import {FileInput} from \'../../../../uiLib/file/FileInput\';` : ''}${isAllowedToChange ? `
 import {AllowedToEdit} from '../../../../uiLib/AllowedToEdit';` : ''}${options.breadcrumb ?
-    "import {Breadcrumbs} from '../../../../raUiLib/Breadcrumbs';\n" : ''}
+    "\nimport {Breadcrumbs} from '../../../../raUiLib/Breadcrumbs';" : ''}
 ${options.skipWarningThisIsGenerated ? '' : `
 // ${generatedWarning}
 `}
