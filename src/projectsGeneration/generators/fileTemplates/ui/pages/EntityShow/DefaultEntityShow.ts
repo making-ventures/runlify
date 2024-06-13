@@ -66,7 +66,8 @@ ${linkedTabCompImports.join(`
 import MainTab from './MainTab';
 import {additionalTabs} from './additionalTabs';
 import DefaultActions from './DefaultActions';
-import ${getEntityTitle(entity)} from '../../../../raUiLib/${getEntityTitle(entity)}';
+import ${getEntityTitle(entity)} from '../../../../raUiLib/${getEntityTitle(entity)}';${options.breadcrumb ?
+    "import {Breadcrumbs} from '../../../../raUiLib/Breadcrumbs';\n" : ''}
 ${
   options.skipWarningThisIsGenerated
     ? ''

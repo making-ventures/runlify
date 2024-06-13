@@ -118,6 +118,7 @@ export const defaultBootstrapEntityOptions = {
   themesEnabled: true,
   mainColorOfAppTitile: true,
   sharding: false,
+  breadcrumb: false,
 }
 
 export type BootstrapEntityOptions = typeof defaultBootstrapEntityOptions

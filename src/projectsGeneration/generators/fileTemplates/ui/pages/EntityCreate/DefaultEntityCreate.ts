@@ -86,7 +86,8 @@ ${
   withFileRef
     ? "import {FileInput} from '../../../../uiLib/file/FileInput';\n"
     : ''
-}
+}${options.breadcrumb ?
+    "import {Breadcrumbs} from '../../../../raUiLib/Breadcrumbs';\n" : ''}
 ${
   options.skipWarningThisIsGenerated
     ? ''
@@ -122,7 +123,9 @@ ${
           ${f.name}: mergedData.${f.name} || null,`)
     .join('')}
         }` : 'mergedData'};
-      }, [])}
+      }, [])}${
+    options.breadcrumb ? '\n      actions={<Breadcrumbs />}' : ''
+  }
     >
       <LoadingContext>
         <SimpleForm
