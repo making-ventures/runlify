@@ -67,7 +67,7 @@ import MainTab from './MainTab';
 import {additionalTabs} from './additionalTabs';
 import DefaultActions from './DefaultActions';
 import ${getEntityTitle(entity)} from '../../../../raUiLib/${getEntityTitle(entity)}';${options.breadcrumb ?
-    "import {Breadcrumbs} from '../../../../raUiLib/Breadcrumbs';\n" : ''}
+    "\nimport {Breadcrumbs} from '../../../../raUiLib/Breadcrumbs';" : ''}
 ${
   options.skipWarningThisIsGenerated
     ? ''
@@ -81,7 +81,7 @@ const Default${pascalSingular(
   const translate = useTranslate();
 
   return (
-    <Show actions={<DefaultActions />} title={<${getEntityTitle(entity)} />} {...props}>
+    <Show actions={${options.breadcrumb ? '<Breadcrumbs><DefaultActions /></Breadcrumbs>' : '<DefaultActions />'}} title={<${getEntityTitle(entity)} />} {...props}>
       <TabbedShowLayout>
         <MainTab label={translate('app.mainTab')} />
         {additionalTabs.map(({Tab, label}, i) => <Tab label={label} key={i} />)}${
