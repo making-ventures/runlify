@@ -246,7 +246,8 @@ import get${pascalSingular(entity.name)}Validation from '../get${pascalSingular(
 import {hasPermission} from '../../../../utils/permissions';` : ''}
 import {LoadingContext} from '../../../../contexts/LoadingContext';${withFileRef ? `
 import {FileInput} from \'../../../../uiLib/file/FileInput\';` : ''}${isAllowedToChange ? `
-import {AllowedToEdit} from '../../../../uiLib/AllowedToEdit';` : ''}
+import {AllowedToEdit} from '../../../../uiLib/AllowedToEdit';` : ''}${options.breadcrumb ?
+    "import {Breadcrumbs} from '../../../../raUiLib/Breadcrumbs';\n" : ''}
 ${options.skipWarningThisIsGenerated ? '' : `
 // ${generatedWarning}
 `}
@@ -285,7 +286,8 @@ ${hasHidden ? `  const {debug} = useDebug();
     .join('')}
         }` : 'mergedData'};
       }, [])}
-      mutationMode='pessimistic'
+      mutationMode='pessimistic'${
+    options.breadcrumb ? '\n      actions={<Breadcrumbs />}' : ''}
     >
       <LoadingContext>${isAllowedToChange ? `
         <AllowedToEdit allowedToEdit={${entity.allowedToChange}} />` : ''}
