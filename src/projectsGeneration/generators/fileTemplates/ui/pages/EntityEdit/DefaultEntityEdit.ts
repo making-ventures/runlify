@@ -74,7 +74,7 @@ export const getLinkEditComponent = (
 >
   <AutocompleteInput
     fullWidth
-    sx={{m: 1}}
+    sx={${type === 'filter' ? '{m: \'8px 8px 6px\'}' : '{m: 1}'}}
     size='small'
     ${getFieldLabel(entity, field)}
     defaultValue={null}
@@ -101,7 +101,7 @@ export const getLinkArrayEditComponent = (
 >
   <AutocompleteArrayInput
     fullWidth
-    sx={{m: 1}}
+    sx={${type === 'filter' ? '{m: \'8px 8px 6px\'}' : '{m: 1}'}}
     size='small'
     ${getFieldLabel(entity, field, postfix?.label)}
     optionText='title'
