@@ -805,12 +805,11 @@ const generateProject = async (
     // Resources
     // src/dc/resources.tsx genUiResources uiResourcesTmpl
     if (opts.genUiResources) {
-      const generatedResources = uiResourcesTmpl(args)
+      const {resources, resourcesChunk0, resourcesChunk1} = uiResourcesTmpl(args)
 
-      write(
-        join(prjUiSrcPrefixedDir, 'resources.tsx'),
-        generatedResources
-      )
+      write(join(prjUiSrcPrefixedDir, 'resources.tsx'), resources);
+      write(join(prjUiSrcPrefixedDir, 'resourcesChunk0.tsx'), resourcesChunk0);
+      write(join(prjUiSrcPrefixedDir, 'resourcesChunk1.tsx'), resourcesChunk1);
     }
 
     // Resources page
