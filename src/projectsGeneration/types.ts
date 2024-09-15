@@ -104,6 +104,7 @@ export const defaultBootstrapEntityOptions = {
   genUiChartIngress: true,
   genUiChartFront: true,
   ingressAnnotationBodySize: '50m',
+  mountebankEnabled: false,
 
   // Environment
   corePrismaGetter: true,

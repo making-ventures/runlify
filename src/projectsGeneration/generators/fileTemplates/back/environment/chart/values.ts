@@ -60,7 +60,10 @@ back:
     cpu: "${system.back.limits.cpu}"
 
 metrics:
-  enabled: true
+  enabled: false
+
+mountebank:
+  enabled: false
 
 worker:
   enabled: false

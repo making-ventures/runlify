@@ -227,18 +227,21 @@ ${system.deployEnvironments
     DEPLOY_KIND: "back"
     FLUENTD_ENABLED: "true"
     PROMETHEUS_RULES_ENABLED: "true"
+    HELM_ENV: ""
 
 .deploy-worker:
   variables:
     DEPLOY_KIND: "worker"
     FLUENTD_ENABLED: "false"
     PROMETHEUS_RULES_ENABLED: "false"
+    HELM_ENV: "--set mountebank.enabled=${options.mountebankEnabled}"
 
 .deploy-telegramBot:
   variables:
     DEPLOY_KIND: "telegramBot"
     FLUENTD_ENABLED: "false"
     PROMETHEUS_RULES_ENABLED: "false"
+    HELM_ENV: ""
 
 .deploy:
   image:
@@ -258,6 +261,7 @@ ${system.deployEnvironments
       --wait \${NAMESPACE}-\${DEPLOY_KIND} chart
       --timeout 3600s
       -f chart/values_\${ENV}.yaml
+      \${HELM_ENV}
       --namespace \${NAMESPACE}
       --create-namespace
       --set "global.projectName=\${PROJECT_NAME}"
