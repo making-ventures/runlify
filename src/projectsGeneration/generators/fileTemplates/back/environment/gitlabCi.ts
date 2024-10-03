@@ -234,7 +234,7 @@ ${system.deployEnvironments
     DEPLOY_KIND: "worker"
     FLUENTD_ENABLED: "false"
     PROMETHEUS_RULES_ENABLED: "false"
-    HELM_ENV: "--set mountebank.enabled=${options.mountebankEnabled}"
+    HELM_ENV: "--set mountebank.enabled=${options.mountebankEnabled} --set exportHtml.enabled=${options.exportHtmlEnabled}"
 
 .deploy-telegramBot:
   variables:
