@@ -1,4 +1,3 @@
-import {defaultBootstrapEntityOptions} from '../../../types'
 import {Entity, MenuItem, MenuItemType} from '../../../builders/buildedTypes'
 import {ProjectWideGenerationArgs} from '../../../args'
 import {generatedWarning, pad2} from '../../../utils'
@@ -59,7 +58,7 @@ ${item.items.map(i => `${menuItemTmpl(i)},`).map(pad2).join('\n')}
 export const uiGetDefaultMenuTmpl = ({
   system,
   entities,
-  options = defaultBootstrapEntityOptions,
+  options,
 }: ProjectWideGenerationArgs) => {
   const entitiesToShow = entities.sort((a, b) =>
     a.title['ru'].plural.localeCompare(

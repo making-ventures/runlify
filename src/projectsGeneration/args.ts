@@ -1,5 +1,5 @@
 import { getLinksOfEntities } from './links/getLinksOfEntities'
-import { BootstrapEntityOptions, LinkedEntities } from './types'
+import { BootstrapEntityInnerOptions, LinkedEntities } from './types'
 import {
   Entity,
   InfoRegistry,
@@ -22,7 +22,7 @@ export interface ProjectWideGenerationArgs {
   allDocuments: Map<string, Document>
   allCatalogs: Map<string, Catalog>
   allLinks: LinkedEntities[]
-  options: BootstrapEntityOptions
+  options: BootstrapEntityInnerOptions
 }
 
 export interface EntityWideGenerationArgs extends ProjectWideGenerationArgs {
@@ -37,7 +37,7 @@ export interface AdditionalServiceWideGenerationArgs extends ProjectWideGenerati
 
 export const prepareProjectWideGenerationArgs = (
   system: System,
-  opts: BootstrapEntityOptions
+  opts: BootstrapEntityInnerOptions
 ): ProjectWideGenerationArgs => {
   const entities = R.sortBy(R.prop('name'), [
     ...system.catalogs,

@@ -1,4 +1,3 @@
-import { defaultBootstrapEntityOptions } from '../../../types'
 import { pascalPlural } from '../../../../utils/cases'
 import { ProjectWideGenerationArgs } from '../../../args'
 import { generatedWarning } from '../../../utils'
@@ -6,7 +5,7 @@ import { plural } from 'pluralize'
 
 export const uiResourcesPageTmpl = ({
   entities,
-  options = defaultBootstrapEntityOptions,
+  options,
 }: ProjectWideGenerationArgs) => {
   return `import React, {
   FC,

@@ -10,7 +10,7 @@ import { uiGetDefaultMenuTmpl } from './generators/fileTemplates/ui/getDefaultMe
 import { generateEnvironment } from './generateEnvironment'
 import { configItemsTmpl } from './generators/fileTemplates/back/root/config/config'
 import { genGraphSchemesByLocalGenerator } from './genGraphSchemesByLocalGenerator'
-import { BootstrapEntityOptions, defaultBootstrapEntityOptions } from './types'
+import { BootstrapEntityInnerOptions, defaultBootstrapEntityOptions } from './types'
 import { generateEntity } from './generateEntity'
 import { restRouterTmpl } from './generators/fileTemplates/back/root/restRouter'
 import { writeFileIfNotExists } from './utils'
@@ -22,7 +22,7 @@ import { graphMetaResolversTmpl } from './generators/fileTemplates/back/graph/me
 import { additionalServicesTmpl } from './generators/fileTemplates/back/services/AdditionalServices'
 import { System } from './builders/buildedTypes'
 import { uiTranslationsLangDocsTmpl } from './generators/fileTemplates/ui/i18n/lang/uiLangDocsTmpl'
-import { write } from 'fs-jetpack'
+import { cwd, write } from 'fs-jetpack'
 import { uiTranslationsLangReportsTmpl } from './generators/fileTemplates/ui/i18n/lang/uiLangReportsTmpl'
 import { uiEntityIconTmpl } from './generators/fileTemplates/ui/pages/Icon'
 import { pascal, pascalSingular } from '../utils/cases'
@@ -599,11 +599,18 @@ export const generateFront = async (args: ProjectWideGenerationArgs) => {
 
 const generateProject = async (
   system: System,
-  initialOpts: BootstrapEntityOptions = defaultBootstrapEntityOptions
+  initialOpts = defaultBootstrapEntityOptions
 ) => {
-  const opts = {
+  const dir = cwd('..').cwd();
+
+  const detachedBackProject = join(dir, `${initialOpts.projectPrefix}-back`);
+  const detachedUiProject = join(dir, `${initialOpts.projectPrefix}-ui`);;
+
+  const opts: BootstrapEntityInnerOptions = {
     ...defaultBootstrapEntityOptions,
     ...initialOpts,
+    detachedBackProject,
+    detachedUiProject,
   }
 
   const args = prepareProjectWideGenerationArgs(system, opts)
