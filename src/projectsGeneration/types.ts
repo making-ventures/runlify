@@ -123,7 +123,9 @@ export const defaultBootstrapEntityOptions = {
   breadcrumb: false,
 }
 
-export type BootstrapEntityOptions = typeof defaultBootstrapEntityOptions
+export type BootstrapEntityOptions = typeof defaultBootstrapEntityOptions;
+
+export type BootstrapEntityInnerOptions = BootstrapEntityOptions  & {detachedBackProject: string, detachedUiProject: string};
 
 export interface EntityBuilderWithOptions<
   T extends BaseBuilder | ReportBuilder = CatalogBuilder
