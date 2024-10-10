@@ -67,8 +67,6 @@ export const defaultBootstrapEntityOptions = {
 
   forms: defaultFormsOptions,
 
-  detachedBackProject: '',
-  detachedUiProject: '',
   projectsGroup: '',
   projectPrefix: '',
   dbName: '',
