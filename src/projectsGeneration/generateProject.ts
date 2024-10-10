@@ -64,6 +64,7 @@ import backDocSpec from './generators/fileTemplates/back/environment/docs/backDo
 import { generateAdditionalService } from './generateAdditionalService'
 import genIntegrationClientsTmpl from './generators/fileTemplates/back/environment/src/integrationClients/IntegrationClients'
 import genIntegrationClientConstrictorsTmpl from './generators/fileTemplates/back/environment/src/integrationClients/integrationClientConstrictors'
+import cleanFiles from './fileCleaners/cleanFiles'
 
 // Бек (generateBack)
 //  Исходники бека (generateBackSrc)
@@ -631,6 +632,7 @@ const generateProject = async (
 
   // Pre grapgql types compose generation
   await Promise.all([
+    cleanFiles(args),
     ...entities.map((entity) =>
       generateEntity(
         prepareEntityWideGenerationArgs(
