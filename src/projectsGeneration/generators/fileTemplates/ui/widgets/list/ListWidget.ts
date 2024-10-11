@@ -1,4 +1,4 @@
-import { pascal, pascalSingular, sentence } from '../../../../../../utils/cases'
+import {pascal, pascalPlural, pascalSingular, sentence} from '../../../../../../utils/cases';
 import { EntityWideGenerationArgs } from '../../../../../args'
 import { generatedWarning, pad1, pad5 } from '../../../../../utils'
 // import { isMarkdownField } from '../../../../../metaUtils'
@@ -32,7 +32,7 @@ import ListWidget, {
 } from '../../../widgets/ListWidget';
 import {
   ${pascalSingular(entity.name)},
-  QueryAll${pascal(entity.name)}Args,
+  QueryAll${pascalPlural(entity.name)}Args,
 } from '../../../generated/graphql';
 ${
   options.skipWarningThisIsGenerated
@@ -45,7 +45,7 @@ interface List${pascal(entity.name)}WidgetProps extends
 Omit<ListWidgetProps<${pascalSingular(
     entity.name
   )}>, 'request' | 'resultToValue'| 'children' | 'source'>,
-QueryAll${pascal(entity.name)}Args {
+QueryAll${pascalPlural(entity.name)}Args {
   children?: FC<${pascalSingular(entity.name)}>,
 }
 
