@@ -455,7 +455,7 @@ export type Permission = BaseEntity & {
   permissionType: PermissionType
 }
 
-export type TelegramBot = BaseEntity & {
+export type TelegramBot = BaseDeployment & BaseEntity & {
   type: 'telegramBot'
 }
 
