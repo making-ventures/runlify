@@ -104,8 +104,16 @@ bot:
 
 bots:${system.telegramBots
   .map(
-    ({ name }) => `\n  - name: ${paramCase(name)}
-    file: dist/bots/${name}Bot/${name}Bot.js`
+    (bot) => `\n  - name: ${paramCase(bot.name)}
+    file: dist/bots/${bot.name}Bot/${bot.name}Bot.js
+    requests:
+      memory: "${bot.requests.memory}"
+      cpu: "${bot.requests.cpu}"
+      maxOldSpaceSize: "${bot.requests.maxOldSpaceSize}"
+    limits:
+      memory: "${bot.limits.memory}"
+      cpu: "${bot.limits.cpu}"
+      maxOldSpaceSize: "${bot.limits.maxOldSpaceSize}"`
   )
   .join('')}
 
