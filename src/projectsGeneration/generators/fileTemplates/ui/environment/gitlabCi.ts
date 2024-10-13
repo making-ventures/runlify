@@ -123,20 +123,6 @@ ${system.deployEnvironments
     - /^${e.branchName}-.*$/`).join('\n\n')}
 
 ${system.deployEnvironments
-  .map((e) =>
-    `deploy-${e.name}-previous:
-  extends: .deploy-${e.name}
-  stage: deploy-previous
-  when: manual
-  variables:
-    ENV: "${e.name}"
-    CLUSTER_NAME: "${e.clusterName}"
-    TAG: ":\${CI_COMMIT_REF_SLUG}-previous-for-\${CI_COMMIT_SHA}"
-  only:
-    - ${e.branchName}
-    - /^${e.branchName}-.*$/`).join('\n\n')}
-
-${system.deployEnvironments
   .map((e) =>`.deploy-${e.name}:
   extends: .deploy-ui
   stage: deploy
