@@ -138,6 +138,17 @@ ${system.deployEnvironments
     TAG: ":\${CI_COMMIT_REF_SLUG}-\${CI_COMMIT_SHA}"
   only:
     - ${e.branchName}
+    - /^${e.branchName}-.*$/
+
+deploy-${e.name}-bots:
+  extends: .deploy-${e.name}-bots
+  stage: deploy
+  variables:
+    ENV: "${e.name}"
+    CLUSTER_NAME: "${e.clusterName}"
+    TAG: ":\${CI_COMMIT_REF_SLUG}-\${CI_COMMIT_SHA}"
+  only:
+    - ${e.branchName}
     - /^${e.branchName}-.*$/`
         )
         .join('\n\n')
@@ -145,34 +156,6 @@ ${system.deployEnvironments
     : ''
 }
 
-${system.deployEnvironments
-  .map((e) =>
-    `deploy-${e.name}-back-previous:
-  extends: .deploy-${e.name}-back
-  stage: deploy-previous
-  when: manual
-  variables:
-    ENV: "${e.name}"
-    CLUSTER_NAME: "${e.clusterName}"
-    TAG: ":\${CI_COMMIT_REF_SLUG}-previous-for-\${CI_COMMIT_SHA}"
-  only:
-    - ${e.branchName}
-    - /^${e.branchName}-.*$/`).join('\n\n')}${system.workers.length > 0
-    ? '\n\n' +
-      system.deployEnvironments
-        .map((e) =>
-          `deploy-${e.name}-workers-previous:
-  extends: .deploy-${e.name}-workers
-  stage: deploy-previous
-  when: manual
-  variables:
-    ENV: "${e.name}"
-    CLUSTER_NAME: "workers-${e.clusterName}"
-    TAG: ":\${CI_COMMIT_REF_SLUG}-previous-for-\${CI_COMMIT_SHA}"
-  only:
-    - ${e.branchName}
-    - /^${e.branchName}-.*$/`).join('\n\n')
-    : ''}
 ${system.deployEnvironments
   .map((e) =>`.deploy-${e.name}-back:
   extends:
@@ -198,6 +181,19 @@ ${system.deployEnvironments
     METRICS_ENABLED: "false"
     WORKER_ENABLED: "true"
     BOT_ENABLED: "false"
+    ROOT_ENABLED: "false"
+
+.deploy-${e.name}-bots:
+  extends:
+    - .deploy-${e.name}
+    - .deploy-bot
+  variables:
+    KUBE_CONFIG: \${KUBE_${e.clusterName.toUpperCase()}_CONFIG}
+    BACK_ENABLED: "false"
+    INGRESS_ENABLED: "false"
+    METRICS_ENABLED: "false"
+    WORKER_ENABLED: "false"
+    BOT_ENABLED: "true"
     ROOT_ENABLED: "false"`).join('\n\n')}
 
 ${system.deployEnvironments
@@ -236,9 +232,9 @@ ${system.deployEnvironments
     PROMETHEUS_RULES_ENABLED: "false"
     HELM_ENV: "--set mountebank.enabled=${options.mountebankEnabled} --set exportHtml.enabled=${options.exportHtmlEnabled}"
 
-.deploy-telegramBot:
+.deploy-bot:
   variables:
-    DEPLOY_KIND: "telegramBot"
+    DEPLOY_KIND: "bot"
     FLUENTD_ENABLED: "false"
     PROMETHEUS_RULES_ENABLED: "false"
     HELM_ENV: ""
