@@ -16,6 +16,8 @@ export const chartValuesTmpl = ({
 global:
   env: noName
   clusterName: noName
+  projectName: ${options.k8sChartName || prefix}
+  projectGroup: ${options.projectsGroup}
   deployKind: noName
   imagePullPolicy: Always
 

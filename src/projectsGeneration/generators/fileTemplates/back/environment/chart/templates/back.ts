@@ -17,9 +17,9 @@ export const chartBackTmpl = ({
 }apiVersion: v1
 kind: Service
 metadata:
-  name: ${options.k8sChartName || prefix}-back
+  name: {{ $.Values.global.projectName }}-{{ $.Values.global.deployKind }}
   labels:
-    app: ${options.k8sChartName || prefix}-back
+    app: {{ $.Values.global.projectName }}-{{ $.Values.global.deployKind }}
     projectName: {{ $.Values.global.projectName }}
     clusterName: {{ $.Values.global.clusterName }}
     env: {{ $.Values.global.env }}
@@ -32,12 +32,12 @@ spec:
     protocol: TCP
     targetPort: 3000
   selector:
-    app: ${options.k8sChartName || prefix}-back
+    app: {{ $.Values.global.projectName }}-{{ $.Values.global.deployKind }}
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ${options.k8sChartName || prefix}-back
+  name: {{ $.Values.global.projectName }}-{{ $.Values.global.deployKind }}
 spec:
   replicas: {{ $.Values.back.replicas }}
   strategy:
@@ -46,11 +46,11 @@ spec:
       maxSurge: 3
   selector:
     matchLabels:
-      app: ${options.k8sChartName || prefix}-back
+      app: {{ $.Values.global.projectName }}-{{ $.Values.global.deployKind }}
   template:
     metadata:
       labels:
-        app: ${options.k8sChartName || prefix}-back
+        app: {{ $.Values.global.projectName }}-{{ $.Values.global.deployKind }}
         projectName: {{ $.Values.global.projectName }}
         clusterName: {{ $.Values.global.clusterName }}
         env: {{ $.Values.global.env }}
@@ -59,10 +59,8 @@ spec:
       imagePullSecrets:
         - name: {{ $.Release.Name }}-pullsecret
       containers:
-      - name: ${options.k8sChartName || prefix}-back
-        image: {{ $.Values.dockerRegistry.domain }}/${options.projectsGroup}/${
-          options.projectPrefix || prefix
-        }-back{{ $.Values.app.tag }}
+      - name: {{ $.Values.global.projectName }}-{{ $.Values.global.deployKind }}
+        image: {{ $.Values.dockerRegistry.domain }}/{{ $.Values.global.projectGroup }}/{{ $.Values.global.projectName }}-{{ $.Values.global.deployKind }}{{ $.Values.app.tag }}
         ports:
         - name: main-port
           containerPort: 3000

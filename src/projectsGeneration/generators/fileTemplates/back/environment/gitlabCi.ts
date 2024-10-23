@@ -7,7 +7,7 @@ export const gitlabCiTmpl = ({
   system: { prefix },
   system,
   options,
-}: ProjectWideGenerationArgs) => `image: node:18
+}: ProjectWideGenerationArgs) => `image: node:20
 ${
   options.skipWarningThisIsGenerated
     ? ''
@@ -21,7 +21,6 @@ stages:
   - build
   - latest-image
   - deploy
-  - deploy-previous
 
 cache:
   paths:

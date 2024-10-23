@@ -16,9 +16,9 @@ export const uiChartFrontTmpl = ({
 }apiVersion: v1
 kind: Service
 metadata:
-  name: ${options.k8sChartName || prefix}-ui
+  name: {{ $.Values.global.projectName }}-{{ $.Values.global.deployKind }}
   labels:
-    app: ${options.k8sChartName || prefix}-ui
+    app: {{ $.Values.global.projectName }}-{{ $.Values.global.deployKind }}
     projectName: {{ $.Values.global.projectName }}
     clusterName: {{ $.Values.global.clusterName }}
     env: {{ $.Values.global.env }}
@@ -30,12 +30,12 @@ spec:
     protocol: TCP
     targetPort: 80
   selector:
-    app: ${options.k8sChartName || prefix}-ui
+    app: {{ $.Values.global.projectName }}-{{ $.Values.global.deployKind }}
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ${options.k8sChartName || prefix}-ui
+  name: {{ $.Values.global.projectName }}-{{ $.Values.global.deployKind }}
 spec:
   replicas: {{ $.Values.app.replicas }}
   strategy:
@@ -44,11 +44,11 @@ spec:
       maxSurge: 3
   selector:
     matchLabels:
-      app: ${options.k8sChartName || prefix}-ui
+      app: {{ $.Values.global.projectName }}-{{ $.Values.global.deployKind }}
   template:
     metadata:
       labels:
-        app: ${options.k8sChartName || prefix}-ui
+        app: {{ $.Values.global.projectName }}-{{ $.Values.global.deployKind }}
         projectName: {{ $.Values.global.projectName }}
         clusterName: {{ $.Values.global.clusterName }}
         env: {{ $.Values.global.env }}
@@ -57,10 +57,8 @@ spec:
       imagePullSecrets:
         - name: {{ $.Release.Name }}-pullsecret
       containers:
-      - name: ${options.k8sChartName || prefix}-ui
-        image: {{ $.Values.dockerRegistry.domain }}/${options.projectsGroup}/${
-          options.projectPrefix || prefix
-        }-ui{{ $.Values.app.tag }}
+      - name: {{ $.Values.global.projectName }}-{{ $.Values.global.deployKind }}
+        image: {{ $.Values.dockerRegistry.domain }}/{{ $.Values.global.projectGroup }}/{{ $.Values.global.projectName }}-{{ $.Values.global.deployKind }}{{ $.Values.app.tag }}
         ports:
         - name: main-port
           containerPort: 80
