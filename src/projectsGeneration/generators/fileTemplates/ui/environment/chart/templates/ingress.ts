@@ -14,9 +14,9 @@ export const uiChartIngressTmpl = ({
 }apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ${options.k8sChartName || prefix}-ui
+  name: {{ $.Values.global.projectName }}-{{ $.Values.global.deployKind }}
   labels:
-    app: ${options.k8sChartName || prefix}-back
+    app: {{ $.Values.global.projectName }}-{{ $.Values.global.deployKind }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
     release: "{{ .Release.Name }}"
     heritage: "{{ .Release.Service }}"
@@ -37,7 +37,7 @@ spec:
             path: "/"
             backend:
               service:
-                name: ${options.k8sChartName || prefix}-ui
+                name: {{ $.Values.global.projectName }}-{{ $.Values.global.deployKind }}
                 port:
                   number: 80
     {{ end }}
@@ -48,7 +48,7 @@ spec:
             path: "/"
             backend:
               service:
-                name: ${options.k8sChartName || prefix}-ui
+                name: {{ $.Values.global.projectName }}-{{ $.Values.global.deployKind }}
                 port:
                   number: 80
   tls:
