@@ -309,6 +309,7 @@ export type BaseSavableEntity = BaseEntity & {
   devPerefinedElements: Record<string, any>[]
   auditable: boolean
   externalSearch: boolean
+  elasticOnly: boolean
   searchEnabled: boolean
   sortField: string
   creatableByUser: boolean

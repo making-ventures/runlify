@@ -34,6 +34,7 @@ export const prismaServiceBaseClassTmpl = ({
   const isSumRegistry = entity.type === 'sumRegistry';
   const isInfoRegistry = entity.type === 'infoRegistry';
   const isClearFromDB = entity.clearDBAfter.length > 0;
+  const isPrismaDelegatable = !entity.elasticOnly && !isSharded;
 
   let extendedType = 'BaseService';
   if (isExternalSearch) {
@@ -80,6 +81,10 @@ export const prismaServiceBaseClassTmpl = ({
     }
   }
 
+  if (entity.elasticOnly) {
+    extendedType = 'ElasticOnlyService';
+  }
+
   let additionalImports: string[] = [];
   let registries = '';
 
@@ -105,7 +110,7 @@ export interface ${pascalSingular(document.name)}RegistryEntries {${
 `;
   }
 
-  if (!isSharded) {
+  if (isPrismaDelegatable) {
     additionalImports.push('import {Prisma} from \'@prisma/client\';');
   }
 
@@ -219,12 +224,12 @@ export class ${pascal(entity.name)}Service extends ${extendedType}<
   ForbidenForUser${pascalSingular(entity.name)}Keys,
   RequiredDbNotUser${pascalSingular(entity.name)}Keys${isExternalSearch ? `,
   External${pascal(entity.name)}SearchTracking` : ''}${isDocument ? `,
-  ${pascalSingular(entity.name)}RegistryEntries` : ''}${!isSharded ? `,
+  ${pascalSingular(entity.name)}RegistryEntries` : ''}${isPrismaDelegatable ? `,
   Prisma.${pascalSingular(entity.name)}Delegate<any>` : ''}
 > {
   constructor(public ctx: Context) {
-    super(ctx, ${isSharded ? `'${camelSingular(entity.name)}'${entity.externalSearchName ? `, 'external${pascal(entity.name)}SearchTracking'` : ''},`
-    : `ctx.prisma.${camelSingular(entity.name)},${isExternalSearch ? ` ctx.prisma.external${pascal(entity.name)}SearchTracking,` : ''}`} config);
+    super(ctx,${isSharded ? ` '${camelSingular(entity.name)}'${entity.externalSearchName ? `, 'external${pascal(entity.name)}SearchTracking'` : ''},`
+    : entity.elasticOnly ? '' : ` ctx.prisma.${camelSingular(entity.name)},${isExternalSearch ? ` ctx.prisma.external${pascal(entity.name)}SearchTracking,` : ''}`} config);
     initBuiltInHooks(this);
     initUserHooks(this);${getDefaultableFields().length > 0 ? `
 
