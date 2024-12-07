@@ -124,18 +124,20 @@ export const generateEntity = async (
       initBuiltInHooksTmpl(entityWideGenerationArgs)
     )
 
-    await writeFileIfNotExists(
-      join(hooksDir, 'additionalOperationsOnCreate.ts'),
-      additionalOperationsOnCreateTmpl(entityWideGenerationArgs)
-    )
-    await writeFileIfNotExists(
-      join(hooksDir, 'additionalOperationsOnUpdate.ts'),
-      additionalOperationsOnUpdateTmpl(entityWideGenerationArgs)
-    )
-    await writeFileIfNotExists(
-      join(hooksDir, 'additionalOperationsOnDelete.ts'),
-      additionalOperationsOnDeleteTmpl(entityWideGenerationArgs)
-    )
+    if (!entity.elasticOnly) {
+      await writeFileIfNotExists(
+        join(hooksDir, 'additionalOperationsOnCreate.ts'),
+        additionalOperationsOnCreateTmpl(entityWideGenerationArgs)
+      )
+      await writeFileIfNotExists(
+        join(hooksDir, 'additionalOperationsOnUpdate.ts'),
+        additionalOperationsOnUpdateTmpl(entityWideGenerationArgs)
+      )
+      await writeFileIfNotExists(
+        join(hooksDir, 'additionalOperationsOnDelete.ts'),
+        additionalOperationsOnDeleteTmpl(entityWideGenerationArgs)
+      )
+    }
 
     await writeFileIfNotExists(
       join(hooksDir, 'beforeCreate.ts'),

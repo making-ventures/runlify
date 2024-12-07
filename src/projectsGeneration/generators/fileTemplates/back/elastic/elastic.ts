@@ -5,7 +5,7 @@ import {join} from 'path';
 
 
 export const generateBackElasticBootstrap = async (args: ProjectWideGenerationArgs) => {
-  const entities = args.entities.filter((e) => e.externalSearch)
+  const entities = args.entities.filter((e) => e.externalSearch || e.elasticOnly)
 
   await write(
     join(
