@@ -58,9 +58,15 @@ spec:
     spec:
       imagePullSecrets:
         - name: {{ $.Release.Name }}-pullsecret
+      volumes:
+      - name: cache-volume
+        emptyDir: {}
       containers:
       - name: {{ $.Values.global.projectName }}-{{ $.Values.global.deployKind }}
         image: {{ $.Values.dockerRegistry.domain }}/{{ $.Values.global.projectGroup }}/{{ $.Values.global.projectName }}-{{ $.Values.global.deployKind }}{{ $.Values.app.tag }}
+        volumeMounts:
+        - mountPath: /cache
+          name: cache-volume
         ports:
         - name: main-port
           containerPort: 3000
