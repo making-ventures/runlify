@@ -99,6 +99,7 @@ const config: ${configType} = {
   auditable: ${entity.auditable},
   withSearch: ${!!entity.fields.find((f) => f.name === 'search')},
   externalSearch: ${entity.externalSearch},
+  sharded: ${isSharded},
   dateFields: ${getStrNames(dateFields)},
   otherFields: ${getStrNames(notDateFields)},
   forbiddenForUserFields: ${getStrNames(forbiddenForUserFields)},
