@@ -15,31 +15,31 @@ export const genPrismaEntity = (
   forShards = false,
 ): string => {
   const fields = [
-		...R.flatten(entity.fields.map((field) => genPrismaField(entity, field, forShards))),
-		...forShards ? [] : getLinksFromExternalEntities(entity, links)
-			.filter((el) => el.fromField.linkCategory === 'entity')
-			.map((link) => genPrismaFieldFromExternalEntity(link))
-			.filter((l) => l),
-	]
+    ...R.flatten(entity.fields.map((field) => genPrismaField(entity, field, forShards))),
+    ...forShards ? [] : getLinksFromExternalEntities(entity, links)
+      .filter((el) => el.fromField.linkCategory === 'entity')
+      .map((link) => genPrismaFieldFromExternalEntity(link))
+      .filter((l) => l),
+  ]
 
-	return `model ${pascalSingular(entity.name)} {
+  return `model ${pascalSingular(entity.name)} {
 ${fields.join('\n')}${
-		entity.uniqueConstraints.length > 0
-			? '\n' +
-				entity.uniqueConstraints
-					.map((fields) => `	@@unique([${fields.join(', ')}])`)
-					.join('\n')
-			: ''
-	}${
-		entity.indexes.length > 0
-		? '\n' +
-			entity.indexes
-				.map(({fields, type}) => 
-					`	@@index([${fields.join(', ')}]${type ? `, type: ${pascalCase(type)}` : ''})`
-				)
-				.join('\n')
-		: ''
-	}
+    entity.uniqueConstraints.length > 0
+      ? '\n' +
+        entity.uniqueConstraints
+          .map((fields) => `	@@unique([${fields.join(', ')}])`)
+          .join('\n')
+      : ''
+  }${
+    entity.indexes.length > 0
+    ? '\n' +
+      entity.indexes
+        .map(({fields, type}) => 
+          `	@@index([${fields.join(', ')}]${type ? `, type: ${pascalCase(type)}` : ''})`
+        )
+        .join('\n')
+    : ''
+  }
 }
 `
 }
