@@ -1,11 +1,11 @@
 import ScalarFieldBuilder from './fields/ScalarFieldBuilder'
 import IdFieldBuilder from './fields/IdFieldBuilder'
 import LinkFieldBuilder from './fields/LinkFieldBuilder'
-import {TKeyFieldType, Multitenancy, BaseSavableEntity, PermissionType, MethodType, DateUnit} from './buildedTypes'
+import {TKeyFieldType, Multitenancy, BaseSavableEntity, PermissionType, MethodType, DateUnit, IndexType} from './buildedTypes'
 import CatalogBuilder from './CatalogBuilder'
 import BaseBuilder from './BaseBuilder'
 import FormsBuilder from './ui/FormsBuilder'
-import { FieldBuilder } from './types'
+import { FieldBuilder, Index } from './types'
 import ViewLinkFieldBuilder from './fields/ViewLinkFieldBuilder'
 import { camelPlural, pascal } from '../../utils/cases'
 import * as R from 'ramda'
@@ -33,6 +33,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsMo
   permissions: PermissionBuilder[] = []
   fields: FieldBuilder[] = []
   uniqueConstraints: string[][] = []
+  indexes: Array<Index> = []
   protected type = 'catalog'
   titleField: ScalarFieldBuilder | IdFieldBuilder
   deletable = false
@@ -418,6 +419,28 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsMo
     return this
   }
 
+  addIndex({fields, type}: Index): BaseSavableEntityBuilder {
+    const currentFields = this.getFileds()
+
+    const currentFieldNames = currentFields.map((f) => f.name)
+
+    if (fields.some((f) => !currentFieldNames.includes(f))) {
+      throw new Error(`You trying to add index for non existing field.
+      Current fields: ${currentFields.map(f => f.title[this.defaultLanguage]).join(', ')}, fields for indexing: ${fields.join(', ')}, field not in current: ${fields.filter(
+        (f) => !currentFieldNames.includes(f)
+      )}.
+      Entity ${this.name}`)
+    }
+
+    if (type === IndexType.Hash && fields.length > 1) {
+      throw new Error(`Hash method doesn't support multicolumn indexes in entity ${this.name}`);
+    }
+
+    this.indexes.push({fields, type});
+
+    return this;
+  }
+
   addPemission(name: string, type: PermissionType): BaseSavableEntityBuilder {
     if (this.permissions.some((p) => p.name === name)) {
       throw new Error(`Entity "${this.name}" already have "${name}" pemission`)
@@ -527,6 +550,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsMo
       keyField: this.getKey().name,
       fields: this.getFileds().map((field) => field.build()),
       uniqueConstraints: this.getUniqueConstraints(),
+      indexes: this.indexes,
       forms: this.getForms().build(),
       predefinedElements: this.predefinedElements,
       devPerefinedElements: this.devPerefinedElements,

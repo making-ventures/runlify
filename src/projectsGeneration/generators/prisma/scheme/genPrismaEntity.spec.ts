@@ -3,6 +3,7 @@ import { expect } from 'jest-without-globals'
 import CatalogBuilder from '../../../builders/CatalogBuilder'
 import { genPrismaEntity } from './genPrismaEntity'
 import {baseField} from '../../../dataForTests';
+import { IndexType } from '../../../builders';
 
 // yarn test --testPathPattern genPrismaEntity
 // yarn test --testPathPattern genPrismaEntity -t 'with true default db field'
@@ -140,6 +141,24 @@ describe('genPrismaEntity', () => {
 	lastDigits	Int
 	active	Boolean?
 	@@unique([lastDigits, active])
+}
+`)
+  })
+
+  test('with indexes', () => {
+    const cards = new CatalogBuilder('cards', 'ru')
+    cards.addField('name').setType('string').setRequired()
+    cards.addField('lastDigits').setType('int').setRequired()
+    cards.addField('active').setType('bool')
+    cards.addIndex({fields: ['lastDigits', 'active'], type: IndexType.BTree});
+
+    expect(genPrismaEntity(cards.build(), [])).toBe(`model Card {
+	id	Int	@default(autoincrement())	@id
+	search	String?
+	name	String
+	lastDigits	Int
+	active	Boolean?
+	@@index([lastDigits, active], type: BTree)
 }
 `)
   })
