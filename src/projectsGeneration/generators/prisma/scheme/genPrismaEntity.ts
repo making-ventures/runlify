@@ -10,11 +10,11 @@ import { genPrismaFieldFromExternalEntity } from './fields/genPrismaFieldFromExt
 import { pascalCase } from 'change-case'
 
 export const genPrismaEntity = (
-	entity: Entity,
-	links: LinkedEntities[],
-	forShards = false,
+  entity: Entity,
+  links: LinkedEntities[],
+  forShards = false,
 ): string => {
-	const fields = [
+  const fields = [
 		...R.flatten(entity.fields.map((field) => genPrismaField(entity, field, forShards))),
 		...forShards ? [] : getLinksFromExternalEntities(entity, links)
 			.filter((el) => el.fromField.linkCategory === 'entity')
