@@ -7,6 +7,7 @@ import { getLinksFromExternalEntities } from '../../../links/getLinksFromExterna
 import { LinkedEntities } from '../../../types'
 import { genPrismaField } from './fields/genPrismaField'
 import { genPrismaFieldFromExternalEntity } from './fields/genPrismaFieldFromExternalEntity'
+import { pascalCase } from 'change-case'
 
 export const genPrismaEntity = (
   entity: Entity,
@@ -29,6 +30,15 @@ ${fields.join('\n')}${
           .map((fields) => `	@@unique([${fields.join(', ')}])`)
           .join('\n')
       : ''
+  }${
+    entity.indexes.length > 0
+    ? '\n' +
+      entity.indexes
+        .map(({fields, type}) => 
+          `	@@index([${fields.join(', ')}]${type ? `, type: ${pascalCase(type)}` : ''})`
+        )
+        .join('\n')
+    : ''
   }
 }
 `

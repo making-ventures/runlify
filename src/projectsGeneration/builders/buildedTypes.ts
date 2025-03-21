@@ -1,5 +1,6 @@
 import { HttpMethod } from './curlTypes'
 import { DocumentationOfDocument } from './docs/DocumentationOfDocument'
+import { Index } from './types'
 import Forms from './ui/Forms'
 
 export type ConfigVarScope =
@@ -197,6 +198,11 @@ export enum StringType {
   Json = 'json',
 }
 
+export enum IndexType {
+  BTree = 'bTree',
+  Hash = 'hash',
+}
+
 export type PlainStringField = BaseStringField & {
   stringType: 'plain'
 }
@@ -304,6 +310,7 @@ export type BaseSavableEntity = BaseEntity & {
   fields: Field[]
   // linkFields: LinkField[];
   uniqueConstraints: string[][]
+  indexes: Index[],
   forms: Forms
   predefinedElements: Record<string, any>[]
   devPerefinedElements: Record<string, any>[]
