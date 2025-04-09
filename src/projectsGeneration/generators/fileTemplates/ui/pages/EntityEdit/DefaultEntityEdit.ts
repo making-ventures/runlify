@@ -60,6 +60,7 @@ export const getTrivialEditComponent = (
 
 export const getLinkEditComponent = (
   entity: Entity,
+  linkedEntity: Entity,
   field: LinkField,
   type: 'create' | 'edit' | 'filter',
   additionalProps: string[] = [],
@@ -68,7 +69,7 @@ export const getLinkEditComponent = (
   return `<ReferenceInput${additionalProps.map(p => `\n  ${p}`)}
   source='${field.name}'
   reference='${field.externalEntity}'
-  sort={{field: '${entity.sortField}', order: '${entity.sortOrder}'}}
+  sort={{field: '${linkedEntity.sortField}', order: '${linkedEntity.sortOrder}'}}
   perPage={100}
   ${getFieldLabel(entity, field)}
 >
@@ -126,7 +127,7 @@ export const getEditComponent = (
       if (isImageFileRef(field)) {
         return `<FileInput source='${field.name}' type='image' />`;
       }
-      return getLinkEditComponent(entity, field, type, additionalProps, isDisabled);
+      return getLinkEditComponent(entity, linkedEntity, field, type, additionalProps, isDisabled);
     }
   }
 
@@ -156,7 +157,10 @@ export const getEditComponent = (
         if (['in', 'not_in'].includes(f)) {
           filters.push(getLinkArrayEditComponent(entity, field, type, additionalProps, postfix));
         } else {
-          filters.push(getLinkEditComponent(entity, field, type, additionalProps));
+          const linkedEntity = allEntities.get(field.externalEntity);
+          if (linkedEntity) {
+            filters.push(getLinkEditComponent(entity, linkedEntity, field, type, additionalProps));
+          }
         }
       } else {
         filters.push(getTrivialEditComponent(entity, field, type, additionalProps, postfix));
