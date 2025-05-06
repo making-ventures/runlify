@@ -1,5 +1,3 @@
-/* eslint-disable max-len */
-/* eslint-disable no-tabs */
 import * as R from 'ramda'
 import { pascalSingular } from '../../../../utils/cases'
 import { Entity } from '../../../builders'

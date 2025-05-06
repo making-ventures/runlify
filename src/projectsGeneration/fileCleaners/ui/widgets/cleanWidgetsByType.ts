@@ -4,8 +4,8 @@ import { readdirSync, statSync, unlinkSync } from "fs";
 import { camelCase } from "change-case";
 
 const patternByType = {
-  count: '(?<=^Count)(.*)(?=Widget\.tsx)',
-  list: '(?<=^List)(.*)(?=Widget\.tsx)'
+  count: '(?<=^Count)(.*)(?=Widget.tsx)',
+  list: '(?<=^List)(.*)(?=Widget.tsx)'
 }
 
 const cleanWidgetsByType = async (

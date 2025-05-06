@@ -6,7 +6,7 @@ import {
 import { generatedWarning } from '../../../../../utils'
 
 export const uiAppTmpl = (
-  { system: { defaultLanguage } }: ProjectWideGenerationArgs,
+  _: ProjectWideGenerationArgs,
   options: BootstrapEntityOptions = defaultBootstrapEntityOptions
 ) => `import * as React from 'react';
 import {useEffect, useRef, useState} from 'react';

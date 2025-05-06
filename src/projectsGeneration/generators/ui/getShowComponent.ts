@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { plural } from 'pluralize'
 import {
   Entity,
@@ -11,7 +10,7 @@ import { isImageFileRef, isMoneyField } from '../../metaUtils'
 import { getCompNameToShowScalar } from './componentNames/show/getCompNameToShowScalar'
 
 export const getFieldLabel = (entity: Entity, field: Field, postfix?: string) => postfix
-  ? `label=\{\`\$\{translate('${plural(entity.type)}.${entity.name}.fields.${field.name}')\} \$\{translate('app.postfixes.${postfix}')\}\`\}`
+  ? `label={\`\${translate('${plural(entity.type)}.${entity.name}.fields.${field.name}')} \${translate('app.postfixes.${postfix}')}\`}`
   : `label='${plural(entity.type)}.${entity.name}.fields.${field.name}'`
 
 export const getScalarShowComponent = (entity: Entity, field: ScalarField) => {

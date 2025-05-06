@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import {pascalSingular} from '../../../../../../utils/cases';
 import {
   getCompNamesToEditField,
@@ -146,9 +145,9 @@ export const getEditComponent = (
   }
 
   if (type == 'filter' && field.filters.length > 0) {
-    let filters: string[] = [];
+    const filters: string[] = [];
     field.filters.forEach((f) => {
-      let postfix = {source: '', label: ''};
+      const postfix = {source: '', label: ''};
       if (['in', 'not_in', 'lt', 'lte', 'gt', 'gte', 'defined', 'not_defined'].includes(f)) {
         postfix.source = `_${f}`;
         postfix.label = f;
@@ -233,8 +232,7 @@ export const uiDefaultEditTmpl = ({
 
   const dateFields = fieldsToWorkWith.filter(f => f.requiredOnInput !== false && ['datetime', 'date'].includes(f.type))
 
-  return `/* eslint-disable max-len */
-import React, {FC, useMemo, useCallback} from 'react';
+  return `import React, {FC, useMemo, useCallback} from 'react';
 import {
   ${R.uniq(reactAdminImports.map(el => `${el},`)).join(`
   `)}
@@ -249,7 +247,7 @@ import get${pascalSingular(entity.name)}Validation from '../get${pascalSingular(
   )}Validation';${entity.removableByUser ? `
 import {hasPermission} from '../../../../utils/permissions';` : ''}
 import {LoadingContext} from '../../../../contexts/LoadingContext';${withFileRef ? `
-import {FileInput} from \'../../../../uiLib/file/FileInput\';` : ''}${isAllowedToChange ? `
+import {FileInput} from '../../../../uiLib/file/FileInput';` : ''}${isAllowedToChange ? `
 import {AllowedToEdit} from '../../../../uiLib/AllowedToEdit';` : ''}${options.breadcrumb ?
     "\nimport {Breadcrumbs} from '../../../../raUiLib/Breadcrumbs';" : ''}
 ${options.skipWarningThisIsGenerated ? '' : `

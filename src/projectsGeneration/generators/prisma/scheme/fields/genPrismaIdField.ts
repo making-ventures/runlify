@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { IdField } from '../../../../builders'
 import { fieldIdTypeToPrismaType } from '../../fieldIdTypeToPrismaType'
 import { genPrismaDefault } from './genPrismaDefault'

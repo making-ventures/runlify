@@ -1,4 +1,3 @@
-/* eslint-disable no-lonely-if */
 import {
   ViewLinkField,
   TKeyFieldType,

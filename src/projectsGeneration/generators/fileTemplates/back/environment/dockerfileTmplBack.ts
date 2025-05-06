@@ -1,11 +1,7 @@
-/* eslint-disable max-len */
-// import { constantCase } from 'change-case'
 import { ProjectWideGenerationArgs } from '../../../../args'
 import { generatedWarning } from '../../../../utils'
 
 export const dockerfileTmplBack = ({
-  system: { prefix },
-  system,
   options,
 }: ProjectWideGenerationArgs) => `${options.skipWarningThisIsGenerated
     ? ''

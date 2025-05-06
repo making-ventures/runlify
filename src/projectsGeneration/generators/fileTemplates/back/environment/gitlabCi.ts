@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { constantCase } from 'change-case'
 import { ProjectWideGenerationArgs } from '../../../../args'
 import { generatedWarning } from '../../../../utils'
@@ -266,7 +265,7 @@ ${system.deployEnvironments
       --set "app.tag=\${TAG}"
       --set "ingress.host=\${HOST}"
       --set "style=\${STYLE}"
-      --set "back.enabled=$\{BACK_ENABLED}"
+      --set "back.enabled=\${BACK_ENABLED}"
       --set "ingress.enabled=\${INGRESS_ENABLED}"
       --set "metrics.enabled=\${METRICS_ENABLED}"
       --set "worker.enabled=\${WORKER_ENABLED}"

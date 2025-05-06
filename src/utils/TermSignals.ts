@@ -5,7 +5,6 @@ import { ChildProcess } from 'child_process'
 const SIGNALS_TO_HANDLE: NodeJS.Signals[] = ['SIGINT', 'SIGTERM', 'SIGHUP']
 
 class TermSignals {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private readonly terminateSpawnedProcessFuncHandlers: Record<string, any> = {}
   private readonly verbose: boolean = false
   public _exitCalled = false

@@ -1,9 +1,7 @@
-/* eslint-disable max-len */
 import { ProjectWideGenerationArgs } from '../../../../../../args'
 import { generatedWarning } from '../../../../../../utils'
 
 export const uiChartIngressTmpl = ({
-  system: { prefix },
   options,
 }: ProjectWideGenerationArgs) => `${
   options.skipWarningThisIsGenerated

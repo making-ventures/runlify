@@ -3,6 +3,6 @@
 set -e
 set -v
 
-# yarn lint
+yarn lint
 yarn build
 yarn test

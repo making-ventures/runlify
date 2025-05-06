@@ -3,7 +3,7 @@ import {ProjectWideGenerationArgs} from '../../../../../../args'
 import {IntegrationClient} from '../../../../../../builders/buildedTypes'
 
 const backIntegrationClientTmpl = (
-  {system}: ProjectWideGenerationArgs,
+  _: ProjectWideGenerationArgs,
   client: IntegrationClient
 ) => {
   return `import axios, {AxiosInstance} from 'axios';

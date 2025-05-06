@@ -75,13 +75,6 @@ import cleanFiles from './fileCleaners/cleanFiles'
 //  GitlabCi фронта (generateFrontGitlabCi)
 //  Helm чарты фронта (generateFrontHelm)
 
-export const generateBackSrcEntity = async (
-  _entityWideGenerationArgs: EntityWideGenerationArgs
-) => {
-  // log.info('generateBackSrcEntity');
-  // log.info(typeof entityWideGenerationArgs);
-}
-
 const generateHelpService = async (
   args: ProjectWideGenerationArgs,
   typesOnly = false
@@ -148,12 +141,6 @@ export const generateBackSrc = async (args: ProjectWideGenerationArgs) => {
     generateHelpService(args, true),
   ])
 
-  await Promise.all(
-    args.entities.map((entity) =>
-      generateBackSrcEntity(prepareEntityWideGenerationArgs(args, entity))
-    )
-  )
-
   generateBackIntegrationClients(args)
 }
 
@@ -171,18 +158,6 @@ export const generateBackIntegrationClients = async (
     writeFileIfNotExists(join(clientFolder, `${pascalCase(client.name)}Client.ts`), backIntegrationClientTmpl(args, client));
     write(join(clientFolder, `types.ts`), backIntegrationClientTypesTmpl(args, client));
   }
-}
-
-export const generateBackGitlabCi = async (
-  _args: ProjectWideGenerationArgs
-) => {
-  // log.info('generateBackGitlabCi');
-  // log.info(typeof args);
-}
-
-export const generateBackHelm = async (_args: ProjectWideGenerationArgs) => {
-  // log.info('generateBackHelm');
-  // log.info(typeof args);
 }
 
 export const generateBackEnvs = async (args: ProjectWideGenerationArgs) => {
@@ -434,8 +409,6 @@ export const generateBack = async (args: ProjectWideGenerationArgs) => {
 
   await Promise.all([
     generateBackSrc(args),
-    generateBackGitlabCi(args),
-    generateBackHelm(args),
     generateBackEnvs(args),
     generateBackDocs(args),
     generateBackElasticBootstrap(args),
@@ -574,25 +547,11 @@ export const generateFrontSrc = async (args: ProjectWideGenerationArgs) => {
   ])
 }
 
-export const generateFrontGitlabCi = async (
-  _args: ProjectWideGenerationArgs
-) => {
-  // log.info('generateFrontGitlabCi');
-  // log.info(typeof args);
-}
-
-export const generateFrontHelm = async (_args: ProjectWideGenerationArgs) => {
-  // log.info('generateFrontHelm');
-  // log.info(typeof args);
-}
-
 export const generateFront = async (args: ProjectWideGenerationArgs) => {
   // log.info('generateFront');
 
   await Promise.all([
     generateFrontSrc(args),
-    generateFrontGitlabCi(args),
-    generateFrontHelm(args),
   ])
 }
 

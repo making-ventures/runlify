@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { expect } from 'jest-without-globals'
 import { GraphQLNamedType, GraphQLSchema, printSchema } from 'graphql'
 import { getGraphTypesFromInputOutputModels } from './getGraphTypesFromInputOutputModels'

@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { pascal } from '../../../../../utils/cases'
 import { ProjectWideGenerationArgs } from '../../../../args'
 import { generatedWarning } from '../../../../utils'

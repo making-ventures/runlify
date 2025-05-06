@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { expect } from 'jest-without-globals'
 import { printSchema } from 'graphql'
 import { genGraphAdditionalServiceSchema } from './genGraphAdditionalServiceSchema'

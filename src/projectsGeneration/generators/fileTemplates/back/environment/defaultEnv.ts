@@ -1,4 +1,3 @@
-// import {constantCase} from 'change-case';
 import * as R from 'ramda'
 import { ProjectWideGenerationArgs } from '../../../../args'
 

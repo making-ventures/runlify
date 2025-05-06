@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { expect } from 'jest-without-globals'
 import { getPreparedModelsForGraph } from './getPreparedModelsForGraph'
 import AdditionalServiceBuilder from '../../../../builders/AdditionalServiceBuilder'

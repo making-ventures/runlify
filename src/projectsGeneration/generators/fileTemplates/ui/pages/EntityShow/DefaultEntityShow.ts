@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { plural } from 'pluralize'
 import { pascal, pascalSingular } from '../../../../../../utils/cases'
 import { EntityWideGenerationArgs } from '../../../../../args'
@@ -49,8 +48,7 @@ export const uiDefaultShowTmpl = ({
       )}Tab';`
   )
 
-  return `/* eslint-disable max-len */
-import React, {FC} from 'react';
+  return `import React, {FC} from 'react';
 import {
   Show,
   ShowProps,

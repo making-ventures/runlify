@@ -7,7 +7,7 @@ class ModelFieldBuilder extends BaseFieldBuilder {
   protected service: string;
   protected model: string;
   protected array = false;
-  protected category: 'model' = 'model';
+  protected category: 'model' = 'model' as const;
 
   constructor(
     service: string,

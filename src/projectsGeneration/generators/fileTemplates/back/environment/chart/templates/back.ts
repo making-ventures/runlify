@@ -3,7 +3,6 @@ import { ProjectWideGenerationArgs } from '../../../../../../args'
 import { generatedWarning } from '../../../../../../utils'
 
 export const chartBackTmpl = ({
-  system: { prefix },
   system,
   options,
 }: ProjectWideGenerationArgs) => `${

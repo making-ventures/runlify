@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { expect } from 'jest-without-globals'
 import { printGraphType } from './printGraphType'
 import CatalogBuilder from '../../builders/CatalogBuilder'

@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import SystemMetaBuilder from '../builders/SystemMetaBuilder'
 
 export const addAutogeneration = (system: SystemMetaBuilder) => {

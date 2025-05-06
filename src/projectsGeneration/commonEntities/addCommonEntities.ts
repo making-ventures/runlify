@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import SystemMetaBuilder from '../builders/SystemMetaBuilder';
 import addAuditLogs from './addAuditLogs';
 import addRefreshTokens from './addRefreshTokens';

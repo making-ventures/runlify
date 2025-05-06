@@ -86,13 +86,13 @@ export class InfoRegistryBuilder extends BaseSavableEntityBuilder {
     return this
   }
 
-  addField(
-    _: string,
-    __?: string,
-    ___: { isTitleField?: boolean } = {}
-  ): ScalarFieldBuilder {
-    throw new Error('Use addDimension or addResource')
-  }
+  // addField(
+  //   _: string,
+  //   __?: string,
+  //   ___: { isTitleField?: boolean } = {}
+  // ): ScalarFieldBuilder {
+  //   throw new Error('Use addDimension or addResource')
+  // }
 
   getFileds(): FieldBuilder[] {
     return [
@@ -103,9 +103,9 @@ export class InfoRegistryBuilder extends BaseSavableEntityBuilder {
     ]
   }
 
-  addLinkField(_: string, __: string): LinkFieldBuilder {
-    throw new Error('Use addDimensionLinkField or addResourceLinkField')
-  }
+  // addLinkField(_: string, __: string): LinkFieldBuilder {
+  //   throw new Error('Use addDimensionLinkField or addResourceLinkField')
+  // }
 
   addDimension(
     name: string,

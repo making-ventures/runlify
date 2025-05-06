@@ -2,8 +2,7 @@ import { pascalSingular } from '../../../../../../utils/cases'
 import { EntityWideGenerationArgs } from '../../../../../args'
 
 export const uiEntityShowIndexTmpl = ({ entity }: EntityWideGenerationArgs) => {
-  return `/* eslint-disable max-len */
-import React, {FC} from 'react';
+  return `import React, {FC} from 'react';
 import {
   ShowProps,
 } from 'react-admin';

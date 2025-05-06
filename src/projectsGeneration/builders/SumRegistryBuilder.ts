@@ -106,13 +106,13 @@ class SumRegistryBuilder extends BaseSavableEntityBuilder {
     }
   }
 
-  addField(
-    _: string,
-    __?: string,
-    ___: { isTitleField?: boolean } = {}
-  ): ScalarFieldBuilder {
-    throw new Error('Use addDimension or addResource')
-  }
+  // addField(
+  //   _: string,
+  //   __?: string,
+  //   ___: { isTitleField?: boolean } = {}
+  // ): ScalarFieldBuilder {
+  //   throw new Error('Use addDimension or addResource')
+  // }
 
   getFileds(): FieldBuilder[] {
     return [

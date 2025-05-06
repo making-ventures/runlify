@@ -4,8 +4,7 @@ import {ProjectWideGenerationArgs} from "../../../args";
 import {Entity} from "../../../builders";
 import {generatedWarning} from "../../../utils";
 
-const imports = `/* eslint-disable max-len */
-import * as React from 'react';
+const imports = `import * as React from 'react';
 import {Resource, Translate} from 'react-admin';
 import Loadable from '../shared/Loadable';
 import {hasPermission} from '../utils/permissions';

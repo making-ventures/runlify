@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { ProjectWideGenerationArgs } from '../../../../../args'
 import { BaseSavableEntity } from '../../../../../builders/buildedTypes'
 import { generatedWarning } from '../../../../../utils'

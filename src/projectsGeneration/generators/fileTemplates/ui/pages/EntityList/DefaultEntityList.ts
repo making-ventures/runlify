@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { pascalSingular } from '../../../../../../utils/cases'
 import { getCompNamesToShowField } from '../../../../ui/componentNames/show/getCompNamesToShowField'
 import * as R from 'ramda'
@@ -58,8 +57,7 @@ export const uiDefaultListTmpl = ({
     'registrarDepended' in entity &&
     entity.registrarDepended
 
-  return `/* eslint-disable max-len */
-import React, {FC} from 'react';
+  return `import React, {FC} from 'react';
 import {
   ${R.uniq(reactAdminImports).map((s) => s + ',').join(`
   `)}

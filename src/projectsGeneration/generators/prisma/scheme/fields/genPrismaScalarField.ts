@@ -1,5 +1,3 @@
-/* eslint-disable max-len */
-/* eslint-disable no-tabs */
 import { ScalarField } from '../../../../builders/buildedTypes'
 import { fieldTypeToPrismaType } from '../../fieldTypeToPrismaType'
 import { genPrismaDefault } from './genPrismaDefault'

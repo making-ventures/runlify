@@ -1,4 +1,3 @@
-/* eslint-disable no-tabs */
 import { expect } from 'jest-without-globals'
 import { genPrismaFieldFromExternalEntity } from './genPrismaFieldFromExternalEntity'
 import {baseField} from '../../../../dataForTests';

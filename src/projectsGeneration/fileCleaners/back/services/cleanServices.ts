@@ -14,7 +14,7 @@ export default async (
     'services',
   )
 
-  const pattern = '.*(?=Service\.ts)'
+  const pattern = '.*(?=Service.ts)'
   const listWidgetFilenameRegex = new RegExp(pattern, 'gum');
   const pagesDirContent = readdirSync(pagesDirPath);
 

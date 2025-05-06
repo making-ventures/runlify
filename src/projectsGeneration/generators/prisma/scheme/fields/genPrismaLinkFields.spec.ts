@@ -1,4 +1,3 @@
-/* eslint-disable no-tabs */
 import { expect } from 'jest-without-globals'
 import LinkFieldBuilder from '../../../../builders/fields/LinkFieldBuilder'
 import CatalogBuilder from '../../../../builders/CatalogBuilder'

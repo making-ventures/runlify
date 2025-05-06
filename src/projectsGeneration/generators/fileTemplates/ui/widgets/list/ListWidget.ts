@@ -1,7 +1,6 @@
 import {pascal, pascalPlural, pascalSingular, sentence} from '../../../../../../utils/cases';
 import { EntityWideGenerationArgs } from '../../../../../args'
 import { generatedWarning, pad1, pad5 } from '../../../../../utils'
-// import { isMarkdownField } from '../../../../../metaUtils'
 
 export const uiListWidgetTmpl = ({
   entity,
@@ -16,8 +15,7 @@ export const uiListWidgetTmpl = ({
 </div>`
     )
 
-  return `/* eslint-disable max-len */
-import React, {
+  return `import React, {
   FC,
 } from 'react';
 import {

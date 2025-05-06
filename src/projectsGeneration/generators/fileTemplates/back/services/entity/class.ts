@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import {
   pascalPlural,
   pascalSingular,
@@ -85,7 +84,7 @@ export const prismaServiceBaseClassTmpl = ({
     extendedType = 'ElasticOnlyService';
   }
 
-  let additionalImports: string[] = [];
+  const additionalImports: string[] = [];
   let registries = '';
 
   if (isDocument) {

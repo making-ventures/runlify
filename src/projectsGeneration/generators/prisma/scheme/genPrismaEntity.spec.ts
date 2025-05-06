@@ -1,4 +1,3 @@
-/* eslint-disable no-tabs */
 import { expect } from 'jest-without-globals'
 import CatalogBuilder from '../../../builders/CatalogBuilder'
 import { genPrismaEntity } from './genPrismaEntity'

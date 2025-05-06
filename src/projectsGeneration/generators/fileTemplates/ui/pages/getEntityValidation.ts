@@ -1,11 +1,8 @@
-/* eslint-disable max-len */
 import { pascalSingular } from '../../../../../utils/cases'
 import { EntityWideGenerationArgs } from '../../../../args'
 import { Field } from '../../../../builders/buildedTypes'
 import { isMoneyField } from '../../../../metaUtils'
 import { generatedWarning } from '../../../../utils'
-
-// import {fieldTypeToTsType} from '../../../fieldTypeToTsType';
 
 const getFieldValidation = (field: Field): string | null => {
   if (field.requiredOnInput) {

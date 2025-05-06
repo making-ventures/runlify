@@ -1,5 +1,3 @@
-/* eslint-disable max-len */
-/* eslint-disable no-tabs */
 import { pascalSingular } from '../../../../../utils/cases'
 import { Entity, LinkField } from '../../../../builders'
 import { fieldIdTypeToPrismaType } from '../../fieldIdTypeToPrismaType'

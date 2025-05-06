@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { pascalSingular, pascalPlural } from '../../../../../../../utils/cases'
 import { EntityWideGenerationArgs } from '../../../../../../args'
 
