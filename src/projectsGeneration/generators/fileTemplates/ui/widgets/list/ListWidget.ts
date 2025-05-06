@@ -15,7 +15,8 @@ export const uiListWidgetTmpl = ({
 </div>`
     )
 
-  return `import React, {
+  return `/* eslint-disable max-len */
+import React, {
   FC,
 } from 'react';
 import {

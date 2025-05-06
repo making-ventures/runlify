@@ -57,7 +57,8 @@ export const uiDefaultListTmpl = ({
     'registrarDepended' in entity &&
     entity.registrarDepended
 
-  return `import React, {FC} from 'react';
+  return `/* eslint-disable max-len */
+import React, {FC} from 'react';
 import {
   ${R.uniq(reactAdminImports).map((s) => s + ',').join(`
   `)}

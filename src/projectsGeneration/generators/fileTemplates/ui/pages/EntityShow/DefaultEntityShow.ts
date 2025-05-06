@@ -48,7 +48,8 @@ export const uiDefaultShowTmpl = ({
       )}Tab';`
   )
 
-  return `import React, {FC} from 'react';
+  return `/* eslint-disable max-len */
+import React, {FC} from 'react';
 import {
   Show,
   ShowProps,

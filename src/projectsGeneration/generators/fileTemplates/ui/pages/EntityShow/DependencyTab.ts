@@ -53,7 +53,8 @@ export const uiEntityShowDependencyTabTmpl = (
     throw new Error(`There is no "${toLink.entityOwnerName}" entity`)
   }
 
-  return `import React, {FC} from 'react';
+  return `/* eslint-disable max-len */
+import React, {FC} from 'react';
 import {
   ${R.uniq(reactAdminImports).map(addComma).join(`
   `)}

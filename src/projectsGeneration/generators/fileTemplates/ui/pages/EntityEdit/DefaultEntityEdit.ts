@@ -232,7 +232,8 @@ export const uiDefaultEditTmpl = ({
 
   const dateFields = fieldsToWorkWith.filter(f => f.requiredOnInput !== false && ['datetime', 'date'].includes(f.type))
 
-  return `import React, {FC, useMemo, useCallback} from 'react';
+  return `/* eslint-disable max-len */
+import React, {FC, useMemo, useCallback} from 'react';
 import {
   ${R.uniq(reactAdminImports.map(el => `${el},`)).join(`
   `)}

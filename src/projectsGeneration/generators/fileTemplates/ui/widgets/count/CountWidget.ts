@@ -5,7 +5,8 @@ import { generatedWarning } from '../../../../../utils'
 export const uiCountWidgetTmpl = ({
   entity,
   options,
-}: EntityWideGenerationArgs) => `import React, {
+}: EntityWideGenerationArgs) => `/* eslint-disable max-len */
+import React, {
   FC,
 } from 'react';
 import NumberWidget, {

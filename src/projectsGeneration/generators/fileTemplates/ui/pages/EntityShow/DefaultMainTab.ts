@@ -27,7 +27,8 @@ export const uiEntityShowDefaultMainTabTmpl = ({
     ),
   ]
 
-  return `import React, {FC} from 'react';
+  return `/* eslint-disable max-len */
+import React, {FC} from 'react';
 import {
   ${R.uniq(reactAdminImports.map((el) => `${el},`)).join(`
   `)}

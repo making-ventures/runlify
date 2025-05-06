@@ -55,7 +55,8 @@ export const uiDefaultCreateTmpl = ({
     getTsDefaultTypeValueExpression(f)
   )
 
-  return `import React, {FC, useMemo, useCallback} from 'react';
+  return `/* eslint-disable max-len */
+import React, {FC, useMemo, useCallback} from 'react';
 import {
   ${R.uniq(reactAdminImports.map((el) => `${el},`)).join(`
   `)}
