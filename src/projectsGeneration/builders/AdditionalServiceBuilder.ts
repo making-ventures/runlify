@@ -117,53 +117,9 @@ class AdditionalServiceBuilder extends BaseBuilder implements MethodsModelsHolde
     return this.inputModels;
   }
 
-  // getInputModelsWithLinkedGeneral() {
-  //   // const inputModelNames = [
-  //   //   ...this.getMethods().flatMap(m => m.getReturnModel().getFields().filter(f => f.getCategory() === 'model').map(f => (f as ModelFieldBuilder).getModel())),
-  //   // ];
-  //   // const inputModelsFromGeneralModels = this.generalModels.filter(m => inputModelNames.includes(m.name));
-
-  //   return {
-  //     input: this.inputModels,
-  //   };
-  // }
-
-// export const genGraphAdditionalServiceSchema = (service: AdditionalService) => {
-//   const queries = service.methods.filter((method) => method.methodType === MethodType.Query);
-//   const mutations = service.methods.filter((method) => method.methodType === MethodType.Mutation);
-
-//   log.info(`names: ${queries.flatMap(q => q.argsModel.fields.filter(f => f.category === 'model').map(f => f.name)).join(', ')}`);;
-
-//   const modelNamesFromArgs = [
-//     ...queries.flatMap(q => getModelNamesFromFirlds(q.argsModel.fields)),
-//     ...mutations.flatMap(q => getModelNamesFromFirlds(q.argsModel.fields)),
-//   ];
-//   const modelNamesFromResults = [
-//     ...queries.flatMap(q => getModelNamesFromFirlds(q.returnModel.fields)),
-//     ...mutations.flatMap(q => getModelNamesFromFirlds(q.returnModel.fields)),
-//   ];
-
-//   const argsModelNames = service.models.map(m => m.name).filter(n => modelNamesFromArgs.includes(n));
-
-//   const argsModels = service.models.filter(m => argsModelNames.includes(m.name));
-//   const outputModels = service.models.filter(m => returlModelNames.includes(m.name));
-
   getOutputModels() {
     return this.outputModels;
   }
-
-  // getOutputModelsWithLinkedGeneral() {
-  //   // // const getModelNamesFromFirlds = (fields: TsModelField[]) =>
-  //   // //   fields.filter(f => f.category === 'model').map(f => (f as ModelField).model);
-  //   // const resultModelNames = [
-  //   //   ...this.getMethods().flatMap(m => m.getReturnModel().getFields().filter(f => f.getCategory() === 'model').map(f => (f as ModelFieldBuilder).getModel())),
-  //   // ];
-  //   // const resultModelsFromGeneralModels = this.generalModels.filter(m => resultModelNames.includes(m.name));
-
-  //   return {
-  //     output: this.outputModels,
-  //   };
-  // }
 
   build(): AdditionalService {
     return {
