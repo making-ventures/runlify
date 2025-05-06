@@ -2,12 +2,30 @@ import {
   GraphQLBoolean,
   GraphQLFloat,
   GraphQLInt,
+  GraphQLNamedInputType,
+  GraphQLNamedOutputType,
   GraphQLString,
 } from 'graphql'
 import { GraphQLDateTime, GraphQLDate, GraphQLBigInt, GraphQLJSON } from 'graphql-scalars'
-import { Field } from '../../builders/buildedTypes'
+import { Field, ModelField } from '../../builders/buildedTypes'
+import { GraphFieldPurpose } from './fields/genGraphField';
 
-export const fieldTypeToGraphScalar = (field: Field) => {
+export const fieldTypeToGraphScalar = <T extends GraphQLNamedInputType | GraphQLNamedOutputType>(
+  field: Field | ModelField,
+  purpose: GraphFieldPurpose,
+  externalTypes: T[] = [],
+) => {
+  if (field.category === 'model') {
+    const typeName = field.model;
+    const type = externalTypes.find(t => t.name === typeName);
+
+    if (!type) {
+      throw new Error(`Can't find "${typeName}" type. Types: ${externalTypes.map(t => t.name). join(', ')}.`);
+    }
+
+    return type;
+  }
+
   switch (field.type) {
     case 'int':
       return GraphQLInt

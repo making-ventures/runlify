@@ -8,6 +8,6 @@ export const genGraphType = (entity: Entity) => {
     name: pascalSingular(entity.name),
     fields: entity.fields
       .filter((f) => !f.hidden)
-      .reduce((acc, cur) => ({ ...acc, ...genGraphField(cur, 'entity') }), {}),
+      .reduce((acc, cur) => ({ ...acc, ...genGraphField(cur, 'input') }), {}),
   })
 }
