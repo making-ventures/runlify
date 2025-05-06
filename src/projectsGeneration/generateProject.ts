@@ -17,8 +17,6 @@ import { writeFileIfNotExists } from './utils'
 import { uiAdditionalRoutesTmpl } from './generators/fileTemplates/ui/additionalRoutes'
 import { uiGetAdditionalMenuTmpl } from './generators/fileTemplates/ui/getAdditionalMenu'
 import { uiMetaPageTmpl } from './generators/fileTemplates/ui/MetaPage'
-import { graphMetaTypesTmpl } from './generators/fileTemplates/back/graph/meta/typeDefs'
-import { graphMetaResolversTmpl } from './generators/fileTemplates/back/graph/meta/resolvers'
 import { additionalServicesTmpl } from './generators/fileTemplates/back/services/AdditionalServices'
 import { System } from './builders/buildedTypes'
 import { uiTranslationsLangDocsTmpl } from './generators/fileTemplates/ui/i18n/lang/uiLangDocsTmpl'
@@ -663,13 +661,13 @@ const generateProject = async (
     ),
   ])
 
-  const graphMetaServiceDir = join(
-    prjBackSrcPrefixedDir,
-    'graph',
-    'services',
-    'meta'
-  )
-  write(`${graphMetaServiceDir}/baseTypeDefs.ts`, graphMetaTypesTmpl())
+  // const graphMetaServiceDir = join(
+  //   prjBackSrcPrefixedDir,
+  //   'graph',
+  //   'services',
+  //   'meta'
+  // )
+  // write(`${graphMetaServiceDir}/baseTypeDefs.ts`, graphMetaTypesTmpl())
 
   await genGraphSchemesByLocalGenerator(opts)
 
@@ -716,10 +714,10 @@ const generateProject = async (
   // Graph
   const graphDir = join(prjBackSrcPrefixedDir, 'graph')
 
-  write(
-    `${graphMetaServiceDir}/baseResolvers.ts`,
-    graphMetaResolversTmpl()
-  )
+  // write(
+  //   `${graphMetaServiceDir}/baseResolvers.ts`,
+  //   // graphMetaResolversTmpl()
+  // )
 
   // // Context
   // // src/dc/services/context.ts
@@ -747,7 +745,7 @@ const generateProject = async (
     join(servicesDir, 'IntegrationClients.ts'),
     genIntegrationClientsTmpl(args)
   )
-  
+
   write(
     join(servicesDir, 'integrationClientConstrictors.ts'),
     genIntegrationClientConstrictorsTmpl(args)
