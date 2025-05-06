@@ -1,34 +1,48 @@
-import { GraphQLList, GraphQLNonNull, GraphQLObjectType } from 'graphql'
+import {
+  GraphQLFieldConfigArgumentMap,
+  GraphQLList,
+  GraphQLNamedType,
+  GraphQLNonNull,
+  GraphQLObjectType,
+  GraphQLScalarType,
+} from 'graphql'
 import { pascalSingular } from '../../../utils/cases'
-import { AdditionalServiceArgsModel, AdditionalServiceReturnModel, ScalarField } from '../../builders/buildedTypes'
+import { AdditionalService, AdditionalServiceArgsModel, AdditionalServiceReturnModel, ScalarField } from '../../builders/buildedTypes'
 import { genGraphField } from './fields/genGraphField'
 import { GraphQLVoid } from 'graphql-scalars'
 import * as R from 'ramda'
 import { fieldTypeToGraphScalar } from './fieldTypeToGraphScalar'
 
-export const genGraphArgsModelType = (model: AdditionalServiceArgsModel) => {
+export const genGraphArgsModelType = (
+  model: AdditionalServiceArgsModel,
+  externalTypes: GraphQLNamedType[],
+): GraphQLFieldConfigArgumentMap | undefined => {
   return model.fields.length ?
     R.fromPairs(model.fields.map(f => [
       f.name,
       {
         type: f.requiredOnInput
-          ? new GraphQLNonNull(fieldTypeToGraphScalar(f as ScalarField))
-          : fieldTypeToGraphScalar(f as ScalarField),
+          ? new GraphQLNonNull(fieldTypeToGraphScalar(f as ScalarField, 'input', externalTypes) as GraphQLScalarType)
+          : fieldTypeToGraphScalar(f as ScalarField, 'input', externalTypes) as GraphQLScalarType,
       },
     ])) :
     undefined
 }
 
-export const genGraphReturnModelType = (model: AdditionalServiceReturnModel) => {
+export const genGraphReturnModelType_ = (
+  service: AdditionalService,
+  model: AdditionalServiceReturnModel,
+  types: GraphQLNamedType[] = [],
+) => {
   if (!model.fields.length) {
     return GraphQLVoid;
   }
 
   const objectType = new GraphQLObjectType({
-    name: pascalSingular(model.name),
+    name: `${pascalSingular(service.name)}${pascalSingular(model.name)}`,
     fields: model.fields
       .filter((f) => !f.hidden)
-      .reduce((acc, cur) => ({ ...acc, ...genGraphField(cur, 'entity') }), {}),
+      .reduce((acc, cur) => ({ ...acc, ...genGraphField(cur, 'result', types) }), {}),
   })
 
   return model.array ? new GraphQLList(objectType) : objectType;

@@ -7,7 +7,13 @@ import BaseModelBuilder from './BaseModelBuilder';
 export interface MethodsModelsHolder {
   name: string
   getMethods: () => MethodBuilder[]
-  getModels: () => BaseModelBuilder[]
+  getAllModels: () => BaseModelBuilder[]
+  getGeneralModels: () => BaseModelBuilder[]
+  getInputModels: () => BaseModelBuilder[]
+  getOutputModels: () => BaseModelBuilder[]
+  addGeneralModel(name: string, title?: string): BaseModelBuilder
+  addInputModel(name: string, title?: string): BaseModelBuilder
+  addOutputModel(name: string, title?: string): BaseModelBuilder
 }
 
 class MethodBuilder extends BaseBuilder {
@@ -28,7 +34,7 @@ class MethodBuilder extends BaseBuilder {
     title?: string
   ) {
     super(name, defaultLanguage, {singular: title})
-    
+
     this.service = service;
     this.argsModel = new ArgsModelBuilder(service, name, defaultLanguage);
     this.returnModel = new ReturnModelBuilder(service, name, defaultLanguage);

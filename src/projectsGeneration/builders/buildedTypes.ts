@@ -273,14 +273,10 @@ export type ViewLinkField = GeneralLinkField & { linkCategory: 'view' }
 export type LinkField = EntityLinkField | ViewLinkField
 
 export type ModelField = BaseField & {
-  category: 'model'
-  array: boolean
+  category: 'model';
+  array: boolean;
+  service?: string;
   model: string;
-  // name: string
-  // title: Record<string, string>
-  // needFor: string
-  // updatable: boolean
-  // required: boolean
 }
 
 export type TsModelField =
@@ -334,7 +330,9 @@ export type BaseSavableEntity = BaseEntity & {
   allowedToChange: string
   permissions: Permission[]
   pages: Page[]
-  models: TsModel[]
+  generalModels: TsModel[];
+  inputModels: TsModel[];
+  outputModels: TsModel[];
   methods: ServiceMethod[]
   labels: string[]
 }
@@ -412,9 +410,11 @@ export type ServiceMethod = BaseEntity & {
 }
 
 export type AdditionalService = BaseEntity & {
-  type: 'additionalService'
-  models: TsModel[]
-  methods: ServiceMethod[]
+  type: 'additionalService';
+  generalModels: TsModel[];
+  inputModels: TsModel[];
+  outputModels: TsModel[];
+  methods: ServiceMethod[];
 }
 
 export type BaseMenuItem = BaseEntity & {
@@ -557,7 +557,9 @@ export type System = {
   roles: Role[]
   menuItems: MenuItem[]
   pages: Page[]
-  models: TsModel[]
+  generalModels: TsModel[]
+  inputModels: TsModel[]
+  outputModels: TsModel[]
   methods: ServiceMethod[]
   labels: string[]
   additionalServices: AdditionalService[]

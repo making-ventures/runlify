@@ -41,16 +41,20 @@ class BaseModelBuilder extends BaseBuilder {
     if (this.fields.some((f) => f.name === name)) {
       throw new Error(`There is already field with name "${name}" in args model`)
     }
-    
-    if (!this.service.getModels().some((m) => m.name === model)) {
+
+    if (!this.service.getAllModels().some((m) => m.name === model)) {
       throw new Error(`There is no model with name "${model}" in "${this.service.name}"`)
     }
 
-    const field = new ModelFieldBuilder(model, name, this.defaultLanguage, title)
+    const field = new ModelFieldBuilder(this.service.name, model, name, this.defaultLanguage, title)
 
     this.fields.push(field)
 
     return field
+  }
+
+  getFields() {
+    return this.fields;
   }
 
   delField(name: string) {

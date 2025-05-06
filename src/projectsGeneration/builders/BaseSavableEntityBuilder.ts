@@ -65,7 +65,9 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsMo
   allowedToChange: string = ''
   pages: PageBuilder[] = [];
   protected methods: MethodBuilder[] = []
-  protected models: BaseModelBuilder[] = []
+  protected generalModels: BaseModelBuilder[] = []; // models that may be used as input or output
+  protected inputModels: BaseModelBuilder[] = []; // models that may be used only as input
+  protected outputModels: BaseModelBuilder[] = []; // models that may be used only as output
   labels: string[] = [];
 
   constructor(name: string, defaultLanguage: string, title?: {singular?: string, plural?: string}) {
@@ -206,7 +208,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsMo
 
   getLinkFileds(): LinkFieldBuilder[] {
     return this.getFileds().filter(
-      (field) => field.category === 'link'
+      (field) => field.getCategory() === 'link'
     ) as LinkFieldBuilder[]
   }
 
@@ -502,16 +504,44 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsMo
     return field
   }
 
-  addModel(
+  addGeneralModel(
     name: string,
     title?: string,
   ): BaseModelBuilder {
-    if (this.models.some((f) => f.name === name)) {
+    if (this.getAllModels().some((f) => f.name === name)) {
       throw new Error(`There is already field with name "${name}" in args model`)
     }
 
     const model = new BaseModelBuilder(this, name, title ?? name, this.defaultLanguage)
-    this.models.push(model)
+    this.generalModels.push(model)
+
+    return model
+  }
+
+  addInputModel(
+    name: string,
+    title?: string,
+  ): BaseModelBuilder {
+    if (this.getAllModels().some((f) => f.name === name)) {
+      throw new Error(`There is already field with name "${name}" in args model`)
+    }
+
+    const model = new BaseModelBuilder(this, name, title ?? name, this.defaultLanguage)
+    this.inputModels.push(model)
+
+    return model
+  }
+
+  addOutputModel(
+    name: string,
+    title?: string,
+  ): BaseModelBuilder {
+    if (this.getAllModels().some((f) => f.name === name)) {
+      throw new Error(`There is already field with name "${name}" in args model`)
+    }
+
+    const model = new BaseModelBuilder(this, name, title ?? name, this.defaultLanguage)
+    this.outputModels.push(model)
 
     return model
   }
@@ -520,10 +550,26 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsMo
     return this.methods;
   }
 
-  getModels() {
-    return this.models;
+  getAllModels(): BaseModelBuilder[] {
+    return [
+      ...this.inputModels,
+      ...this.outputModels,
+      ...this.generalModels,
+    ]
   }
-  
+
+  getGeneralModels() {
+    return this.generalModels;
+  }
+
+  getInputModels() {
+    return this.inputModels;
+  }
+
+  getOutputModels() {
+    return this.outputModels;
+  }
+
   addLabel(label: string) {
     if (this.labels.some(l => l === label)) {
       throw new Error(`There is already label "${label}" in "${this.name}" entity`);
@@ -573,7 +619,9 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsMo
       allowedToChange: this.allowedToChange,
       permissions: this.permissions.map(p => p.build()),
       pages: this.pages.map(p => p.build()),
-      models: this.models.map(m => m.build()),
+      generalModels: this.generalModels.map(m => m.build()),
+      inputModels: this.inputModels.map(m => m.build()),
+      outputModels: this.outputModels.map(m => m.build()),
       methods: this.methods.map(m => m.build()),
       labels: this.labels,
     }

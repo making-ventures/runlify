@@ -7,13 +7,13 @@ export const genGraphLinkFilter = (
 ): Record<string, { type: GraphQLType }> => {
   let fields = {
     [field.name]: {
-      type: fieldTypeToGraphScalar(field),
+      type: fieldTypeToGraphScalar(field, 'input'),
     },
     [`${field.name}_in`]: {
-      type: new GraphQLList(fieldTypeToGraphScalar(field)),
+      type: new GraphQLList(fieldTypeToGraphScalar(field, 'input')),
     },
     [`${field.name}_not_in`]: {
-      type: new GraphQLList(fieldTypeToGraphScalar(field)),
+      type: new GraphQLList(fieldTypeToGraphScalar(field, 'input')),
     },
   }
 

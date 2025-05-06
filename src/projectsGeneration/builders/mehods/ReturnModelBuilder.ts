@@ -5,8 +5,8 @@ import {MethodsModelsHolder} from './MethodBuilder';
 class ReturnModelBuilder extends BaseModelBuilder {
   protected array = false;
 
-  constructor(service: MethodsModelsHolder, queryMethodName: string, defaultLanguage: string) {
-    super(service, `${queryMethodName}Model`, `Основная модель результата ${service.name}`, defaultLanguage)
+  constructor(service: MethodsModelsHolder, methodName: string, defaultLanguage: string) {
+    super(service, `${methodName}Result`, `Основная модель результата ${service.name}`, defaultLanguage)
   }
 
   setArray(array: boolean) {

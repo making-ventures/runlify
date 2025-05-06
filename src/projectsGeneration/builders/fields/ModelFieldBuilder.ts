@@ -4,10 +4,13 @@ import {
 import BaseFieldBuilder from './BaseFieldBuilder'
 
 class ModelFieldBuilder extends BaseFieldBuilder {
+  protected service: string;
   protected model: string;
   protected array = false;
+  protected category: 'model' = 'model';
 
   constructor(
+    service: string,
     model: string,
     name: string,
     defaultLanguage: string,
@@ -15,6 +18,7 @@ class ModelFieldBuilder extends BaseFieldBuilder {
   ) {
     super(name, defaultLanguage, title)
 
+    this.service = service;
     this.model = model;
   }
 
@@ -24,14 +28,19 @@ class ModelFieldBuilder extends BaseFieldBuilder {
     return this;
   }
 
+  getModel() {
+    return this.model;
+  }
+
   build(): ModelField {
     const base = super.build()
 
     return {
       ...base,
-      category: 'model',
+      category: this.category,
       array: this.array,
       model: this.model,
+      service: this.service,
     }
   }
 }

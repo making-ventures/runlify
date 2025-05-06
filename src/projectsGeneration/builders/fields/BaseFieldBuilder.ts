@@ -10,9 +10,11 @@ import {
   NumberType,
 } from '../buildedTypes'
 
+// ToDo: make all field protected
+
 abstract class BaseFieldBuilder {
   defaultLanguage: string
-  category: 'trivial' | 'link' = 'trivial'
+  protected category: 'trivial' | 'link' | 'model' = 'trivial'
   type: FieldType = 'int'
   meaning?: Meaning
   name: string
@@ -82,17 +84,20 @@ abstract class BaseFieldBuilder {
 
     return this
   }
+
   setNeedFor(needFor: string) {
     this.needFor = needFor
 
     return this
   }
+
   setTitle(title: string, language?: string) {
     const resultedLangiage = language ? language : this.defaultLanguage
     this.title[resultedLangiage] = title
 
     return this
   }
+
   setTitles(title: Record<string, string>) {
     this.title = R.fromPairs(
       R.toPairs(title).map(([key, value]) => [
@@ -103,6 +108,7 @@ abstract class BaseFieldBuilder {
 
     return this
   }
+
   setType(type: FieldType) {
     this.assertFiltersAllowedForType(this.filters, type);
     this.type = type 
@@ -150,6 +156,7 @@ abstract class BaseFieldBuilder {
 
     return this
   }
+
   setRequiredOnInput(value: boolean, defaultValueExpression?: string) {
     this.requiredOnInput = value
     if (defaultValueExpression) {
@@ -194,21 +201,25 @@ abstract class BaseFieldBuilder {
 
     return this
   }
+
   setSearchable(value = true) {
     this.searchable = value
 
     return this
   }
+
   setUpdatable(value = true) {
     this.updatable = value
 
     return this
   }
+
   setUpdatableByUser() {
     this.updatableByUser = true
 
     return this
   }
+
   setNotUpdatableByUser(
     defaultValueExpression?: string,
     defaultBackendValueExpression?: string
@@ -225,6 +236,7 @@ abstract class BaseFieldBuilder {
 
     return this
   }
+
   setDefaultValueExpression(value: string) {
     if (['null', 'undefined'].includes(value)) {
       throw new Error(
@@ -238,6 +250,7 @@ abstract class BaseFieldBuilder {
 
     return this
   }
+
   setDefaultBackendValueExpression(value: string) {
     if (['null', 'undefined'].includes(value)) {
       throw new Error(
@@ -249,11 +262,13 @@ abstract class BaseFieldBuilder {
 
     return this
   }
+
   setDefaultDbValue(defaultDbValue: DefaultDbValue) {
     this.defaultDbValue = defaultDbValue
 
     return this
   }
+
   // setConstantOnCreate(value: ConstantOnCreate) {
   //   if (this.type !== 'datetime' && this.type !== 'int') {
   //     throw new Error('Operation not permitted')
@@ -279,6 +294,7 @@ abstract class BaseFieldBuilder {
 
   //   return this
   // }
+
   // setConstantOnUpdate(value: ConstantOnUpdate) {
   //   if (this.type !== 'datetime' && this.type !== 'int') {
   //     throw new Error('Operation not permitted')
@@ -303,6 +319,7 @@ abstract class BaseFieldBuilder {
 
   //   return this
   // }
+
   setRequired(value = true) {
     this.required = value
 
@@ -312,39 +329,46 @@ abstract class BaseFieldBuilder {
 
     return this
   }
+
   setNotRequired() {
     this.required = false
 
     return this
   }
+
   setSharded (value = true) {
     this.sharded = value
 
     return this
   }
+
   setFilters (filters: Filter[]) {
     this.assertFiltersAllowedForType(filters, this.type);
     this.filters = filters;
-    
+
     return this;
   }
+
   addFilters (filters: Filter[]) {
     this.assertFiltersAllowedForType(filters, this.type);
     this.filters.push(...filters);
 
     return this;
   }
+
   addFilter (filter: Filter) {
     this.assertFiltersAllowedForType([filter], this.type);
     this.filters.push(filter);
 
     return this;
-  } 
+  }
+
   delFilter (filter: Filter) {
     this.filters = this.filters.filter((item: Filter) => item !== filter);
 
     return this;
   }
+
   assertFiltersAllowedForType (filters: Filter[], type: FieldType) {
     const allowedFiltersForType: Record<FieldType, string[]> = {
       int: ['equal', 'defined', 'not_defined', 'in', 'not_in', 'lte', 'gte', 'lt', 'gt'],
@@ -355,7 +379,7 @@ abstract class BaseFieldBuilder {
       string: ['equal', 'defined', 'not_defined', 'in', 'not_in'],
       bool: ['equal', 'defined', 'not_defined'],
     }
-    
+
     filters.some((f) => {
       if(!allowedFiltersForType[type].includes(f)) {
         throw new Error(`Filter '${f}' is not allowed to field type ${type}`);
@@ -367,6 +391,10 @@ abstract class BaseFieldBuilder {
         throw new Error(`Filters 'in' and 'not_in' allowed only for linked fields`);
       }
     });
+  }
+
+  getCategory() {
+    return this.category;
   }
 }
 
