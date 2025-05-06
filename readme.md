@@ -15,6 +15,8 @@ npm login
 npm whoami
 yarn test
 
+newVersion.sh
+
 yarn run build
 
 npm publish
