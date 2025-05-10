@@ -9,8 +9,7 @@ const imports = `/* eslint-disable max-len */
 import * as React from 'react';
 import {Resource, Translate} from 'react-admin';
 import Loadable from '../shared/Loadable';
-import {hasPermission} from '../utils/permissions';
-`
+import {hasPermission} from '../utils/permissions';`
 
 function uiResources(options: BootstrapEntityInnerOptions, chunks: number[]) {
   const imports = chunks.map(num => `import {resourcesChunk${num}} from './resourcesChunk${num}';`).join("\n");
