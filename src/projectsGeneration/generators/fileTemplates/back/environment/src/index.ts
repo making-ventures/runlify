@@ -2,7 +2,7 @@ import {
   BootstrapEntityOptions,
   defaultBootstrapEntityOptions,
 } from '../../../../../types'
-import { generatedWarning } from '../../../../../utils'
+import {printWarningIfRequired} from '../../../../../utils'
 
 export const environmentIndexTmpl = (
   options: BootstrapEntityOptions = defaultBootstrapEntityOptions
@@ -11,13 +11,7 @@ import {createContext} from './adm/services/context';
 import express from 'express';
 import defaultContainer from './adm/services/defaultContainer';
 import initEndpoints from './initEndpoints';
-${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `
-// ${generatedWarning}
-`
-}
+${printWarningIfRequired(options)}
 const app = express();
 
 const start = async () => {

@@ -2,7 +2,7 @@ import {
   BootstrapEntityOptions,
   defaultBootstrapEntityOptions,
 } from '../../../../../../types'
-import { generatedWarning } from '../../../../../../utils'
+import {printWarningIfRequired} from '../../../../../../utils'
 
 export const prismaGetterTmpl = (
   options: BootstrapEntityOptions = defaultBootstrapEntityOptions
@@ -10,13 +10,7 @@ export const prismaGetterTmpl = (
 import {getConfig} from '../config';
 import log from '../log';
 import {addParamsToDatabaseUri} from '../utils/addParamsToPgUri';
-${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `
-// ${generatedWarning}
-`
-}
+${printWarningIfRequired(options)}
 let prisma: PrismaClient | null = null;
 
 export const getPrisma = async (connectionType: 'write' | 'readOnly') => {

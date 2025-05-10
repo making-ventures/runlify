@@ -1,19 +1,13 @@
 import { constantCase } from 'change-case'
 import { ProjectWideGenerationArgs } from '../../../../../../args'
-import { generatedWarning } from '../../../../../../utils'
+import {printWarningIfRequired} from '../../../../../../utils'
 
 export const chartBackTmpl = ({
   system,
   options,
-}: ProjectWideGenerationArgs) => `${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `
-# ${generatedWarning}
-
+}: ProjectWideGenerationArgs) => `${printWarningIfRequired(options, 'hash')}
 {{- if .Values.back.enabled }}
-`
-}apiVersion: v1
+apiVersion: v1
 kind: Service
 metadata:
   name: {{ $.Values.global.projectName }}-{{ $.Values.global.deployKind }}
@@ -133,4 +127,4 @@ spec:
               fieldPath: metadata.namespace
 ---
 {{- end }}
-`
+`.trimStart()

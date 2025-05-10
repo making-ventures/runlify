@@ -2,7 +2,7 @@ import {
   BootstrapEntityOptions,
   defaultBootstrapEntityOptions,
 } from '../../../../../../../types'
-import { generatedWarning } from '../../../../../../../utils'
+import {printWarningIfRequired} from '../../../../../../../utils'
 
 export const getQueueTmpl = (
   options: BootstrapEntityOptions = defaultBootstrapEntityOptions
@@ -10,13 +10,7 @@ export const getQueueTmpl = (
 import {makeWorkerUtils, WorkerUtils} from 'graphile-worker';
 import log from '../../log';
 import {addParamsToDatabaseUri} from '../../utils/addParamsToPgUri';
-${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `
-// ${generatedWarning}
-`
-}
+${printWarningIfRequired(options)}
 let queue: WorkerUtils | null = null;
 
 const getQueue = async () => {

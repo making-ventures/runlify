@@ -1,6 +1,6 @@
 import { pascalSingular } from '../../../../utils/cases'
 import { ProjectWideGenerationArgs } from '../../../args'
-import { generatedWarning, pad1 } from '../../../utils'
+import {printWarningIfRequired, pad1} from '../../../utils'
 
 export const initEntities = ({
   system: { defaultLanguage },
@@ -11,13 +11,7 @@ export const initEntities = ({
 
   return `import {${contextName}} from '../../adm/services/types';
 import Entity from '../../types/Entity';
-${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `
-// ${generatedWarning}
-`
-}
+${printWarningIfRequired(options)}
 const initEntities = async (ctx: ${contextName}) => {
   await ctx.service('entities').createMany([
 ${entities

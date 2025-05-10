@@ -1,6 +1,6 @@
 import { pascal, pascalSingular } from '../../../../../../utils/cases'
 import { EntityWideGenerationArgs } from '../../../../../args'
-import { generatedWarning } from '../../../../../utils'
+import {printWarningIfRequired} from '../../../../../utils'
 
 export const uiCountWidgetTmpl = ({
   entity,
@@ -16,13 +16,7 @@ import {
   gql,
 } from '@apollo/client';
 import {${pascalSingular(entity.name)}Filter} from '../../../generated/graphql';
-${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `
-// ${generatedWarning}
-`
-}
+${printWarningIfRequired(options)}
 interface Count${pascal(entity.name)}WidgetProps extends
 Omit<NumberWidgetProps, 'request' | 'resultToValue'> {
   filter?: ${pascalSingular(entity.name)}Filter;

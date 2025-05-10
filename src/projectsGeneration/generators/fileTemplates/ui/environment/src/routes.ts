@@ -1,6 +1,6 @@
 import { pascalCase } from 'change-case'
 import { ProjectWideGenerationArgs } from '../../../../../args'
-import { generatedWarning } from '../../../../../utils'
+import {printWarningIfRequired} from '../../../../../utils'
 
 const uiRoutesTmpl = ({
   system,
@@ -12,13 +12,7 @@ import {
 import Loadable from '../shared/Loadable';
 import Guard from '../raUiLib/Guard';
 import additionalRoutes from './additionalRoutes';
-${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `
-// ${generatedWarning}
-`
-}
+${printWarningIfRequired(options)}
 const LoadableDashboard = Loadable(() => import('./Dashboard'));
 const LoadableFunctions = Loadable(() => import('./functions/Functions'));
 // const LoadableResourcesPage = Loadable(() => import('./ResourcesPage'));

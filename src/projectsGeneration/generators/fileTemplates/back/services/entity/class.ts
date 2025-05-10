@@ -6,7 +6,7 @@ import {
 } from '../../../../../../utils/cases'
 import { singular } from 'pluralize'
 import { EntityWideGenerationArgs } from '../../../../../args'
-import {addComma, generatedWarning, newStrBefore, pad} from '../../../../../utils'
+import {addComma, printWarningIfRequired, newStrBefore, pad} from '../../../../../utils'
 import { Document } from '../../../../../builders'
 
 export const prismaServiceBaseClassTmpl = ({
@@ -129,13 +129,7 @@ import * as R from 'ramda';` : ''}
 import config from './config';
 import {DefinedFieldsInRecord, DefinedRecord, PartialFieldsInRecord} from '../../../types/utils';${additionalImports.length ?
     additionalImports.map(newStrBefore).join('\n') : ''}
-${
-    options.skipWarningThisIsGenerated
-      ? ''
-      : `
-// ${generatedWarning}
-`
-  }${
+${printWarningIfRequired(options)}${
     entity.type === 'infoRegistry' && entity.period !== 'notPeriodic'
       ? `
 export type Slice${pascalPlural(entity.name)}Filter = QueryAll${pascalPlural(

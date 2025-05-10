@@ -3,7 +3,7 @@ import {
   defaultBootstrapEntityOptions,
 } from '../../../../../../types'
 import { AdditionalService, MethodType, ScalarField } from '../../../../../../builders/buildedTypes'
-import { generatedWarning } from '../../../../../../utils'
+import {printWarningIfRequired} from '../../../../../../utils'
 import { pascalCase } from 'change-case'
 import fieldTypeToGraphScalarStringified from '../../../../../graph/fieldTypeToGraphScalarStringified'
 
@@ -14,13 +14,7 @@ export const uiGetAdditionalMethodsTmpl = (
 
   if (!additionalServices.length) {
     return `import {ApolloClient} from '@apollo/client';
-${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `
-// ${generatedWarning}
-`
-}
+${printWarningIfRequired(options)}
 const getAdditionalMethods = (
   _client: ApolloClient<unknown>,
 ) => ({});
@@ -36,13 +30,7 @@ export default getAdditionalMethods;
     .filter(m => m.models.length);
 
   return `import {ApolloClient, gql} from '@apollo/client';${serviceWithModelsToImport.length ? `\nimport {\n${serviceWithModelsToImport.flatMap(s => s.models.map(m => `  Mutation${pascalCase(s.service.name)}${pascalCase(m.name)},\n`)).join('')}} from '../generated/graphql';` : ''}
-${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `
-// ${generatedWarning}
-`
-}
+${printWarningIfRequired(options)}
 const getAdditionalMethods = (
   client: ApolloClient<unknown>,
 ) => ({

@@ -1,6 +1,6 @@
 import {pascal} from '../../../../../utils/cases'
 import {ProjectWideGenerationArgs} from '../../../../args'
-import {generatedWarning} from '../../../../utils'
+import {printWarningIfRequired} from '../../../../utils'
 
 const graphBaseServicesTmpl = ({
   system: {
@@ -20,13 +20,7 @@ const graphBaseServicesTmpl = ({
     )}Service/${pascal(s.name)}Service';\n`
 ).join('')}
 import {HelpService} from './HelpService/HelpService';
-${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `
-// ${generatedWarning}
-`
-}
+${printWarningIfRequired(options)}
 export interface BaseServices {
   help: HelpService;
   ${[

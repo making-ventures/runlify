@@ -1,6 +1,6 @@
 import { ProjectWideGenerationArgs } from '../../../../../args'
 import { BaseSavableEntity } from '../../../../../builders/buildedTypes'
-import { generatedWarning } from '../../../../../utils'
+import {printWarningIfRequired} from '../../../../../utils'
 
 const uiTranslationsForServicesOfSavablesTmpl = (
   { options, system: { defaultLanguage } }: ProjectWideGenerationArgs,
@@ -8,13 +8,7 @@ const uiTranslationsForServicesOfSavablesTmpl = (
   lang: string,
   postfix: string
 ) => `/* eslint-disable max-len */
-${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `
-// ${generatedWarning}
-`
-}
+${printWarningIfRequired(options)}
 const ${lang}${postfix} = ${
   entities.length > 0
     ? `{

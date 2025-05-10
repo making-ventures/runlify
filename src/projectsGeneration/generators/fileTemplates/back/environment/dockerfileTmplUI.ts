@@ -1,13 +1,9 @@
 import { ProjectWideGenerationArgs } from '../../../../args'
-import { generatedWarning } from '../../../../utils'
+import {printWarningIfRequired} from '../../../../utils'
 
 export const dockerfileTmplUI = ({
   options,
-}: ProjectWideGenerationArgs) => `${options.skipWarningThisIsGenerated
-    ? ''
-    : `# ${generatedWarning}
-`
-}
+}: ProjectWideGenerationArgs) => `${printWarningIfRequired(options, 'hash')}
 FROM registry.gitlab.com/making.ventures/images/node-with-tools AS builder
 
 # docker build --tag aloyal-ui .
@@ -43,4 +39,4 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 EXPOSE 80
 
 CMD /app/run.sh
-`
+`.trimStart()

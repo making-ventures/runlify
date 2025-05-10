@@ -4,7 +4,7 @@ import {
   defaultBootstrapEntityOptions,
 } from '../../../../../../types'
 import { Entity } from '../../../../../../builders/buildedTypes'
-import { generatedWarning } from '../../../../../../utils'
+import {printWarningIfRequired} from '../../../../../../utils'
 import { getKeyField } from '../../../../../../metaUtils'
 
 export const uiDataProviderTmpl = (
@@ -21,13 +21,7 @@ import {ApolloClient} from '@apollo/client';
 import getCustomMethods from './getCustomMethods';
 import getAdditionalMethods from './getAdditionalMethods';
 import {DataProvider} from './types';
-${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `
-// ${generatedWarning}
-`
-}
+${printWarningIfRequired(options)}
 const schema = sch.__schema;
 
 const getGqlResource = (resource: string) => {

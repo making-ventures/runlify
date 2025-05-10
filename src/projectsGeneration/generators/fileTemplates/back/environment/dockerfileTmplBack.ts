@@ -1,13 +1,9 @@
 import { ProjectWideGenerationArgs } from '../../../../args'
-import { generatedWarning } from '../../../../utils'
+import {printWarningIfRequired} from '../../../../utils'
 
 export const dockerfileTmplBack = ({
   options,
-}: ProjectWideGenerationArgs) => `${options.skipWarningThisIsGenerated
-    ? ''
-    : `# ${generatedWarning}
-`
-}
+}: ProjectWideGenerationArgs) => `${printWarningIfRequired(options, 'hash')}
 FROM registry.gitlab.com/making.ventures/images/node-with-tools AS builder
 
 # docker build --tag aloyal-back .
@@ -39,4 +35,4 @@ ENV PROD_PORT=3000
 EXPOSE 3000
 
 CMD ["node", "dist/index.js"]
-`
+`.trimStart()

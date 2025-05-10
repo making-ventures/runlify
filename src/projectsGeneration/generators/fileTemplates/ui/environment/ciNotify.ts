@@ -1,16 +1,10 @@
 import { ProjectWideGenerationArgs } from '../../../../args'
-import { generatedWarning } from '../../../../utils'
+import {printWarningIfRequired} from '../../../../utils'
 
 export const uiCiNotifyTmpl = ({
   options
 }: ProjectWideGenerationArgs) => `#!/bin/bash
-${
-    options.skipWarningThisIsGenerated
-      ? ''
-      : `
-# ${generatedWarning}
-  `
-  }
+${printWarningIfRequired(options, 'hash')}
 TIME="10"
 TELEGRAM_URL="https://api.telegram.org/bot$NOTIFY_TELEGRAM_BOT_TOKEN/sendMessage"
 DISCORD_URL="$NOTIFY_DISCORD_WEBHOOK_URL"

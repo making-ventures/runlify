@@ -8,7 +8,7 @@ import * as R from 'ramda'
 import { pascal } from '../../../../../../utils/cases'
 import { getShowComponent } from '../../../../ui/getShowComponent'
 import { Entity } from '../../../../../builders/buildedTypes'
-import { addComma, pad4, generatedWarning } from '../../../../../utils'
+import { addComma, pad4, printWarningIfRequired } from '../../../../../utils'
 import {isMarkdownField} from "../../../../../metaUtils"
 
 export const uiEntityShowDependencyTabTmpl = (
@@ -64,13 +64,7 @@ import {
 import DateField from '../../../../../uiLib/DateField';`
       : ''
   }
-${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `
-// ${generatedWarning}
-`
-}
+${printWarningIfRequired(options)}
 const ${pascal(entity.name)}${pascal(
     toLink.fromField.name
   )}Tab: FC<Omit<TabProps, 'children'>> = (props) => {

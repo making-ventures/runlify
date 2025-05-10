@@ -34,7 +34,7 @@ export const generateAdditionalService = async (
   //   const generatedClassService = prismaServiceBaseClassTmpl(serviceWideGenerationArgs)
   //   await write(servicePath, generatedClassService)
   // }
-  
+
   await write(
     join(serviceDir, 'types.ts'),
     backAdditionalServiceTypesTmpl(serviceWideGenerationArgs)

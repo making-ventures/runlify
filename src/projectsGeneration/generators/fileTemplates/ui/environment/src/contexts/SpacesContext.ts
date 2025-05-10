@@ -1,6 +1,6 @@
 import { pascal } from '../../../../../../../utils/cases'
 import { ProjectWideGenerationArgs } from '../../../../../../args'
-import { generatedWarning } from '../../../../../../utils'
+import {printWarningIfRequired} from '../../../../../../utils'
 
 export const uiSpacesContextTmpl = ({
   system: { prefix },
@@ -17,13 +17,7 @@ export const uiSpacesContextTmpl = ({
 import {
   envConfig,
 } from '../config/envConfig';
-${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `
-// ${generatedWarning}
-`
-}
+${printWarningIfRequired(options)}
 export enum Space {
   ${pascal(prefix)} = '${pascal(prefix)}',
   Demo = 'Demo',

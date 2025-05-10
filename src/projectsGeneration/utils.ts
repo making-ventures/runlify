@@ -1,6 +1,13 @@
 import {exists, write} from 'fs-jetpack'
+import {BootstrapEntityOptions} from '../types';
 
 export const generatedWarning = 'DO NOT EDIT! THIS IS GENERATED FILE'
+
+export const printWarningIfRequired = (options: BootstrapEntityOptions, commentType: 'slash' | 'hash' = 'slash') => options.skipWarningThisIsGenerated
+  ? ''
+  : `
+${commentType === 'slash' ? '//' : '#'} ${generatedWarning}
+`;
 
 export const writeFileIfNotExists = async (
   path: string,

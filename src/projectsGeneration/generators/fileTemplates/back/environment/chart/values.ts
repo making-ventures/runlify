@@ -1,18 +1,12 @@
 import { paramCase } from 'change-case'
 import { ProjectWideGenerationArgs } from '../../../../../args'
-import { generatedWarning } from '../../../../../utils'
+import {printWarningIfRequired} from '../../../../../utils'
 
 export const chartValuesTmpl = ({
   system: { prefix },
   system,
   options,
-}: ProjectWideGenerationArgs) => `${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `
-# ${generatedWarning}
-`
-}
+}: ProjectWideGenerationArgs) => `${printWarningIfRequired(options, 'hash')}
 global:
   env: noName
   clusterName: noName

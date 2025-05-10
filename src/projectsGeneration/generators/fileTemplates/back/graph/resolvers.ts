@@ -4,7 +4,7 @@ import {
   camelPlural,
 } from '../../../../../utils/cases'
 import { EntityWideGenerationArgs } from '../../../../args'
-import { generatedWarning } from '../../../../utils'
+import {printWarningIfRequired} from '../../../../utils'
 
 export const backBaseResolversTmpl = ({
   entity,
@@ -24,13 +24,7 @@ export const backBaseResolversTmpl = ({
 }
 } from '../../../../generated/graphql';
 import {Context} from '../../../services/types';
-${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `
-// ${generatedWarning}
-`
-}
+${printWarningIfRequired(options)}
 const queryResolvers: Resolvers = {
   Query: {
     ${pascalSingular(entity.name)}: (_, {id}, {context}: {context: Context}) =>

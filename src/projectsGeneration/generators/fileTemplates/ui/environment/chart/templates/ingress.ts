@@ -1,15 +1,10 @@
 import { ProjectWideGenerationArgs } from '../../../../../../args'
-import { generatedWarning } from '../../../../../../utils'
+import {printWarningIfRequired} from '../../../../../../utils'
 
 export const uiChartIngressTmpl = ({
   options,
-}: ProjectWideGenerationArgs) => `${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `
-# ${generatedWarning}
-`
-}apiVersion: networking.k8s.io/v1
+}: ProjectWideGenerationArgs) => `${printWarningIfRequired(options, 'hash')}
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ $.Values.global.projectName }}-{{ $.Values.global.deployKind }}
@@ -53,4 +48,4 @@ spec:
   - hosts:
     - {{ $.Values.ingress.domains.app }}.{{ $.Values.global.env }}.apps.{{ $.Values.global.clusterName }}.{{ $.Values.ingress.host }}
     secretName: {{ $.Values.ingress.domains.app }}.{{ $.Values.global.env }}.apps.{{ $.Values.global.clusterName }}.{{ $.Values.ingress.host }}-tls
-`
+`.trimStart()

@@ -1,19 +1,13 @@
 import { constantCase } from 'change-case'
 import { ProjectWideGenerationArgs } from '../../../../args'
-import { generatedWarning } from '../../../../utils'
+import {printWarningIfRequired} from '../../../../utils'
 
 export const uiGitlabCiTmpl = ({
   system: { prefix },
   system,
   options,
 }: ProjectWideGenerationArgs) => `image: node:20
-${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `
-# ${generatedWarning}
-`
-}
+${printWarningIfRequired(options, 'hash')}
 stages:
   - check
   - previous-image

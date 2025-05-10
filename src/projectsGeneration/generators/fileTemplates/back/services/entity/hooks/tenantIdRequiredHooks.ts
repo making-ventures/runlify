@@ -1,6 +1,6 @@
 import { EntityWideGenerationArgs } from '../../../../../../args'
 import { pascalPlural, pascalSingular } from '../../../../../../../utils/cases'
-import { generatedWarning } from '../../../../../../utils'
+import {printWarningIfRequired} from '../../../../../../utils'
 
 export const tenantIdRequiredHooksTmpl = ({
   options,
@@ -21,13 +21,7 @@ import {
   StrictCreate${pascalSingular(entity.name)}Args,
   StrictUpdate${pascalSingular(entity.name)}Args,
 } from '../${pascalPlural(entity.name)}Service';
-${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `
-// ${generatedWarning}
-`
-}
+${printWarningIfRequired(options)}
 export const changeListFilter = async (
   ctx: Context,
   args: QueryAll${pascalPlural(entity.name)}Args,

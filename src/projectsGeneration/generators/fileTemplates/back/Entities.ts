@@ -1,17 +1,12 @@
 import { camelSingular, pascalSingular } from '../../../../utils/cases'
 import { ProjectWideGenerationArgs } from '../../../args'
-import { generatedWarning, pad1 } from '../../../utils'
+import {printWarningIfRequired, pad1} from '../../../utils'
 
 // todo: can delete
 export const Entities = ({
   entities,
   options,
-}: ProjectWideGenerationArgs) => `${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `// ${generatedWarning}
-`
-}
+}: ProjectWideGenerationArgs) => `${printWarningIfRequired(options)}
 enum Entity {
 ${entities
   .map(
@@ -23,4 +18,4 @@ ${entities
 }
 
 export default Entity;
-`
+`.trimStart()

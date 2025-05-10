@@ -6,7 +6,7 @@ import {
 } from '../EntityEdit/DefaultEntityEdit'
 import { getCompNamesToEditField } from '../../../../ui/componentNames/edit/getCompNamesToEditField'
 import { EntityWideGenerationArgs } from '../../../../../args'
-import { generatedWarning, pad1, pad } from '../../../../../utils'
+import { printWarningIfRequired, pad1, pad } from '../../../../../utils'
 import { getKeyField, isImageFileRef, isMarkdownField, isMultilineField } from '../../../../../metaUtils'
 
 export const uiDefaultCreateTmpl = ({
@@ -81,19 +81,13 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import get${pascalSingular(entity.name)}Validation from '../get${pascalSingular(
     entity.name
   )}Validation';
-import {LoadingContext} from '../../../../contexts/LoadingContext';
-${
+import {LoadingContext} from '../../../../contexts/LoadingContext';${
   withFileRef
-    ? "import {FileInput} from '../../../../uiLib/file/FileInput';\n"
+    ? "\nimport {FileInput} from '../../../../uiLib/file/FileInput';"
     : ''
 }${options.breadcrumb ?
-    "import {Breadcrumbs} from '../../../../raUiLib/Breadcrumbs';\n" : ''}
-${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `// ${generatedWarning}
-`
-}
+    "\nimport {Breadcrumbs} from '../../../../raUiLib/Breadcrumbs';" : ''}
+${printWarningIfRequired(options)}
 const defaultValues = ${initialValues.length === 0 ? '{}' : `{
 ${initialValues.map(f => `${f.name}: ${getTsDefaultTypeValueExpression(f)},`).map(pad(1)).join('\n')}
 }`};

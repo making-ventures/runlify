@@ -1,14 +1,9 @@
 import { singular } from 'pluralize'
 import { pascal, pascalSingular } from '../../../../utils/cases'
 import { EntityWideGenerationArgs } from '../../../args'
-import { generatedWarning, pad1 } from '../../../utils'
+import {printWarningIfRequired, pad1} from '../../../utils'
 
-export const enumTmpl = ({ entity, options }: EntityWideGenerationArgs) => `${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `// ${generatedWarning}
-`
-}
+export const enumTmpl = ({ entity, options }: EntityWideGenerationArgs) => `${printWarningIfRequired(options)}
 enum ${pascalSingular(entity.name)} {
 ${entity.predefinedElements
   .map((el) => `${pascal(el.id)} = '${el.id}',`)
@@ -17,4 +12,4 @@ ${entity.predefinedElements
 }
 
 export default ${pascal(singular(entity.name))};
-`
+`.trimStart()

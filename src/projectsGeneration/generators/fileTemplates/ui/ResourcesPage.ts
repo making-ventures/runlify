@@ -1,6 +1,6 @@
 import { pascalPlural } from '../../../../utils/cases'
 import { ProjectWideGenerationArgs } from '../../../args'
-import { generatedWarning } from '../../../utils'
+import {printWarningIfRequired} from '../../../utils'
 import { plural } from 'pluralize'
 
 export const uiResourcesPageTmpl = ({
@@ -16,13 +16,7 @@ import {
 } from '@apollo/client';
 import {Title, useTranslate} from 'react-admin';
 import Grid from '@mui/material/Grid';
-${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `
-// ${generatedWarning}
-`
-}
+${printWarningIfRequired(options)}
 const ResourcesPage: FC = () => {
   const translate = useTranslate();
 

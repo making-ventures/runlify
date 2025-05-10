@@ -1,5 +1,5 @@
 import { EntityWideGenerationArgs } from '../../../../args'
-import { generatedWarning } from '../../../../utils'
+import {printWarningIfRequired} from '../../../../utils'
 
 export const uiEntityIconTmpl = ({
   options,
@@ -7,10 +7,4 @@ export const uiEntityIconTmpl = ({
 }: EntityWideGenerationArgs) => `export {default} from '@mui/icons-material/${
   entity.materialUiIcon
 }';
-${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `
-// ${generatedWarning}
-`
-}`
+${printWarningIfRequired(options)}`

@@ -1,6 +1,6 @@
 import { pascalPlural, pascalSingular } from '../../../../../utils/cases'
 import { EntityWideGenerationArgs } from '../../../../args'
-import { generatedWarning } from '../../../../utils'
+import {printWarningIfRequired} from '../../../../utils'
 
 export const backBasePermissionToGraphqlTmpl = ({
   entity,
@@ -12,13 +12,7 @@ export const backBasePermissionToGraphqlTmpl = ({
     entity.name
   )}Service/${pascalPlural(entity.name)}Service';
 import {PermissionToGraphql} from '../../permissionsToGraphql';
-${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `
-// ${generatedWarning}
-`
-}
+${printWarningIfRequired(options)}
 const ${
     entity.name
   }BasePermissionToGraphql:

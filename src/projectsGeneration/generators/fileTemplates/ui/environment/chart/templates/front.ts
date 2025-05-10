@@ -1,17 +1,12 @@
 import { constantCase } from 'change-case'
 import { ProjectWideGenerationArgs } from '../../../../../../args'
-import { generatedWarning } from '../../../../../../utils'
+import {printWarningIfRequired} from '../../../../../../utils'
 
 export const uiChartFrontTmpl = ({
   system,
   options,
-}: ProjectWideGenerationArgs) => `${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `
-# ${generatedWarning}
-`
-}apiVersion: v1
+}: ProjectWideGenerationArgs) => `${printWarningIfRequired(options, 'hash')}
+apiVersion: v1
 kind: Service
 metadata:
   name: {{ $.Values.global.projectName }}-{{ $.Values.global.deployKind }}
@@ -123,4 +118,4 @@ spec:
             fieldRef:
               fieldPath: metadata.namespace
 ---
-`
+`.trimStart()

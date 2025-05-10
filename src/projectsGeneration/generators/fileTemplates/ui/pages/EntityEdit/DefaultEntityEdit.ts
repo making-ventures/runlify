@@ -6,7 +6,7 @@ import * as R from 'ramda';
 import {Entity, Field, LinkField} from '../../../../../builders/buildedTypes';
 import {getCompNameToEditScalar} from '../../../../ui/componentNames/edit/getCompNameToEditScalar';
 import {EntityWideGenerationArgs} from '../../../../../args';
-import { generatedWarning, pad } from '../../../../../utils'
+import {pad, printWarningIfRequired} from '../../../../../utils'
 import {isImageFileRef, isMarkdownField, isMoneyField, isMultilineField} from '../../../../../metaUtils';
 import {getFieldLabel} from '../../../../ui/getShowComponent';
 
@@ -251,9 +251,7 @@ import {LoadingContext} from '../../../../contexts/LoadingContext';${withFileRef
 import {FileInput} from '../../../../uiLib/file/FileInput';` : ''}${isAllowedToChange ? `
 import {AllowedToEdit} from '../../../../uiLib/AllowedToEdit';` : ''}${options.breadcrumb ?
     "\nimport {Breadcrumbs} from '../../../../raUiLib/Breadcrumbs';" : ''}
-${options.skipWarningThisIsGenerated ? '' : `
-// ${generatedWarning}
-`}
+${printWarningIfRequired(options)}
 const DefaultToolbar = (props: ToolbarProps) => {${entity.removableByUser ? `
   const {permissions} = usePermissions<string[]>();
 ` : ''}

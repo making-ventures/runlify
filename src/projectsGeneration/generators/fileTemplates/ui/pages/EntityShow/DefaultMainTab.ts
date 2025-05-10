@@ -2,7 +2,7 @@ import { getCompNamesToShowField } from '../../../../ui/componentNames/show/getC
 import * as R from 'ramda'
 import { getShowComponent } from '../../../../ui/getShowComponent'
 import { EntityWideGenerationArgs } from '../../../../../args'
-import { pad3, generatedWarning, pad2 } from '../../../../../utils'
+import { pad3, printWarningIfRequired, pad2 } from '../../../../../utils'
 import {isMarkdownField} from "../../../../../metaUtils";
 
 export const uiEntityShowDefaultMainTabTmpl = ({
@@ -39,14 +39,8 @@ import {
 import DateField from '../../../../uiLib/DateField';`
       : ''
   }
-import {Grid} from '@mui/material';
-${entity.fields.some(isMarkdownField) ? 'import ReactMarkdownField from \'../../../../uiLib/ReactMarkdownField\';\n' : ''}
-${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `// ${generatedWarning}
-`
-}
+import {Grid} from '@mui/material';${entity.fields.some(isMarkdownField) ? '\nimport ReactMarkdownField from \'../../../../uiLib/ReactMarkdownField\';' : ''}
+${printWarningIfRequired(options)}
 const DefaultMainTab: FC<Omit<TabProps, 'children'>> = (props) => {
   return (<Tab {...props}>
     <Grid container spacing={2}>

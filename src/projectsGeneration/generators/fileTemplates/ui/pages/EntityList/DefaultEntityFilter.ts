@@ -4,7 +4,7 @@ import { getEditComponent } from '../EntityEdit/DefaultEntityEdit'
 import { getCompNamesToEditField } from '../../../../ui/componentNames/edit/getCompNamesToEditField'
 import { EntityWideGenerationArgs } from '../../../../../args'
 import { getEntityField } from '../../../../../builders/utils/accessFunctions'
-import { addComma, pad3, generatedWarning } from '../../../../../utils'
+import { addComma, pad3, printWarningIfRequired } from '../../../../../utils'
 
 export const uiDefaultFilterTmpl = ({
   allEntities,
@@ -67,13 +67,7 @@ import DateInput from '../../../../uiLib/DateInput';`
 import {SortedFilter} from '../../../../uiLib/SortedFilters';`
       : ''
   }
-${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `
-// ${generatedWarning}
-`
-}
+${printWarningIfRequired(options)}
 const Default${pascalSingular(entity.name)}Filter: FC<any> = (props) => {${useTranslate ? `\n  const translate = useTranslate();` : ''}
   return (
     <${options.useSortedFilter ? 'SortedFilter' : 'Filter'} {...props}>${

@@ -1,5 +1,5 @@
 import { ProjectWideGenerationArgs } from '../../../../../args'
-import { generatedWarning } from '../../../../../utils'
+import {printWarningIfRequired} from '../../../../../utils'
 
 const uiTranslationsLangTmpl = (
   { options, system: { defaultLanguage } }: ProjectWideGenerationArgs,
@@ -7,13 +7,7 @@ const uiTranslationsLangTmpl = (
   lang: string,
   postfix: string
 ) => `/* eslint-disable max-len */
-${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `
-// ${generatedWarning}
-`
-}
+${printWarningIfRequired(options)}
 const ${lang}${postfix} = ${
   entities.length > 0
     ? `{

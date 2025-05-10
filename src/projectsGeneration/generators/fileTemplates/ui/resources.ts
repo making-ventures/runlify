@@ -2,7 +2,8 @@ import {plural} from "pluralize";
 import {pascalSingular} from "../../../../utils/cases";
 import {ProjectWideGenerationArgs} from "../../../args";
 import {Entity} from "../../../builders";
-import {generatedWarning} from "../../../utils";
+import {printWarningIfRequired} from "../../../utils";
+import { BootstrapEntityInnerOptions } from "../../../../types";
 
 const imports = `/* eslint-disable max-len */
 import * as React from 'react';
@@ -11,34 +12,33 @@ import Loadable from '../shared/Loadable';
 import {hasPermission} from '../utils/permissions';
 `
 
-function uiResources(chunks: number[]) {
+function uiResources(options: BootstrapEntityInnerOptions, chunks: number[]) {
   const imports = chunks.map(num => `import {resourcesChunk${num}} from './resourcesChunk${num}';`).join("\n");
-  return `// ${generatedWarning}
-import {Translate} from 'react-admin';
+  return `import {Translate} from 'react-admin';
 ${imports}
-
+${printWarningIfRequired(options)}
 export function getResources(translate: Translate, permissions: string[]) {
   return permissions ? [
 ${chunks.map(num => `    ...resourcesChunk${num}(translate, permissions),`).join("\n")}
   ] : [];
 }
-`
+`.trimStart()
 }
 
 
-export function uiResourcesTmpl({entities}: ProjectWideGenerationArgs) {
+export function uiResourcesTmpl({entities, options}: ProjectWideGenerationArgs) {
   const left = entities.slice(0, entities.length / 2);
   const right = entities.slice(entities.length / 2);
   return {
-    resources: uiResources([0, 1]),
-    resourcesChunk0: genChunk(0, left),
-    resourcesChunk1: genChunk(1, right),
+    resources: uiResources(options, [0, 1]),
+    resourcesChunk0: genChunk(options, 0, left),
+    resourcesChunk1: genChunk(options, 1, right),
   }
 }
 
-function genChunk(num: number, entities: Entity[]) {
-  return `// ${generatedWarning}
-${imports}
+function genChunk(options: BootstrapEntityInnerOptions, num: number, entities: Entity[]) {
+  return `${imports}
+${printWarningIfRequired(options)}
 ${entities.map((m) => `const Loadable${pascalSingular(m.name)}Show = Loadable(() => import('./pages/${m.name}/${pascalSingular(m.name)}Show'));${m.updatableByUser ? `
 const Loadable${pascalSingular(m.name)}Edit = Loadable(() => import('./pages/${m.name}/${pascalSingular(m.name)}Edit'));` : ""}${m.creatableByUser ? `
 const Loadable${pascalSingular(m.name)}Create = Loadable(() => import('./pages/${m.name}/${pascalSingular(m.name)}Create'));` : ""}
@@ -59,5 +59,5 @@ ${entities.map((entity) => `    <Resource
     />,`).join('\n')}
   ];
 }
-`;
+`.trimStart();
 }

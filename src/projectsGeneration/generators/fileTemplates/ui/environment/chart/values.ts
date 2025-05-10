@@ -1,16 +1,10 @@
 import { ProjectWideGenerationArgs } from '../../../../../args'
-import { generatedWarning } from '../../../../../utils'
+import {printWarningIfRequired} from '../../../../../utils'
 
 export const uiChartValuesTmpl = ({
   system: { prefix },
   options,
-}: ProjectWideGenerationArgs) => `${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `
-# ${generatedWarning}
-`
-}
+}: ProjectWideGenerationArgs) => `${printWarningIfRequired(options, 'hash')}
 global:
   env: noName
   clusterName: noName

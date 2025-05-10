@@ -1,6 +1,6 @@
 import { pascal } from '../../../../../utils/cases'
 import { ProjectWideGenerationArgs } from '../../../../args'
-import { generatedWarning } from '../../../../utils'
+import {printWarningIfRequired} from '../../../../utils'
 
 const graphServiceConstrictorsTmpl = ({
   system: {
@@ -20,13 +20,7 @@ const graphServiceConstrictorsTmpl = ({
 import {ServiceConstrictors, BaseServiceConstrictors} from './types';
 import additionalServiceConstrictors from './additionalServiceConstrictors';
 import integrationClientConstrictors from './integrationClientConstrictors';
-${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `
-// ${generatedWarning}
-`
-}
+${printWarningIfRequired(options)}
 export const baseServiceConstrictors: BaseServiceConstrictors = {
   help: getHelpService,
 ${entities.map((m) => `  ${m.name}: (ctx) => new Additional${pascal(m.name)}Service(ctx),`).join('\n')}${additionalServices.length ? `

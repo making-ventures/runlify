@@ -1,6 +1,6 @@
 import {pascal, pascalPlural, pascalSingular, sentence} from '../../../../../../utils/cases';
 import { EntityWideGenerationArgs } from '../../../../../args'
-import { generatedWarning, pad1, pad5 } from '../../../../../utils'
+import {printWarningIfRequired, pad1, pad5} from '../../../../../utils'
 
 export const uiListWidgetTmpl = ({
   entity,
@@ -33,13 +33,7 @@ import {
   ${pascalSingular(entity.name)},
   QueryAll${pascalPlural(entity.name)}Args,
 } from '../../../generated/graphql';
-${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `
-// ${generatedWarning}
-`
-}
+${printWarningIfRequired(options)}
 interface List${pascal(entity.name)}WidgetProps extends
 Omit<ListWidgetProps<${pascalSingular(
     entity.name

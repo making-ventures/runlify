@@ -1,7 +1,7 @@
 import { singular } from 'pluralize'
 import { pascal } from '../../../../utils/cases'
 import { EntityWideGenerationArgs } from '../../../args'
-import { generatedWarning, pad1, pad2 } from '../../../utils'
+import { printWarningIfRequired, pad1, pad2 } from '../../../utils'
 import * as R from 'ramda'
 
 export const toTsValue = (value: any): string => {
@@ -23,13 +23,7 @@ export const initCommonEnumTmpl = ({
 import ${pascal(singular(entity.name))} from '../../types/${pascal(
     singular(entity.name)
   )}';
-${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `
-// ${generatedWarning}
-`
-}
+${printWarningIfRequired(options)}
 const init${pascal(entity.name)} = async (ctx: ${contextName}) => {
   await ctx.service('${entity.name}').createMany([
 ${entity.predefinedElements

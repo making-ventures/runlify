@@ -4,7 +4,7 @@ import * as R from 'ramda'
 import { getShowComponent } from '../../../../ui/getShowComponent'
 import { Entity } from '../../../../../builders/buildedTypes'
 import { EntityWideGenerationArgs } from '../../../../../args'
-import { generatedWarning, pad4 } from '../../../../../utils'
+import { printWarningIfRequired, pad4 } from '../../../../../utils'
 import { isImageFileRef, isMarkdownField } from '../../../../../metaUtils'
 import { plural } from 'pluralize'
 
@@ -77,18 +77,12 @@ import ${pascalSingular(entity.name)}Filter from './${pascalSingular(
     entity.name
   )}Filter';${entity.removableByUser ? `
 import {hasPermission} from '../../../../utils/permissions';` : ''}
-import ListActions from '../../../../raUiLib/ListActions';
-${
+import ListActions from '../../../../raUiLib/ListActions';${
   withFileRef
-    ? "import ImageViewField from '../../../../uiLib/file/ImageViewField';\n"
+    ? "\nimport ImageViewField from '../../../../uiLib/file/ImageViewField';"
     : ''
 }
-${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `// ${generatedWarning}
-`
-}${entity.removableByUser ? `
+${printWarningIfRequired(options)}${entity.removableByUser ? `
 const DefaultBulkActionButton = (props: BulkActionProps) => {
   const {permissions} = usePermissions<string[]>();
 

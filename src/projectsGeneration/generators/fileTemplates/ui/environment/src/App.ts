@@ -3,7 +3,7 @@ import {
   BootstrapEntityOptions,
   defaultBootstrapEntityOptions,
 } from '../../../../../types'
-import { generatedWarning } from '../../../../../utils'
+import {printWarningIfRequired} from '../../../../../utils'
 
 export const uiAppTmpl = (
   _: ProjectWideGenerationArgs,
@@ -29,13 +29,7 @@ import {routes} from './adm/routes';
 import i18nProvider from './i18nProvider';
 import {BrowserRouter} from 'react-router-dom';
 import {LogoutType} from './authProvider/types';
-${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `
-// ${generatedWarning}
-`
-}
+${printWarningIfRequired(options)}
 onStart();
 
 const App = () => {

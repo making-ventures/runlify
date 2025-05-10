@@ -3,7 +3,7 @@ import {
   BootstrapEntityOptions,
   defaultBootstrapEntityOptions,
 } from '../../../../../../types'
-import { generatedWarning } from '../../../../../../utils'
+import {printWarningIfRequired} from '../../../../../../utils'
 
 export const uiI18nProviderTmpl = (
   { system: { defaultLanguage, languages } }: ProjectWideGenerationArgs,
@@ -15,13 +15,7 @@ import log from '../utils/log';
 import {ValidationMessages} from '../i18n/types';
 import initYupLocale from './initYupLocale';
 import {I18nProvider} from './types';
-${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `
-// ${generatedWarning}
-`
-}
+${printWarningIfRequired(options)}
 const locales: Locale[] = [${languages.map(({id, title}) => `
   {locale: '${id}', name: '${title}'},`).join('')}
 ];

@@ -2,7 +2,7 @@ import { plural } from 'pluralize'
 import { pascal, pascalSingular } from '../../../../../../utils/cases'
 import { EntityWideGenerationArgs } from '../../../../../args'
 import { Entity } from '../../../../../builders'
-import { pad4, generatedWarning } from '../../../../../utils'
+import { pad4, printWarningIfRequired } from '../../../../../utils'
 
 const getEntityTitle = (entity: Entity) => {
   switch (entity.type) {
@@ -14,7 +14,7 @@ const getEntityTitle = (entity: Entity) => {
       return 'SumRegistryTitle';
     case 'infoRegistry':
       return 'InfoRegistryTitle';
-    
+
     default:
       throw new Error(`Unknown entity type ${(entity as any).type}`);
   }
@@ -67,13 +67,7 @@ import {additionalTabs} from './additionalTabs';
 import DefaultActions from './DefaultActions';
 import ${getEntityTitle(entity)} from '../../../../raUiLib/${getEntityTitle(entity)}';${options.breadcrumb ?
     "\nimport {Breadcrumbs} from '../../../../raUiLib/Breadcrumbs';" : ''}
-${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `
-// ${generatedWarning}
-`
-}
+${printWarningIfRequired(options)}
 const Default${pascalSingular(
     entity.name
   )}Show: FC<ShowProps> = (props: ShowProps) => {

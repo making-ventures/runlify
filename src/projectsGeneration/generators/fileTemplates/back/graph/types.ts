@@ -2,7 +2,7 @@ import {
   BootstrapEntityOptions,
   defaultBootstrapEntityOptions,
 } from '../../../../types'
-import { generatedWarning, pad1 } from '../../../../utils'
+import {printWarningIfRequired, pad1} from '../../../../utils'
 
 export const backBaseTypesTmpl = (
   printedSchema: string,
@@ -16,13 +16,7 @@ export const backBaseTypesTmpl = (
       ? `/* eslint-disable max-len */
 `
       : ''}import {gql} from 'apollo-server';
-${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `
-// ${generatedWarning}
-`
-}
+${printWarningIfRequired(options)}
 export default gql\`
 ${scheme}
 \`;

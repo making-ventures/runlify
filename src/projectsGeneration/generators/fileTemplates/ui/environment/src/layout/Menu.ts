@@ -2,7 +2,7 @@ import {
   BootstrapEntityOptions,
   defaultBootstrapEntityOptions,
 } from '../../../../../../types'
-import { generatedWarning } from '../../../../../../utils'
+import {printWarningIfRequired} from '../../../../../../utils'
 
 export const uiLayoutMenuTmpl = (
   options: BootstrapEntityOptions = defaultBootstrapEntityOptions
@@ -17,13 +17,7 @@ import {
 import getAdditionalMenu from '../adm/getAdditionalMenu';
 import defaultMenu from '../adm/getDefaultMenu';
 import MenuItem from '../uiLib/menu/MenuItem';
-${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `
-// ${generatedWarning}
-`
-}
+${printWarningIfRequired(options)}
 const Menu = () => {
   const [open] = useSidebarState();
   const {permissions} = usePermissions<string[]>();

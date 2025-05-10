@@ -1,7 +1,7 @@
 import { singular } from 'pluralize'
 import { pascal } from '../../../../utils/cases'
 import { EntityWideGenerationArgs } from '../../../args'
-import { generatedWarning, pad1 } from '../../../utils'
+import {printWarningIfRequired, pad1} from '../../../utils'
 import * as R from 'ramda'
 import { toTsValue } from './initCommon'
 
@@ -15,13 +15,7 @@ export const initDevEnumTmpl = ({
 import Dev${pascal(singular(entity.name))} from '../../types/Dev${pascal(
     singular(entity.name)
   )}';
-${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `
-// ${generatedWarning}
-`
-}
+${printWarningIfRequired(options)}
 const initDev${pascal(entity.name)} = async (ctx: ${contextName}) => {
 ${entity.devPerefinedElements
   .map(

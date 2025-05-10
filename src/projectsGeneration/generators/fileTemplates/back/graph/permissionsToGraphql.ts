@@ -2,7 +2,7 @@ import {
   BootstrapEntityOptions,
   defaultBootstrapEntityOptions,
 } from '../../../../types'
-import { addComma, generatedWarning } from '../../../../utils'
+import { addComma, printWarningIfRequired } from '../../../../utils'
 import { ProjectWideGenerationArgs } from '../../../../args'
 
 export const backPermissionToGraphqlTmpl = (
@@ -18,13 +18,7 @@ ${entities.map(
     `import ${m.name}PermissionToGraphql from './services/${m.name}/permissionsToGraphql';`
 ).join(`
 `)}
-${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `
-// ${generatedWarning}
-`
-}
+${printWarningIfRequired(options)}
 type queryKeys = keyof QueryResolvers;
 type mutationKeys = keyof MutationResolvers;
 

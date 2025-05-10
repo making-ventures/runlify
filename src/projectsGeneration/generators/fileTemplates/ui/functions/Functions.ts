@@ -2,7 +2,7 @@ import {
   BootstrapEntityOptions,
   defaultBootstrapEntityOptions,
 } from '../../../../types'
-import { generatedWarning } from '../../../../utils'
+import {printWarningIfRequired} from '../../../../utils'
 
 export const uiFunctionsTmpl = (
   options: BootstrapEntityOptions = defaultBootstrapEntityOptions
@@ -17,13 +17,7 @@ import SendIcon from '@mui/icons-material/SendOutlined';
 import {
   gql, useLazyQuery,
 } from '@apollo/client';
-${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `
-// ${generatedWarning}
-`
-}
+${printWarningIfRequired(options)}
 const HELLO = gql\`
   query testHello($name: String!) {
     testHello(name: $name)
