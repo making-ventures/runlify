@@ -7,7 +7,7 @@ import {getMethodTypeForService} from './getMethodTypeForService'
 export const backAdditionalServiceTypesTmplInner =
   (service: AdditionalService) =>
     `${service.methods
-      .flatMap(q => [q.argsModel, q.returnModel.returnType === ServiceReturnType.Object ? q.returnModel : undefined])
+      .flatMap(q => [q.returnModel.returnType === ServiceReturnType.Object ? q.returnModel : undefined])
       .filter(Boolean)
       .map(m => tsModelTmpl(m as TsModel)).join('\n\n')}
 ${
