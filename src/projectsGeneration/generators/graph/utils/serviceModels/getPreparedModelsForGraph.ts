@@ -6,7 +6,6 @@ import { InputOutputArgsServiceModels } from '../../types'
 import { pascal } from '../../../../../utils/cases'
 import { removeUnusedInOutputGeneralModels } from './removeUnusedInOutputGeneralModels'
 import { removeDublicatesFromServiceModels } from './removeDublicatesFromServiceModels'
-import { removeVoidsInServiceModels } from './removeVoidsInServiceModels'
 
 export const getPreparedModelsForGraph = (service: AdditionalService): InputOutputArgsServiceModels => {
   const models = getServiceModels(service);
@@ -27,10 +26,10 @@ export const getPreparedModelsForGraph = (service: AdditionalService): InputOutp
     inputModels: clearedFromArgsInputs,
   };
 
-  const modelsWithoutVoids = removeVoidsInServiceModels(clearedFromArgsModels);
+  // const modelsWithoutVoids = removeVoidsInServiceModels(clearedFromArgsModels);
 
   const preparedModels = {
-    ...modelsWithoutVoids,
+    ...clearedFromArgsModels,
     args,
   };
 

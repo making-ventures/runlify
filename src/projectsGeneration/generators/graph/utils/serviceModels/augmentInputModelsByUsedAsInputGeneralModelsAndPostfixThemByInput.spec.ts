@@ -11,11 +11,10 @@ describe('augmentInputModelsByUsedAsInputGeneralModelsAndPostfixThemByInput', ()
     it('postfixes general model', () => {
       const service = new AdditionalServiceBuilder('someService', 'ru');
 
-      const someGerenalModel = service.addGeneralModel('someGerenalModel');
+      const someGerenalModel = service.createGeneralModel('someGerenalModel');
       someGerenalModel.addField('fieldOfModel').setType('string').setRequired();
 
       const someMethod = service.addMethod('someMethod', MethodType.Query, 'Some method');
-      someMethod.setExportedToApi();
 
       const someMethodArgs = someMethod.getArgsModel();
       someMethodArgs.addModelField('someGerenalModel', 'objectField').setRequired();
@@ -30,11 +29,10 @@ describe('augmentInputModelsByUsedAsInputGeneralModelsAndPostfixThemByInput', ()
     it('doesn\'t prefix input model', () => {
       const service = new AdditionalServiceBuilder('someService', 'ru');
 
-      const someInputModel = service.addInputModel('someInputModel');
+      const someInputModel = service.createInputModel('someInputModel');
       someInputModel.addField('fieldOfModel').setType('string').setRequired();
 
       const someMethod = service.addMethod('someMethod', MethodType.Query, 'Some method');
-      someMethod.setExportedToApi();
 
       const someMethodArgs = someMethod.getArgsModel();
       someMethodArgs.addModelField('someInputModel', 'objectField').setRequired();
@@ -50,14 +48,13 @@ describe('augmentInputModelsByUsedAsInputGeneralModelsAndPostfixThemByInput', ()
     it('postfixes general model and next general model', () => {
       const service = new AdditionalServiceBuilder('someService', 'ru');
 
-      const someSecondGerenalModel = service.addGeneralModel('someSecondGerenalModel');
+      const someSecondGerenalModel = service.createGeneralModel('someSecondGerenalModel');
       someSecondGerenalModel.addField('fieldOfModel').setType('string').setRequired();
 
-      const someGerenalModel = service.addGeneralModel('someGerenalModel');
+      const someGerenalModel = service.createGeneralModel('someGerenalModel');
       someGerenalModel.addModelField('someSecondGerenalModel', 'objectField').setRequired();
 
       const someMethod = service.addMethod('someMethod', MethodType.Query, 'Some method');
-      someMethod.setExportedToApi();
 
       const someMethodArgs = someMethod.getArgsModel();
       someMethodArgs.addModelField('someGerenalModel', 'objectField').setRequired();
@@ -79,14 +76,13 @@ describe('augmentInputModelsByUsedAsInputGeneralModelsAndPostfixThemByInput', ()
     it('postfixes general model and doesn\'t prefix next input model', () => {
       const service = new AdditionalServiceBuilder('someService', 'ru');
 
-      const someInputModel = service.addInputModel('someInputModel');
+      const someInputModel = service.createInputModel('someInputModel');
       someInputModel.addField('fieldOfModel').setType('string').setRequired();
 
-      const someGerenalModel = service.addGeneralModel('someGerenalModel');
+      const someGerenalModel = service.createGeneralModel('someGerenalModel');
       someGerenalModel.addModelField('someInputModel', 'objectField').setRequired();
 
       const someMethod = service.addMethod('someMethod', MethodType.Query, 'Some method');
-      someMethod.setExportedToApi();
 
       const someMethodArgs = someMethod.getArgsModel();
       someMethodArgs.addModelField('someGerenalModel', 'objectField').setRequired();
@@ -108,14 +104,13 @@ describe('augmentInputModelsByUsedAsInputGeneralModelsAndPostfixThemByInput', ()
     it('doesn\'t prefix input model and postfixes next general model', () => {
       const service = new AdditionalServiceBuilder('someService', 'ru');
 
-      const someGeneralModel = service.addGeneralModel('someGeneralModel');
+      const someGeneralModel = service.createGeneralModel('someGeneralModel');
       someGeneralModel.addField('fieldOfModel').setType('string').setRequired();
 
-      const someInputModel = service.addInputModel('someInputModel');
+      const someInputModel = service.createInputModel('someInputModel');
       someInputModel.addModelField('someGeneralModel', 'objectField').setRequired();
 
       const someMethod = service.addMethod('someMethod', MethodType.Query, 'Some method');
-      someMethod.setExportedToApi();
 
       const someMethodArgs = someMethod.getArgsModel();
       someMethodArgs.addModelField('someInputModel', 'objectField').setRequired();
@@ -137,14 +132,13 @@ describe('augmentInputModelsByUsedAsInputGeneralModelsAndPostfixThemByInput', ()
     it('doesn\'t prefix input model and next input model', () => {
       const service = new AdditionalServiceBuilder('someService', 'ru');
 
-      const someSecondInputModel = service.addInputModel('someSecondInputModel');
+      const someSecondInputModel = service.createInputModel('someSecondInputModel');
       someSecondInputModel.addField('fieldOfModel').setType('string').setRequired();
 
-      const someInputModel = service.addInputModel('someInputModel');
+      const someInputModel = service.createInputModel('someInputModel');
       someInputModel.addModelField('someSecondInputModel', 'objectField').setRequired();
 
       const someMethod = service.addMethod('someMethod', MethodType.Query, 'Some method');
-      someMethod.setExportedToApi();
 
       const someMethodArgs = someMethod.getArgsModel();
       someMethodArgs.addModelField('someInputModel', 'objectField').setRequired();

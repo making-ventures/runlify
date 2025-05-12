@@ -6,7 +6,6 @@ import BaseFieldBuilder from './BaseFieldBuilder'
 class ModelFieldBuilder extends BaseFieldBuilder {
   protected service: string;
   protected model: string;
-  protected array = false;
   protected category: 'model' = 'model' as const;
 
   constructor(
@@ -22,12 +21,6 @@ class ModelFieldBuilder extends BaseFieldBuilder {
     this.model = model;
   }
 
-  setArray(array: boolean) {
-    this.array = array;
-
-    return this;
-  }
-
   getModel() {
     return this.model;
   }
@@ -38,7 +31,6 @@ class ModelFieldBuilder extends BaseFieldBuilder {
     return {
       ...base,
       category: this.category,
-      array: this.array,
       model: this.model,
       service: this.service,
     }

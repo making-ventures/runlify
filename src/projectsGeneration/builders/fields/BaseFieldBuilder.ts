@@ -42,6 +42,7 @@ abstract class BaseFieldBuilder {
   showInShow = true
   sharded = false
   filters: Filter[] = ['equal']
+  array = false
 
   constructor(name: string, defaultLanguage: string, title?: string) {
     this.defaultLanguage = defaultLanguage
@@ -72,6 +73,7 @@ abstract class BaseFieldBuilder {
       defaultValueExpression: this.defaultValueExpression,
       defaultBackendValueExpression: this.defaultBackendValueExpression,
       sharded: this.sharded,
+      array: this.array,
     }
   }
 
@@ -395,6 +397,12 @@ abstract class BaseFieldBuilder {
 
   getCategory() {
     return this.category;
+  }
+
+  setArray(array: boolean = true) {
+    this.array = array;
+
+    return this;
   }
 }
 

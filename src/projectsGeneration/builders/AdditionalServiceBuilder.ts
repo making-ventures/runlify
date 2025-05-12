@@ -15,18 +15,18 @@ class AdditionalServiceBuilder extends BaseBuilder implements MethodsModelsHolde
 
   addMethod(
     name: string,
-    methodType: MethodType,
+    methodType: MethodType = MethodType.Query,
     title?: string,
   ): MethodBuilder {
     if (this.methods.some((f) => f.name === name)) {
       throw new Error(`There is already method with "${name}" name`)
     }
 
-    const method = new MethodBuilder(this, name, methodType, this.defaultLanguage, title)
+    const method = new MethodBuilder(this, name, methodType, this.defaultLanguage, title ?? name)
     this.methods.push(method)
 
-    this.addCreatedInputModel(method.getArgsModel());
-    this.addCreatedOutputModel(method.getReturnModel());
+    this.addInputModel(method.getArgsModel());
+    // this.addOutputModel(method.getReturnVoidModel());
 
     return method;
   }
@@ -39,7 +39,7 @@ class AdditionalServiceBuilder extends BaseBuilder implements MethodsModelsHolde
     ]
   }
 
-  addGeneralModel(
+  createGeneralModel(
     name: string,
     title?: string,
   ): BaseModelBuilder {
@@ -53,7 +53,7 @@ class AdditionalServiceBuilder extends BaseBuilder implements MethodsModelsHolde
     return model
   }
 
-  addInputModel(
+  createInputModel(
     name: string,
     title?: string,
   ): BaseModelBuilder {
@@ -67,7 +67,7 @@ class AdditionalServiceBuilder extends BaseBuilder implements MethodsModelsHolde
     return model
   }
 
-  addOutputModel(
+  createOutputModel(
     name: string,
     title?: string,
   ): BaseModelBuilder {
@@ -81,7 +81,7 @@ class AdditionalServiceBuilder extends BaseBuilder implements MethodsModelsHolde
     return model
   }
 
-  addCreatedGeneralModel(model: BaseModelBuilder) {
+  addGeneralModel(model: BaseModelBuilder) {
     if (this.getAllModels().some((f) => f.name === model.name)) {
       throw new Error(`There is already field with name "${model.name}" in args model`)
     }
@@ -89,7 +89,7 @@ class AdditionalServiceBuilder extends BaseBuilder implements MethodsModelsHolde
     this.generalModels.push(model);
   }
 
-  addCreatedInputModel(model: BaseModelBuilder) {
+  addInputModel(model: BaseModelBuilder) {
     if (this.getAllModels().some((f) => f.name === model.name)) {
       throw new Error(`There is already field with name "${model.name}" in args model`)
     }
@@ -97,7 +97,7 @@ class AdditionalServiceBuilder extends BaseBuilder implements MethodsModelsHolde
     this.inputModels.push(model);
   }
 
-  addCreatedOutputModel(model: BaseModelBuilder) {
+  addOutputModel(model: BaseModelBuilder) {
     if (this.getAllModels().some((f) => f.name === model.name)) {
       throw new Error(`There is already field with name "${model.name}" in args model`)
     }

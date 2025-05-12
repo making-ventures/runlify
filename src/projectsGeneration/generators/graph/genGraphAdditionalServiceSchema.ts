@@ -1,6 +1,6 @@
 import {GraphQLNamedOutputType, GraphQLNamedType, GraphQLObjectType, GraphQLSchema} from 'graphql'
 import {pascal} from '../../../utils/cases'
-import {AdditionalService, MethodType, TsModel} from '../../builders/buildedTypes'
+import {AdditionalService, MethodType, ServiceReturnType, TsModel} from '../../builders/buildedTypes'
 import * as R from 'ramda'
 import { GraphQLVoid } from 'graphql-scalars'
 import { genGraphArgsModelType } from './genGraphModelType'
@@ -46,7 +46,7 @@ export const genGraphAdditionalServiceSchema = (service: AdditionalService) => {
           findModelByName(service.name, method.argsModel.name, models.args),
           types,
         ),
-        type: method.returnModel.fields.length
+        type: method.returnModel.returnType === ServiceReturnType.Object
           ? findGraphTypeByName(service.name, method.returnModel.name, types) as GraphQLNamedOutputType
           : GraphQLVoid,
       },
@@ -62,7 +62,7 @@ export const genGraphAdditionalServiceSchema = (service: AdditionalService) => {
           findModelByName(service.name, method.argsModel.name, models.args),
           types,
         ),
-        type: method.returnModel.fields.length
+        type: method.returnModel.returnType === ServiceReturnType.Object
           ? findGraphTypeByName(service.name, method.returnModel.name, types) as GraphQLNamedOutputType
           : GraphQLVoid,
       },

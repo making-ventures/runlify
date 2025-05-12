@@ -103,6 +103,7 @@ export type BaseField = {
   defaultValueExpression?: string
   defaultBackendValueExpression?: string
   sharded: boolean
+  array: boolean
 }
 
 type ScalarBaseField = BaseField & {
@@ -274,14 +275,15 @@ export type LinkField = EntityLinkField | ViewLinkField
 
 export type ModelField = BaseField & {
   category: 'model';
-  array: boolean;
   service?: string;
   model: string;
 }
 
-export type TsModelField =
+export type TsModelFieldBase =
   | ScalarField
   | ModelField
+
+export type TsModelField = TsModelFieldBase & {array: boolean}
 
 export type IdField = IntIdField | BigIntIdField | StringIdField
 
@@ -392,9 +394,29 @@ export type Page = BaseEntity & {
 
 export type AdditionalServiceArgsModel = TsModel
 
-export type AdditionalServiceReturnModel = TsModel & {
-  array: boolean
+export enum ServiceReturnType {
+  Object = 'object',
+  Scalar = 'scalar',
+  Void = 'void',
 }
+
+export type AdditionalServiceObjectReturnModel = TsModel & {
+  returnType: ServiceReturnType.Object,
+  array: boolean,
+}
+
+export type AdditionalServiceVoidReturnModel = {
+  returnType: ServiceReturnType.Void,
+}
+
+export type AdditionalServiceScalarReturnModel = ScalarField & {
+  returnType: ServiceReturnType.Scalar,
+  array: boolean,
+}
+
+export type AdditionalServiceReturnModel = AdditionalServiceObjectReturnModel
+  | AdditionalServiceVoidReturnModel
+  | AdditionalServiceScalarReturnModel;
 
 export enum MethodType {
   Query = 'query',
@@ -407,6 +429,7 @@ export type ServiceMethod = BaseEntity & {
   exportedToApi: boolean
   queable: boolean
   methodType: MethodType
+  async: boolean
 }
 
 export type AdditionalService = BaseEntity & {

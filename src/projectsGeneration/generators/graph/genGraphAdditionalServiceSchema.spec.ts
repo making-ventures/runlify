@@ -5,6 +5,7 @@ import AdditionalServiceBuilder from '../../builders/AdditionalServiceBuilder'
 import { MethodType } from '../../../types'
 
 // yarn test --testPathPattern genGraphAdditionalServiceSchema
+// yarn test --testPathPattern genGraphAdditionalServiceSchema -t 'with simple args and no return'
 // yarn test --testPathPattern genGraphAdditionalServiceSchema -t 'with simple args and simple return'
 // yarn test --testPathPattern genGraphAdditionalServiceSchema -t 'with inner object model in args and simple return'
 
@@ -52,7 +53,7 @@ type Mutation`)
         const someMethod = service.addMethod('someMethod', MethodType.Query, 'Some method');
         someMethod.setExportedToApi();
 
-        const someMethodResult = someMethod.getReturnModel();
+        const someMethodResult = someMethod.setReturnObjectModel('result');
         someMethodResult.addField('someString').setType('string').setRequired();
 
         expect(printSchema(genGraphAdditionalServiceSchema(service.build()))).toBe(`type SomeServiceSomeMethodResult {
@@ -75,7 +76,7 @@ type Mutation`)
         const someMethodArgs = someMethod.getArgsModel();
         someMethodArgs.addField('someString').setType('string').setRequired();
 
-        const someMethodResult = someMethod.getReturnModel();
+        const someMethodResult = someMethod.setReturnObjectModel('result');
         someMethodResult.addField('someString').setType('string').setRequired();
 
         expect(printSchema(genGraphAdditionalServiceSchema(service.build()))).toBe(`type SomeServiceSomeMethodResult {
@@ -92,7 +93,7 @@ type Mutation`)
       it('with simple args and with inner object model in return', () => {
         const service = new AdditionalServiceBuilder('someService', 'ru');
 
-        const model = service.addGeneralModel('someModel');
+        const model = service.createGeneralModel('someModel');
         model.addField('fieldOfModel').setType('string').setRequired();
 
         const someMethod = service.addMethod('someMethod', MethodType.Query, 'Some method');
@@ -101,7 +102,7 @@ type Mutation`)
         const someMethodArgs = someMethod.getArgsModel();
         someMethodArgs.addField('someString').setType('string').setRequired();
 
-        const someMethodResult = someMethod.getReturnModel();
+        const someMethodResult = someMethod.setReturnObjectModel('result');
         someMethodResult.addModelField('someModel', 'objectField').setRequired();
 
         expect(printSchema(genGraphAdditionalServiceSchema(service.build()))).toBe(`type SomeServiceSomeModel {
@@ -122,7 +123,7 @@ type Mutation`)
       it('with inner object model in args and simple return', () => {
         const service = new AdditionalServiceBuilder('someService', 'ru');
 
-        const model = service.addGeneralModel('someModel');
+        const model = service.createGeneralModel('someModel');
         model.addField('fieldOfModel').setType('string').setRequired();
 
         const someMethod = service.addMethod('someMethod', MethodType.Query, 'Some method');
@@ -131,7 +132,7 @@ type Mutation`)
         const someMethodArgs = someMethod.getArgsModel();
         someMethodArgs.addModelField('someModel', 'objectField').setRequired();
 
-        const someMethodResult = someMethod.getReturnModel();
+        const someMethodResult = someMethod.setReturnObjectModel('result');
         someMethodResult.addField('someString').setType('string').setRequired();
 
         expect(printSchema(genGraphAdditionalServiceSchema(service.build()))).toBe(`input SomeServiceSomeModelInput {
@@ -192,7 +193,7 @@ scalar Void`)
         const someMethod = service.addMethod('someMethod', MethodType.Mutation, 'Some method');
         someMethod.setExportedToApi();
 
-        const someMethodResult = someMethod.getReturnModel();
+        const someMethodResult = someMethod.setReturnObjectModel('result');
         someMethodResult.addField('someString').setType('string').setRequired();
 
         expect(printSchema(genGraphAdditionalServiceSchema(service.build()))).toBe(`type SomeServiceSomeMethodResult {
@@ -215,7 +216,7 @@ type Mutation {
         const someMethodArgs = someMethod.getArgsModel();
         someMethodArgs.addField('someString').setType('string').setRequired();
 
-        const someMethodResult = someMethod.getReturnModel();
+        const someMethodResult = someMethod.setReturnObjectModel('result');
         someMethodResult.addField('someString').setType('string').setRequired();
 
         expect(printSchema(genGraphAdditionalServiceSchema(service.build()))).toBe(`type SomeServiceSomeMethodResult {

@@ -2,6 +2,7 @@ import { AdditionalService } from '../../../../builders/buildedTypes'
 import { getUsedModels } from '../models/getUsedModels'
 import { getUniqModels } from '../models/getUniqModels'
 import { ServiceModels } from '../../types';
+import getObjectModelsFromMethodReturns from './getObjectModelsFromMethodReturns';
 
 // Возвращает используемые сервисом модели
 
@@ -24,7 +25,7 @@ export const getUsedModelsForService =
     );
 
     const usedOutputModels = getUniqModels(
-      service.methods.flatMap(q => getUsedModels(q.returnModel, generalOtputModels))
+      getObjectModelsFromMethodReturns(service).flatMap(model => getUsedModels(model, generalOtputModels))
     );
 
     const usedInputModelNames = usedInputModels.map(m => m.name);

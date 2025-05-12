@@ -10,11 +10,10 @@ describe('getUsedGraphModelsForService', () => {
     it('it doesn\'t returns method arg models', () => {
       const service = new AdditionalServiceBuilder('someService', 'ru');
 
-      const someGerenalModel = service.addGeneralModel('someGerenalModel');
+      const someGerenalModel = service.createGeneralModel('someGerenalModel');
       someGerenalModel.addField('fieldOfModel').setType('string').setRequired();
 
       const someMethod = service.addMethod('someMethod', MethodType.Query, 'Some method');
-      someMethod.setExportedToApi();
 
       const someMethodArgs = someMethod.getArgsModel();
       someMethodArgs.addModelField('someGerenalModel', 'objectField').setRequired();

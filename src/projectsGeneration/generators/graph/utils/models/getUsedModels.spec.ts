@@ -1,6 +1,6 @@
 import { expect } from 'jest-without-globals'
 import { getUsedModels } from './getUsedModels'
-import { BaseField, ModelField, StringField, TsModel } from '../../../../builders/buildedTypes';
+import { BaseField, StringField, TsModel, TsModelField } from '../../../../builders/buildedTypes';
 
 // yarn test --testPathPattern getUsedModels
 
@@ -19,12 +19,12 @@ const baseField: BaseField = {
   showInShow: false,
   defaultDbValue: false,
   sharded: false,
+  array: false,
 }
 
-const defalutModelField: ModelField = {
+const defalutModelField: TsModelField = {
   ...baseField,
   category: 'model',
-  array: false,
   service: '',
   model: '',
 }
@@ -64,7 +64,7 @@ const defaultThirdModel: TsModel = {
 describe('getUsedModels', () => {
   describe('returns', () => {
     it('startingModel when only one model passed', () => {
-      const firstModel = {
+      const firstModel: TsModel = {
         ...defaultFirstModel,
         fields: [
           defalutStringField,

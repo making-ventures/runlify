@@ -7,7 +7,12 @@ import {
   GraphQLScalarType,
 } from 'graphql'
 import { pascalSingular } from '../../../utils/cases'
-import { AdditionalService, AdditionalServiceArgsModel, AdditionalServiceReturnModel, ScalarField } from '../../builders/buildedTypes'
+import {
+  AdditionalService,
+  AdditionalServiceArgsModel,
+  AdditionalServiceObjectReturnModel,
+  ScalarField,
+} from '../../builders/buildedTypes'
 import { genGraphField } from './fields/genGraphField'
 import { GraphQLVoid } from 'graphql-scalars'
 import * as R from 'ramda'
@@ -31,7 +36,7 @@ export const genGraphArgsModelType = (
 
 export const genGraphReturnModelType_ = (
   service: AdditionalService,
-  model: AdditionalServiceReturnModel,
+  model: AdditionalServiceObjectReturnModel,
   types: GraphQLNamedType[] = [],
 ) => {
   if (!model.fields.length) {

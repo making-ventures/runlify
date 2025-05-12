@@ -20,8 +20,7 @@ describe('getGraphTypesFromInputOutputModels', () => {
     it('without args and return', () => {
       const service = new AdditionalServiceBuilder('someService', 'ru');
 
-      const someMethod = service.addMethod('someMethod', MethodType.Query, 'Some method');
-      someMethod.setExportedToApi();
+      service.addMethod('someMethod', MethodType.Query, 'Some method');
 
       const models = getPreparedModelsForGraph(service.build());
 
@@ -32,7 +31,6 @@ describe('getGraphTypesFromInputOutputModels', () => {
       const service = new AdditionalServiceBuilder('someService', 'ru');
 
       const someMethod = service.addMethod('someMethod', MethodType.Query, 'Some method');
-      someMethod.setExportedToApi();
 
       const someMethodArgs = someMethod.getArgsModel();
       someMethodArgs.addField('someString').setType('string').setRequired();
@@ -46,9 +44,8 @@ describe('getGraphTypesFromInputOutputModels', () => {
       const service = new AdditionalServiceBuilder('someService', 'ru');
 
       const someMethod = service.addMethod('someMethod', MethodType.Query, 'Some method');
-      someMethod.setExportedToApi();
 
-      const someMethodResult = someMethod.getReturnModel();
+      const someMethodResult = someMethod.setReturnObjectModel('result');
       someMethodResult.addField('someString').setType('string').setRequired();
 
       const models = getPreparedModelsForGraph(service.build());
@@ -62,12 +59,11 @@ describe('getGraphTypesFromInputOutputModels', () => {
       const service = new AdditionalServiceBuilder('someService', 'ru');
 
       const someMethod = service.addMethod('someMethod', MethodType.Query, 'Some method');
-      someMethod.setExportedToApi();
 
       const someMethodArgs = someMethod.getArgsModel();
       someMethodArgs.addField('someString').setType('string').setRequired();
 
-      const someMethodResult = someMethod.getReturnModel();
+      const someMethodResult = someMethod.setReturnObjectModel('result');
       someMethodResult.addField('someString').setType('string').setRequired();
 
       const models = getPreparedModelsForGraph(service.build());
@@ -80,16 +76,15 @@ describe('getGraphTypesFromInputOutputModels', () => {
     it('with simple args and with inner object someModel in return', () => {
       const service = new AdditionalServiceBuilder('someService', 'ru');
 
-      const someModel = service.addGeneralModel('someModel');
+      const someModel = service.createGeneralModel('someModel');
       someModel.addField('fieldOfModel').setType('string').setRequired();
 
       const someMethod = service.addMethod('someMethod', MethodType.Query, 'Some method');
-      someMethod.setExportedToApi();
 
       const someMethodArgs = someMethod.getArgsModel();
       someMethodArgs.addField('someString').setType('string').setRequired();
 
-      const someMethodResult = someMethod.getReturnModel();
+      const someMethodResult = someMethod.setReturnObjectModel('result');
       someMethodResult.addModelField('someModel', 'objectField').setRequired();
 
       const models = getPreparedModelsForGraph(service.build());
@@ -106,16 +101,15 @@ type SomeServiceSomeMethodResult {
     it('with inner object someModel in args and simple return', () => {
       const service = new AdditionalServiceBuilder('someService', 'ru');
 
-      const someModel = service.addGeneralModel('someModel');
+      const someModel = service.createGeneralModel('someModel');
       someModel.addField('fieldOfModel').setType('string').setRequired();
 
       const someMethod = service.addMethod('someMethod', MethodType.Query, 'Some method');
-      someMethod.setExportedToApi();
 
       const someMethodArgs = someMethod.getArgsModel();
       someMethodArgs.addModelField('someModel', 'objectField').setRequired();
 
-      const someMethodResult = someMethod.getReturnModel();
+      const someMethodResult = someMethod.setReturnObjectModel('result');
       someMethodResult.addField('someString').setType('string').setRequired();
 
       const models = getPreparedModelsForGraph(service.build());
@@ -134,16 +128,15 @@ type SomeServiceSomeMethodResult {
     it('without args and double level nested fields in return', () => {
       const service = new AdditionalServiceBuilder('someService', 'ru');
 
-      const anotherModel = service.addGeneralModel('anotherModel');
+      const anotherModel = service.createGeneralModel('anotherModel');
       anotherModel.addField('fieldOfModel').setType('string').setRequired();
 
-      const someModel = service.addGeneralModel('someModel');
+      const someModel = service.createGeneralModel('someModel');
       someModel.addModelField('anotherModel', 'objectField').setRequired();
 
       const someMethod = service.addMethod('someMethod', MethodType.Query, 'Some method');
-      someMethod.setExportedToApi();
 
-      const someMethodResult = someMethod.getReturnModel();
+      const someMethodResult = someMethod.setReturnObjectModel('result');
       someMethodResult.addModelField('someModel', 'objectField').setRequired();
 
       const models = getPreparedModelsForGraph(service.build());

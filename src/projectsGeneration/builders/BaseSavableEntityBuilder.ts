@@ -504,7 +504,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsMo
     return field
   }
 
-  addGeneralModel(
+  createGeneralModel(
     name: string,
     title?: string,
   ): BaseModelBuilder {
@@ -518,7 +518,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsMo
     return model
   }
 
-  addInputModel(
+  createInputModel(
     name: string,
     title?: string,
   ): BaseModelBuilder {
@@ -532,7 +532,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsMo
     return model
   }
 
-  addOutputModel(
+  createOutputModel(
     name: string,
     title?: string,
   ): BaseModelBuilder {
@@ -544,6 +544,30 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsMo
     this.outputModels.push(model)
 
     return model
+  }
+
+  addGeneralModel(model: BaseModelBuilder) {
+    if (this.getAllModels().some((f) => f.name === model.name)) {
+      throw new Error(`There is already field with name "${model.name}" in args model`)
+    }
+
+    this.generalModels.push(model);
+  }
+
+  addInputModel(model: BaseModelBuilder) {
+    if (this.getAllModels().some((f) => f.name === model.name)) {
+      throw new Error(`There is already field with name "${model.name}" in args model`)
+    }
+
+    this.inputModels.push(model);
+  }
+
+  addOutputModel(model: BaseModelBuilder) {
+    if (this.getAllModels().some((f) => f.name === model.name)) {
+      throw new Error(`There is already field with name "${model.name}" in args model`)
+    }
+
+    this.outputModels.push(model);
   }
 
   getMethods() {
