@@ -45,6 +45,8 @@
     "winston": "^3.10.0"
   },
   "devDependencies": {
+    "@swc/core": "^1.11.16",
+    "@swc/jest": "^0.2.37",
     "@types/cross-spawn": "^6.0.2",
     "@types/jest": "^29.5.4",
     "@types/markdown-table": "^2.0.0",
@@ -61,15 +63,24 @@
     "jest-extended": "^4.0.2",
     "jest-without-globals": "^0.0.3",
     "jiti": "^2.4.2",
-    "ts-jest": "^29.3.2",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2",
     "typescript-eslint": "^8.32.0",
     "yup": "^0.32.11"
   },
   "jest": {
-    "preset": "ts-jest",
+    "transform": {
+      "^.+\\.(t|j)sx?$": "@swc/jest"
+    },
     "testEnvironment": "node",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
     "modulePathIgnorePatterns": [
       "<rootDir>/build/"
     ],
