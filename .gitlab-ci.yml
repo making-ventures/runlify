@@ -19,7 +19,7 @@ test:
     - yarn test
 
 release:
-  stage: release
+  stage: main
   script:
     - git config --global user.email "ci@example.com"
     - git config --global user.name "GitLab CI"
@@ -28,7 +28,6 @@ release:
     - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
     - chmod +x ./newVersion.sh
     - ./newVersion.sh "${CI_COMMIT_MESSAGE:-Автоматическое обновление версии через CI}"
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "release" && $CI_COMMIT_AUTHOR !~ /^GitLab CI/'
-      when: always
-    - when: never
+  when: manual
+  only:
+    - release
