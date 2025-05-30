@@ -28,5 +28,7 @@ release:
     - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
     - chmod +x ./newVersion.sh
     - ./newVersion.sh "${CI_COMMIT_MESSAGE:-Автоматическое обновление версии через CI}"
-  only:
-    - release
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "release" && $CI_COMMIT_AUTHOR !~ /^GitLab CI/'
+      when: always
+    - when: never
