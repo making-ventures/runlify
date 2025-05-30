@@ -23,6 +23,7 @@ release:
   script:
     - git config --global user.email "ci@example.com"
     - git config --global user.name "GitLab CI"
+    - git remote set-url origin https://${CI_DEPLOY_USER}:${CI_DEPLOY_TOKEN}@gitlab.com/making.ventures/runlify.git
     - git checkout $CI_COMMIT_REF_NAME
     - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
     - chmod +x ./newVersion.sh
