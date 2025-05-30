@@ -113,6 +113,8 @@ export interface ${pascalSingular(document.name)}RegistryEntries {${
     additionalImports.push('import {Prisma} from \'@prisma/client\';');
   }
 
+  const serviceName = `${pascal(entity.name)}Service`
+
   return `import {
   MutationCreate${pascalSingular(entity.name)}Args,
   MutationUpdate${pascalSingular(entity.name)}Args,
@@ -127,6 +129,7 @@ import initBuiltInHooks from './initBuiltInHooks';
 import {${extendedType}} from '../utils/class/${extendedType}';${getDefaultableFields().length ? `
 import * as R from 'ramda';` : ''}
 import config from './config';
+import {configUtils} from '../../../config';
 import {DefinedFieldsInRecord, DefinedRecord, PartialFieldsInRecord} from '../../../types/utils';${additionalImports.length ?
     additionalImports.map(newStrBefore).join('\n') : ''}
 ${printWarningIfRequired(options)}${
@@ -207,7 +210,7 @@ export type MutationUpdate${pascalSingular(
     entity.name
   )}Args, Autodefinable${pascalSingular(entity.name)}Keys>;
 ${registries}
-export class ${pascal(entity.name)}Service extends ${extendedType}<
+export class ${serviceName} extends ${extendedType}<
   ${pascalSingular(entity.name)},
   MutationCreate${pascalSingular(entity.name)}Args,
   MutationUpdate${pascalSingular(entity.name)}Args,
@@ -220,6 +223,8 @@ export class ${pascal(entity.name)}Service extends ${extendedType}<
   ${pascalSingular(entity.name)}RegistryEntries` : ''}${isPrismaDelegatable ? `,
   Prisma.${pascalSingular(entity.name)}Delegate<any>` : ''}
 > {
+  logger = configUtils.getLog(${serviceName}.name);
+
   constructor(public ctx: Context) {
     super(ctx,${isSharded ? ` '${camelSingular(entity.name)}'${entity.externalSearchName ? `, 'external${pascal(entity.name)}SearchTracking'` : ''},`
     : entity.elasticOnly ? '' : ` ctx.prisma.${camelSingular(entity.name)},${isExternalSearch ? ` ctx.prisma.external${pascal(entity.name)}SearchTracking,` : ''}`} config);
