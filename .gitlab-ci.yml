@@ -19,7 +19,7 @@ test:
     - yarn test
 
 release:
-  stage: main
+  stage: release
   script:
     - git config --global user.email "ci@example.com"
     - git config --global user.name "GitLab CI"
@@ -30,4 +30,4 @@ release:
     - ./newVersion.sh "${CI_COMMIT_MESSAGE:-Автоматическое обновление версии через CI}"
   when: manual
   only:
-    - release
+    - main
