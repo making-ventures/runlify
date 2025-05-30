@@ -9,7 +9,6 @@ cache:
     - node_modules/
 
 before_script:
-  - npm install -g yarn
   - yarn install
 
 test:
@@ -26,6 +25,6 @@ release:
     - git config --global user.name "GitLab CI"
     - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
     - chmod +x ./newVersion.sh
-    - ./newVersion.sh "Автоматическое обновление версии через CI"
+    - ./newVersion.sh "${CI_COMMIT_MESSAGE:-Автоматическое обновление версии через CI}"
   only:
     - main
