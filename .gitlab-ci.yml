@@ -28,5 +28,6 @@ release:
     - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
     - chmod +x ./newVersion.sh
     - ./newVersion.sh "${CI_COMMIT_MESSAGE:-Автоматическое обновление версии через CI}"
+  when: manual
   only:
-    - release
+    - main
