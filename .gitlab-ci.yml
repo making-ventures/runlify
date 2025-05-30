@@ -29,4 +29,4 @@ release:
     - chmod +x ./newVersion.sh
     - ./newVersion.sh "${CI_COMMIT_MESSAGE:-Автоматическое обновление версии через CI}"
   only:
-    - main
+    - release
