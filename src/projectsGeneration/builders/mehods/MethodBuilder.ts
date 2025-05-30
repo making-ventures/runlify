@@ -100,7 +100,7 @@ class MethodBuilder extends BaseBuilder {
     return this.returnModel as ReturnVoidBuilder
   }
 
-  setReturnVoidModel(name: string): ReturnVoidBuilder {
+  setReturnVoidModel(): ReturnVoidBuilder {
     const returnModel = new ReturnVoidBuilder(this.service);
     this.returnModel = returnModel;
     this.returnType = 'void';
