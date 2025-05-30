@@ -1,0 +1,31 @@
+image: node:latest
+
+stages:
+  - test
+  - release
+
+cache:
+  paths:
+    - node_modules/
+
+before_script:
+  - npm install -g yarn
+  - yarn install
+
+test:
+  stage: test
+  script:
+    - yarn lint
+    - yarn build
+    - yarn test
+
+release:
+  stage: release
+  script:
+    - git config --global user.email "ci@example.com"
+    - git config --global user.name "GitLab CI"
+    - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+    - chmod +x ./newVersion.sh
+    - ./newVersion.sh "Автоматическое обновление версии через CI"
+  only:
+    - main
