@@ -100,7 +100,8 @@ class MethodBuilder extends BaseBuilder {
     return this.returnModel as ReturnVoidBuilder
   }
 
-  setReturnVoidModel(): ReturnVoidBuilder {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  setReturnVoidModel(name: string): ReturnVoidBuilder {
     const returnModel = new ReturnVoidBuilder(this.service);
     this.returnModel = returnModel;
     this.returnType = 'void';
