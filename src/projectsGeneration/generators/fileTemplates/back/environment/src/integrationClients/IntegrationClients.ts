@@ -7,7 +7,7 @@ const genIntegrationClientsTmpl = ({
     integrationClients,
   },
   options,
-}: ProjectWideGenerationArgs) => `${printWarningIfRequired(options)}
+}: ProjectWideGenerationArgs) => `${integrationClients.map(client => `import ${pascal(client.name)}Client from '../../integrationClients/${client.name}/${pascal(client.name)}Client';\n`).join('')}${printWarningIfRequired(options)}
 interface IntegrationClients ${integrationClients.length ? `{
 ${integrationClients.map(client => `  ${client.name}: ${pascal(client.name)}Client;`).join('\n')}
 }` : '{}'}
