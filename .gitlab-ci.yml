@@ -31,3 +31,10 @@ release:
   when: manual
   only:
     - main
+  after_script:
+    - >
+      if [ $CI_JOB_STATUS != 'success' ]; then
+        sh ci-notify.sh "🆘 $CI_JOB_NAME failed"
+      else
+        sh ci-notify.sh "✅ $CI_JOB_NAME success"
+      fi
