@@ -13,6 +13,6 @@ ${integrationClients.map(client => `  ${client.name}: ${pascal(client.name)}Clie
 }` : '{}'}
 
 export default IntegrationClients;
-`
+`.trimStart()
 
 export default genIntegrationClientsTmpl;
