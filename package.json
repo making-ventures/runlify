@@ -1,6 +1,6 @@
 {
   "name": "runlify",
-  "version": "0.0.727",
+  "version": "0.0.728-alpha.0",
   "description": "runlify CLI",
   "private": false,
   "main": "build/index.js",
@@ -9,6 +9,7 @@
     "runlify": "bin/runlify"
   },
   "scripts": {
+    "release": "standard-version",
     "clean-build": "rm -rf ./build",
     "compile": "tsc -p .",
     "copy-templates": "mkdir -p ./build/templates && cp ./src/templates/* ./build/templates",
@@ -63,6 +64,7 @@
     "jest-extended": "^4.0.2",
     "jest-without-globals": "^0.0.3",
     "jiti": "^2.4.2",
+    "standard-version": "^9.5.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2",
     "typescript-eslint": "^8.32.0",
