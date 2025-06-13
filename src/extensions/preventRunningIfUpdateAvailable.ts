@@ -1,6 +1,8 @@
 import { GluegunToolbox } from 'gluegun'
 
 module.exports = async (toolbox: GluegunToolbox) => {
+  toolbox.print.info(`version: ${toolbox.meta.version()}`)
+
   const res = await toolbox.meta.checkForUpdate()
   if (res) {
     const pathEnv = process.env.PATH
