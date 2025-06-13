@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.732-removeCustoms.0](https://gitlab.com/making.ventures/runlify/compare/v0.0.730-removeCustoms.0...v0.0.732-removeCustoms.0) (2025-06-13)
+
 ### [0.0.730-removeCustoms.0](https://gitlab.com/making.ventures/runlify/compare/v0.0.729...v0.0.730-removeCustoms.0) (2025-06-13)
 
 ### [0.0.729](https://gitlab.com/making.ventures/runlify/compare/v0.0.728...v0.0.729) (2025-06-13)
