@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.729](https://gitlab.com/making.ventures/runlify/compare/v0.0.728...v0.0.729) (2025-06-13)
+
 ### [0.0.728](https://gitlab.com/making.ventures/runlify/compare/v0.0.728-test.0...v0.0.728) (2025-06-13)
 
 ### [0.0.728-test.0](https://gitlab.com/making.ventures/runlify/compare/v0.0.728-alpha.0...v0.0.728-test.0) (2025-06-13)
