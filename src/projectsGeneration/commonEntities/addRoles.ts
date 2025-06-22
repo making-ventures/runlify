@@ -3,6 +3,7 @@ import SystemMetaBuilder from '../builders/SystemMetaBuilder';
 const addRoles = (system: SystemMetaBuilder) => {
   // roles
   const roles = system.addCatalog('roles');
+  roles.setCreatableByUser(false);
   roles.setTitles({
     en: {
       singular: 'Role',

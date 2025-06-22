@@ -382,7 +382,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsMo
     return this
   }
 
-  setSort(field: string, order: 'ASC' | 'DESC') {
+  setSort(field: string, order: 'ASC' | 'DESC' = 'DESC') {
     if (!this.getFileds().some((f) => f.name === field)) {
       throw new Error(
         `There is no field with name "${field}", you can not set sort to this field. Entity ${this.name}`
