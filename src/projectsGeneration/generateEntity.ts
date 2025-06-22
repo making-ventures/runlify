@@ -52,6 +52,7 @@ import { tenantIdRequiredHooksTmpl } from './generators/fileTemplates/back/servi
 import { configTmpl } from './generators/fileTemplates/back/services/entity/config'
 import { prismaServiceBaseClassTmpl } from './generators/fileTemplates/back/services/entity/class'
 import { prismaAdditionalServiceClassTmpl } from './generators/fileTemplates/back/services/entity/additionalClass'
+import { uiListBreadcrumbsTmpl } from './generators/fileTemplates/ui/pages/EntityList/EntityBreadcrumbs'
 
 export const generateEntity = async (
   entityWideGenerationArgs: EntityWideGenerationArgs
@@ -393,6 +394,10 @@ export const generateEntity = async (
       await writeFileIfNotExists(
         join(entityListDir, `${pascalSingular(entity.name)}Filter.tsx`),
         uiFilterTmpl(entityWideGenerationArgs)
+      )
+      await writeFileIfNotExists(
+        join(entityListDir, `${pascalSingular(entity.name)}ListBreadcrumbs.tsx`),
+        uiListBreadcrumbsTmpl(entityWideGenerationArgs)
       )
       await write(
         join(entityListDir, `Default${pascalSingular(entity.name)}Filter.tsx`),

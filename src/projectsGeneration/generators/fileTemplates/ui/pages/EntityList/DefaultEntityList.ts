@@ -4,7 +4,7 @@ import * as R from 'ramda'
 import { getShowComponent } from '../../../../ui/getShowComponent'
 import { Entity } from '../../../../../builders/buildedTypes'
 import { EntityWideGenerationArgs } from '../../../../../args'
-import { printWarningIfRequired, pad4 } from '../../../../../utils'
+import { printWarningIfRequired, pad5 } from '../../../../../utils'
 import { isImageFileRef, isMarkdownField } from '../../../../../metaUtils'
 import { plural } from 'pluralize'
 
@@ -77,7 +77,8 @@ import ${pascalSingular(entity.name)}Filter from './${pascalSingular(
     entity.name
   )}Filter';${entity.removableByUser ? `
 import {hasPermission} from '../../../../utils/permissions';` : ''}
-import ListActions from '../../../../raUiLib/ListActions';${
+import ListActions from '../../../../raUiLib/ListActions';
+import ${pascalSingular(entity.name)}ListBreadcrumbs from './${pascalSingular(entity.name)}ListBreadcrumbs';${
   withFileRef
     ? "\nimport ImageViewField from '../../../../uiLib/file/ImageViewField';"
     : ''
@@ -97,35 +98,38 @@ const Default${pascalSingular(
     entity.name
   )}List: FC<ListProps> = (props: ListProps) => {
   return (
-    <List
-      title='${plural(entity.type)}.${
+    <>
+      <${pascalSingular(entity.name)}ListBreadcrumbs />
+      <List
+        title='${plural(entity.type)}.${
     entity.name
   }.title.plural'
-      filters={<${pascalSingular(
+        filters={<${pascalSingular(
     entity.name
   )}Filter />}
-      actions={<ListActions />}
-      sort={{field: 'id', order: 'DESC'}}${!entity.exportableByUser ? `
-      exporter={false}` : ''}
-      {...props}
-    >
-      <Datagrid
-        rowClick='show'
-        bulkActionButtons={${entity.removableByUser ? '<DefaultBulkActionButton />' : 'false'}}
+        actions={<ListActions />}
+        sort={{field: 'id', order: 'DESC'}}${!entity.exportableByUser ? `
+        exporter={false}` : ''}
+        {...props}
       >
+        <Datagrid
+          rowClick='show'
+          bulkActionButtons={${entity.removableByUser ? '<DefaultBulkActionButton />' : 'false'}}
+        >
 ${entity.fields
   .filter((f) => !f.hidden)
   .filter(f => f.showInList)
   .map((f) => getShowComponent(entity, allEntities, f, 'list'))
-  .map(pad4)
+  .map(pad5)
   .join('\n')}${
     registrarDepended
       ? `
-        <RegistrarField label='Registrar' />`
+          <RegistrarField label='Registrar' />`
       : ''
   }
-      </Datagrid>
-    </List>
+        </Datagrid>
+      </List>
+    </>
   );
 };
 
