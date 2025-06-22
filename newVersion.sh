@@ -15,7 +15,6 @@ num3=$(($num3+1))
 new_number="$num1.$num2.$num3"
 echo new_number $new_number
 sed -i "s/^  \"version\": \".*\"/  \"version\": \"$new_number\"/" package.json
-
 git add .
 git commit -am "$arg"
 git push
