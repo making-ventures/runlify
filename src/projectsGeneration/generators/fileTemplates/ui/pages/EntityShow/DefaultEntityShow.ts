@@ -74,7 +74,11 @@ const Default${pascalSingular(
   const translate = useTranslate();
 
   return (
-    <Show actions={${options.breadcrumb ? '<Breadcrumbs><DefaultActions /></Breadcrumbs>' : '<DefaultActions />'}} title={<${getEntityTitle(entity)} />} {...props}>
+    <Show
+      actions={${options.breadcrumb ? '<Breadcrumbs><DefaultActions /></Breadcrumbs>' : '<DefaultActions />'}}
+      title={<${getEntityTitle(entity)} />}
+      {...props}
+    >
       <TabbedShowLayout>
         <MainTab label={translate('app.mainTab')} />
         {additionalTabs.map(({Tab, label}, i) => <Tab label={label} key={i} />)}${
