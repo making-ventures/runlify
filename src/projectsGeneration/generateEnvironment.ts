@@ -47,7 +47,6 @@ export const generateEnvironment = async (
     const prjDetachedBackSrcDir = join(opts.detachedBackProject, 'src')
 
     // corePrismaGetter
-    // src/prisma/prisma.ts
     if (opts.corePrismaGetter) {
       const clientsFolderDir = join(prjDetachedBackSrcDir, 'clients')
 
@@ -57,7 +56,6 @@ export const generateEnvironment = async (
       )
     }
 
-    // src/clients/queue/getQueue.ts
     if (opts.corePrismaGetter) {
       const queueFolderDir = join(prjDetachedBackSrcDir, 'clients', 'queue')
 
@@ -65,7 +63,6 @@ export const generateEnvironment = async (
     }
 
     // coreIndex
-    // src/index.ts
     if (opts.coreIndex) {
       await write(
         join(prjDetachedBackSrcDir, 'index.ts'),
@@ -74,7 +71,6 @@ export const generateEnvironment = async (
     }
 
     // schema.prisma
-    // prisma/schema.prisma
     if (opts.genPrismaSchema) {
       const prismaFolderDir = join(opts.detachedBackProject, 'prisma')
 
@@ -98,14 +94,12 @@ export const generateEnvironment = async (
     const chartDir = join(opts.detachedBackProject, 'chart')
 
     // chart itself
-    // chart/Chart.yaml
     await write(
       join(chartDir, 'Chart.yaml'),
       chartTmpl(projectWideGenerationArgs)
     )
 
     // chart values
-    // chart/values.yaml
     if (opts.genBackChartValues) {
       await write(
         join(chartDir, 'values.yaml'),
@@ -117,7 +111,6 @@ export const generateEnvironment = async (
     const chartTemplatesDir = join(chartDir, 'templates')
 
     // chart ingress
-    // chart/templates/ingress.yaml
     if (opts.genBackChartIngress) {
       await write(
         join(chartTemplatesDir, 'ingress.yaml'),
@@ -127,7 +120,6 @@ export const generateEnvironment = async (
 
     // chart back
     if (opts.genBackChartBack) {
-      // chart/templates/back.yaml
       await write(
         join(chartTemplatesDir, 'back.yaml'),
         chartBackTmpl(projectWideGenerationArgs)
@@ -135,7 +127,6 @@ export const generateEnvironment = async (
     }
 
     // gitlab-ci
-    // .gitlab-ci.yml
     if (opts.genBackGitlabCi) {
       await write(
         join(opts.detachedBackProject, '.gitlab-ci.yml'),
@@ -144,7 +135,6 @@ export const generateEnvironment = async (
     }
 
     // ci-notify
-    // ci-notify.sh
     if (opts.genBackCiNotify) {
       await write(
         join(opts.detachedBackProject, 'ci-notify.sh'),
@@ -161,7 +151,6 @@ export const generateEnvironment = async (
     // UI
     const prjDetachedUiSrcDir = join(opts.detachedUiProject, 'src')
 
-    // src/App.tsx
     if (opts.genUIApp) {
       await write(
         join(prjDetachedUiSrcDir, 'App.tsx'),
@@ -172,15 +161,12 @@ export const generateEnvironment = async (
     // layout
     const uiLayoutFolder = join(prjDetachedUiSrcDir, 'layout')
 
-    // src/layout/Menu.tsx
     await write(join(uiLayoutFolder, 'Menu.tsx'), uiLayoutMenuTmpl(opts))
 
-    // src/layout/AppBar.tsx
     if (opts.genUiAppBar) {
       await write(join(uiLayoutFolder, 'AppBar.tsx'), uiLayoutAppBarTmpl(opts))
     }
 
-    // src/contexts/SpacesContext.tsx
     const uiContextsFolder = join(prjDetachedUiSrcDir, 'contexts')
 
     await write(
@@ -188,20 +174,17 @@ export const generateEnvironment = async (
       uiSpacesContextTmpl(projectWideGenerationArgs)
     )
 
-    // src/dataProvider/index.ts
     const uiDataProviderFolder = join(prjDetachedUiSrcDir, 'dataProvider')
     await write(
       join(uiDataProviderFolder, 'index.ts'),
       uiDataProviderTmpl(entities, opts)
     )
 
-    // src/dataProvider/getAdditionalMethods.ts
     await write(
       join(uiDataProviderFolder, 'getAdditionalMethods.ts'),
       uiGetAdditionalMethodsTmpl(projectWideGenerationArgs.system.additionalServices, opts)
     )
 
-    // src/i18nProvider/index.ts
     const uiI18nProviderFolder = join(prjDetachedUiSrcDir, 'i18nProvider')
     await write(
       join(uiI18nProviderFolder, 'index.ts'),
@@ -212,14 +195,12 @@ export const generateEnvironment = async (
     const uiChartDir = join(opts.detachedUiProject, 'chart')
 
     // chart itself
-    // chart/Chart.yaml
     await write(
       join(uiChartDir, 'Chart.yaml'),
       uiChartTmpl(projectWideGenerationArgs)
     )
 
     // chart values
-    // chart/values.yaml
     await write(
       join(uiChartDir, 'values.yaml'),
       uiChartValuesTmpl(projectWideGenerationArgs)
@@ -229,7 +210,6 @@ export const generateEnvironment = async (
     const uiChartTemplatesDir = join(uiChartDir, 'templates')
 
     // chart ingress
-    // chart/templates/ingress.yaml
     if (opts.genUiChartIngress) {
       await write(
         join(uiChartTemplatesDir, 'ingress.yaml'),
@@ -238,7 +218,6 @@ export const generateEnvironment = async (
     }
 
     // chart front
-    // chart/templates/front.yaml
     if (opts.genUiChartFront) {
       await write(
         join(uiChartTemplatesDir, 'front.yaml'),
@@ -247,7 +226,6 @@ export const generateEnvironment = async (
     }
 
     // gitlab-ci
-    // .gitlab-ci.yml
     if (opts.genUiGitlabCi) {
       await write(
         join(opts.detachedUiProject, '.gitlab-ci.yml'),
@@ -256,7 +234,6 @@ export const generateEnvironment = async (
     }
 
     // ci-notify
-    // ci-notify.sh
     if (opts.genUiCiNotify) {
       await write(
         join(opts.detachedUiProject, 'ci-notify.sh'),

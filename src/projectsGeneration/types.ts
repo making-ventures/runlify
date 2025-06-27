@@ -152,3 +152,9 @@ export type LinkedEntities =
       fromField: LinkField
       externalEntityName: string
     }
+
+export interface FileToWrite {
+  path: string;
+  content: string;
+  ifNotExists: boolean;
+}

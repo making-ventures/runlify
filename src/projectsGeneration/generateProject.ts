@@ -13,7 +13,7 @@ import { genGraphSchemesByLocalGenerator } from './genGraphSchemesByLocalGenerat
 import { BootstrapEntityInnerOptions, defaultBootstrapEntityOptions } from './types'
 import { generateEntity } from './generateEntity'
 import { restRouterTmpl } from './generators/fileTemplates/back/root/restRouter'
-import { writeFileIfNotExists } from './utils'
+import { writeFileIfNotExists, writeFiles } from './utils'
 import { uiAdditionalRoutesTmpl } from './generators/fileTemplates/ui/additionalRoutes'
 import { uiGetAdditionalMenuTmpl } from './generators/fileTemplates/ui/getAdditionalMenu'
 import { uiMetaPageTmpl } from './generators/fileTemplates/ui/MetaPage'
@@ -63,17 +63,6 @@ import { generateAdditionalService } from './generateAdditionalService'
 import genIntegrationClientsTmpl from './generators/fileTemplates/back/environment/src/integrationClients/IntegrationClients'
 import genIntegrationClientConstrictorsTmpl from './generators/fileTemplates/back/environment/src/integrationClients/integrationClientConstrictors'
 import cleanFiles from './fileCleaners/cleanFiles'
-
-// Бек (generateBack)
-//  Исходники бека (generateBackSrc)
-//    Исходники бека (generateBackSrcEntity)
-//  GitlabCi бека (generateBackGitlabCi)
-//  Helm чарты бека (generateBackHelm)
-// Фронт (generateFront)
-//  Исходники фронта (generateFrontSrc)
-//    Исходники фронта (generateFrontSrcEntity)
-//  GitlabCi фронта (generateFrontGitlabCi)
-//  Helm чарты фронта (generateFrontHelm)
 
 const generateHelpService = async (
   args: ProjectWideGenerationArgs,
@@ -131,8 +120,6 @@ const generateHelpService = async (
 }
 
 export const generateBackSrc = async (args: ProjectWideGenerationArgs) => {
-  // log.info('generateBackSrc');
-
   await Promise.all([
     write(
       join(args.options.detachedBackProject, 'src', 'config', 'config.ts'),
@@ -405,8 +392,6 @@ export const generateBackDocs = async (args: ProjectWideGenerationArgs) => {
 }
 
 export const generateBack = async (args: ProjectWideGenerationArgs) => {
-  // log.info('generateBack');
-
   await Promise.all([
     generateBackSrc(args),
     generateBackEnvs(args),
@@ -418,8 +403,6 @@ export const generateBack = async (args: ProjectWideGenerationArgs) => {
 export const generateFrontSrcEntityTranslationsDocs = async (
   args: ProjectWideGenerationArgs
 ) => {
-  // log.info('generateFrontSrcEntityTranslationsDocs');
-
   for (const lang of args.system.languages) {
     const filePath = join(
       args.options.detachedUiProject,
@@ -433,8 +416,6 @@ export const generateFrontSrcEntityTranslationsDocs = async (
 export const generateFrontSrcEntityTranslationsCatalogs = async (
   args: ProjectWideGenerationArgs
 ) => {
-  // log.info('generateFrontSrcEntityTranslationsCatalogs');
-
   for (const lang of args.system.languages) {
     const filePath = join(
       args.options.detachedUiProject,
@@ -448,8 +429,6 @@ export const generateFrontSrcEntityTranslationsCatalogs = async (
 export const generateFrontSrcEntityTranslationsInfoRegistries = async (
   args: ProjectWideGenerationArgs
 ) => {
-  // log.info('generateFrontSrcEntityTranslationsInfoRegistries');
-
   for (const lang of args.system.languages) {
     const filePath = join(
       args.options.detachedUiProject,
@@ -463,8 +442,6 @@ export const generateFrontSrcEntityTranslationsInfoRegistries = async (
 export const generateFrontSrcEntityTranslationsSumRegistries = async (
   args: ProjectWideGenerationArgs
 ) => {
-  // log.info('generateFrontSrcEntityTranslationsSumRegistries');
-
   for (const lang of args.system.languages) {
     const filePath = join(
       args.options.detachedUiProject,
@@ -478,8 +455,6 @@ export const generateFrontSrcEntityTranslationsSumRegistries = async (
 export const generateFrontSrcEntityTranslationsReports = async (
   args: ProjectWideGenerationArgs
 ) => {
-  // log.info('generateFrontSrcEntityTranslationsReports');
-
   for (const lang of args.system.languages) {
     const filePath = join(
       args.options.detachedUiProject,
@@ -512,7 +487,6 @@ export const generateFrontSrcGetEntityValidation = async (
     entity: { name },
   } = entityWideGenerationArgs
 
-  // src/adm/pages/milesReceivedForFlightsByManagerDocuments/getMilesReceivedForFlightsByManagerDocumentValidation.tsx
   const filePath = join(
     entityWideGenerationArgs.options.detachedUiProject,
     `src/adm/pages/${name}/get${pascalSingular(name)}Validation.tsx`
@@ -524,9 +498,6 @@ export const generateFrontSrcGetEntityValidation = async (
 export const generateFrontSrcEntity = async (
   entityWideGenerationArgs: EntityWideGenerationArgs
 ) => {
-  // log.info('generateFrontSrcEntity');
-  // log.info(typeof entityWideGenerationArgs);
-
   await generateFrontSrcEntityIcon(entityWideGenerationArgs)
   await generateFrontSrcGetEntityValidation(entityWideGenerationArgs)
 }
@@ -548,8 +519,6 @@ export const generateFrontSrc = async (args: ProjectWideGenerationArgs) => {
 }
 
 export const generateFront = async (args: ProjectWideGenerationArgs) => {
-  // log.info('generateFront');
-
   await Promise.all([
     generateFrontSrc(args),
   ])
@@ -571,25 +540,11 @@ const generateProject = async (
     detachedUiProject,
   }
 
-  const args = prepareProjectWideGenerationArgs(system, opts)
-
-  await generateBack(args)
-  await generateFront(args)
+  const args = prepareProjectWideGenerationArgs(system, opts);
   const { entities } = args
 
-  let prjBackSrcPrefixedDir = ''
-  const prjDetachedBackSrcDir = join(opts.detachedBackProject, 'src')
-
-  // if (opts.detachedBackProject) {
-  prjBackSrcPrefixedDir = join(prjDetachedBackSrcDir, 'adm')
-
-  // } else {
-  //   prjBackSrcPrefixedDir = join(__dirname, '..', '..', prefix);
-  // }
-
   // Pre grapgql types compose generation
-  await Promise.all([
-    cleanFiles(args),
+  const typeFiles = await Promise.all([
     ...entities.map((entity) =>
       generateEntity(
         prepareEntityWideGenerationArgs(
@@ -618,22 +573,26 @@ const generateProject = async (
         )
       )
     ),
-  ])
+  ]).then(files => files.flat());
 
-  // const graphMetaServiceDir = join(
-  //   prjBackSrcPrefixedDir,
-  //   'graph',
-  //   'services',
-  //   'meta'
-  // )
-  // write(`${graphMetaServiceDir}/baseTypeDefs.ts`, graphMetaTypesTmpl())
+  writeFiles(typeFiles);
+
+  await generateBack(args)
+  await generateFront(args)
+
+  let prjBackSrcPrefixedDir = ''
+  const prjDetachedBackSrcDir = join(opts.detachedBackProject, 'src')
+
+  prjBackSrcPrefixedDir = join(prjDetachedBackSrcDir, 'adm')
+
+  await cleanFiles(args);
 
   await genGraphSchemesByLocalGenerator(opts)
 
   await generateHelpService(args, false)
 
   // Full generation
-  await Promise.all([
+  const fullFiles = await Promise.all([
     ...entities.map((entity) =>
       generateEntity(
         prepareEntityWideGenerationArgs(
@@ -660,29 +619,15 @@ const generateProject = async (
         )
       )
     ),
-  ])
+  ]).then(files => files.flat());
+
+  writeFiles(fullFiles);
 
   // Prisma schema
   const servicesDir = join(prjBackSrcPrefixedDir, 'services')
 
-  // if (opts.genPrismaSchema) {
-  //   const prismaSchema = genPrismaSchemaForEntities(args, allLinks);
-  //   write(join(prjBackSrcPrefixedDir, 'schema.prisma'), prismaSchema);
-  // }
-
   // Graph
   const graphDir = join(prjBackSrcPrefixedDir, 'graph')
-
-  // write(
-  //   `${graphMetaServiceDir}/baseResolvers.ts`,
-  //   // graphMetaResolversTmpl()
-  // )
-
-  // // Context
-  // // src/dc/services/context.ts
-  // if (opts.genContext && !opts.typesOnly) {
-  //   write(join(servicesDir, 'context.ts'), graphContextTmpl(args));
-  // }
 
   // Types
   if (opts.genContext) {
@@ -699,7 +644,7 @@ const generateProject = async (
       graphServiceConstrictorsTmpl(args)
     )
   }
-  
+
   write(
     join(servicesDir, 'IntegrationClients.ts'),
     genIntegrationClientsTmpl(args)
@@ -723,53 +668,21 @@ const generateProject = async (
 
   // Root
 
-  // src/restRouter.ts
   const restRouter = restRouterTmpl()
   await writeFileIfNotExists(
     join(prjDetachedBackSrcDir, 'rest', 'restRouter.ts'),
     restRouter
   )
 
-  // // src/meta/metadata.json
-  // const genFolder = join(prjDetachedBackSrcDir, 'gen')
-
-  // name: string;
-  // prefix: string;
-  // needFor: string;
-  // configVars: string[];
-  // deployEnvironments: string[];
-  // catalogs: EntityWithOptions[];
-  // documents: EntityWithOptions[];
-  // infoRegistries: EntityWithOptions[];
-  // sumRegistries: EntityWithOptions[];
-
-  // const metaWithoutOptions = {
-  //   ...system,
-  //   catalogs: system.catalogs,
-  //   documents: system.documents,
-  //   infoRegistries: system.infoRegistries,
-  //   sumRegistries: system.sumRegistries,
-  // }
-  // write(
-  //   join(genFolder, 'metadata.json'),
-  //   stringify(metaWithoutOptions, undefined, 1)
-  // )
-
   // UI
 
   let prjUiSrcPrefixedDir = ''
   const prjDetachedUiSrcDir = join(opts.detachedUiProject, 'src')
 
-  // if (opts.detachedBackProject) {
   prjUiSrcPrefixedDir = join(prjDetachedUiSrcDir, 'adm')
-
-  // } else {
-  //   prjUiSrcPrefixedDir = join('/home/name/prj/crawler-ui/src', prefix);
-  // }
 
   if (!opts.typesOnly) {
     // Resources
-    // src/dc/resources.tsx genUiResources uiResourcesTmpl
     if (opts.genUiResources) {
       const {resources, resourcesChunk0, resourcesChunk1} = uiResourcesTmpl(args)
 
@@ -779,7 +692,6 @@ const generateProject = async (
     }
 
     // Resources page
-    // src/dc/ResourcesPage.tsx genUiResourcesPage uiResourcesPageTmpl
     if (opts.genUiResourcesPage) {
       const generatedResources = uiResourcesPageTmpl(args)
 
@@ -793,7 +705,6 @@ const generateProject = async (
     write(join(prjUiSrcPrefixedDir, 'MetaPage.tsx'), generatedUiMetaPage)
 
     // Resources page
-    // src/dc/entityMapping.ts genUiEntityMapping uiEntityMappingTmpl
     if (opts.genUiEntityMapping) {
       const generatedResources = uiEntityMappingTmpl(args, opts)
 
@@ -804,7 +715,6 @@ const generateProject = async (
     }
 
     // Resources page
-    // src/dc/ProjectMenu.tsx genUiMenu uiMenuTmpl
     if (opts.genUiMenu) {
       const generatedSubMenu = uiGetDefaultMenuTmpl(args)
       const generatedAdditionalMenu = uiGetAdditionalMenuTmpl()
@@ -820,7 +730,6 @@ const generateProject = async (
     }
 
     // Resources page
-    // src/dc/routes.tsx genUiRoutes uiRoutesTmpl
     if (opts.genUiRoutes) {
       const generatedResources = uiRoutesTmpl(args)
 
@@ -834,7 +743,6 @@ const generateProject = async (
     )
 
     // Functions page
-    // src/dc/functions/Functions.tsx
     if (opts.genUiFunctions) {
       const generatedResources = uiFunctionsTmpl(opts)
 
@@ -844,7 +752,6 @@ const generateProject = async (
     }
 
     // Dashboard page
-    // src/dc/dashboard.tsx
     if (opts.genUiDashboard) {
       const generatedResources = uiDashboardTmpl()
 

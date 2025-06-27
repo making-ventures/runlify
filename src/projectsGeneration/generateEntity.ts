@@ -24,8 +24,7 @@ import { uiEntityShowMainTabTmpl } from './generators/fileTemplates/ui/pages/Ent
 import { uiEntityShowDefaultMainTabTmpl } from './generators/fileTemplates/ui/pages/EntityShow/DefaultMainTab'
 import { uiEntityShowDependencyTabTmpl } from './generators/fileTemplates/ui/pages/EntityShow/DependencyTab'
 import { uiDefaultActionTmpl } from './generators/fileTemplates/ui/pages/EntityShow/DefaultActions'
-import { writeFileIfNotExists } from './utils'
-import { write } from 'fs-jetpack'
+import { createFilesToWriteUtils } from './utils'
 import { uiAdditionalTabsTmpl } from './generators/fileTemplates/ui/pages/EntityShow/additionalTabs'
 import { backAdditionalResolversTmpl } from './generators/fileTemplates/back/graph/additionalResolvers'
 import { backEntityPermissionToGraphqlTmpl } from './generators/fileTemplates/back/graph/entityPermissionToGraphqlTmpl'
@@ -57,6 +56,12 @@ import { uiListBreadcrumbsTmpl } from './generators/fileTemplates/ui/pages/Entit
 export const generateEntity = async (
   entityWideGenerationArgs: EntityWideGenerationArgs
 ) => {
+  const {
+    filesToWrite,
+    write,
+    writeFileIfNotExists,
+  } = createFilesToWriteUtils();
+
   const {
     allEntities,
     allSumRegistries,
@@ -262,7 +267,6 @@ export const generateEntity = async (
     )
 
     // CountWidget
-    // src/dc/widgets/count/CountAccountsWidget.tsx genUiCountWidget uiCountWidgetTmpl
     if (options.genUiCountWidget) {
       const countWdgetsDir = join(widgetsDir, 'count')
 
@@ -276,14 +280,10 @@ export const generateEntity = async (
 
     const toLinks = getLinksFromExternalEntities(entity, allLinks)
 
-    // log.info(`To links for entity ${entity.name}`);
-    // log.info(toLinks);
-
     // pages
     const pagesDir = join(prjUiSrcPrefixedDir, 'pages', entity.name)
 
     // EntityShow
-    // src/air/pages/countries/CountryShow
     if (options.forms.show) {
       const entityShowDir = join(pagesDir, `${pascalSingular(entity.name)}Show`)
 
@@ -298,10 +298,6 @@ export const generateEntity = async (
       )
       await write(join(entityShowDir, 'DefaultMainTab.tsx'), defaultMainTab)
 
-      // // index
-      // const index = uiEntityShowIndexTmpl(prefix, allEntities, entity, toLinks, options);
-      // await write(join(entityShowDir, 'index.tsx'), index);
-
       // DefaultEntityShow
       await write(
         join(entityShowDir, `Default${pascalSingular(entity.name)}Show.tsx`),
@@ -309,12 +305,10 @@ export const generateEntity = async (
       )
 
       // DefaultActions
-      // if (entity.type === 'document' && entity.registries.length > 0) {
       await write(
         join(entityShowDir, 'DefaultActions.tsx'),
         uiDefaultActionTmpl(entityWideGenerationArgs)
       )
-      // }
 
       // index
       await writeFileIfNotExists(
@@ -410,7 +404,6 @@ export const generateEntity = async (
     }
 
     // ListWidget
-    // src/dc/widgets/list/ListAccountsWidget.tsx genUiListWidget uiListWidgetTmpl
     if (options.genUiListWidget) {
       const listWdgetsDir = join(widgetsDir, 'list')
 
@@ -422,4 +415,6 @@ export const generateEntity = async (
       )
     }
   }
+
+  return filesToWrite;
 }
