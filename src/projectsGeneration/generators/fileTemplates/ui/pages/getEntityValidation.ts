@@ -1,13 +1,17 @@
 import { pascalSingular } from '../../../../../utils/cases'
 import { EntityWideGenerationArgs } from '../../../../args'
 import { Field } from '../../../../builders/buildedTypes'
-import { isMoneyField } from '../../../../metaUtils'
+import { isMoneyField, isStringNumberField } from '../../../../metaUtils'
 import {printWarningIfRequired} from '../../../../utils'
 
 const getFieldValidation = (field: Field): string | null => {
   if (field.requiredOnInput) {
     switch (field.type) {
       case 'string':
+        if (isStringNumberField(field)) {
+          return "Yup.string().onlyDigits().required()"
+        }
+
         return "Yup.string().required()"
       case 'date':
         return "Yup.string().required()"
@@ -39,6 +43,12 @@ const getFieldValidation = (field: Field): string | null => {
     }
   } else {
     switch (field.type) {
+      case 'string':
+        if (isStringNumberField(field)) {
+          return "Yup.string().onlyDigits().nullable()";
+        }
+
+        return null;
       case 'int':
         if (isMoneyField(field)) {
           return `Yup

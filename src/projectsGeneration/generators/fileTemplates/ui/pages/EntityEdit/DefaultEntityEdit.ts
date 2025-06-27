@@ -7,7 +7,7 @@ import {Entity, Field, LinkField} from '../../../../../builders/buildedTypes';
 import {getCompNameToEditScalar} from '../../../../ui/componentNames/edit/getCompNameToEditScalar';
 import {EntityWideGenerationArgs} from '../../../../../args';
 import {pad, printWarningIfRequired} from '../../../../../utils'
-import {isImageFileRef, isMarkdownField, isMoneyField, isMultilineField} from '../../../../../metaUtils';
+import {isImageFileRef, isMarkdownField, isMoneyField, isMultilineField, isStringNumberField} from '../../../../../metaUtils';
 import {getFieldLabel} from '../../../../ui/getShowComponent';
 
 // 'string' | 'int' | 'bigint' | 'float' | 'bool' | 'datetime' | 'date'
@@ -53,7 +53,8 @@ export const getTrivialEditComponent = (
   source='${field.name}${postfix ? postfix.source : ''}'${field.required ? '' : '\n  defaultValue={null}'}${field.required && type !== 'filter' && field.type !== 'bool' && field.requiredOnInput !== false ? `\n  isRequired` : ''}
   ${getFieldLabel(entity, field, postfix?.label)}${isMoneyField(field) ? `
   format={(value) => value / 100}
-  parse={(value) => value * 100}` : ''}
+  parse={(value) => value * 100}` : ''}${isStringNumberField(field) ? `
+  type='number'` : ''}
 />`;
 };
 
