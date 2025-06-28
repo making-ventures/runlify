@@ -153,13 +153,13 @@ export type LinkedEntities =
       externalEntityName: string
     }
 
-export interface FileToWrite {
+export interface FileToCreate {
   path: string;
   content: string;
   ifNotExists: boolean;
 }
 
-export interface FileWriter {
-  writeFileIfNotExists: (path: string, content: string) => void;
-  write: (path: string, content: string) => void;
+export interface FileCreator {
+  createIfNotExists: (path: string, content: string) => void;
+  create: (path: string, content: string) => void;
 }

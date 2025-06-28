@@ -7,10 +7,10 @@ import {backAdditionalServiceTypeDefsTmpl} from './generators/fileTemplates/back
 import {backAdditionalServicePermissionToGraphqlTmpl} from './generators/fileTemplates/back/graph/additionalService/permissionToGraphql'
 import {genGraphAdditionalServiceSchema} from './generators/graph/genGraphAdditionalServiceSchema'
 import {backAdditionalServiceTypesTmpl} from './generators/fileTemplates/back/services/additionalService/types'
-import {FileWriter} from './types'
+import {FileCreator} from './types'
 
 export const generateAdditionalService = async (
-  fileWriter: FileWriter,
+  fileCreator: FileCreator,
   serviceWideGenerationArgs: AdditionalServiceWideGenerationArgs,
 ) => {
   const {
@@ -25,7 +25,7 @@ export const generateAdditionalService = async (
   const serviceName = `${pascal(service.name)}Service`;
   const serviceDir = join(prjBackSrcPrefixedDir, 'services', serviceName);
 
-  fileWriter.write(
+  fileCreator.create(
     join(serviceDir, 'types.ts'),
     backAdditionalServiceTypesTmpl(serviceWideGenerationArgs)
   );
@@ -40,7 +40,7 @@ export const generateAdditionalService = async (
 
   // Graph schema
   if (options.genGraphSchema) {
-    fileWriter.write(
+    fileCreator.create(
       join(graphServiceDir, 'typeDefs.ts'),
       backAdditionalServiceTypeDefsTmpl(printSchema(genGraphAdditionalServiceSchema(service)), options)
     );
@@ -48,7 +48,7 @@ export const generateAdditionalService = async (
 
   // Graph resolvers
   if (options.genGraphResolvers && !options.typesOnly) {
-    fileWriter.write(
+    fileCreator.create(
       `${graphServiceDir}/resolvers.ts`,
       backAdditionalServiceResolversTmpl(serviceWideGenerationArgs)
     );
@@ -56,7 +56,7 @@ export const generateAdditionalService = async (
 
   if (!options.typesOnly) {
     // Permissions
-    fileWriter.write(
+    fileCreator.create(
       `${graphServiceDir}/permissionsToGraphql.ts`,
       backAdditionalServicePermissionToGraphqlTmpl(serviceWideGenerationArgs)
     );

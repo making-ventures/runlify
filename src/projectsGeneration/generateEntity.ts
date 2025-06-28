@@ -51,10 +51,10 @@ import {configTmpl} from './generators/fileTemplates/back/services/entity/config
 import {prismaServiceBaseClassTmpl} from './generators/fileTemplates/back/services/entity/class'
 import {prismaAdditionalServiceClassTmpl} from './generators/fileTemplates/back/services/entity/additionalClass'
 import {uiListBreadcrumbsTmpl} from './generators/fileTemplates/ui/pages/EntityList/EntityBreadcrumbs'
-import {FileWriter} from './types'
+import {FileCreator} from './types'
 
 export const generateEntity = async (
-  fileWriter: FileWriter,
+  fileCreator: FileCreator,
   entityWideGenerationArgs: EntityWideGenerationArgs,
 ) => {
   const {
@@ -79,19 +79,19 @@ export const generateEntity = async (
     const additionalServicePath = join(serviceDir, `Additional${serviceName}.ts`);
 
     const additionalClassService = prismaAdditionalServiceClassTmpl(entityWideGenerationArgs);
-    fileWriter.writeFileIfNotExists(additionalServicePath, additionalClassService);
+    fileCreator.createIfNotExists(additionalServicePath, additionalClassService);
 
     const generatedClassService = prismaServiceBaseClassTmpl(entityWideGenerationArgs);
-    fileWriter.write(servicePath, generatedClassService);
+    fileCreator.create(servicePath, generatedClassService);
 
     const config = configTmpl(
       entityWideGenerationArgs,
       allSumRegistries,
       allInfoRegistries,
     );
-    fileWriter.write(configPath, config);
+    fileCreator.create(configPath, config);
 
-    fileWriter.writeFileIfNotExists(
+    fileCreator.createIfNotExists(
       join(serviceDir, 'initUserHooks.ts'),
       initUserHooksTmpl(entityWideGenerationArgs)
     );
@@ -106,61 +106,61 @@ export const generateEntity = async (
         throw new Error('Tenants entity not presented, you can\'t use tenants in project');
       }
 
-      fileWriter.write(
+      fileCreator.create(
         join(hooksDir, 'tenantIdRequiredHooks.ts'),
         tenantIdRequiredHooksTmpl(entityWideGenerationArgs)
       );
     }
 
-    fileWriter.write(
+    fileCreator.create(
       join(serviceDir, 'initBuiltInHooks.ts'),
       initBuiltInHooksTmpl(entityWideGenerationArgs)
     );
 
     if (!entity.elasticOnly) {
-      fileWriter.writeFileIfNotExists(
+      fileCreator.createIfNotExists(
         join(hooksDir, 'additionalOperationsOnCreate.ts'),
         additionalOperationsOnCreateTmpl(entityWideGenerationArgs)
       );
-      fileWriter.writeFileIfNotExists(
+      fileCreator.createIfNotExists(
         join(hooksDir, 'additionalOperationsOnUpdate.ts'),
         additionalOperationsOnUpdateTmpl(entityWideGenerationArgs)
       );
-      fileWriter.writeFileIfNotExists(
+      fileCreator.createIfNotExists(
         join(hooksDir, 'additionalOperationsOnDelete.ts'),
         additionalOperationsOnDeleteTmpl(entityWideGenerationArgs)
       );
     }
 
-    fileWriter.writeFileIfNotExists(
+    fileCreator.createIfNotExists(
       join(hooksDir, 'beforeCreate.ts'),
       beforeCreateTmpl(entityWideGenerationArgs)
     );
-    fileWriter.writeFileIfNotExists(
+    fileCreator.createIfNotExists(
       join(hooksDir, 'beforeDelete.ts'),
       beforeDeleteTmpl(entityWideGenerationArgs)
     );
-    fileWriter.writeFileIfNotExists(
+    fileCreator.createIfNotExists(
       join(hooksDir, 'beforeUpdate.ts'),
       beforeUpdateTmpl(entityWideGenerationArgs)
     );
-    fileWriter.writeFileIfNotExists(
+    fileCreator.createIfNotExists(
       join(hooksDir, 'beforeUpsert.ts'),
       beforeUpsertTmpl(entityWideGenerationArgs)
     );
-    fileWriter.writeFileIfNotExists(
+    fileCreator.createIfNotExists(
       join(hooksDir, 'afterCreate.ts'),
       afterCreateTmpl(entityWideGenerationArgs)
     );
-    fileWriter.writeFileIfNotExists(
+    fileCreator.createIfNotExists(
       join(hooksDir, 'afterUpdate.ts'),
       afterUpdateTmpl(entityWideGenerationArgs)
     );
-    fileWriter.writeFileIfNotExists(
+    fileCreator.createIfNotExists(
       join(hooksDir, 'afterDelete.ts'),
       afterDeleteTmpl(entityWideGenerationArgs)
     );
-    fileWriter.writeFileIfNotExists(
+    fileCreator.createIfNotExists(
       join(hooksDir, 'changeListFilter.ts'),
       changeListFilterTmpl(entityWideGenerationArgs)
     );
@@ -176,12 +176,12 @@ export const generateEntity = async (
 
   // Graph schema
   if (options.genGraphSchema) {
-    fileWriter.write(
+    fileCreator.create(
       join(graphServiceDir, 'baseTypeDefs.ts'),
       backBaseTypesTmpl(printSchema(genGraphCrudSchema(entity)), options)
     );
 
-    fileWriter.writeFileIfNotExists(
+    fileCreator.createIfNotExists(
       join(graphServiceDir, 'additionalTypeDefs.ts'),
       backAdditionalTypesTmpl()
     );
@@ -189,11 +189,11 @@ export const generateEntity = async (
 
   // Graph resolvers
   if (options.genGraphResolvers && !options.typesOnly) {
-    fileWriter.write(
+    fileCreator.create(
       `${graphServiceDir}/baseResolvers.ts`,
       backBaseResolversTmpl(entityWideGenerationArgs)
     );
-    fileWriter.writeFileIfNotExists(
+    fileCreator.createIfNotExists(
       `${graphServiceDir}/additionalResolvers.ts`,
       backAdditionalResolversTmpl()
     );
@@ -211,15 +211,15 @@ export const generateEntity = async (
 
   if (!options.typesOnly) {
     // Permissions
-    fileWriter.write(
+    fileCreator.create(
       `${graphServiceDir}/permissionsToGraphql.ts`,
       backEntityPermissionToGraphqlTmpl(entityWideGenerationArgs)
     );
-    fileWriter.write(
+    fileCreator.create(
       `${graphServiceDir}/basePermissionsToGraphql.ts`,
       backBasePermissionToGraphqlTmpl(entityWideGenerationArgs)
     );
-    fileWriter.write(
+    fileCreator.create(
       `${graphServiceDir}/additionalPermissionsToGraphql.ts`,
       backEntityAdditionalPermissionToGraphqlTmpl(entityWideGenerationArgs)
     );
@@ -230,7 +230,7 @@ export const generateEntity = async (
 
       const generatedResources = uiCountWidgetTmpl(entityWideGenerationArgs);
 
-      fileWriter.write(
+      fileCreator.create(
         join(countWdgetsDir, `Count${pascal(entity.name)}Widget.tsx`),
         generatedResources
       );
@@ -247,34 +247,34 @@ export const generateEntity = async (
 
       // MainTab
       const mainTab = uiEntityShowMainTabTmpl();
-      fileWriter.writeFileIfNotExists(join(entityShowDir, 'MainTab.tsx'), mainTab);
+      fileCreator.createIfNotExists(join(entityShowDir, 'MainTab.tsx'), mainTab);
 
       // DefaultMainTab
       const defaultMainTab = uiEntityShowDefaultMainTabTmpl(
         entityWideGenerationArgs
       );
-      fileWriter.write(join(entityShowDir, 'DefaultMainTab.tsx'), defaultMainTab);
+      fileCreator.create(join(entityShowDir, 'DefaultMainTab.tsx'), defaultMainTab);
 
       // DefaultEntityShow
-      fileWriter.write(
+      fileCreator.create(
         join(entityShowDir, `Default${pascalSingular(entity.name)}Show.tsx`),
         uiDefaultShowTmpl(entityWideGenerationArgs)
       );
 
       // DefaultActions
-      fileWriter.write(
+      fileCreator.create(
         join(entityShowDir, 'DefaultActions.tsx'),
         uiDefaultActionTmpl(entityWideGenerationArgs)
       );
 
       // index
-      fileWriter.writeFileIfNotExists(
+      fileCreator.createIfNotExists(
         join(entityShowDir, 'index.tsx'),
         uiEntityShowIndexTmpl(entityWideGenerationArgs)
       );
 
       const additionalTabs = uiAdditionalTabsTmpl();
-      fileWriter.writeFileIfNotExists(
+      fileCreator.createIfNotExists(
         join(entityShowDir, 'additionalTabs.tsx'),
         additionalTabs
       );
@@ -299,7 +299,7 @@ export const generateEntity = async (
           link,
           options
         );
-        fileWriter.write(join(tabsDir, `${componentName}.tsx`), dependencyTab);
+        fileCreator.create(join(tabsDir, `${componentName}.tsx`), dependencyTab);
       }
     }
 
@@ -309,14 +309,14 @@ export const generateEntity = async (
         `${pascalSingular(entity.name)}Create`
       );
 
-      fileWriter.write(
+      fileCreator.create(
         join(
           entityCreateDir,
           `Default${pascalSingular(entity.name)}Create.tsx`
         ),
         uiDefaultCreateTmpl(entityWideGenerationArgs)
       );
-      fileWriter.writeFileIfNotExists(
+      fileCreator.createIfNotExists(
         join(entityCreateDir, 'index.tsx'),
         uiCreateTmpl(entityWideGenerationArgs)
       );
@@ -325,11 +325,11 @@ export const generateEntity = async (
     if (options.forms.edit) {
       const entityEditDir = join(pagesDir, `${pascalSingular(entity.name)}Edit`);
 
-      fileWriter.write(
+      fileCreator.create(
         join(entityEditDir, `Default${pascalSingular(entity.name)}Edit.tsx`),
         uiDefaultEditTmpl(entityWideGenerationArgs)
       );
-      fileWriter.writeFileIfNotExists(
+      fileCreator.createIfNotExists(
         join(entityEditDir, 'index.tsx'),
         uiEditTmpl(entityWideGenerationArgs)
       );
@@ -338,23 +338,23 @@ export const generateEntity = async (
     if (options.forms.list) {
       const entityListDir = join(pagesDir, `${pascalSingular(entity.name)}List`);
 
-      fileWriter.write(
+      fileCreator.create(
         join(entityListDir, `Default${pascalSingular(entity.name)}List.tsx`),
         uiDefaultListTmpl(entityWideGenerationArgs)
       );
-      fileWriter.writeFileIfNotExists(
+      fileCreator.createIfNotExists(
         join(entityListDir, `${pascalSingular(entity.name)}Filter.tsx`),
         uiFilterTmpl(entityWideGenerationArgs)
       );
-      fileWriter.writeFileIfNotExists(
+      fileCreator.createIfNotExists(
         join(entityListDir, `${pascalSingular(entity.name)}ListBreadcrumbs.tsx`),
         uiListBreadcrumbsTmpl(entityWideGenerationArgs)
       );
-      fileWriter.write(
+      fileCreator.create(
         join(entityListDir, `Default${pascalSingular(entity.name)}Filter.tsx`),
         uiDefaultFilterTmpl(entityWideGenerationArgs)
       );
-      fileWriter.writeFileIfNotExists(
+      fileCreator.createIfNotExists(
         join(entityListDir, 'index.tsx'),
         uiListTmpl(entityWideGenerationArgs)
       );
@@ -366,7 +366,7 @@ export const generateEntity = async (
 
       const generatedResources = uiListWidgetTmpl(entityWideGenerationArgs);
 
-      fileWriter.write(
+      fileCreator.create(
         join(listWdgetsDir, `List${pascal(entity.name)}Widget.tsx`),
         generatedResources
       );
