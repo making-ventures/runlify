@@ -4,9 +4,9 @@ import {
   LinkField,
   ScalarField,
 } from '../../../../builders'
-import { genPrismaIdField } from './genPrismaIdField'
-import { genPrismaLinkFields } from './genPrismaLinkFields'
-import { genPrismaScalarField } from './genPrismaScalarField'
+import {genPrismaIdField} from './genPrismaIdField'
+import {genPrismaLinkFields} from './genPrismaLinkFields'
+import {genPrismaScalarField} from './genPrismaScalarField'
 
 export const genPrismaField = (
   entity: Entity,

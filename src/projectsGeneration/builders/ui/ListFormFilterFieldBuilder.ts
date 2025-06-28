@@ -1,6 +1,6 @@
-import { FieldBuilder } from '../types'
+import {FieldBuilder} from '../types'
 import BaseSavableEntityBuilder from '../BaseSavableEntityBuilder'
-import { ListFormFilterField } from './Forms'
+import {ListFormFilterField} from './Forms'
 
 class ListFormFilterFieldBuilder {
   getEntity: () => BaseSavableEntityBuilder

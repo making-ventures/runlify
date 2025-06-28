@@ -1,5 +1,5 @@
 import * as R from 'ramda'
-import { ProjectWideGenerationArgs } from '../../../../args'
+import {ProjectWideGenerationArgs} from '../../../../args'
 
 export const backDefaultEnv = ({ system }: ProjectWideGenerationArgs) =>
   JSON.stringify(

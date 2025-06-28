@@ -2,9 +2,9 @@ import {
   BootstrapEntityOptions,
   defaultBootstrapEntityOptions,
 } from '../../../types'
-import { camelPlural, pascalSingular } from '../../../../utils/cases'
+import {camelPlural, pascalSingular} from '../../../../utils/cases'
 import {printWarningIfRequired} from '../../../utils'
-import { ProjectWideGenerationArgs } from '../../../args'
+import {ProjectWideGenerationArgs} from '../../../args'
 
 export const uiEntityMappingTmpl = (
   { entities }: ProjectWideGenerationArgs,

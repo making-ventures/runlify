@@ -1,5 +1,5 @@
 import {ProjectWideGenerationArgs} from '../../../../args'
-import { FileWriter } from '../../../../types';
+import {FileWriter} from '../../../../types';
 import {genJobsTmpl} from './jobs';
 import {join} from 'path';
 

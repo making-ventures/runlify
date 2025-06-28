@@ -1,5 +1,5 @@
-import { pascalPlural } from '../../../../../../../utils/cases'
-import { EntityWideGenerationArgs } from '../../../../../../args'
+import {pascalPlural} from '../../../../../../../utils/cases'
+import {EntityWideGenerationArgs} from '../../../../../../args'
 
 export const changeListFilterTmpl = ({ entity }: EntityWideGenerationArgs) => {
   const contextName = 'Context'

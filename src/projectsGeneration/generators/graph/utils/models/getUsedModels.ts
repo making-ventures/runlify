@@ -1,5 +1,5 @@
 import {ModelField, TsModel} from '../../../../builders/buildedTypes'
-import { getUniqModels } from './getUniqModels';
+import {getUniqModels} from './getUniqModels';
 import * as R from 'ramda';
 
 export const getUsedModels = (

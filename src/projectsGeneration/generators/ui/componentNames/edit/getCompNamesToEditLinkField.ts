@@ -1,6 +1,6 @@
-import { Entity, LinkField } from '../../../../builders/buildedTypes'
-import { getFieldByName } from '../../../../metaUtils'
-import { EditComponentName, LinkEditComponentName } from '../types'
+import {Entity, LinkField} from '../../../../builders/buildedTypes'
+import {getFieldByName} from '../../../../metaUtils'
+import {EditComponentName, LinkEditComponentName} from '../types'
 
 export const getCompNamesToEditLinkField = (
   field: LinkField,

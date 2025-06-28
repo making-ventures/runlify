@@ -1,5 +1,5 @@
-import { pascal, pascalSingular } from '../../../../../../utils/cases'
-import { EntityWideGenerationArgs } from '../../../../../args'
+import {pascal, pascalSingular} from '../../../../../../utils/cases'
+import {EntityWideGenerationArgs} from '../../../../../args'
 import {printWarningIfRequired} from '../../../../../utils'
 
 export const uiCountWidgetTmpl = ({

@@ -1,7 +1,7 @@
-import { expect } from 'jest-without-globals'
-import { getPreparedModelsForGraph } from './getPreparedModelsForGraph'
+import {expect} from 'jest-without-globals'
+import {getPreparedModelsForGraph} from './getPreparedModelsForGraph'
 import AdditionalServiceBuilder from '../../../../builders/AdditionalServiceBuilder'
-import { MethodType } from '../../../../../types'
+import {MethodType} from '../../../../../types'
 import log from '../../../../../log';
 
 // yarn test --testPathPattern getPreparedModelsForGraph

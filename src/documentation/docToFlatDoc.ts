@@ -1,5 +1,5 @@
-import { Doc, DocBlock, DocBlockGroup, DocListElement } from './doc'
-import { FlatDoc } from './flatDoc'
+import {Doc, DocBlock, DocBlockGroup, DocListElement} from './doc'
+import {FlatDoc} from './flatDoc'
 
 const handleDocListElement = (
   flatDoc: FlatDoc,

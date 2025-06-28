@@ -1,5 +1,5 @@
-import { GluegunToolbox } from 'gluegun'
-import { generateProject } from '../projectsGeneration';
+import {GluegunToolbox} from 'gluegun'
+import {generateProject} from '../projectsGeneration';
 
 module.exports = {
   name: 'regenerate',

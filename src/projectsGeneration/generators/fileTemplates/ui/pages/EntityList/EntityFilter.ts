@@ -1,5 +1,5 @@
-import { pascalSingular } from '../../../../../../utils/cases'
-import { EntityWideGenerationArgs } from '../../../../../args'
+import {pascalSingular} from '../../../../../../utils/cases'
+import {EntityWideGenerationArgs} from '../../../../../args'
 
 export const uiFilterTmpl = ({ entity }: EntityWideGenerationArgs) => {
   return `import React, {FC} from 'react';

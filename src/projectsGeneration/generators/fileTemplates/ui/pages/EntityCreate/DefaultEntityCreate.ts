@@ -1,13 +1,13 @@
-import { pascalSingular } from '../../../../../../utils/cases'
+import {pascalSingular} from '../../../../../../utils/cases'
 import * as R from 'ramda'
 import {
   getEditComponent,
   getTsDefaultTypeValueExpression,
 } from '../EntityEdit/DefaultEntityEdit'
-import { getCompNamesToEditField } from '../../../../ui/componentNames/edit/getCompNamesToEditField'
-import { EntityWideGenerationArgs } from '../../../../../args'
-import { printWarningIfRequired, pad1, pad } from '../../../../../utils'
-import { getKeyField, isImageFileRef, isMarkdownField, isMultilineField } from '../../../../../metaUtils'
+import {getCompNamesToEditField} from '../../../../ui/componentNames/edit/getCompNamesToEditField'
+import {EntityWideGenerationArgs} from '../../../../../args'
+import {printWarningIfRequired, pad1, pad} from '../../../../../utils'
+import {getKeyField, isImageFileRef, isMarkdownField, isMultilineField} from '../../../../../metaUtils'
 
 export const uiDefaultCreateTmpl = ({
   allEntities,

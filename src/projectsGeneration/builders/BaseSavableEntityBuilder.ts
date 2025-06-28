@@ -5,14 +5,14 @@ import {TKeyFieldType, Multitenancy, BaseSavableEntity, PermissionType, MethodTy
 import CatalogBuilder from './CatalogBuilder'
 import BaseBuilder from './BaseBuilder'
 import FormsBuilder from './ui/FormsBuilder'
-import { FieldBuilder, Index } from './types'
+import {FieldBuilder, Index} from './types'
 import ViewLinkFieldBuilder from './fields/ViewLinkFieldBuilder'
-import { camelPlural, pascal } from '../../utils/cases'
+import {camelPlural, pascal} from '../../utils/cases'
 import * as R from 'ramda'
 import PermissionBuilder from './PermissionBuilder'
 import PageBuilder from './PageBuilder'
 import BaseModelBuilder from './mehods/BaseModelBuilder'
-import MethodBuilder, { MethodsModelsHolder } from './mehods/MethodBuilder'
+import MethodBuilder, { MethodsModelsHolder} from './mehods/MethodBuilder'
 
 abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsModelsHolder {
   id: IdFieldBuilder

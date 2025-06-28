@@ -1,4 +1,4 @@
-import { pascalCase, camelCase, sentenceCase, capitalCase } from 'change-case'
+import {pascalCase, camelCase, sentenceCase, capitalCase} from 'change-case'
 import pluralize from 'pluralize'
 
 export const pascalSingular = (str: string): string =>

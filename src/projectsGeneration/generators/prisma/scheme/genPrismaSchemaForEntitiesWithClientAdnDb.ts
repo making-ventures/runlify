@@ -1,5 +1,5 @@
-import { ProjectWideGenerationArgs } from '../../../args'
-import { genPrismaSchemaForEntities } from './genPrismaSchemaForEntities'
+import {ProjectWideGenerationArgs} from '../../../args'
+import {genPrismaSchemaForEntities} from './genPrismaSchemaForEntities'
 
 export const genPrismaSchemaForEntitiesWithClientAdnDb = ({
   entities,

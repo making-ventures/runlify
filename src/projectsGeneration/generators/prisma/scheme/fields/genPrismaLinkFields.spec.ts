@@ -1,7 +1,7 @@
-import { expect } from 'jest-without-globals'
+import {expect} from 'jest-without-globals'
 import LinkFieldBuilder from '../../../../builders/fields/LinkFieldBuilder'
 import CatalogBuilder from '../../../../builders/CatalogBuilder'
-import { genPrismaLinkFields } from './genPrismaLinkFields'
+import {genPrismaLinkFields} from './genPrismaLinkFields'
 
 // yarn test --testPathPattern genPrismaLinkFields
 

@@ -1,4 +1,4 @@
-import { GluegunCommand } from 'gluegun'
+import {GluegunCommand} from 'gluegun'
 
 const command: GluegunCommand = {
   name: 'runlify',

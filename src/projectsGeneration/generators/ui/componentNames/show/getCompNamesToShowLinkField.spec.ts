@@ -1,6 +1,6 @@
-import { expect } from 'jest-without-globals'
+import {expect} from 'jest-without-globals'
 import CatalogBuilder from '../../../../builders/CatalogBuilder'
-import { getCompNamesToShowLinkField } from './getCompNamesToShowLinkField'
+import {getCompNamesToShowLinkField} from './getCompNamesToShowLinkField'
 
 describe('getCompNamesToShowLinkField', () => {
   it('generates ReferenceField for link to entity with int id which is also title field', () => {

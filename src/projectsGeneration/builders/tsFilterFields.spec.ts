@@ -1,6 +1,6 @@
-import { expect } from 'jest-without-globals'
+import {expect} from 'jest-without-globals'
 import CatalogBuilder from './CatalogBuilder'
-import { tsFilterFields } from './tsFilterFields'
+import {tsFilterFields} from './tsFilterFields'
 
 // yarn test --testPathPattern tsFilterFields
 

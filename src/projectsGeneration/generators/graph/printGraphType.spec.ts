@@ -6,8 +6,8 @@ import {
   GraphQLObjectType,
   GraphQLString,
 } from 'graphql'
-import { expect } from 'jest-without-globals'
-import { printGraphType } from './printGraphType'
+import {expect} from 'jest-without-globals'
+import {printGraphType} from './printGraphType'
 
 // yarn test --testPathPattern printGraphType
 

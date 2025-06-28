@@ -1,8 +1,8 @@
-import { expect } from 'jest-without-globals'
-import { augmentInputModelsByUsedAsInputGeneralModelsAndPostfixThemByInput } from './augmentInputModelsByUsedAsInputGeneralModelsAndPostfixThemByInput'
-import { MethodType } from '../../../../builders/buildedTypes';
+import {expect} from 'jest-without-globals'
+import {augmentInputModelsByUsedAsInputGeneralModelsAndPostfixThemByInput} from './augmentInputModelsByUsedAsInputGeneralModelsAndPostfixThemByInput'
+import {MethodType} from '../../../../builders/buildedTypes';
 import AdditionalServiceBuilder from '../../../../builders/AdditionalServiceBuilder';
-import { getServiceModels } from './getServiceModels';
+import {getServiceModels} from './getServiceModels';
 
 // yarn test --testPathPattern augmentInputModelsByUsedAsInputGeneralModelsAndPostfixThemByInput
 

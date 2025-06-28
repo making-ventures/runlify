@@ -1,4 +1,4 @@
-import { MemoryAndCpu, Worker } from './buildedTypes'
+import {MemoryAndCpu, Worker} from './buildedTypes'
 import BaseBuilder from './BaseBuilder'
 
 class DeploymentBuilder extends BaseBuilder {

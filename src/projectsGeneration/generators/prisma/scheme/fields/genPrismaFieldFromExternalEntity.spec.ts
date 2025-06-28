@@ -1,5 +1,5 @@
-import { expect } from 'jest-without-globals'
-import { genPrismaFieldFromExternalEntity } from './genPrismaFieldFromExternalEntity'
+import {expect} from 'jest-without-globals'
+import {genPrismaFieldFromExternalEntity} from './genPrismaFieldFromExternalEntity'
 import {baseField} from '../../../../dataForTests';
 
 // yarn test --testPathPattern genPrismaFieldFromExternalEntity

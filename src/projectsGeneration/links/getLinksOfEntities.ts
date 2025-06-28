@@ -1,6 +1,6 @@
-import { Entity } from '../builders/buildedTypes'
-import { LinkedEntities } from '../types'
-import { getLinkFields } from '../metaUtils'
+import {Entity} from '../builders/buildedTypes'
+import {LinkedEntities} from '../types'
+import {getLinkFields} from '../metaUtils'
 
 export const getLinksOfEntities = (entities: Entity[]): LinkedEntities[] => {
   const allLinks: LinkedEntities[] = []

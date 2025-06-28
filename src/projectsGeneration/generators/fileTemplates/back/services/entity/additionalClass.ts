@@ -1,5 +1,5 @@
-import { pascal, pascalPlural } from '../../../../../../utils/cases'
-import { EntityWideGenerationArgs } from '../../../../../args'
+import {pascal, pascalPlural} from '../../../../../../utils/cases'
+import {EntityWideGenerationArgs} from '../../../../../args'
 
 export const prismaAdditionalServiceClassTmpl = ({
   entity,

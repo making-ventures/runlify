@@ -1,5 +1,5 @@
 import {pascal, pascalPlural, pascalSingular, sentence} from '../../../../../../utils/cases';
-import { EntityWideGenerationArgs } from '../../../../../args'
+import {EntityWideGenerationArgs} from '../../../../../args'
 import {printWarningIfRequired, pad1, pad5} from '../../../../../utils'
 
 export const uiListWidgetTmpl = ({

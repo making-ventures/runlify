@@ -1,7 +1,7 @@
-import { spawn } from 'cross-spawn'
-import { GluegunToolbox } from 'gluegun'
+import {spawn} from 'cross-spawn'
+import {GluegunToolbox} from 'gluegun'
 import TermSignals from '../utils/TermSignals'
-import { constantCase } from 'change-case'
+import {constantCase} from 'change-case'
 import nconf from 'nconf'
 import * as R from 'ramda'
 

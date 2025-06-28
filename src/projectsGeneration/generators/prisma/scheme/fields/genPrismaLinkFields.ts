@@ -1,8 +1,8 @@
-import { pascalSingular } from '../../../../../utils/cases'
-import { Entity, LinkField } from '../../../../builders'
-import { fieldIdTypeToPrismaType } from '../../fieldIdTypeToPrismaType'
-import { genPrismaDefault } from './genPrismaDefault'
-import { joinPrismaFieldParts } from './genPrismaScalarField'
+import {pascalSingular} from '../../../../../utils/cases'
+import {Entity, LinkField} from '../../../../builders'
+import {fieldIdTypeToPrismaType} from '../../fieldIdTypeToPrismaType'
+import {genPrismaDefault} from './genPrismaDefault'
+import {joinPrismaFieldParts} from './genPrismaScalarField'
 
 export const genPrismaLinkFields = (
   entity: Entity,

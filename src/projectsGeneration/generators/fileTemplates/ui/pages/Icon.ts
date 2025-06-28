@@ -1,4 +1,4 @@
-import { EntityWideGenerationArgs } from '../../../../args'
+import {EntityWideGenerationArgs} from '../../../../args'
 import {printWarningIfRequired} from '../../../../utils'
 
 export const uiEntityIconTmpl = ({

@@ -1,5 +1,5 @@
-import { paramCase } from 'change-case'
-import { ProjectWideGenerationArgs } from '../../../../../args'
+import {paramCase} from 'change-case'
+import {ProjectWideGenerationArgs} from '../../../../../args'
 import {printWarningIfRequired} from '../../../../../utils'
 
 export const chartValuesTmpl = ({

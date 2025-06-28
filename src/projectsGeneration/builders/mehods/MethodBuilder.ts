@@ -5,7 +5,7 @@ import ReturnObjectBuilder from './ReturnObjectBuilder';
 import BaseModelBuilder from './BaseModelBuilder';
 import ReturnScalarBuilder from './ReturnScalarBuilder';
 import ReturnVoidBuilder from './ReturnVoidBuilder';
-import { pascal } from '../../../utils/cases';
+import {pascal} from '../../../utils/cases';
 
 export interface MethodsModelsHolder {
   name: string

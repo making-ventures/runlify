@@ -1,7 +1,7 @@
-import { RestApi } from './buildedTypes'
+import {RestApi} from './buildedTypes'
 import BaseBuilder from './BaseBuilder'
 import RestApiMethodBuilder from './RestApiMethodBuilder'
-import { HttpMethod } from './curlTypes'
+import {HttpMethod} from './curlTypes'
 
 class RestApiBuilder extends BaseBuilder {
   methods: RestApiMethodBuilder[] = []

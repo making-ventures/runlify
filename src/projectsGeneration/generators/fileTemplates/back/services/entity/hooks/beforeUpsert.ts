@@ -1,5 +1,5 @@
-import { pascalSingular, pascalPlural } from '../../../../../../../utils/cases'
-import { EntityWideGenerationArgs } from '../../../../../../args'
+import {pascalSingular, pascalPlural} from '../../../../../../../utils/cases'
+import {EntityWideGenerationArgs} from '../../../../../../args'
 
 export const beforeUpsertTmpl = ({ entity }: EntityWideGenerationArgs) => {
   const contextName = 'Context'

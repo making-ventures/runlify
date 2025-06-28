@@ -1,11 +1,11 @@
 import * as R from 'ramda'
-import { pascalSingular } from '../../../../utils/cases'
-import { Entity } from '../../../builders'
-import { getLinksFromExternalEntities } from '../../../links/getLinksFromExternalEntities'
-import { LinkedEntities } from '../../../types'
-import { genPrismaField } from './fields/genPrismaField'
-import { genPrismaFieldFromExternalEntity } from './fields/genPrismaFieldFromExternalEntity'
-import { pascalCase } from 'change-case'
+import {pascalSingular} from '../../../../utils/cases'
+import {Entity} from '../../../builders'
+import {getLinksFromExternalEntities} from '../../../links/getLinksFromExternalEntities'
+import {LinkedEntities} from '../../../types'
+import {genPrismaField} from './fields/genPrismaField'
+import {genPrismaFieldFromExternalEntity} from './fields/genPrismaFieldFromExternalEntity'
+import {pascalCase} from 'change-case'
 
 export const genPrismaEntity = (
   entity: Entity,

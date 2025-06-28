@@ -1,6 +1,6 @@
-import { AdditionalService } from '../../../../builders/buildedTypes'
-import { InputOutputServiceModels } from '../../types';
-import { getUsedModelsForService } from './getUsedModelsForService';
+import {AdditionalService} from '../../../../builders/buildedTypes'
+import {InputOutputServiceModels} from '../../types';
+import {getUsedModelsForService} from './getUsedModelsForService';
 
 export const getUsedGraphModelsForService =
   (service: AdditionalService): InputOutputServiceModels => {

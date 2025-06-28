@@ -9,7 +9,7 @@ import addUsers from './addUsers';
 import addAutogeneration from './addAutogeneration';
 import addTenants from './addTenants';
 import addAggregateTrackings from './addAggregateTrackings';
-import { addEmailModuleEntities } from '../modules';
+import {addEmailModuleEntities} from '../modules';
 import {addConfigurationVariables} from '.';
 
 const addCommonEntities = (system: SystemMetaBuilder) => {

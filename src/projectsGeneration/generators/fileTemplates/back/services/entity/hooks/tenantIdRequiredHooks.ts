@@ -1,5 +1,5 @@
-import { EntityWideGenerationArgs } from '../../../../../../args'
-import { pascalPlural, pascalSingular } from '../../../../../../../utils/cases'
+import {EntityWideGenerationArgs} from '../../../../../../args'
+import {pascalPlural, pascalSingular} from '../../../../../../../utils/cases'
 import {printWarningIfRequired} from '../../../../../../utils'
 
 export const tenantIdRequiredHooksTmpl = ({

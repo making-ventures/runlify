@@ -1,4 +1,4 @@
-import { build } from 'gluegun'
+import {build} from 'gluegun'
 
 /**
  * Create the cli and kick it off

@@ -1,7 +1,7 @@
-import { GraphQLNamedType, GraphQLNonNull } from 'graphql'
-import { ModelField } from '../../../builders/buildedTypes'
-import { fieldTypeToGraphScalar } from '../fieldTypeToGraphScalar'
-import { GraphFieldPurpose } from './genGraphField'
+import {GraphQLNamedType, GraphQLNonNull} from 'graphql'
+import {ModelField} from '../../../builders/buildedTypes'
+import {fieldTypeToGraphScalar} from '../fieldTypeToGraphScalar'
+import {GraphFieldPurpose} from './genGraphField'
 
 export const genGraphModelField = (
   field: ModelField,

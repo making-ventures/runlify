@@ -6,9 +6,9 @@ import {
   GraphQLNamedOutputType,
   GraphQLString,
 } from 'graphql'
-import { GraphQLDateTime, GraphQLDate, GraphQLBigInt, GraphQLJSON } from 'graphql-scalars'
-import { Field, ModelField } from '../../builders/buildedTypes'
-import { GraphFieldPurpose } from './fields/genGraphField';
+import {GraphQLDateTime, GraphQLDate, GraphQLBigInt, GraphQLJSON} from 'graphql-scalars'
+import {Field, ModelField} from '../../builders/buildedTypes'
+import {GraphFieldPurpose} from './fields/genGraphField';
 
 export const fieldTypeToGraphScalar = <T extends GraphQLNamedInputType | GraphQLNamedOutputType>(
   field: Field | ModelField,

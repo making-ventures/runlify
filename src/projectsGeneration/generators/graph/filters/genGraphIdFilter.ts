@@ -1,7 +1,7 @@
-import { GraphQLList, GraphQLType } from 'graphql'
-import { IdField } from '../../../builders/buildedTypes'
-import { camelPlural } from '../../../../utils/cases'
-import { genGraphIdFieldType } from '../fields/genGraphIdFieldType'
+import {GraphQLList, GraphQLType} from 'graphql'
+import {IdField} from '../../../builders/buildedTypes'
+import {camelPlural} from '../../../../utils/cases'
+import {genGraphIdFieldType} from '../fields/genGraphIdFieldType'
 
 export const genGraphIdFilter = (
   field: IdField

@@ -1,6 +1,6 @@
-import { expect } from 'jest-without-globals'
-import { getUniqModels } from './getUniqModels'
-import { TsModel } from '../../../../builders/buildedTypes';
+import {expect} from 'jest-without-globals'
+import {getUniqModels} from './getUniqModels'
+import {TsModel} from '../../../../builders/buildedTypes';
 
 // yarn test --testPathPattern getUniqModels
 

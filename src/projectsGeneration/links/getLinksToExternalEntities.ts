@@ -1,5 +1,5 @@
-import { Entity } from '../builders/buildedTypes'
-import { LinkedEntities } from '../types'
+import {Entity} from '../builders/buildedTypes'
+import {LinkedEntities} from '../types'
 
 export const getLinksToExternalEntities = (
   entity: Entity,

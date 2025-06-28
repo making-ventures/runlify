@@ -1,4 +1,4 @@
-import { ProjectWideGenerationArgs } from "../../args";
+import {ProjectWideGenerationArgs} from "../../args";
 import cleanWidgets from './widgets/cleanWidgets';
 
 export default async (

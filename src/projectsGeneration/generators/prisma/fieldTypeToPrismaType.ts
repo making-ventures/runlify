@@ -1,4 +1,4 @@
-import { Field, StringField } from '../../builders/buildedTypes'
+import {Field, StringField} from '../../builders/buildedTypes'
 
 export const fieldTypeToPrismaType = (field: Field): string => {
   switch (field.type) {

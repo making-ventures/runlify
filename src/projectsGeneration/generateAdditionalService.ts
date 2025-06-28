@@ -1,13 +1,13 @@
 import {join} from 'path'
-import { pascal } from '../utils/cases'
+import {pascal} from '../utils/cases'
 import {printSchema} from 'graphql'
 import {AdditionalServiceWideGenerationArgs} from './args'
 import {backAdditionalServiceResolversTmpl} from './generators/fileTemplates/back/graph/additionalService/resolvers'
 import {backAdditionalServiceTypeDefsTmpl} from './generators/fileTemplates/back/graph/additionalService/typeDefs'
-import { backAdditionalServicePermissionToGraphqlTmpl } from './generators/fileTemplates/back/graph/additionalService/permissionToGraphql'
-import { genGraphAdditionalServiceSchema } from './generators/graph/genGraphAdditionalServiceSchema'
-import { backAdditionalServiceTypesTmpl } from './generators/fileTemplates/back/services/additionalService/types'
-import { FileWriter } from './types'
+import {backAdditionalServicePermissionToGraphqlTmpl} from './generators/fileTemplates/back/graph/additionalService/permissionToGraphql'
+import {genGraphAdditionalServiceSchema} from './generators/graph/genGraphAdditionalServiceSchema'
+import {backAdditionalServiceTypesTmpl} from './generators/fileTemplates/back/services/additionalService/types'
+import {FileWriter} from './types'
 
 export const generateAdditionalService = async (
   fileWriter: FileWriter,

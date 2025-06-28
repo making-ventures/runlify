@@ -1,4 +1,4 @@
-import { expect } from 'jest-without-globals'
+import {expect} from 'jest-without-globals'
 import CatalogBuilder from './builders/CatalogBuilder'
 
 // yarn test -t CatalogBuilder-serialization

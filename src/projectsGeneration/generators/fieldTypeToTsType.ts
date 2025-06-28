@@ -1,4 +1,4 @@
-import { FieldType, TsTypes } from '../builders/buildedTypes'
+import {FieldType, TsTypes} from '../builders/buildedTypes'
 
 export const fieldTypeToTsType = (type: FieldType) => {
   switch (type) {

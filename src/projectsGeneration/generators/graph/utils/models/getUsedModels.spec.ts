@@ -1,6 +1,6 @@
-import { expect } from 'jest-without-globals'
-import { getUsedModels } from './getUsedModels'
-import { BaseField, StringField, TsModel, TsModelField } from '../../../../builders/buildedTypes';
+import {expect} from 'jest-without-globals'
+import {getUsedModels} from './getUsedModels'
+import {BaseField, StringField, TsModel, TsModelField} from '../../../../builders/buildedTypes';
 
 // yarn test --testPathPattern getUsedModels
 

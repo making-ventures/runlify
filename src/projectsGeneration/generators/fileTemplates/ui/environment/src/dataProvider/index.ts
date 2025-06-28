@@ -1,11 +1,11 @@
-import { camel } from '../../../../../../../utils/cases'
+import {camel} from '../../../../../../../utils/cases'
 import {
   BootstrapEntityOptions,
   defaultBootstrapEntityOptions,
 } from '../../../../../../types'
-import { Entity } from '../../../../../../builders/buildedTypes'
+import {Entity} from '../../../../../../builders/buildedTypes'
 import {printWarningIfRequired} from '../../../../../../utils'
-import { getKeyField } from '../../../../../../metaUtils'
+import {getKeyField} from '../../../../../../metaUtils'
 
 export const uiDataProviderTmpl = (
   entities: Entity[],

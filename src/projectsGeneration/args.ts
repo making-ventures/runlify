@@ -1,5 +1,5 @@
-import { getLinksOfEntities } from './links/getLinksOfEntities'
-import { BootstrapEntityInnerOptions, LinkedEntities } from './types'
+import {getLinksOfEntities} from './links/getLinksOfEntities'
+import {BootstrapEntityInnerOptions, LinkedEntities} from './types'
 import {
   Entity,
   InfoRegistry,
@@ -9,8 +9,8 @@ import {
   Catalog,
   AdditionalService,
 } from './builders/buildedTypes'
-import { getLinksToExternalEntities } from './links/getLinksToExternalEntities'
-import { getLinksFromExternalEntities } from './links/getLinksFromExternalEntities'
+import {getLinksToExternalEntities} from './links/getLinksToExternalEntities'
+import {getLinksFromExternalEntities} from './links/getLinksFromExternalEntities'
 import * as R from 'ramda'
 
 export interface ProjectWideGenerationArgs {

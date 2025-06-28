@@ -1,8 +1,8 @@
-import { pascalCase } from 'change-case'
+import {pascalCase} from 'change-case'
 import {pascal} from '../../../../../../utils/cases'
 import {AdditionalServiceWideGenerationArgs} from '../../../../../args'
 import {printWarningIfRequired} from '../../../../../utils'
-import { MethodType } from '../../../../../builders'
+import {MethodType} from '../../../../../builders'
 
 export const backAdditionalServiceResolversTmpl = ({
   service,

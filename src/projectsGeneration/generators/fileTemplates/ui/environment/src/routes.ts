@@ -1,5 +1,5 @@
-import { pascalCase } from 'change-case'
-import { ProjectWideGenerationArgs } from '../../../../../args'
+import {pascalCase} from 'change-case'
+import {ProjectWideGenerationArgs} from '../../../../../args'
 import {printWarningIfRequired} from '../../../../../utils'
 
 const uiRoutesTmpl = ({

@@ -1,11 +1,11 @@
-import { AdditionalService } from '../../../../builders/buildedTypes'
-import { getServiceModels } from './getServiceModels'
-import { prefixServiceModelsWithServiceName } from './prefixServiceModelsWithServiceName'
-import { augmentInputModelsByUsedAsInputGeneralModelsAndPostfixThemByInput } from './augmentInputModelsByUsedAsInputGeneralModelsAndPostfixThemByInput'
-import { InputOutputArgsServiceModels } from '../../types'
-import { pascal } from '../../../../../utils/cases'
-import { removeUnusedInOutputGeneralModels } from './removeUnusedInOutputGeneralModels'
-import { removeDublicatesFromServiceModels } from './removeDublicatesFromServiceModels'
+import {AdditionalService} from '../../../../builders/buildedTypes'
+import {getServiceModels} from './getServiceModels'
+import {prefixServiceModelsWithServiceName} from './prefixServiceModelsWithServiceName'
+import {augmentInputModelsByUsedAsInputGeneralModelsAndPostfixThemByInput} from './augmentInputModelsByUsedAsInputGeneralModelsAndPostfixThemByInput'
+import {InputOutputArgsServiceModels} from '../../types'
+import {pascal} from '../../../../../utils/cases'
+import {removeUnusedInOutputGeneralModels} from './removeUnusedInOutputGeneralModels'
+import {removeDublicatesFromServiceModels} from './removeDublicatesFromServiceModels'
 
 export const getPreparedModelsForGraph = (service: AdditionalService): InputOutputArgsServiceModels => {
   const models = getServiceModels(service);

@@ -1,7 +1,7 @@
 // создаем схему, в первом схема валидирует объект, в котором есть ошибка, и ожидаем ошибку из теста
 // второй тест, в котором тоже валидируем объект, но валидация проходит
 
-import { describe, expect } from 'jest-without-globals'
+import {describe, expect} from 'jest-without-globals'
 import * as Yup from 'yup';
 
 // yarn test -t 'yup'

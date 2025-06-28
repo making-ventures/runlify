@@ -1,8 +1,8 @@
-import { Field } from '../../../../builders/buildedTypes'
-import { getCompNamesToShowIdField } from './getCompNamesToShowIdField'
-import { getCompNamesToShowLinkField } from './getCompNamesToShowLinkField'
-import { getCompNamesToShowScalarField } from './getCompNamesToShowScalarField'
-import { LinkShowComponentName, ShowComponentName } from '../types'
+import {Field} from '../../../../builders/buildedTypes'
+import {getCompNamesToShowIdField} from './getCompNamesToShowIdField'
+import {getCompNamesToShowLinkField} from './getCompNamesToShowLinkField'
+import {getCompNamesToShowScalarField} from './getCompNamesToShowScalarField'
+import {LinkShowComponentName, ShowComponentName} from '../types'
 
 export const getCompNamesToShowField = (
   field: Field,

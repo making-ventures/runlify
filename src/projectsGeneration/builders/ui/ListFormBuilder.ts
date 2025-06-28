@@ -1,5 +1,5 @@
 import BaseSavableEntityBuilder from '../BaseSavableEntityBuilder'
-import { ListForm } from './Forms'
+import {ListForm} from './Forms'
 import ListFormFilterBuilder from './ListFormFilterBuilder'
 
 class ListFormBuilder {

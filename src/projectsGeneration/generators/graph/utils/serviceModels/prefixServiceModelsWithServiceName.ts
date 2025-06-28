@@ -1,6 +1,6 @@
-import { pascal } from '../../../../../utils/cases';
-import { mapModels } from '../mapUtils';
-import { MappedName, ServiceModels } from '../../types';
+import {pascal} from '../../../../../utils/cases';
+import {mapModels} from '../mapUtils';
+import {MappedName, ServiceModels} from '../../types';
 
 // Добалвяет моедлям префикс с именем сервиса, соответственно обновляет имена моделей, на котрые есть ссылка
 

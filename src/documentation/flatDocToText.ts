@@ -1,4 +1,4 @@
-import { FlatDoc, FlatDocBlock } from './flatDoc'
+import {FlatDoc, FlatDocBlock} from './flatDoc'
 
 const handleDocBlock = (block: FlatDocBlock): string => {
   switch (block.type) {

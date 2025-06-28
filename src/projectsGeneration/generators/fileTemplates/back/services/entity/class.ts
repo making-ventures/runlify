@@ -4,10 +4,10 @@ import {
   camelSingular,
   pascal,
 } from '../../../../../../utils/cases'
-import { singular } from 'pluralize'
-import { EntityWideGenerationArgs } from '../../../../../args'
+import {singular} from 'pluralize'
+import {EntityWideGenerationArgs} from '../../../../../args'
 import {addComma, printWarningIfRequired, newStrBefore, pad} from '../../../../../utils'
-import { Document } from '../../../../../builders'
+import {Document} from '../../../../../builders'
 
 export const prismaServiceBaseClassTmpl = ({
   entity,

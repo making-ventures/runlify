@@ -1,7 +1,7 @@
-import { pascalPlural } from '../../../../utils/cases'
-import { ProjectWideGenerationArgs } from '../../../args'
+import {pascalPlural} from '../../../../utils/cases'
+import {ProjectWideGenerationArgs} from '../../../args'
 import {printWarningIfRequired} from '../../../utils'
-import { plural } from 'pluralize'
+import {plural} from 'pluralize'
 
 export const uiResourcesPageTmpl = ({
   entities,

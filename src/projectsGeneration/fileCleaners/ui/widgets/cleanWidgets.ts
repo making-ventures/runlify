@@ -1,5 +1,5 @@
-import { join } from "path";
-import { ProjectWideGenerationArgs } from "../../../args";
+import {join} from "path";
+import {ProjectWideGenerationArgs} from "../../../args";
 import cleanWidgetsByType from "./cleanWidgetsByType";
 
 export default async (

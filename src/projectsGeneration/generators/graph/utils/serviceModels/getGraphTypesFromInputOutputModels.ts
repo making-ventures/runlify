@@ -3,10 +3,10 @@ import {
   GraphQLNamedType,
   GraphQLObjectType,
 } from 'graphql'
-import { ModelField } from '../../../../builders/buildedTypes'
-import { genGraphField } from '../../fields/genGraphField'
-import { getModelInitOrder } from '../models/getModelInitOrder'
-import { InputOutputServiceModels } from '../../types'
+import {ModelField} from '../../../../builders/buildedTypes'
+import {genGraphField} from '../../fields/genGraphField'
+import {getModelInitOrder} from '../models/getModelInitOrder'
+import {InputOutputServiceModels} from '../../types'
 
 export const getGraphTypesFromInputOutputModels = (models: InputOutputServiceModels): GraphQLNamedType[] => {
   const allModels = [

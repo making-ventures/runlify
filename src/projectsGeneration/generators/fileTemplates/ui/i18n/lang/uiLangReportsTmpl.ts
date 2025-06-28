@@ -1,4 +1,4 @@
-import { ProjectWideGenerationArgs } from '../../../../../args'
+import {ProjectWideGenerationArgs} from '../../../../../args'
 import uiTranslationsLangTmpl from './uiTranslationsLangTmpl'
 
 export const uiTranslationsLangReportsTmpl = (

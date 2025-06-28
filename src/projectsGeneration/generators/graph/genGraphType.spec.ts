@@ -1,7 +1,7 @@
-import { expect } from 'jest-without-globals'
-import { printGraphType } from './printGraphType'
+import {expect} from 'jest-without-globals'
+import {printGraphType} from './printGraphType'
 import CatalogBuilder from '../../builders/CatalogBuilder'
-import { genGraphType } from './genGraphType'
+import {genGraphType} from './genGraphType'
 
 // yarn test --testPathPattern genGraphType
 

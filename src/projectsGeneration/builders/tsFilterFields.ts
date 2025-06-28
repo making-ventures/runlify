@@ -1,6 +1,6 @@
 import CatalogBuilder from './CatalogBuilder'
-import { fieldTypeToTsType } from '../generators/fieldTypeToTsType'
-import { TsTypes } from './buildedTypes'
+import {fieldTypeToTsType} from '../generators/fieldTypeToTsType'
+import {TsTypes} from './buildedTypes'
 
 export const tsFilterFields = (entity: CatalogBuilder): string => {
   const filterField: Array<{ name: string; type: TsTypes }> = []

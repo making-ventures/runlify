@@ -1,5 +1,5 @@
-import { pascalSingular } from '../../../../../../utils/cases'
-import { EntityWideGenerationArgs } from '../../../../../args'
+import {pascalSingular} from '../../../../../../utils/cases'
+import {EntityWideGenerationArgs} from '../../../../../args'
 
 export const uiListBreadcrumbsTmpl = ({ entity }: EntityWideGenerationArgs) => {
   return `import {FC} from 'react';

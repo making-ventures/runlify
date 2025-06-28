@@ -1,8 +1,8 @@
-import { camelCase } from 'change-case'
+import {camelCase} from 'change-case'
 
-import { ProjectWideGenerationArgs } from '../../../../../args'
+import {ProjectWideGenerationArgs} from '../../../../../args'
 import {printWarningIfRequired} from '../../../../../utils'
-import { FieldType } from '../../../../../../types'
+import {FieldType} from '../../../../../../types'
 
 const getTSTypeForEnvVar = (type: FieldType) => {
   switch (type) {

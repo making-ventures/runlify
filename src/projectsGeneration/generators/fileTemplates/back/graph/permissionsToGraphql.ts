@@ -2,8 +2,8 @@ import {
   BootstrapEntityOptions,
   defaultBootstrapEntityOptions,
 } from '../../../../types'
-import { addComma, printWarningIfRequired } from '../../../../utils'
-import { ProjectWideGenerationArgs } from '../../../../args'
+import {addComma, printWarningIfRequired} from '../../../../utils'
+import {ProjectWideGenerationArgs} from '../../../../args'
 
 export const backPermissionToGraphqlTmpl = (
   { entities }: ProjectWideGenerationArgs,

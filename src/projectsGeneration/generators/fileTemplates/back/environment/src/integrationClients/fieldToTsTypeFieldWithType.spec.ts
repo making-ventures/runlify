@@ -1,6 +1,6 @@
-import { expect } from 'jest-without-globals'
-import { fieldToTsTypeFieldWithType } from './fieldToTsTypeFieldWithType';
-import { TsModelField } from '../../../../../../builders/buildedTypes';
+import {expect} from 'jest-without-globals'
+import {fieldToTsTypeFieldWithType} from './fieldToTsTypeFieldWithType';
+import {TsModelField} from '../../../../../../builders/buildedTypes';
 
 // yarn test --testPathPattern fieldToTsTypeFieldWithType
 // yarn test --testPathPattern fieldToTsTypeFieldWithType -t 'generates for scalar field array'

@@ -6,17 +6,17 @@ import {
   GraphQLObjectType,
   GraphQLScalarType,
 } from 'graphql'
-import { pascalSingular } from '../../../utils/cases'
+import {pascalSingular} from '../../../utils/cases'
 import {
   AdditionalService,
   AdditionalServiceArgsModel,
   AdditionalServiceObjectReturnModel,
   ScalarField,
 } from '../../builders/buildedTypes'
-import { genGraphField } from './fields/genGraphField'
-import { GraphQLVoid } from 'graphql-scalars'
+import {genGraphField} from './fields/genGraphField'
+import {GraphQLVoid} from 'graphql-scalars'
 import * as R from 'ramda'
-import { fieldTypeToGraphScalar } from './fieldTypeToGraphScalar'
+import {fieldTypeToGraphScalar} from './fieldTypeToGraphScalar'
 
 export const genGraphArgsModelType = (
   model: AdditionalServiceArgsModel,

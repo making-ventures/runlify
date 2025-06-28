@@ -1,5 +1,5 @@
-import { pascal } from '../../../../../utils/cases'
-import { ProjectWideGenerationArgs } from '../../../../args'
+import {pascal} from '../../../../../utils/cases'
+import {ProjectWideGenerationArgs} from '../../../../args'
 import {printWarningIfRequired} from '../../../../utils'
 
 const graphServiceConstrictorsTmpl = ({

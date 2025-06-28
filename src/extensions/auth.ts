@@ -1,4 +1,4 @@
-import { GluegunToolbox } from 'gluegun'
+import {GluegunToolbox} from 'gluegun'
 
 interface LoginOptions {
   ifNotLoggedIn: boolean;

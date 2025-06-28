@@ -1,6 +1,6 @@
-import { expect } from 'jest-without-globals'
+import {expect} from 'jest-without-globals'
 import AdditionalServiceBuilder from '../../../../../builders/AdditionalServiceBuilder';
-import { getMethodTypeForService } from './getMethodTypeForService';
+import {getMethodTypeForService} from './getMethodTypeForService';
 
 // yarn test --testPathPattern getMethodTypeForService
 // yarn test --testPathPattern getMethodTypeForService -t 'generates for method without args and return'

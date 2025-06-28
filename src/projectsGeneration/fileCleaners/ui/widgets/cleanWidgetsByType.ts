@@ -1,7 +1,7 @@
-import { join } from "path";
-import { Entity } from "../../../builders";
-import { readdirSync, statSync, unlinkSync } from "fs";
-import { camelCase } from "change-case";
+import {join} from "path";
+import {Entity} from "../../../builders";
+import {readdirSync, statSync, unlinkSync} from "fs";
+import {camelCase} from "change-case";
 import fs from 'fs-jetpack'
 
 const patternByType = {

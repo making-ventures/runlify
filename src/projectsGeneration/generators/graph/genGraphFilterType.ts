@@ -1,9 +1,9 @@
-import { GraphQLInputObjectType, GraphQLString } from 'graphql'
-import { pascalSingular } from '../../../utils/cases'
-import { Entity } from '../../builders/buildedTypes'
-import { getKeyField } from '../../metaUtils'
-import { genGraphFilter } from './filters/genGraphField'
-import { genGraphIdPluralFilter } from './filters/genGraphIdFilter'
+import {GraphQLInputObjectType, GraphQLString} from 'graphql'
+import {pascalSingular} from '../../../utils/cases'
+import {Entity} from '../../builders/buildedTypes'
+import {getKeyField} from '../../metaUtils'
+import {genGraphFilter} from './filters/genGraphField'
+import {genGraphIdPluralFilter} from './filters/genGraphIdFilter'
 
 export const genGraphFilterType = (entity: Entity) => {
   return new GraphQLInputObjectType({

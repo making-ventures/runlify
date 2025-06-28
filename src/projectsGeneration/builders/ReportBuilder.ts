@@ -1,6 +1,6 @@
 import BaseBuilder from './BaseBuilder'
 import PageBuilder from './PageBuilder';
-import { Report } from './buildedTypes'
+import {Report} from './buildedTypes'
 
 class ReportBuilder extends BaseBuilder {
   protected page: PageBuilder;

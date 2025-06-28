@@ -1,9 +1,9 @@
-import { GraphQLNamedType } from 'graphql'
-import { Field, TsModelField } from '../../../builders/buildedTypes'
-import { genGraphIdField } from './genGraphIdField'
-import { genGraphLinkField } from './genGraphLinkField'
-import { genGraphModelField } from './genGraphModelField'
-import { genGraphScalarField } from './genGraphScalarField'
+import {GraphQLNamedType} from 'graphql'
+import {Field, TsModelField} from '../../../builders/buildedTypes'
+import {genGraphIdField} from './genGraphIdField'
+import {genGraphLinkField} from './genGraphLinkField'
+import {genGraphModelField} from './genGraphModelField'
+import {genGraphScalarField} from './genGraphScalarField'
 
 export type GraphFieldPurpose = 'input' | 'result'
 

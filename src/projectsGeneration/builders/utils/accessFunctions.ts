@@ -1,4 +1,4 @@
-import { Entity, Field } from '../buildedTypes'
+import {Entity, Field} from '../buildedTypes'
 
 export const getEntityField = (entity: Entity, fieldName: string): Field => {
   const field = entity.fields.find((f) => f.name === fieldName)

@@ -2,9 +2,9 @@ import {
   BootstrapEntityOptions,
   defaultBootstrapEntityOptions,
 } from '../../../../../../types'
-import { AdditionalService, MethodType, ScalarField, ServiceReturnType } from '../../../../../../builders/buildedTypes'
+import {AdditionalService, MethodType, ScalarField, ServiceReturnType} from '../../../../../../builders/buildedTypes'
 import {printWarningIfRequired} from '../../../../../../utils'
-import { pascalCase } from 'change-case'
+import {pascalCase} from 'change-case'
 import fieldTypeToGraphScalarStringified from '../../../../../graph/fieldTypeToGraphScalarStringified'
 
 export const uiGetAdditionalMethodsTmpl = (

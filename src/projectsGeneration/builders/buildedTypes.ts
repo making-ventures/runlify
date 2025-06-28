@@ -1,6 +1,6 @@
-import { HttpMethod } from './curlTypes'
-import { DocumentationOfDocument } from './docs/DocumentationOfDocument'
-import { Index } from './types'
+import {HttpMethod} from './curlTypes'
+import {DocumentationOfDocument} from './docs/DocumentationOfDocument'
+import {Index} from './types'
 import Forms from './ui/Forms'
 
 export type ConfigVarScope =

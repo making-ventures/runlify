@@ -1,9 +1,9 @@
-import { singular } from 'pluralize'
-import { pascal } from '../../../../utils/cases'
-import { EntityWideGenerationArgs } from '../../../args'
+import {singular} from 'pluralize'
+import {pascal} from '../../../../utils/cases'
+import {EntityWideGenerationArgs} from '../../../args'
 import {printWarningIfRequired, pad1} from '../../../utils'
 import * as R from 'ramda'
-import { toTsValue } from './initCommon'
+import {toTsValue} from './initCommon'
 
 export const initDevEnumTmpl = ({
   entity,

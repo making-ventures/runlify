@@ -3,7 +3,7 @@ import {
   pascalSingular,
   camelPlural,
 } from '../../../../../utils/cases'
-import { EntityWideGenerationArgs } from '../../../../args'
+import {EntityWideGenerationArgs} from '../../../../args'
 import {printWarningIfRequired} from '../../../../utils'
 
 export const backBaseResolversTmpl = ({

@@ -1,9 +1,9 @@
-import { expect } from 'jest-without-globals'
-import { GraphQLNamedType, GraphQLSchema, printSchema } from 'graphql'
-import { getGraphTypesFromInputOutputModels } from './getGraphTypesFromInputOutputModels'
+import {expect} from 'jest-without-globals'
+import {GraphQLNamedType, GraphQLSchema, printSchema} from 'graphql'
+import {getGraphTypesFromInputOutputModels} from './getGraphTypesFromInputOutputModels'
 import AdditionalServiceBuilder from '../../../../builders/AdditionalServiceBuilder'
-import { MethodType } from '../../../../../types'
-import { getPreparedModelsForGraph } from './getPreparedModelsForGraph'
+import {MethodType} from '../../../../../types'
+import {getPreparedModelsForGraph} from './getPreparedModelsForGraph'
 
 // yarn test --testPathPattern getGraphTypesFromInputOutputModels
 // yarn test --testPathPattern getGraphTypesFromInputOutputModels -t 'with simple args and no return'

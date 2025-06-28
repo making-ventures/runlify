@@ -1,6 +1,6 @@
 import curlExampleToText from '../../../../../../documentation/curlExampleToText'
-import { ProjectWideGenerationArgs } from '../../../../../args'
-import { RestApi } from '../../../../../builders/buildedTypes'
+import {ProjectWideGenerationArgs} from '../../../../../args'
+import {RestApi} from '../../../../../builders/buildedTypes'
 
 const backDocsRestApi = (
   { system }: ProjectWideGenerationArgs,

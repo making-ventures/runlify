@@ -3,12 +3,12 @@ import {
   defaultBootstrapEntityOptions,
   LinkedEntities,
 } from '../../../../../types'
-import { getCompNamesToShowField } from '../../../../ui/componentNames/show/getCompNamesToShowField'
+import {getCompNamesToShowField} from '../../../../ui/componentNames/show/getCompNamesToShowField'
 import * as R from 'ramda'
-import { pascal } from '../../../../../../utils/cases'
-import { getShowComponent } from '../../../../ui/getShowComponent'
-import { Entity } from '../../../../../builders/buildedTypes'
-import { addComma, pad4, printWarningIfRequired } from '../../../../../utils'
+import {pascal} from '../../../../../../utils/cases'
+import {getShowComponent} from '../../../../ui/getShowComponent'
+import {Entity} from '../../../../../builders/buildedTypes'
+import {addComma, pad4, printWarningIfRequired} from '../../../../../utils'
 import {isMarkdownField} from "../../../../../metaUtils"
 
 export const uiEntityShowDependencyTabTmpl = (

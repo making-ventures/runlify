@@ -1,6 +1,6 @@
-import { EntityWideGenerationArgs } from '../../../../../args'
-import { pascalPlural } from '../../../../../../utils/cases'
-import { printWarningIfRequired } from '../../../../../utils'
+import {EntityWideGenerationArgs} from '../../../../../args'
+import {pascalPlural} from '../../../../../../utils/cases'
+import {printWarningIfRequired} from '../../../../../utils'
 
 export const initBuiltInHooksTmpl = ({ options, entity }: EntityWideGenerationArgs) => {
   const withTenantIdRequiredHooks = ['optional', 'required'].includes(

@@ -1,6 +1,6 @@
-import { GraphQLID, GraphQLInt } from 'graphql'
-import { IdField } from '../../../builders/buildedTypes'
-import { GraphQLBigInt } from 'graphql-scalars'
+import {GraphQLID, GraphQLInt} from 'graphql'
+import {IdField} from '../../../builders/buildedTypes'
+import {GraphQLBigInt} from 'graphql-scalars'
 
 export const genGraphIdFieldType = (field: IdField) => {
   const { type } = field

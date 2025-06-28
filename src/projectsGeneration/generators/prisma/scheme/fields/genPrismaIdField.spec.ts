@@ -1,6 +1,6 @@
-import { expect } from 'jest-without-globals'
+import {expect} from 'jest-without-globals'
 import IdFieldBuilder from '../../../../builders/fields/IdFieldBuilder'
-import { genPrismaIdField } from './genPrismaIdField'
+import {genPrismaIdField} from './genPrismaIdField'
 
 // yarn test --testPathPattern genPrismaIdField
 

@@ -1,8 +1,8 @@
-import { plural } from 'pluralize'
-import { pascal, pascalSingular } from '../../../../../../utils/cases'
-import { EntityWideGenerationArgs } from '../../../../../args'
-import { Entity } from '../../../../../builders'
-import { pad4, printWarningIfRequired } from '../../../../../utils'
+import {plural} from 'pluralize'
+import {pascal, pascalSingular} from '../../../../../../utils/cases'
+import {EntityWideGenerationArgs} from '../../../../../args'
+import {Entity} from '../../../../../builders'
+import {pad4, printWarningIfRequired} from '../../../../../utils'
 
 const getEntityTitle = (entity: Entity) => {
   switch (entity.type) {

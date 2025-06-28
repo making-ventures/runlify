@@ -1,6 +1,6 @@
 import * as R from 'ramda'
 import materialUiIcons from './materialUiIcons'
-import { BaseEntity, PreviewFeature } from './buildedTypes'
+import {BaseEntity, PreviewFeature} from './buildedTypes'
 
 // * у каких ролей есть полный доступ к сущности
 // * Какие есть воркеры, какие у них есть джобы, с какой периодичностью запускаются, какие методы используют

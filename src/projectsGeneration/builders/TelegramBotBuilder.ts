@@ -1,4 +1,4 @@
-import { MemoryAndCpu, TelegramBot } from './buildedTypes'
+import {MemoryAndCpu, TelegramBot} from './buildedTypes'
 import BaseBuilder from './BaseBuilder'
 
 class TelegramBotBuilder extends BaseBuilder {

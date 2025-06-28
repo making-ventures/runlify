@@ -1,5 +1,5 @@
-import { ProjectWideGenerationArgs } from '../../../../../args'
-import { BaseSavableEntity } from '../../../../../builders/buildedTypes'
+import {ProjectWideGenerationArgs} from '../../../../../args'
+import {BaseSavableEntity} from '../../../../../builders/buildedTypes'
 import {printWarningIfRequired} from '../../../../../utils'
 
 const uiTranslationsForServicesOfSavablesTmpl = (

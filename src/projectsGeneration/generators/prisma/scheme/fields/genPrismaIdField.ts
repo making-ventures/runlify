@@ -1,7 +1,7 @@
-import { IdField } from '../../../../builders'
-import { fieldIdTypeToPrismaType } from '../../fieldIdTypeToPrismaType'
-import { genPrismaDefault } from './genPrismaDefault'
-import { joinPrismaFieldParts } from './genPrismaScalarField'
+import {IdField} from '../../../../builders'
+import {fieldIdTypeToPrismaType} from '../../fieldIdTypeToPrismaType'
+import {genPrismaDefault} from './genPrismaDefault'
+import {joinPrismaFieldParts} from './genPrismaScalarField'
 
 export const genPrismaIdField = (field: IdField, forShards = false): string[] => {
   const parts = [

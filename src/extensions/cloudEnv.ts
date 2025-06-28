@@ -1,4 +1,4 @@
-import { GluegunToolbox } from 'gluegun'
+import {GluegunToolbox} from 'gluegun'
 import * as R from 'ramda'
 
 module.exports = async (toolbox: GluegunToolbox) => {

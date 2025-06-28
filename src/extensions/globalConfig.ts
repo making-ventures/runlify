@@ -1,4 +1,4 @@
-import { GluegunToolbox } from 'gluegun'
+import {GluegunToolbox} from 'gluegun'
 import getAppDataPath from 'appdata-path'
 
 module.exports = async (toolbox: GluegunToolbox) => {

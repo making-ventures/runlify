@@ -1,4 +1,4 @@
-import { GluegunToolbox } from 'gluegun'
+import {GluegunToolbox} from 'gluegun'
 import * as path from 'path'
 import * as os from 'os'
 

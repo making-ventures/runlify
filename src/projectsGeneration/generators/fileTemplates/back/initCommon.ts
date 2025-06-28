@@ -1,7 +1,7 @@
-import { singular } from 'pluralize'
-import { pascal } from '../../../../utils/cases'
-import { EntityWideGenerationArgs } from '../../../args'
-import { printWarningIfRequired, pad1, pad2 } from '../../../utils'
+import {singular} from 'pluralize'
+import {pascal} from '../../../../utils/cases'
+import {EntityWideGenerationArgs} from '../../../args'
+import {printWarningIfRequired, pad1, pad2} from '../../../utils'
 import * as R from 'ramda'
 
 export const toTsValue = (value: any): string => {

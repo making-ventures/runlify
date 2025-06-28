@@ -1,4 +1,4 @@
-import { Role } from './buildedTypes'
+import {Role} from './buildedTypes'
 import BaseBuilder from './BaseBuilder'
 
 class RoleBuilder extends BaseBuilder {

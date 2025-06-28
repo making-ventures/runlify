@@ -1,7 +1,7 @@
-import { GraphQLObjectType } from 'graphql'
-import { pascalSingular } from '../../../utils/cases'
-import { Entity } from '../../builders/buildedTypes'
-import { genGraphField } from './fields/genGraphField'
+import {GraphQLObjectType} from 'graphql'
+import {pascalSingular} from '../../../utils/cases'
+import {Entity} from '../../builders/buildedTypes'
+import {genGraphField} from './fields/genGraphField'
 
 export const genGraphType = (entity: Entity) => {
   return new GraphQLObjectType({

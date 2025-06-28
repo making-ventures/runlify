@@ -1,4 +1,4 @@
-import { describe, expect } from 'jest-without-globals'
+import {describe, expect} from 'jest-without-globals'
 import flatDocToText from './flatDocToText'
 
 // yarn test -t 'flatDocToText'

@@ -3,7 +3,7 @@ import {
   pascalPlural,
   pascalSingular,
 } from '../../../../../utils/cases'
-import { LinkedEntities } from '../../../../types'
+import {LinkedEntities} from '../../../../types'
 
 export const genPrismaFieldFromExternalEntity = (
   link: LinkedEntities

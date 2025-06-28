@@ -1,4 +1,4 @@
-import { ProjectWideGenerationArgs } from '../../../../args'
+import {ProjectWideGenerationArgs} from '../../../../args'
 import {printWarningIfRequired} from '../../../../utils'
 
 export const dockerfileTmplUI = ({

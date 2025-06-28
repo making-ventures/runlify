@@ -1,5 +1,5 @@
-import { camelSingular, pascalSingular } from '../../../../utils/cases'
-import { ProjectWideGenerationArgs } from '../../../args'
+import {camelSingular, pascalSingular} from '../../../../utils/cases'
+import {ProjectWideGenerationArgs} from '../../../args'
 import {printWarningIfRequired, pad1} from '../../../utils'
 
 // todo: can delete

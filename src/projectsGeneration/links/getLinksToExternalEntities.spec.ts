@@ -1,6 +1,6 @@
-import { expect } from 'jest-without-globals'
+import {expect} from 'jest-without-globals'
 import CatalogBuilder from '../builders/CatalogBuilder'
-import { getLinksToExternalEntities } from './getLinksToExternalEntities'
+import {getLinksToExternalEntities} from './getLinksToExternalEntities'
 import {baseField} from '../dataForTests';
 
 // yarn test --testPathPattern getLinksToExternalEntities

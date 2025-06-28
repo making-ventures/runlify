@@ -1,6 +1,6 @@
-import { Document } from './buildedTypes'
+import {Document} from './buildedTypes'
 import BaseSavableEntityBuilder from './BaseSavableEntityBuilder'
-import { DocumentationOfDocumentBuilder } from './docs/DocumentationOfDocumentBuilder'
+import {DocumentationOfDocumentBuilder} from './docs/DocumentationOfDocumentBuilder'
 
 class DocumentBuilder extends BaseSavableEntityBuilder {
   protected type = 'document' as const

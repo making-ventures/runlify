@@ -1,8 +1,8 @@
-import { expect } from 'jest-without-globals'
+import {expect} from 'jest-without-globals'
 import CatalogBuilder from '../../../builders/CatalogBuilder'
-import { genPrismaEntity } from './genPrismaEntity'
+import {genPrismaEntity} from './genPrismaEntity'
 import {baseField} from '../../../dataForTests';
-import { IndexType } from '../../../builders';
+import {IndexType} from '../../../builders';
 
 // yarn test --testPathPattern genPrismaEntity
 // yarn test --testPathPattern genPrismaEntity -t 'with true default db field'

@@ -1,5 +1,5 @@
-import { TsModel } from '../../../../builders/buildedTypes'
-import { ServiceModels } from '../../types'
+import {TsModel} from '../../../../builders/buildedTypes'
+import {ServiceModels} from '../../types'
 
 const clearFromVoids = (models: TsModel[]) => models
 .filter(m => m.fields.length);

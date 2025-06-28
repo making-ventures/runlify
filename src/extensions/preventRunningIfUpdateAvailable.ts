@@ -1,4 +1,4 @@
-import { GluegunToolbox } from 'gluegun'
+import {GluegunToolbox} from 'gluegun'
 
 module.exports = async (toolbox: GluegunToolbox) => {
   toolbox.print.info(`version: ${toolbox.meta.version()}`)

@@ -1,6 +1,6 @@
 import * as R from 'ramda'
 import qs from 'qs';
-import { CurlExample } from '../projectsGeneration/builders/curlTypes'
+import {CurlExample} from '../projectsGeneration/builders/curlTypes'
 
 const prepareCurlExample = (curl: CurlExample) => {
   if (!curl.headers) {

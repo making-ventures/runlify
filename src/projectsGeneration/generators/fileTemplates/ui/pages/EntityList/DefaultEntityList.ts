@@ -1,12 +1,12 @@
-import { pascalSingular } from '../../../../../../utils/cases'
-import { getCompNamesToShowField } from '../../../../ui/componentNames/show/getCompNamesToShowField'
+import {pascalSingular} from '../../../../../../utils/cases'
+import {getCompNamesToShowField} from '../../../../ui/componentNames/show/getCompNamesToShowField'
 import * as R from 'ramda'
-import { getShowComponent } from '../../../../ui/getShowComponent'
-import { Entity } from '../../../../../builders/buildedTypes'
-import { EntityWideGenerationArgs } from '../../../../../args'
-import { printWarningIfRequired, pad5 } from '../../../../../utils'
-import { isImageFileRef, isMarkdownField } from '../../../../../metaUtils'
-import { plural } from 'pluralize'
+import {getShowComponent} from '../../../../ui/getShowComponent'
+import {Entity} from '../../../../../builders/buildedTypes'
+import {EntityWideGenerationArgs} from '../../../../../args'
+import {printWarningIfRequired, pad5} from '../../../../../utils'
+import {isImageFileRef, isMarkdownField} from '../../../../../metaUtils'
+import {plural} from 'pluralize'
 
 export const uiDefaultListTmpl = ({
   allEntities,

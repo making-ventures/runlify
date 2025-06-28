@@ -1,6 +1,6 @@
-import { GraphQLBoolean, GraphQLList, GraphQLType } from 'graphql'
-import { LinkField } from '../../../builders/buildedTypes'
-import { fieldTypeToGraphScalar } from '../fieldTypeToGraphScalar'
+import {GraphQLBoolean, GraphQLList, GraphQLType} from 'graphql'
+import {LinkField} from '../../../builders/buildedTypes'
+import {fieldTypeToGraphScalar} from '../fieldTypeToGraphScalar'
 
 export const genGraphLinkFilter = (
   field: LinkField

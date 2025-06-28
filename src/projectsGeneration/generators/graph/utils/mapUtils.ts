@@ -1,5 +1,5 @@
-import { TsModel } from '../../../builders/buildedTypes'
-import { MappedName } from '../types';
+import {TsModel} from '../../../builders/buildedTypes'
+import {MappedName} from '../types';
 
 export const findMappedName = (name: string, nameMapping: MappedName[]) => {
   const found = nameMapping.find(({original}) => original === name);

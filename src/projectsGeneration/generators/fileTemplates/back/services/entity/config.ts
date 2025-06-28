@@ -1,10 +1,10 @@
-import { singular } from 'pluralize'
+import {singular} from 'pluralize'
 import * as R from 'ramda'
 
-import { Document, Entity, InfoRegistry, SumRegistry } from '../../../../../builders'
-import { EntityWideGenerationArgs } from '../../../../../args'
-import { getKeyField } from '../../../../../metaUtils'
-import { camelSingular, pascalSingular } from '../../../../../../utils/cases'
+import {Document, Entity, InfoRegistry, SumRegistry} from '../../../../../builders'
+import {EntityWideGenerationArgs} from '../../../../../args'
+import {getKeyField} from '../../../../../metaUtils'
+import {camelSingular, pascalSingular} from '../../../../../../utils/cases'
 import {printWarningIfRequired, pad} from '../../../../../utils'
 
 const arrToStr = (val: any) => R.trim(pad(1)(JSON.stringify(val, undefined, '  ').replaceAll('"', '\'')))

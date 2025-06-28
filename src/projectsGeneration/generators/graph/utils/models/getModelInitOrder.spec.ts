@@ -1,5 +1,5 @@
-import { expect } from 'jest-without-globals'
-import { getModelInitOrder } from './getModelInitOrder'
+import {expect} from 'jest-without-globals'
+import {getModelInitOrder} from './getModelInitOrder'
 
 // yarn test --testPathPattern getModelInitOrder
 

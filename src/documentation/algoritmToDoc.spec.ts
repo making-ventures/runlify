@@ -1,4 +1,4 @@
-import { describe, expect } from 'jest-without-globals'
+import {describe, expect} from 'jest-without-globals'
 import algoritmToDoc from './algoritmToDoc'
 
 // yarn test -t 'algoritmToDoc'

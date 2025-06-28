@@ -5,8 +5,8 @@ import {
 } from '../types'
 import CatalogBuilder from './CatalogBuilder'
 import DocumentBuilder from './DocumentBuilder'
-import { InfoRegistryBuilder } from './InfoRegistryBuilder'
-import SumRegistryBuilder, { RegistryOptions } from './SumRegistryBuilder'
+import {InfoRegistryBuilder} from './InfoRegistryBuilder'
+import SumRegistryBuilder, { RegistryOptions} from './SumRegistryBuilder'
 import {
   Command,
   ConfigValue,
@@ -20,7 +20,7 @@ import {
   ProjectCategory,
   System,
 } from './buildedTypes'
-import { addFilesCatalog } from '../defaultCatalogs'
+import {addFilesCatalog} from '../defaultCatalogs'
 import * as R from 'ramda'
 import ReportBuilder from './ReportBuilder'
 import RestApiBuilder from './RestApiBuilder'
@@ -37,7 +37,7 @@ import GroupMenuItemBuilder from './menu/GroupMenuItemBuilder'
 import PageBuilder from './PageBuilder'
 import AdditionalServiceBuilder from './AdditionalServiceBuilder'
 import BaseModelBuilder from './mehods/BaseModelBuilder'
-import MethodBuilder, { MethodsModelsHolder } from './mehods/MethodBuilder'
+import MethodBuilder, { MethodsModelsHolder} from './mehods/MethodBuilder'
 
 export const defaultConfigVar: Omit<ConfigVar, 'name' | 'type'> = {
   needFor: '',

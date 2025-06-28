@@ -1,8 +1,8 @@
-import { Entity, Field } from '../../../../builders/buildedTypes'
-import { getCompNamesToEditIdField } from './getCompNamesToEditIdField'
-import { getCompNamesToEditLinkField } from './getCompNamesToEditLinkField'
-import { getCompNamesToEditScalarField } from './getCompNamesToEditScalarField'
-import { EditComponentName, LinkEditComponentName } from '../types'
+import {Entity, Field} from '../../../../builders/buildedTypes'
+import {getCompNamesToEditIdField} from './getCompNamesToEditIdField'
+import {getCompNamesToEditLinkField} from './getCompNamesToEditLinkField'
+import {getCompNamesToEditScalarField} from './getCompNamesToEditScalarField'
+import {EditComponentName, LinkEditComponentName} from '../types'
 
 export const getCompNamesToEditField = (
   field: Field,

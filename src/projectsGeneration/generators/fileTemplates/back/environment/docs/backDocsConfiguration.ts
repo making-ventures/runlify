@@ -1,6 +1,6 @@
-import { constantCase } from 'change-case'
+import {constantCase} from 'change-case'
 import markdownTable from 'markdown-table'
-import { ProjectWideGenerationArgs } from '../../../../../args'
+import {ProjectWideGenerationArgs} from '../../../../../args'
 
 const backDocsConfiguration = ({
   system,

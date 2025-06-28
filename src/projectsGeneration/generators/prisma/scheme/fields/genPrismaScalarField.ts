@@ -1,6 +1,6 @@
-import { ScalarField } from '../../../../builders/buildedTypes'
-import { fieldTypeToPrismaType } from '../../fieldTypeToPrismaType'
-import { genPrismaDefault } from './genPrismaDefault'
+import {ScalarField} from '../../../../builders/buildedTypes'
+import {fieldTypeToPrismaType} from '../../fieldTypeToPrismaType'
+import {genPrismaDefault} from './genPrismaDefault'
 
 export const joinPrismaFieldParts = (parts: Array<string | undefined>) =>
   parts

@@ -1,5 +1,5 @@
-import { AlgorithmDocumentation, AlgorithmStepDocumentation } from './algorithm'
-import { Doc, DocListElement } from './doc'
+import {AlgorithmDocumentation, AlgorithmStepDocumentation} from './algorithm'
+import {Doc, DocListElement} from './doc'
 
 const algoritmToDoc = (algorithm: AlgorithmDocumentation): Doc => {
   const stepToDocListElement = (

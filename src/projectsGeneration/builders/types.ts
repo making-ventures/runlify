@@ -1,4 +1,4 @@
-import { IndexType } from './buildedTypes'
+import {IndexType} from './buildedTypes'
 import IdFieldBuilder from './fields/IdFieldBuilder'
 import LinkFieldBuilder from './fields/LinkFieldBuilder'
 import ScalarFieldBuilder from './fields/ScalarFieldBuilder'

@@ -1,10 +1,10 @@
-import { pascalSingular } from '../../../../../../utils/cases'
+import {pascalSingular} from '../../../../../../utils/cases'
 import * as R from 'ramda'
-import { getEditComponent } from '../EntityEdit/DefaultEntityEdit'
-import { getCompNamesToEditField } from '../../../../ui/componentNames/edit/getCompNamesToEditField'
-import { EntityWideGenerationArgs } from '../../../../../args'
-import { getEntityField } from '../../../../../builders/utils/accessFunctions'
-import { addComma, pad3, printWarningIfRequired } from '../../../../../utils'
+import {getEditComponent} from '../EntityEdit/DefaultEntityEdit'
+import {getCompNamesToEditField} from '../../../../ui/componentNames/edit/getCompNamesToEditField'
+import {EntityWideGenerationArgs} from '../../../../../args'
+import {getEntityField} from '../../../../../builders/utils/accessFunctions'
+import {addComma, pad3, printWarningIfRequired} from '../../../../../utils'
 
 export const uiDefaultFilterTmpl = ({
   allEntities,

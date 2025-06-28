@@ -1,6 +1,6 @@
 import 'jest-extended';
 import numberValudationToYupAssertions from './numberValudationToYupAssertions';
-import { IntValidation } from './types'
+import {IntValidation} from './types'
 
 const intValudationToYupAssertions = (validation: IntValidation): string[] => {
   const assertions: string[] = numberValudationToYupAssertions(validation);

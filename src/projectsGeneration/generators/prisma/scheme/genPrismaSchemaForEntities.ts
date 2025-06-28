@@ -1,6 +1,6 @@
-import { Entity } from '../../../builders'
-import { LinkedEntities } from '../../../types'
-import { genPrismaEntity } from './genPrismaEntity'
+import {Entity} from '../../../builders'
+import {LinkedEntities} from '../../../types'
+import {genPrismaEntity} from './genPrismaEntity'
 
 export const genPrismaSchemaForEntities = (
   entities: Entity[],

@@ -1,8 +1,8 @@
-import { getCompNamesToShowField } from '../../../../ui/componentNames/show/getCompNamesToShowField'
+import {getCompNamesToShowField} from '../../../../ui/componentNames/show/getCompNamesToShowField'
 import * as R from 'ramda'
-import { getShowComponent } from '../../../../ui/getShowComponent'
-import { EntityWideGenerationArgs } from '../../../../../args'
-import { pad3, printWarningIfRequired, pad2 } from '../../../../../utils'
+import {getShowComponent} from '../../../../ui/getShowComponent'
+import {EntityWideGenerationArgs} from '../../../../../args'
+import {pad3, printWarningIfRequired, pad2} from '../../../../../utils'
 import {isMarkdownField} from "../../../../../metaUtils";
 
 export const uiEntityShowDefaultMainTabTmpl = ({

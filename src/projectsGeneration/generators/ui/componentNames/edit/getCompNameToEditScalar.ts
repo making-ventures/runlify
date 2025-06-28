@@ -1,5 +1,5 @@
-import { FieldType } from '../../../../builders/buildedTypes'
-import { EditComponentName } from '../types'
+import {FieldType} from '../../../../builders/buildedTypes'
+import {EditComponentName} from '../types'
 
 export const getCompNameToEditScalar = (type: FieldType): EditComponentName => {
   switch (type) {

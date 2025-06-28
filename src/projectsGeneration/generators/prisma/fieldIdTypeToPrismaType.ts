@@ -1,4 +1,4 @@
-import { TKeyFieldType } from '../../builders/buildedTypes'
+import {TKeyFieldType} from '../../builders/buildedTypes'
 
 export const fieldIdTypeToPrismaType = (type: TKeyFieldType): string => {
   switch (type) {

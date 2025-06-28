@@ -1,4 +1,4 @@
-import { pascal } from '../../../../../../utils/cases';
+import {pascal} from '../../../../../../utils/cases';
 import {ServiceMethod, ServiceReturnType} from '../../../../../builders/buildedTypes'
 
 export const getMethodTypeForServiceReturn = (method: ServiceMethod) => {

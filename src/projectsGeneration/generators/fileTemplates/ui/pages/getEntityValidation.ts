@@ -1,7 +1,7 @@
-import { pascalSingular } from '../../../../../utils/cases'
-import { EntityWideGenerationArgs } from '../../../../args'
-import { Field } from '../../../../builders/buildedTypes'
-import { isMoneyField, isStringNumberField } from '../../../../metaUtils'
+import {pascalSingular} from '../../../../../utils/cases'
+import {EntityWideGenerationArgs} from '../../../../args'
+import {Field} from '../../../../builders/buildedTypes'
+import {isMoneyField, isStringNumberField} from '../../../../metaUtils'
 import {printWarningIfRequired} from '../../../../utils'
 
 const getFieldValidation = (field: Field): string | null => {

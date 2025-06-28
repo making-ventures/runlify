@@ -1,5 +1,5 @@
 import 'jest-extended';
-import { BaseValidation } from './types'
+import {BaseValidation} from './types'
 
 const baseValudationToYupAssertions = (validation: BaseValidation): string[] => {
   const assertions: string[] = [];

@@ -1,9 +1,9 @@
-import { expect } from 'jest-without-globals'
-import { prefixServiceModelsWithServiceName } from './prefixServiceModelsWithServiceName'
-import { MethodType } from '../../../../builders/buildedTypes';
+import {expect} from 'jest-without-globals'
+import {prefixServiceModelsWithServiceName} from './prefixServiceModelsWithServiceName'
+import {MethodType} from '../../../../builders/buildedTypes';
 import AdditionalServiceBuilder from '../../../../builders/AdditionalServiceBuilder';
-import { pascal } from '../../../../../utils/cases';
-import { getServiceModels } from './getServiceModels';
+import {pascal} from '../../../../../utils/cases';
+import {getServiceModels} from './getServiceModels';
 
 // yarn test --testPathPattern prefixServiceModelsWithServiceName
 

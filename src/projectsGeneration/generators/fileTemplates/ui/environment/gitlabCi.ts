@@ -1,5 +1,5 @@
-import { constantCase } from 'change-case'
-import { ProjectWideGenerationArgs } from '../../../../args'
+import {constantCase} from 'change-case'
+import {ProjectWideGenerationArgs} from '../../../../args'
 import {printWarningIfRequired} from '../../../../utils'
 
 export const uiGitlabCiTmpl = ({

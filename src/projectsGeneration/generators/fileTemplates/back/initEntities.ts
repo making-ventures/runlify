@@ -1,5 +1,5 @@
-import { pascalSingular } from '../../../../utils/cases'
-import { ProjectWideGenerationArgs } from '../../../args'
+import {pascalSingular} from '../../../../utils/cases'
+import {ProjectWideGenerationArgs} from '../../../args'
 import {printWarningIfRequired, pad1} from '../../../utils'
 
 export const initEntities = ({

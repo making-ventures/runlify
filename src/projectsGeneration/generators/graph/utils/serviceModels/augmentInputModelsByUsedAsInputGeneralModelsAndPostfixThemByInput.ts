@@ -1,6 +1,6 @@
-import { mapModels } from '../mapUtils';
-import { MappedName, ServiceModels } from '../../types';
-import { getUsedModels } from '../models/getUsedModels';
+import {mapModels} from '../mapUtils';
+import {MappedName, ServiceModels} from '../../types';
+import {getUsedModels} from '../models/getUsedModels';
 
 
 // Определяет, какие общие модели имеют ссылки во входных моделях, добавляем им постфикс `Input` и добавляем во входные модели

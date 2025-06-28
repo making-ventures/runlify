@@ -1,8 +1,8 @@
-import { expect } from 'jest-without-globals'
-import { printSchema } from 'graphql'
-import { genGraphAdditionalServiceSchema } from './genGraphAdditionalServiceSchema'
+import {expect} from 'jest-without-globals'
+import {printSchema} from 'graphql'
+import {genGraphAdditionalServiceSchema} from './genGraphAdditionalServiceSchema'
 import AdditionalServiceBuilder from '../../builders/AdditionalServiceBuilder'
-import { MethodType } from '../../../types'
+import {MethodType} from '../../../types'
 
 // yarn test --testPathPattern genGraphAdditionalServiceSchema
 // yarn test --testPathPattern genGraphAdditionalServiceSchema -t 'with simple args and no return'

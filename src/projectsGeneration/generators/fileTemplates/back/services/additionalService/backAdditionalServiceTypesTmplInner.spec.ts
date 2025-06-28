@@ -1,6 +1,6 @@
-import { expect } from 'jest-without-globals'
+import {expect} from 'jest-without-globals'
 import AdditionalServiceBuilder from '../../../../../builders/AdditionalServiceBuilder';
-import { backAdditionalServiceTypesTmplInner } from './backAdditionalServiceTypesTmplInner';
+import {backAdditionalServiceTypesTmplInner} from './backAdditionalServiceTypesTmplInner';
 
 // yarn test --testPathPattern backAdditionalServiceTypesTmplInner
 

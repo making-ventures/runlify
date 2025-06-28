@@ -1,7 +1,7 @@
-import { pascalSingular } from '../../../../../../utils/cases'
-import { singular } from 'pluralize'
-import { EntityWideGenerationArgs } from '../../../../../args'
-import { pad5, printWarningIfRequired } from '../../../../../utils'
+import {pascalSingular} from '../../../../../../utils/cases'
+import {singular} from 'pluralize'
+import {EntityWideGenerationArgs} from '../../../../../args'
+import {pad5, printWarningIfRequired} from '../../../../../utils'
 
 export const uiDefaultActionTmpl = (
   {

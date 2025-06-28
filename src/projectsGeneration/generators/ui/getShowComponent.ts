@@ -1,4 +1,4 @@
-import { plural } from 'pluralize'
+import {plural} from 'pluralize'
 import {
   Entity,
   Field,
@@ -6,8 +6,8 @@ import {
   LinkField,
   ScalarField,
 } from '../../builders/buildedTypes'
-import { isImageFileRef, isMoneyField } from '../../metaUtils'
-import { getCompNameToShowScalar } from './componentNames/show/getCompNameToShowScalar'
+import {isImageFileRef, isMoneyField} from '../../metaUtils'
+import {getCompNameToShowScalar} from './componentNames/show/getCompNameToShowScalar'
 
 export const getFieldLabel = (entity: Entity, field: Field, postfix?: string) => postfix
   ? `label={\`\${translate('${plural(entity.type)}.${entity.name}.fields.${field.name}')} \${translate('app.postfixes.${postfix}')}\`}`

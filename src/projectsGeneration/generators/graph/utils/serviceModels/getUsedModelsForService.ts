@@ -1,7 +1,7 @@
-import { AdditionalService } from '../../../../builders/buildedTypes'
-import { getUsedModels } from '../models/getUsedModels'
-import { getUniqModels } from '../models/getUniqModels'
-import { ServiceModels } from '../../types';
+import {AdditionalService} from '../../../../builders/buildedTypes'
+import {getUsedModels} from '../models/getUsedModels'
+import {getUniqModels} from '../models/getUniqModels'
+import {ServiceModels} from '../../types';
 import getObjectModelsFromMethodReturns from './getObjectModelsFromMethodReturns';
 
 // Возвращает используемые сервисом модели

@@ -1,10 +1,10 @@
-import { InfoRegistry, InfoRegistryPeriod, Multitenancy } from './buildedTypes'
+import {InfoRegistry, InfoRegistryPeriod, Multitenancy} from './buildedTypes'
 import BaseSavableEntityBuilder from './BaseSavableEntityBuilder'
 import ScalarFieldBuilder from './fields/ScalarFieldBuilder'
 import LinkFieldBuilder from './fields/LinkFieldBuilder'
-import { FieldBuilder } from './types'
+import {FieldBuilder} from './types'
 import ViewLinkFieldBuilder from './fields/ViewLinkFieldBuilder'
-import { defaultRegistryOptions, RegistryOptions } from './SumRegistryBuilder'
+import {defaultRegistryOptions, RegistryOptions} from './SumRegistryBuilder'
 
 export class InfoRegistryBuilder extends BaseSavableEntityBuilder {
   protected type = 'infoRegistry' as const

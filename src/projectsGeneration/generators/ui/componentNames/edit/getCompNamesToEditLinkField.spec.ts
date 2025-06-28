@@ -1,7 +1,7 @@
-import { expect } from 'jest-without-globals'
+import {expect} from 'jest-without-globals'
 import CatalogBuilder from '../../../../builders/CatalogBuilder'
 import LinkFieldBuilder from '../../../../builders/fields/LinkFieldBuilder'
-import { getCompNamesToEditLinkField } from './getCompNamesToEditLinkField'
+import {getCompNamesToEditLinkField} from './getCompNamesToEditLinkField'
 
 describe('getCompNamesToEditLinkField', () => {
   it('generates SelectInput and ReferenceInput for link to entity with int id which is also title field', () => {

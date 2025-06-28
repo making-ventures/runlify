@@ -1,4 +1,4 @@
-import { AdditionalService, AdditionalServiceObjectReturnModel, ServiceReturnType } from '../../../../builders/buildedTypes'
+import {AdditionalService, AdditionalServiceObjectReturnModel, ServiceReturnType} from '../../../../builders/buildedTypes'
 
 const getObjectModelsFromMethodReturns = (service: AdditionalService): AdditionalServiceObjectReturnModel[] =>
   service.methods

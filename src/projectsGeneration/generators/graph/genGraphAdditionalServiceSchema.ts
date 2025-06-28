@@ -2,10 +2,10 @@ import {GraphQLNamedOutputType, GraphQLNamedType, GraphQLObjectType, GraphQLSche
 import {pascal} from '../../../utils/cases'
 import {AdditionalService, MethodType, ServiceReturnType, TsModel} from '../../builders/buildedTypes'
 import * as R from 'ramda'
-import { GraphQLVoid } from 'graphql-scalars'
-import { genGraphArgsModelType } from './genGraphModelType'
-import { getPreparedModelsForGraph } from './utils/serviceModels/getPreparedModelsForGraph'
-import { getGraphTypesFromInputOutputModels } from './utils/serviceModels/getGraphTypesFromInputOutputModels'
+import {GraphQLVoid} from 'graphql-scalars'
+import {genGraphArgsModelType} from './genGraphModelType'
+import {getPreparedModelsForGraph} from './utils/serviceModels/getPreparedModelsForGraph'
+import {getGraphTypesFromInputOutputModels} from './utils/serviceModels/getGraphTypesFromInputOutputModels'
 
 const findGraphTypeByName = (serviceName: string, typeName: string, types: GraphQLNamedType[]) => {
   const prefixedName = `${pascal(serviceName)}${pascal(typeName)}`;

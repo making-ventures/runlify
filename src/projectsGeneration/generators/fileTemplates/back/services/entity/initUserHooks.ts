@@ -1,5 +1,5 @@
-import { EntityWideGenerationArgs } from '../../../../../args'
-import { pascalPlural } from '../../../../../../utils/cases'
+import {EntityWideGenerationArgs} from '../../../../../args'
+import {pascalPlural} from '../../../../../../utils/cases'
 
 export const initUserHooksTmpl = ({
   entity,

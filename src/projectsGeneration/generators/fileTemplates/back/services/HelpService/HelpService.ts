@@ -1,5 +1,5 @@
-import { plural } from 'pluralize'
-import { ProjectWideGenerationArgs } from '../../../../../args'
+import {plural} from 'pluralize'
+import {ProjectWideGenerationArgs} from '../../../../../args'
 
 const helpServiceTmpl = ({
   entities,

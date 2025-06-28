@@ -1,6 +1,6 @@
-import { GraphQLBoolean, GraphQLList, GraphQLType } from 'graphql'
-import { ScalarField } from '../../../builders/buildedTypes'
-import { fieldTypeToGraphScalar } from '../fieldTypeToGraphScalar'
+import {GraphQLBoolean, GraphQLList, GraphQLType} from 'graphql'
+import {ScalarField} from '../../../builders/buildedTypes'
+import {fieldTypeToGraphScalar} from '../fieldTypeToGraphScalar'
 
 export const genGraphScalarFilter = (
   field: ScalarField

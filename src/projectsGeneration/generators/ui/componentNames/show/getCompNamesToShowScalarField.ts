@@ -1,6 +1,6 @@
-import { ScalarField } from '../../../../builders/buildedTypes'
-import { getCompNameToShowScalar } from './getCompNameToShowScalar'
-import { LinkShowComponentName, ShowComponentName } from '../types'
+import {ScalarField} from '../../../../builders/buildedTypes'
+import {getCompNameToShowScalar} from './getCompNameToShowScalar'
+import {LinkShowComponentName, ShowComponentName} from '../types'
 
 export const getCompNamesToShowScalarField = (
   field: ScalarField

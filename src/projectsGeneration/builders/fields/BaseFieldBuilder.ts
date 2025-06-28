@@ -1,5 +1,5 @@
 import * as R from 'ramda'
-import { sentence } from '../../../utils/cases'
+import {sentence} from '../../../utils/cases'
 import {
   Meaning,
   FieldType,

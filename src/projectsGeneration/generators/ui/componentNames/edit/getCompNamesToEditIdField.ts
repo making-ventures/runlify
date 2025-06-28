@@ -1,6 +1,6 @@
-import { IdField } from '../../../../builders/buildedTypes'
-import { getCompNameToEditScalar } from './getCompNameToEditScalar'
-import { EditComponentName, LinkEditComponentName } from '../types'
+import {IdField} from '../../../../builders/buildedTypes'
+import {getCompNameToEditScalar} from './getCompNameToEditScalar'
+import {EditComponentName, LinkEditComponentName} from '../types'
 
 export const getCompNamesToEditIdField = (
   field: IdField

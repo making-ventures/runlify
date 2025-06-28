@@ -3,7 +3,7 @@ import {pascalSingular} from "../../../../utils/cases";
 import {ProjectWideGenerationArgs} from "../../../args";
 import {Entity} from "../../../builders";
 import {printWarningIfRequired} from "../../../utils";
-import { BootstrapEntityInnerOptions } from "../../../../types";
+import {BootstrapEntityInnerOptions} from "../../../../types";
 
 const imports = `/* eslint-disable max-len */
 import * as React from 'react';

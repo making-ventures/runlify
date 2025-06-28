@@ -1,7 +1,7 @@
-import { expect } from 'jest-without-globals'
+import {expect} from 'jest-without-globals'
 import LinkFieldBuilder from '../../builders/fields/LinkFieldBuilder'
 import CatalogBuilder from '../../builders/CatalogBuilder'
-import { getLinkShowComponent } from './getShowComponent'
+import {getLinkShowComponent} from './getShowComponent'
 
 describe('getLinkShowComponent', () => {
   test('string link, title is id of linked entity', () => {

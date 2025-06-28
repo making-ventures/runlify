@@ -1,6 +1,6 @@
-import { join } from "path";
-import { ProjectWideGenerationArgs } from "../../../args";
-import { readdirSync, statSync } from "fs";
+import {join} from "path";
+import {ProjectWideGenerationArgs} from "../../../args";
+import {readdirSync, statSync} from "fs";
 import log from "../../../../log";
 
 export default async (

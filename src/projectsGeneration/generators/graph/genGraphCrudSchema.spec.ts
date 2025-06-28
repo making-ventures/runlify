@@ -1,7 +1,7 @@
-import { expect } from 'jest-without-globals'
-import { printSchema } from 'graphql'
+import {expect} from 'jest-without-globals'
+import {printSchema} from 'graphql'
 import CatalogBuilder from '../../builders/CatalogBuilder'
-import { genGraphCrudSchema } from './genGraphCrudSchema'
+import {genGraphCrudSchema} from './genGraphCrudSchema'
 
 // yarn test --testPathPattern genGraphCrudSchema
 

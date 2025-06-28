@@ -1,7 +1,7 @@
-import { expect } from 'jest-without-globals'
+import {expect} from 'jest-without-globals'
 import CatalogBuilder from '../../builders/CatalogBuilder'
 import ScalarFieldBuilder from '../../builders/fields/ScalarFieldBuilder'
-import { getScalarShowComponent } from './getShowComponent'
+import {getScalarShowComponent} from './getShowComponent'
 
 describe('getScalarShowComponent', () => {
   test('string', () => {

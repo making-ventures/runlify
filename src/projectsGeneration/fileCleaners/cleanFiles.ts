@@ -1,4 +1,4 @@
-import { ProjectWideGenerationArgs } from "../args";
+import {ProjectWideGenerationArgs} from "../args";
 import cleanUi from './ui/cleanUi';
 
 export default async (
