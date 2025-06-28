@@ -14,9 +14,7 @@ ${
   withTenantIdRequiredHooks
     ? "import {beforeUpdate, beforeUpsertStrict, beforeDelete, changeListFilter} from './hooks/tenantIdRequiredHooks';\n"
     : ''
-}
-${printWarningIfRequired(options)}
-${
+}${printWarningIfRequired(options)}${
   withTenantIdRequiredHooks
     ? ''
     : `
