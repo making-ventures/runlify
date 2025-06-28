@@ -1,8 +1,8 @@
 import * as path from 'path'
 import fs from 'fs-extra'
 import {exec} from 'child_process'
-import {BootstrapEntityInnerOptions} from './types'
-import log from '../log'
+import {BootstrapEntityInnerOptions} from '../types'
+import log from '../../log'
 
 export const genGraphSchemesByLocalGenerator = async (
   options: BootstrapEntityInnerOptions

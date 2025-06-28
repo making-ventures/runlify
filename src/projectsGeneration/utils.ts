@@ -1,5 +1,4 @@
-import {exists, write} from 'fs-jetpack'
-import {BootstrapEntityOptions, FileToCreate} from '../types';
+import {BootstrapEntityOptions} from '../types';
 
 export const generatedWarning = 'DO NOT EDIT! THIS IS GENERATED FILE'
 
@@ -27,24 +26,3 @@ export const pad10 = (content: string) => padN(content, 10)
 export const pad = (num: number) => (content: string) => padN(content, num)
 export const addComma = (content: string) => content + ','
 export const newStrBefore = (content: string) => '\n' + content
-
-export const createFilesToWriteUtils = () => {
-  let files: FileToCreate[] = [];
-
-  return {
-    create: (path: string, content: string) => files.push({path, content, ifNotExists: false}),
-    createIfNotExists: (path: string, content: string) => files.push({path, content, ifNotExists: true}),
-    getFiles: () => files,
-    reset: () => files = [],
-  };
-}
-
-export const writeFiles = (files: FileToCreate[]) => {
-  for (const file of files) {
-    if (file.ifNotExists && exists(file.path)) {
-      continue;
-    }
-
-    write(file.path, file.content);
-  }
-}

@@ -1,10 +1,8 @@
 import {ProjectWideGenerationArgs} from "../args";
 import cleanUi from './ui/cleanUi';
 
-export default async (
+export default (
   entityWideGenerationArgs: ProjectWideGenerationArgs,
 ) => {
-  return Promise.all([
-    cleanUi(entityWideGenerationArgs),
-  ])
+  cleanUi(entityWideGenerationArgs);
 }

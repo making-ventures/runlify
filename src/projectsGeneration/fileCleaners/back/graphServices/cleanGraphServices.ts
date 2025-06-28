@@ -3,7 +3,7 @@ import {ProjectWideGenerationArgs} from "../../../args";
 import {readdirSync, statSync} from "fs";
 import log from "../../../../log";
 
-export default async (
+export default (
   entityWideGenerationArgs: ProjectWideGenerationArgs,
 ) => {
   const pagesDirPath = join(
@@ -16,7 +16,7 @@ export default async (
 
   const pagesDirContent = readdirSync(pagesDirPath);
 
-  return Promise.all(pagesDirContent.map(async (name) => {
+  pagesDirContent.forEach((name) => {
     const isAdditionalService = entityWideGenerationArgs.system.additionalServices.some((additionalService) => 
       additionalService.name === name,
     );
@@ -38,7 +38,5 @@ export default async (
     if (!entity) {
       log.warn(`back: Entity ${name} not found for graph services path ${fullPath}, please delete this folder or move folder content to new path`);
     }
-
-    return new Promise((resolve) => resolve(null));
-  }))
+  });
 }

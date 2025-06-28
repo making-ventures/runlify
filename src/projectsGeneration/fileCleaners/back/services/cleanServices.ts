@@ -4,7 +4,7 @@ import {readdirSync, statSync} from "fs";
 import log from "../../../../log";
 import {camelCase} from "change-case";
 
-export default async (
+export default (
   entityWideGenerationArgs: ProjectWideGenerationArgs,
 ) => {
   const pagesDirPath = join(
@@ -18,7 +18,7 @@ export default async (
   const listWidgetFilenameRegex = new RegExp(pattern, 'gum');
   const pagesDirContent = readdirSync(pagesDirPath);
 
-  return Promise.all(pagesDirContent.map(async (name) => {
+  pagesDirContent.forEach((name) => {
     const fullPath = join(pagesDirPath, name);
 
     const statData = statSync(fullPath);
@@ -48,7 +48,5 @@ export default async (
     if (!entity) {
       log.warn(`back: Entity ${entityName} not found for services path ${fullPath}, please delete this folder or move folder content to new path`);
     }
-
-    return new Promise((resolve) => resolve(null));
-  }))
+  })
 }

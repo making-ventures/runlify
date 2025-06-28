@@ -9,7 +9,7 @@ const patternByType = {
   list: '(?<=^List)(.*)(?=Widget.tsx)'
 }
 
-const cleanWidgetsByType = async (
+const cleanWidgetsByType = (
   widgetsDirPath: string,
   entities: Entity[],
   type: 'count' | 'list',
@@ -22,7 +22,7 @@ const cleanWidgetsByType = async (
   const listWidgetsDirContent = readdirSync(listWidgetsDirPath);
   const listWidgetFilenameRegex = new RegExp(patternByType[type], 'gum');
 
-  return Promise.all(listWidgetsDirContent.map(async (name) => {
+  listWidgetsDirContent.forEach((name) => {
     const fullPath = join(listWidgetsDirPath, name);
 
     const statData = statSync(fullPath);
@@ -44,9 +44,7 @@ const cleanWidgetsByType = async (
     if (!entity || !widgetGenOn) {
       unlinkSync(fullPath);
     }
-
-    return new Promise((resolve) => resolve(null));
-  }))
+  })
 }
 
 export default cleanWidgetsByType;
