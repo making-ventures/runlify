@@ -32,9 +32,9 @@ export const createFilesToWriteUtils = () => {
   let filesToWrite: FileToWrite[] = [];
 
   return {
-    filesToWrite,
     write: (path: string, content: string) => filesToWrite.push({path, content, ifNotExists: false}),
     writeFileIfNotExists: (path: string, content: string) => filesToWrite.push({path, content, ifNotExists: true}),
+    getFiles: () => filesToWrite,
     reset: () => filesToWrite = [],
   };
 }

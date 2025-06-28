@@ -553,7 +553,7 @@ const generateProject = async (
   initialOpts = defaultBootstrapEntityOptions
 ) => {
   const {
-    filesToWrite,
+    getFiles,
     reset,
     write,
     writeFileIfNotExists,
@@ -613,7 +613,7 @@ const generateProject = async (
     generateBack(fileWriter, args, true),
   ]);
 
-  writeFiles(filesToWrite);
+  writeFiles(getFiles());
   reset();
 
   await genGraphSchemesByLocalGenerator(opts);
@@ -714,7 +714,7 @@ const generateProject = async (
   let prjUiSrcPrefixedDir = ''
   const prjDetachedUiSrcDir = join(opts.detachedUiProject, 'src')
 
-  prjUiSrcPrefixedDir = join(prjDetachedUiSrcDir, 'adm')
+  prjUiSrcPrefixedDir = join(prjDetachedUiSrcDir, 'adm');
 
   if (!opts.typesOnly) {
     // Resources
@@ -799,7 +799,7 @@ const generateProject = async (
 
   await generateEnvironment(fileWriter, args);
 
-  writeFiles(filesToWrite);
+  writeFiles(getFiles());
   reset();
 }
 
