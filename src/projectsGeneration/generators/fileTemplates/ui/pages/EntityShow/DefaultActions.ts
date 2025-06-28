@@ -1,7 +1,7 @@
 import { pascalSingular } from '../../../../../../utils/cases'
 import { singular } from 'pluralize'
 import { EntityWideGenerationArgs } from '../../../../../args'
-import { pad5 } from '../../../../../utils'
+import { pad5, printWarningIfRequired } from '../../../../../utils'
 
 export const uiDefaultActionTmpl = (
   {
@@ -29,13 +29,7 @@ import OpenRegistries from '../../../commonActions/OpenRegistries';`
       : ''
   }${isAllowedToChange && isUpdatableByUser ? `
 import {useAllowedToEdit} from '../../../../uiLib/AllowedToEdit';` : ''}
-${
-  options.skipWarningThisIsGenerated
-    ? ''
-    : `
-// DO NOT EDIT! THIS IS GENERATED FILE
-`
-}
+${printWarningIfRequired(options)}
 const Default${pascalSingular(entity.name)}Actions = () => {${isUpdatableByUser ? `
   const {permissions} = usePermissions<string[]>();${isAllowedToChange ? `
   const allowedToEdit = useAllowedToEdit(${entity.allowedToChange});`: ''}

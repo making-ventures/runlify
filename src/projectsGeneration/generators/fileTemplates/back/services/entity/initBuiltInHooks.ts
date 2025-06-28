@@ -1,7 +1,8 @@
 import { EntityWideGenerationArgs } from '../../../../../args'
 import { pascalPlural } from '../../../../../../utils/cases'
+import { printWarningIfRequired } from '../../../../../utils'
 
-export const initBuiltInHooksTmpl = ({ entity }: EntityWideGenerationArgs) => {
+export const initBuiltInHooksTmpl = ({ options, entity }: EntityWideGenerationArgs) => {
   const withTenantIdRequiredHooks = ['optional', 'required'].includes(
     entity.multitenancy
   )
@@ -14,7 +15,7 @@ ${
     ? "import {beforeUpdate, beforeUpsertStrict, beforeDelete, changeListFilter} from './hooks/tenantIdRequiredHooks';\n"
     : ''
 }
-// DO NOT EDIT! THIS IS GENERATED FILE
+${printWarningIfRequired(options)}
 ${
   withTenantIdRequiredHooks
     ? ''
