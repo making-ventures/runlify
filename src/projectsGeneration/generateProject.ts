@@ -620,11 +620,6 @@ const generateProject = async (
 
   await generateFront(fileWriter, args);
 
-  let prjBackSrcPrefixedDir = '';
-  const prjDetachedBackSrcDir = join(opts.detachedBackProject, 'src');
-
-  prjBackSrcPrefixedDir = join(prjDetachedBackSrcDir, 'adm');
-
   // Full generation
   await Promise.all([
     ...entities.map((entity) =>
@@ -657,6 +652,11 @@ const generateProject = async (
     ),
     generateBack(fileWriter, args, false),
   ]);
+
+  let prjBackSrcPrefixedDir = '';
+  const prjDetachedBackSrcDir = join(opts.detachedBackProject, 'src');
+
+  prjBackSrcPrefixedDir = join(prjDetachedBackSrcDir, 'adm');
 
   // Prisma schema
   const servicesDir = join(prjBackSrcPrefixedDir, 'services')

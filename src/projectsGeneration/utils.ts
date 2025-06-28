@@ -9,14 +9,14 @@ export const printWarningIfRequired = (options: BootstrapEntityOptions, commentT
 ${commentType === 'slash' ? '//' : '#'} ${generatedWarning}
 `;
 
-export const writeFileIfNotExists = async (
-  path: string,
-  content: string
-): Promise<void> => {
-  if (!exists(path)) {
-    await write(path, content)
-  }
-}
+// export const writeFileIfNotExists = async (
+//   path: string,
+//   content: string
+// ): Promise<void> => {
+//   if (!exists(path)) {
+//     await write(path, content)
+//   }
+// }
 
 export const padN = (content: string, num: number) =>
   content
@@ -50,10 +50,10 @@ export const createFilesToWriteUtils = () => {
 
 export const writeFiles = (files: FileToWrite[]) => {
   for (const file of files) {
-    if (file.ifNotExists) {
-      writeFileIfNotExists(file.path, file.content);
-    } else {
-      write(file.path, file.content);
+    if (file.ifNotExists && exists(file.path)) {
+      continue;
     }
+
+    write(file.path, file.content);
   }
 }

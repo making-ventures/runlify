@@ -16,19 +16,19 @@ export const generateAdditionalService = async (
   const {
     service,
     options,
-  } = serviceWideGenerationArgs
-  let prjBackSrcPrefixedDir = ''
-  const prjDetachedBackSrcDir = join(options.detachedBackProject, 'src')
+  } = serviceWideGenerationArgs;
+  let prjBackSrcPrefixedDir = '';
+  const prjDetachedBackSrcDir = join(options.detachedBackProject, 'src');
 
-  prjBackSrcPrefixedDir = join(prjDetachedBackSrcDir, 'adm')
+  prjBackSrcPrefixedDir = join(prjDetachedBackSrcDir, 'adm');
 
-  const serviceName = `${pascal(service.name)}Service`
-  const serviceDir = join(prjBackSrcPrefixedDir, 'services', serviceName)
+  const serviceName = `${pascal(service.name)}Service`;
+  const serviceDir = join(prjBackSrcPrefixedDir, 'services', serviceName);
 
   fileWriter.write(
     join(serviceDir, 'types.ts'),
     backAdditionalServiceTypesTmpl(serviceWideGenerationArgs)
-  )
+  );
 
   // Graph
   const graphServiceDir = join(
@@ -36,14 +36,14 @@ export const generateAdditionalService = async (
     'graph',
     'services',
     service.name,
-  )
+  );
 
   // Graph schema
   if (options.genGraphSchema) {
     fileWriter.write(
       join(graphServiceDir, 'typeDefs.ts'),
       backAdditionalServiceTypeDefsTmpl(printSchema(genGraphAdditionalServiceSchema(service)), options)
-    )
+    );
   }
 
   // Graph resolvers
@@ -51,7 +51,7 @@ export const generateAdditionalService = async (
     fileWriter.write(
       `${graphServiceDir}/resolvers.ts`,
       backAdditionalServiceResolversTmpl(serviceWideGenerationArgs)
-    )
+    );
   }
 
   if (!options.typesOnly) {
@@ -59,6 +59,6 @@ export const generateAdditionalService = async (
     fileWriter.write(
       `${graphServiceDir}/permissionsToGraphql.ts`,
       backAdditionalServicePermissionToGraphqlTmpl(serviceWideGenerationArgs)
-    )
+    );
   }
 }
