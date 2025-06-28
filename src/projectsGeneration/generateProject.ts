@@ -11,7 +11,6 @@ import {generateEnvironment} from './generateEnvironment'
 import {configItemsTmpl} from './generators/fileTemplates/back/root/config/config'
 import {genGraphSchemesByLocalGenerator} from './genGraphSchemesByLocalGenerator'
 import {BootstrapEntityInnerOptions, defaultBootstrapEntityOptions, FileCreator} from './types'
-import {generateEntity} from './generateEntity'
 import {restRouterTmpl} from './generators/fileTemplates/back/root/restRouter'
 import {createFilesToWriteUtils, writeFiles} from './utils'
 import {uiAdditionalRoutesTmpl} from './generators/fileTemplates/ui/additionalRoutes'
@@ -23,7 +22,7 @@ import {uiTranslationsLangDocsTmpl} from './generators/fileTemplates/ui/i18n/lan
 import {cwd} from 'fs-jetpack'
 import {uiTranslationsLangReportsTmpl} from './generators/fileTemplates/ui/i18n/lang/uiLangReportsTmpl'
 import {uiEntityIconTmpl} from './generators/fileTemplates/ui/pages/Icon'
-import {pascal, pascalSingular} from '../utils/cases'
+import {camelPlural, pascal, pascalPlural, pascalSingular} from '../utils/cases'
 import {uiTranslationsLangCatalogsTmpl} from './generators/fileTemplates/ui/i18n/lang/uiLangCatalogsTmpl'
 import {uiTranslationsLangInfoRegistriesTmpl} from './generators/fileTemplates/ui/i18n/lang/uiLangInfoRegistriesTmpl'
 import {uiTranslationsLangSumRegistriesTmpl} from './generators/fileTemplates/ui/i18n/lang/uiLangSumRegistriesTmpl'
@@ -63,6 +62,51 @@ import {generateAdditionalService} from './generateAdditionalService'
 import genIntegrationClientsTmpl from './generators/fileTemplates/back/environment/src/integrationClients/IntegrationClients'
 import genIntegrationClientConstrictorsTmpl from './generators/fileTemplates/back/environment/src/integrationClients/integrationClientConstrictors'
 import cleanFiles from './fileCleaners/cleanFiles'
+import {uiListWidgetTmpl} from './generators/fileTemplates/ui/widgets/list/ListWidget'
+import {uiCountWidgetTmpl} from './generators/fileTemplates/ui/widgets/count/CountWidget'
+import {uiEntityShowIndexTmpl} from './generators/fileTemplates/ui/pages/EntityShow'
+import {uiDefaultEditTmpl} from './generators/fileTemplates/ui/pages/EntityEdit/DefaultEntityEdit'
+import {uiDefaultCreateTmpl} from './generators/fileTemplates/ui/pages/EntityCreate/DefaultEntityCreate'
+import {uiDefaultListTmpl} from './generators/fileTemplates/ui/pages/EntityList/DefaultEntityList'
+import {uiFilterTmpl} from './generators/fileTemplates/ui/pages/EntityList/EntityFilter'
+import {uiEditTmpl} from './generators/fileTemplates/ui/pages/EntityEdit'
+import {uiCreateTmpl} from './generators/fileTemplates/ui/pages/EntityCreate'
+import {uiListTmpl} from './generators/fileTemplates/ui/pages/EntityList'
+import {getLinksFromExternalEntities} from './links/getLinksFromExternalEntities'
+import {uiDefaultShowTmpl} from './generators/fileTemplates/ui/pages/EntityShow/DefaultEntityShow'
+import {uiDefaultFilterTmpl} from './generators/fileTemplates/ui/pages/EntityList/DefaultEntityFilter'
+import {uiListBreadcrumbsTmpl} from './generators/fileTemplates/ui/pages/EntityList/EntityBreadcrumbs'
+import {uiEntityShowMainTabTmpl} from './generators/fileTemplates/ui/pages/EntityShow/MainTab'
+import {uiEntityShowDefaultMainTabTmpl} from './generators/fileTemplates/ui/pages/EntityShow/DefaultMainTab'
+import {uiEntityShowDependencyTabTmpl} from './generators/fileTemplates/ui/pages/EntityShow/DependencyTab'
+import {uiDefaultActionTmpl} from './generators/fileTemplates/ui/pages/EntityShow/DefaultActions'
+import {uiAdditionalTabsTmpl} from './generators/fileTemplates/ui/pages/EntityShow/additionalTabs'
+import {backBaseTypesTmpl} from './generators/fileTemplates/back/graph/types'
+import {backBaseResolversTmpl} from './generators/fileTemplates/back/graph/resolvers'
+import {genGraphCrudSchema} from './generators/graph/genGraphCrudSchema'
+import {printSchema} from 'graphql'
+import {backAdditionalResolversTmpl} from './generators/fileTemplates/back/graph/additionalResolvers'
+import {backEntityPermissionToGraphqlTmpl} from './generators/fileTemplates/back/graph/entityPermissionToGraphqlTmpl'
+import {backEntityAdditionalPermissionToGraphqlTmpl} from './generators/fileTemplates/back/graph/entityAdditionalPermissionToGraphqlTmpl'
+import {backBasePermissionToGraphqlTmpl} from './generators/fileTemplates/back/graph/entityBasePermissionToGraphql'
+import {backAdditionalTypesTmpl} from './generators/fileTemplates/back/graph/additionalTypes'
+import {additionalOperationsOnCreateTmpl} from './generators/fileTemplates/back/services/entity/hooks/additionalOperationsOnCreate'
+import {additionalOperationsOnDeleteTmpl} from './generators/fileTemplates/back/services/entity/hooks/additionalOperationsOnDelete'
+import {additionalOperationsOnUpdateTmpl} from './generators/fileTemplates/back/services/entity/hooks/additionalOperationsOnUpdate'
+import {afterCreateTmpl} from './generators/fileTemplates/back/services/entity/hooks/afterCreate'
+import {beforeCreateTmpl} from './generators/fileTemplates/back/services/entity/hooks/beforeCreate'
+import {beforeUpdateTmpl} from './generators/fileTemplates/back/services/entity/hooks/beforeUpdate'
+import {afterUpdateTmpl} from './generators/fileTemplates/back/services/entity/hooks/afterUpdate'
+import {afterDeleteTmpl} from './generators/fileTemplates/back/services/entity/hooks/afterDelete'
+import {beforeDeleteTmpl} from './generators/fileTemplates/back/services/entity/hooks/beforeDelete'
+import {beforeUpsertTmpl} from './generators/fileTemplates/back/services/entity/hooks/beforeUpsert'
+import {changeListFilterTmpl} from './generators/fileTemplates/back/services/entity/hooks/changeListFilter'
+import {initUserHooksTmpl} from './generators/fileTemplates/back/services/entity/initUserHooks'
+import {initBuiltInHooksTmpl} from './generators/fileTemplates/back/services/entity/initBuiltInHooks'
+import {tenantIdRequiredHooksTmpl} from './generators/fileTemplates/back/services/entity/hooks/tenantIdRequiredHooks'
+import {configTmpl} from './generators/fileTemplates/back/services/entity/config'
+import {prismaServiceBaseClassTmpl} from './generators/fileTemplates/back/services/entity/class'
+import {prismaAdditionalServiceClassTmpl} from './generators/fileTemplates/back/services/entity/additionalClass'
 
 const generateHelpService = async (
   fileCreator: FileCreator,
@@ -120,6 +164,173 @@ const generateHelpService = async (
   }
 }
 
+const generateEntityBackServices = async (
+  fileCreator: FileCreator,
+  args: EntityWideGenerationArgs,
+) => {
+  const {
+    allSumRegistries,
+    allInfoRegistries,
+    entity,
+    options,
+  } = args;
+
+  if (options.genPrismaServices && !options.typesOnly) {
+    const serviceName = `${pascalPlural(entity.name)}Service`;
+    const serviceDir = join(options.detachedBackProject, 'src', 'adm', 'services', serviceName);
+    const servicePath = join(serviceDir, `${serviceName}.ts`);
+    const configPath = join(serviceDir, `config.ts`);
+    const additionalServicePath = join(serviceDir, `Additional${serviceName}.ts`);
+
+    const additionalClassService = prismaAdditionalServiceClassTmpl(args);
+    fileCreator.createIfNotExists(additionalServicePath, additionalClassService);
+
+    const generatedClassService = prismaServiceBaseClassTmpl(args);
+    fileCreator.create(servicePath, generatedClassService);
+
+    const config = configTmpl(
+      args,
+      allSumRegistries,
+      allInfoRegistries,
+    );
+    fileCreator.create(configPath, config);
+
+    fileCreator.createIfNotExists(
+      join(serviceDir, 'initUserHooks.ts'),
+      initUserHooksTmpl(args)
+    );
+
+    const hooksDir = join(serviceDir, 'hooks');
+    if (['optional', 'required'].includes(entity.multitenancy)) {
+      if (
+        !args.entities.some(
+          (entity) => entity.name === 'tenants'
+        )
+      ) {
+        throw new Error('Tenants entity not presented, you can\'t use tenants in project');
+      }
+
+      fileCreator.create(
+        join(hooksDir, 'tenantIdRequiredHooks.ts'),
+        tenantIdRequiredHooksTmpl(args)
+      );
+    }
+
+    fileCreator.create(
+      join(serviceDir, 'initBuiltInHooks.ts'),
+      initBuiltInHooksTmpl(args)
+    );
+
+    if (!entity.elasticOnly) {
+      fileCreator.createIfNotExists(
+        join(hooksDir, 'additionalOperationsOnCreate.ts'),
+        additionalOperationsOnCreateTmpl(args)
+      );
+      fileCreator.createIfNotExists(
+        join(hooksDir, 'additionalOperationsOnUpdate.ts'),
+        additionalOperationsOnUpdateTmpl(args)
+      );
+      fileCreator.createIfNotExists(
+        join(hooksDir, 'additionalOperationsOnDelete.ts'),
+        additionalOperationsOnDeleteTmpl(args)
+      );
+    }
+
+    fileCreator.createIfNotExists(
+      join(hooksDir, 'beforeCreate.ts'),
+      beforeCreateTmpl(args)
+    );
+    fileCreator.createIfNotExists(
+      join(hooksDir, 'beforeDelete.ts'),
+      beforeDeleteTmpl(args)
+    );
+    fileCreator.createIfNotExists(
+      join(hooksDir, 'beforeUpdate.ts'),
+      beforeUpdateTmpl(args)
+    );
+    fileCreator.createIfNotExists(
+      join(hooksDir, 'beforeUpsert.ts'),
+      beforeUpsertTmpl(args)
+    );
+    fileCreator.createIfNotExists(
+      join(hooksDir, 'afterCreate.ts'),
+      afterCreateTmpl(args)
+    );
+    fileCreator.createIfNotExists(
+      join(hooksDir, 'afterUpdate.ts'),
+      afterUpdateTmpl(args)
+    );
+    fileCreator.createIfNotExists(
+      join(hooksDir, 'afterDelete.ts'),
+      afterDeleteTmpl(args)
+    );
+    fileCreator.createIfNotExists(
+      join(hooksDir, 'changeListFilter.ts'),
+      changeListFilterTmpl(args)
+    );
+  }
+}
+
+const generateEntityBackGraph = async (
+  fileCreator: FileCreator,
+  args: EntityWideGenerationArgs,
+) => {
+  const {
+    entity,
+    options,
+  } = args;
+
+  const graphServiceDir = join(
+    options.detachedBackProject,
+    'src',
+    'adm',
+    'graph',
+    'services',
+    camelPlural(entity.name)
+  );
+
+  // Graph schema
+  if (options.genGraphSchema) {
+    fileCreator.create(
+      join(graphServiceDir, 'baseTypeDefs.ts'),
+      backBaseTypesTmpl(printSchema(genGraphCrudSchema(entity)), options)
+    );
+
+    fileCreator.createIfNotExists(
+      join(graphServiceDir, 'additionalTypeDefs.ts'),
+      backAdditionalTypesTmpl()
+    );
+  }
+
+  if (!options.typesOnly) {
+    // Graph resolvers
+    if (options.genGraphResolvers) {
+      fileCreator.create(
+        `${graphServiceDir}/baseResolvers.ts`,
+        backBaseResolversTmpl(args)
+      );
+      fileCreator.createIfNotExists(
+        `${graphServiceDir}/additionalResolvers.ts`,
+        backAdditionalResolversTmpl()
+      );
+    }
+
+    // Permissions
+    fileCreator.create(
+      `${graphServiceDir}/permissionsToGraphql.ts`,
+      backEntityPermissionToGraphqlTmpl(args)
+    );
+    fileCreator.create(
+      `${graphServiceDir}/basePermissionsToGraphql.ts`,
+      backBasePermissionToGraphqlTmpl(args)
+    );
+    fileCreator.create(
+      `${graphServiceDir}/additionalPermissionsToGraphql.ts`,
+      backEntityAdditionalPermissionToGraphqlTmpl(args)
+    );
+  }
+}
+
 export const generateBackSrc = async (fileCreator: FileCreator, args: ProjectWideGenerationArgs, typesOnly: boolean) => {
   if (!typesOnly) {
     await Promise.all([
@@ -131,7 +342,13 @@ export const generateBackSrc = async (fileCreator: FileCreator, args: ProjectWid
     ]);
   }
 
-  generateHelpService(fileCreator, args, typesOnly);
+  await Promise.all([
+    ...args.entities.flatMap((entity) => [
+      generateEntityBackServices(fileCreator, prepareEntityWideGenerationArgs(args, entity)),
+      generateEntityBackGraph(fileCreator, prepareEntityWideGenerationArgs(args, entity)),
+    ]),
+    generateHelpService(fileCreator, args, typesOnly),
+  ]);
 }
 
 export const generateBackIntegrationClients = async (
@@ -489,56 +706,303 @@ export const generateFrontSrcEntityTranslationsReports = async (
 
 export const generateFrontSrcEntityIcon = async (
   fileCreator: FileCreator,
-  entityWideGenerationArgs: EntityWideGenerationArgs,
+  args: EntityWideGenerationArgs,
 ) => {
   const {
     entity: { name },
-  } = entityWideGenerationArgs
+  } = args
 
   const filePath = join(
-    entityWideGenerationArgs.options.detachedUiProject,
+    args.options.detachedUiProject,
     `src/adm/pages/${name}/${pascalSingular(name)}Icon.tsx`
   )
 
-  fileCreator.create(filePath, uiEntityIconTmpl(entityWideGenerationArgs))
+  fileCreator.create(filePath, uiEntityIconTmpl(args))
 }
 
 export const generateFrontSrcGetEntityValidation = async (
   fileCreator: FileCreator,
-  entityWideGenerationArgs: EntityWideGenerationArgs,
+  args: EntityWideGenerationArgs,
 ) => {
   const {
     entity: { name },
-  } = entityWideGenerationArgs
+  } = args
 
   const filePath = join(
-    entityWideGenerationArgs.options.detachedUiProject,
+    args.options.detachedUiProject,
     `src/adm/pages/${name}/get${pascalSingular(name)}Validation.tsx`
   )
 
-  fileCreator.create(filePath, uiGetEntityValidationTmpl(entityWideGenerationArgs))
+  fileCreator.create(filePath, uiGetEntityValidationTmpl(args))
 }
 
 export const generateFrontSrcEntity = async (
   fileCreator: FileCreator,
-  entityWideGenerationArgs: EntityWideGenerationArgs,
+  args: EntityWideGenerationArgs,
 ) => {
   await Promise.all([
-    generateFrontSrcEntityIcon(fileCreator, entityWideGenerationArgs),
-    generateFrontSrcGetEntityValidation(fileCreator, entityWideGenerationArgs),
+    generateFrontSrcEntityIcon(fileCreator, args),
+    generateFrontSrcGetEntityValidation(fileCreator, args),
   ]);
 }
 
-export const generateFrontSrc = async (fileCreator: FileCreator, args: ProjectWideGenerationArgs) => {
+export const generateFrontSrcTranslations = async (
+  fileCreator: FileCreator,
+  args: ProjectWideGenerationArgs,
+) => {
   await Promise.all([
-    args.entities.map((entity) =>
-      generateFrontSrcEntity(fileCreator, prepareEntityWideGenerationArgs(args, entity))
-    ),
     generateFrontSrcEntityTranslationsDocs(fileCreator, args),
     generateFrontSrcEntityTranslationsCatalogs(fileCreator, args),
     generateFrontSrcEntityTranslationsSumRegistries(fileCreator, args),
     generateFrontSrcEntityTranslationsInfoRegistries(fileCreator, args),
     generateFrontSrcEntityTranslationsReports(fileCreator, args),
+  ]);
+}
+
+
+const generateEntityUiWidgets = async (
+  fileCreator: FileCreator,
+  args: EntityWideGenerationArgs,
+) => {
+  const {
+    entity,
+    options,
+  } = args;
+
+  if (!options.typesOnly) {
+    const widgetsDir = join(options.detachedUiProject, 'src', 'adm', 'widgets');
+
+    // CountWidget
+    if (options.genUiCountWidget) {
+      const countWdgetsDir = join(widgetsDir, 'count');
+
+      const generatedResources = uiCountWidgetTmpl(args);
+
+      fileCreator.create(
+        join(countWdgetsDir, `Count${pascal(entity.name)}Widget.tsx`),
+        generatedResources
+      );
+    }
+
+    // ListWidget
+    if (options.genUiListWidget) {
+      const listWdgetsDir = join(widgetsDir, 'list');
+
+      const generatedResources = uiListWidgetTmpl(args);
+
+      fileCreator.create(
+        join(listWdgetsDir, `List${pascal(entity.name)}Widget.tsx`),
+        generatedResources
+      );
+    }
+  }
+}
+
+const generateEntityUiShow = async (
+  fileCreator: FileCreator,
+  args: EntityWideGenerationArgs,
+) => {
+  const {
+    allEntities,
+    entity,
+    options,
+    allLinks,
+  } = args;
+
+  if (!options.typesOnly && options.forms.show) {
+    const toLinks = getLinksFromExternalEntities(entity, allLinks);
+
+    const entityShowDir = join(
+      options.detachedUiProject,
+      'src',
+      'adm',
+      'pages',
+      entity.name,
+      `${pascalSingular(entity.name)}Show`,
+    );
+
+    // MainTab
+    const mainTab = uiEntityShowMainTabTmpl();
+    fileCreator.createIfNotExists(join(entityShowDir, 'MainTab.tsx'), mainTab);
+
+    // DefaultMainTab
+    const defaultMainTab = uiEntityShowDefaultMainTabTmpl(
+      args
+    );
+    fileCreator.create(join(entityShowDir, 'DefaultMainTab.tsx'), defaultMainTab);
+
+    // DefaultEntityShow
+    fileCreator.create(
+      join(entityShowDir, `Default${pascalSingular(entity.name)}Show.tsx`),
+      uiDefaultShowTmpl(args)
+    );
+
+    // DefaultActions
+    fileCreator.create(
+      join(entityShowDir, 'DefaultActions.tsx'),
+      uiDefaultActionTmpl(args)
+    );
+
+    // index
+    fileCreator.createIfNotExists(
+      join(entityShowDir, 'index.tsx'),
+      uiEntityShowIndexTmpl(args)
+    );
+
+    const additionalTabs = uiAdditionalTabsTmpl();
+    fileCreator.createIfNotExists(
+      join(entityShowDir, 'additionalTabs.tsx'),
+      additionalTabs
+    );
+
+    // DependencyTabs
+    for (const link of toLinks) {
+      const tabsDir = join(entityShowDir, 'tabs');
+
+      const entity = allEntities.get(link.entityOwnerName);
+
+      if (!entity) {
+        throw new Error(`The is no "${link.entityOwnerName}" entity`);
+      }
+
+      const componentName = `${pascal(entity.name)}${pascal(
+        link.fromField.name
+      )}Tab`;
+
+      const dependencyTab = uiEntityShowDependencyTabTmpl(
+        allEntities,
+        entity,
+        link,
+        options
+      );
+      fileCreator.create(join(tabsDir, `${componentName}.tsx`), dependencyTab);
+    }
+  }
+}
+
+const generateEntityUiCreate = async (
+  fileCreator: FileCreator,
+  args: EntityWideGenerationArgs,
+) => {
+  const {
+    entity,
+    options,
+  } = args;
+
+  if (!options.typesOnly && options.forms.create) {
+    const entityCreateDir = join(
+      options.detachedUiProject,
+      'src',
+      'adm',
+      'pages',
+      entity.name,
+      `${pascalSingular(entity.name)}Create`
+    );
+
+    fileCreator.create(
+      join(
+        entityCreateDir,
+        `Default${pascalSingular(entity.name)}Create.tsx`
+      ),
+      uiDefaultCreateTmpl(args)
+    );
+    fileCreator.createIfNotExists(
+      join(entityCreateDir, 'index.tsx'),
+      uiCreateTmpl(args)
+    );
+  }
+}
+
+const generateEntityUiEdit = async (
+  fileCreator: FileCreator,
+  args: EntityWideGenerationArgs,
+) => {
+  const {
+    entity,
+    options,
+  } = args;
+
+  if (!options.typesOnly && options.forms.edit) {
+    const entityEditDir = join(
+      options.detachedUiProject,
+      'src',
+      'adm',
+      'pages',
+      entity.name,
+      `${pascalSingular(entity.name)}Edit`,
+    );
+
+    fileCreator.create(
+      join(entityEditDir, `Default${pascalSingular(entity.name)}Edit.tsx`),
+      uiDefaultEditTmpl(args)
+    );
+    fileCreator.createIfNotExists(
+      join(entityEditDir, 'index.tsx'),
+      uiEditTmpl(args)
+    );
+  }
+}
+
+const generateEntityUiList = async (
+  fileCreator: FileCreator,
+  args: EntityWideGenerationArgs,
+) => {
+  const {
+    entity,
+    options,
+  } = args;
+
+  if (!options.typesOnly && options.forms.list) {
+    const entityListDir = join(
+      options.detachedUiProject,
+      'src',
+      'adm',
+      'pages',
+      entity.name,
+      `${pascalSingular(entity.name)}List`,
+    );
+
+    fileCreator.create(
+      join(entityListDir, `Default${pascalSingular(entity.name)}List.tsx`),
+      uiDefaultListTmpl(args)
+    );
+    fileCreator.createIfNotExists(
+      join(entityListDir, `${pascalSingular(entity.name)}Filter.tsx`),
+      uiFilterTmpl(args)
+    );
+    fileCreator.createIfNotExists(
+      join(entityListDir, `${pascalSingular(entity.name)}ListBreadcrumbs.tsx`),
+      uiListBreadcrumbsTmpl(args)
+    );
+    fileCreator.create(
+      join(entityListDir, `Default${pascalSingular(entity.name)}Filter.tsx`),
+      uiDefaultFilterTmpl(args)
+    );
+    fileCreator.createIfNotExists(
+      join(entityListDir, 'index.tsx'),
+      uiListTmpl(args)
+    );
+  }
+}
+
+const generateEntityUiPages = async (
+  fileCreator: FileCreator,
+  args: EntityWideGenerationArgs,
+) => {
+  generateEntityUiShow(fileCreator, args);
+  generateEntityUiCreate(fileCreator, args);
+  generateEntityUiEdit(fileCreator, args);
+  generateEntityUiList(fileCreator, args);
+}
+
+export const generateFrontSrc = async (fileCreator: FileCreator, args: ProjectWideGenerationArgs) => {
+  await Promise.all([
+    ...args.entities.flatMap((entity) => [
+      generateFrontSrcEntity(fileCreator, prepareEntityWideGenerationArgs(args, entity)),
+      generateEntityUiWidgets(fileCreator, prepareEntityWideGenerationArgs(args, entity)),
+      generateEntityUiPages(fileCreator, prepareEntityWideGenerationArgs(args, entity)),
+    ]),
+    generateFrontSrcTranslations(fileCreator, args),
   ]);
 }
 
@@ -574,27 +1038,11 @@ const generateProject = async (
   }
 
   const args = prepareProjectWideGenerationArgs(system, opts);
-  const { entities } = args;
 
   await cleanFiles(args);
 
   // Pre grapgql types compose generation
   await Promise.all([
-    ...entities.map((entity) =>
-      generateEntity(
-        fileCreator,
-        prepareEntityWideGenerationArgs(
-          {
-            ...args,
-            options: {
-              ...opts,
-              typesOnly: true,
-            },
-          },
-          entity
-        )
-      )
-    ),
     ...system.additionalServices.map((service) =>
       generateAdditionalService(
         fileCreator,
@@ -622,20 +1070,6 @@ const generateProject = async (
 
   // Full generation
   await Promise.all([
-    ...entities.map((entity) =>
-      generateEntity(
-        fileCreator,
-        prepareEntityWideGenerationArgs(
-          {
-            ...args,
-            options: {
-              ...opts,
-            },
-          },
-          entity
-        )
-      )
-    ),
     ...system.additionalServices.map((service) =>
       generateAdditionalService(
         fileCreator,
