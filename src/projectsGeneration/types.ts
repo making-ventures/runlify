@@ -158,3 +158,8 @@ export interface FileToWrite {
   content: string;
   ifNotExists: boolean;
 }
+
+export interface FileWriter {
+  writeFileIfNotExists: (path: string, content: string) => void;
+  write: (path: string, content: string) => void;
+}

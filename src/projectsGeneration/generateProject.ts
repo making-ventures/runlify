@@ -10,17 +10,17 @@ import { uiGetDefaultMenuTmpl } from './generators/fileTemplates/ui/getDefaultMe
 import { generateEnvironment } from './generateEnvironment'
 import { configItemsTmpl } from './generators/fileTemplates/back/root/config/config'
 import { genGraphSchemesByLocalGenerator } from './genGraphSchemesByLocalGenerator'
-import { BootstrapEntityInnerOptions, defaultBootstrapEntityOptions } from './types'
+import { BootstrapEntityInnerOptions, defaultBootstrapEntityOptions, FileWriter } from './types'
 import { generateEntity } from './generateEntity'
 import { restRouterTmpl } from './generators/fileTemplates/back/root/restRouter'
-import { writeFileIfNotExists, writeFiles } from './utils'
+import { createFilesToWriteUtils, writeFiles } from './utils'
 import { uiAdditionalRoutesTmpl } from './generators/fileTemplates/ui/additionalRoutes'
 import { uiGetAdditionalMenuTmpl } from './generators/fileTemplates/ui/getAdditionalMenu'
 import { uiMetaPageTmpl } from './generators/fileTemplates/ui/MetaPage'
 import { additionalServicesTmpl } from './generators/fileTemplates/back/services/AdditionalServices'
 import { System } from './builders/buildedTypes'
 import { uiTranslationsLangDocsTmpl } from './generators/fileTemplates/ui/i18n/lang/uiLangDocsTmpl'
-import { cwd, write } from 'fs-jetpack'
+import { cwd } from 'fs-jetpack'
 import { uiTranslationsLangReportsTmpl } from './generators/fileTemplates/ui/i18n/lang/uiLangReportsTmpl'
 import { uiEntityIconTmpl } from './generators/fileTemplates/ui/pages/Icon'
 import { pascal, pascalSingular } from '../utils/cases'
@@ -65,10 +65,11 @@ import genIntegrationClientConstrictorsTmpl from './generators/fileTemplates/bac
 import cleanFiles from './fileCleaners/cleanFiles'
 
 const generateHelpService = async (
+  fileWriter: FileWriter,
   args: ProjectWideGenerationArgs,
   typesOnly = false
 ) => {
-  write(
+  fileWriter.write(
     join(
       args.options.detachedBackProject,
       'src',
@@ -81,7 +82,7 @@ const generateHelpService = async (
     baseTypeDefsTmpl(args)
   )
   if (!typesOnly) {
-    write(
+    fileWriter.write(
       join(
         args.options.detachedBackProject,
         'src',
@@ -93,7 +94,7 @@ const generateHelpService = async (
       ),
       baseResolversTmpl()
     )
-    write(
+    fileWriter.write(
       join(
         args.options.detachedBackProject,
         'src',
@@ -105,7 +106,7 @@ const generateHelpService = async (
       ),
       permissionsToGraphqlTmpl()
     )
-    write(
+    fileWriter.write(
       join(
         args.options.detachedBackProject,
         'src',
@@ -119,20 +120,23 @@ const generateHelpService = async (
   }
 }
 
-export const generateBackSrc = async (args: ProjectWideGenerationArgs) => {
-  await Promise.all([
-    write(
-      join(args.options.detachedBackProject, 'src', 'config', 'config.ts'),
-      configItemsTmpl(args)
-    ),
-    generateHelpService(args, true),
-  ])
+export const generateBackSrc = async (fileWriter: FileWriter, args: ProjectWideGenerationArgs, typesOnly: boolean) => {
+  if (!typesOnly) {
+    await Promise.all([
+      fileWriter.write(
+        join(args.options.detachedBackProject, 'src', 'config', 'config.ts'),
+        configItemsTmpl(args)
+      ),
+      generateBackIntegrationClients(fileWriter, args),
+    ]);
+  }
 
-  generateBackIntegrationClients(args)
+  generateHelpService(fileWriter, args, typesOnly);
 }
 
 export const generateBackIntegrationClients = async (
-  args: ProjectWideGenerationArgs
+  fileWriter: FileWriter,
+  args: ProjectWideGenerationArgs,
 ) => {
   for (const client of args.system.integrationClients) {
     const clientFolder = join(
@@ -142,23 +146,24 @@ export const generateBackIntegrationClients = async (
       `${client.name}`,
     )
 
-    writeFileIfNotExists(join(clientFolder, `${pascalCase(client.name)}Client.ts`), backIntegrationClientTmpl(args, client));
-    write(join(clientFolder, `types.ts`), backIntegrationClientTypesTmpl(args, client));
+    fileWriter.writeFileIfNotExists(join(clientFolder, `${pascalCase(client.name)}Client.ts`), backIntegrationClientTmpl(args, client));
+    fileWriter.write(join(clientFolder, `types.ts`), backIntegrationClientTypesTmpl(args, client));
   }
 }
 
-export const generateBackEnvs = async (args: ProjectWideGenerationArgs) => {
+export const generateBackEnvs = async (fileWriter: FileWriter, args: ProjectWideGenerationArgs) => {
   const filePath = join(
     args.options.detachedBackProject,
     'config',
     'default.json'
   )
 
-  write(filePath, backDefaultEnv(args))
+  fileWriter.write(filePath, backDefaultEnv(args))
 }
 
 export const generateBackDocsConfiguration = async (
-  args: ProjectWideGenerationArgs
+  fileWriter: FileWriter,
+  args: ProjectWideGenerationArgs,
 ) => {
   const filePath = join(
     args.options.detachedBackProject,
@@ -166,11 +171,12 @@ export const generateBackDocsConfiguration = async (
     'configuration.md'
   )
 
-  write(filePath, backDocsConfiguration(args))
+  fileWriter.write(filePath, backDocsConfiguration(args))
 }
 
 export const generateBackDocsSpec = async (
-  args: ProjectWideGenerationArgs
+  fileWriter: FileWriter,
+  args: ProjectWideGenerationArgs,
 ) => {
   const filePath = join(
     args.options.detachedBackProject,
@@ -178,11 +184,12 @@ export const generateBackDocsSpec = async (
     'spec.md'
   )
 
-  write(filePath, backDocSpec(args))
+  fileWriter.write(filePath, backDocSpec(args))
 }
 
 export const generateBackDocsRestApis = async (
-  args: ProjectWideGenerationArgs
+  fileWriter: FileWriter,
+  args: ProjectWideGenerationArgs,
 ) => {
   for (const restApi of args.system.restApis) {
     const filePath = join(
@@ -192,12 +199,13 @@ export const generateBackDocsRestApis = async (
       `${restApi.name}.md`
     )
 
-    write(filePath, backDocsRestApi(args, restApi))
+    fileWriter.write(filePath, backDocsRestApi(args, restApi))
   }
 }
 
 export const generateBackDocsIntegrationClients = async (
-  args: ProjectWideGenerationArgs
+  fileWriter: FileWriter,
+  args: ProjectWideGenerationArgs,
 ) => {
   for (const client of args.system.integrationClients) {
     const filePath = join(
@@ -207,12 +215,13 @@ export const generateBackDocsIntegrationClients = async (
       `${client.name}.md`
     )
 
-    write(filePath, backDocsIntegrationClient(args, client))
+    fileWriter.write(filePath, backDocsIntegrationClient(args, client))
   }
 }
 
 export const generateBackDocsEntities = async (
-  args: ProjectWideGenerationArgs
+  fileWriter: FileWriter,
+  args: ProjectWideGenerationArgs,
 ) => {
   await Promise.all(
     args.entities.map((entity) => {
@@ -223,7 +232,7 @@ export const generateBackDocsEntities = async (
         `${entity.name}.md`
       )
 
-      return write(
+      return fileWriter.write(
         filePath,
         backDocsEntity(prepareEntityWideGenerationArgs(args, entity))
       )
@@ -231,7 +240,7 @@ export const generateBackDocsEntities = async (
   )
 }
 
-export const generateBackEnums = async (args: ProjectWideGenerationArgs) => {
+export const generateBackEnums = async (fileWriter: FileWriter, args: ProjectWideGenerationArgs) => {
   await Promise.all(
     args.entities
       .filter((e) => e.predefinedElements.length > 0)
@@ -243,7 +252,7 @@ export const generateBackEnums = async (args: ProjectWideGenerationArgs) => {
           `${pascal(singular(entity.name))}.ts`
         )
 
-        return write(
+        return fileWriter.write(
           filePath,
           enumTmpl({
             entity,
@@ -255,7 +264,8 @@ export const generateBackEnums = async (args: ProjectWideGenerationArgs) => {
 }
 
 export const generateBackEntityEnum = async (
-  args: ProjectWideGenerationArgs
+  fileWriter: FileWriter,
+  args: ProjectWideGenerationArgs,
 ) => {
   const filePath = join(
     args.options.detachedBackProject,
@@ -264,7 +274,7 @@ export const generateBackEntityEnum = async (
     'Entity.ts'
   )
 
-  return write(
+  return fileWriter.write(
     filePath,
     Entities({
       entities: args.entities,
@@ -274,7 +284,8 @@ export const generateBackEntityEnum = async (
 }
 
 export const generateBackEnumsInit = async (
-  args: ProjectWideGenerationArgs
+  fileWriter: FileWriter,
+  args: ProjectWideGenerationArgs,
 ) => {
   await Promise.all(
     args.entities
@@ -288,7 +299,7 @@ export const generateBackEnumsInit = async (
           `init${pascal(entity.name)}.ts`
         )
 
-        return write(
+        return fileWriter.write(
           filePath,
           initCommonEnumTmpl({
             entity,
@@ -300,7 +311,8 @@ export const generateBackEnumsInit = async (
 }
 
 export const generateBackEntitiesEnumInit = async (
-  args: ProjectWideGenerationArgs
+  fileWriter: FileWriter,
+  args: ProjectWideGenerationArgs,
 ) => {
   const filePath = join(
     args.options.detachedBackProject,
@@ -310,10 +322,10 @@ export const generateBackEntitiesEnumInit = async (
     'initEntities.ts'
   )
 
-  return write(filePath, initEntities(args))
+  return fileWriter.write(filePath, initEntities(args))
 }
 
-export const generateBackDevEnums = async (args: ProjectWideGenerationArgs) => {
+export const generateBackDevEnums = async (fileWriter: FileWriter, args: ProjectWideGenerationArgs) => {
   await Promise.all(
     args.entities
       .filter((e) => e.devPerefinedElements.length > 0)
@@ -325,7 +337,7 @@ export const generateBackDevEnums = async (args: ProjectWideGenerationArgs) => {
           `Dev${pascal(singular(entity.name))}.ts`
         )
 
-        return write(
+        return fileWriter.write(
           filePath,
           devEnumTmpl({
             entity,
@@ -337,7 +349,8 @@ export const generateBackDevEnums = async (args: ProjectWideGenerationArgs) => {
 }
 
 export const generateBackDevEnumsInit = async (
-  args: ProjectWideGenerationArgs
+  fileWriter: FileWriter,
+  args: ProjectWideGenerationArgs,
 ) => {
   await Promise.all(
     args.entities
@@ -351,7 +364,7 @@ export const generateBackDevEnumsInit = async (
           `init${pascal(entity.name)}.ts`
         )
 
-        return write(
+        return fileWriter.write(
           filePath,
           initDevEnumTmpl({
             entity,
@@ -359,11 +372,12 @@ export const generateBackDevEnumsInit = async (
           } as EntityWideGenerationArgs)
         )
       })
-  )
+  );
 }
 
 export const generateAdminAppDocsConfiguration = async (
-  args: ProjectWideGenerationArgs
+  fileWriter: FileWriter,
+  args: ProjectWideGenerationArgs,
 ) => {
   const filePath = join(
     args.options.detachedUiProject,
@@ -371,37 +385,41 @@ export const generateAdminAppDocsConfiguration = async (
     'configuration.md'
   )
 
-  write(filePath, adminAppDocsConfiguration(args))
+  fileWriter.write(filePath, adminAppDocsConfiguration(args))
 }
 
-export const generateBackDocs = async (args: ProjectWideGenerationArgs) => {
+export const generateBackDocs = async (fileWriter: FileWriter, args: ProjectWideGenerationArgs) => {
   await Promise.all([
-    generateBackDocsSpec(args),
-    generateBackDocsConfiguration(args),
-    generateBackDocsRestApis(args),
-    generateBackDocsIntegrationClients(args),
-    generateBackDocsEntities(args),
-    generateBackEnums(args),
-    generateBackEnumsInit(args),
-    generateBackEntityEnum(args),
-    generateBackEntitiesEnumInit(args),
-    generateBackDevEnums(args),
-    generateBackDevEnumsInit(args),
-    generateAdminAppDocsConfiguration(args),
-  ])
+    generateBackDocsSpec(fileWriter, args),
+    generateBackDocsConfiguration(fileWriter, args),
+    generateBackDocsRestApis(fileWriter, args),
+    generateBackDocsIntegrationClients(fileWriter, args),
+    generateBackDocsEntities(fileWriter, args),
+    generateBackEnums(fileWriter, args),
+    generateBackEnumsInit(fileWriter, args),
+    generateBackEntityEnum(fileWriter, args),
+    generateBackEntitiesEnumInit(fileWriter, args),
+    generateBackDevEnums(fileWriter, args),
+    generateBackDevEnumsInit(fileWriter, args),
+    generateAdminAppDocsConfiguration(fileWriter, args),
+  ]);
 }
 
-export const generateBack = async (args: ProjectWideGenerationArgs) => {
-  await Promise.all([
-    generateBackSrc(args),
-    generateBackEnvs(args),
-    generateBackDocs(args),
-    generateBackElasticBootstrap(args),
-  ])
+export const generateBack = async (fileWriter: FileWriter, args: ProjectWideGenerationArgs, typesOnly: boolean) => {
+  if (!typesOnly) {
+    await Promise.all([
+      generateBackEnvs(fileWriter, args),
+      generateBackDocs(fileWriter, args),
+      generateBackElasticBootstrap(fileWriter, args),
+    ]);
+  }
+
+  generateBackSrc(fileWriter, args, typesOnly);
 }
 
 export const generateFrontSrcEntityTranslationsDocs = async (
-  args: ProjectWideGenerationArgs
+  fileWriter: FileWriter,
+  args: ProjectWideGenerationArgs,
 ) => {
   for (const lang of args.system.languages) {
     const filePath = join(
@@ -409,12 +427,13 @@ export const generateFrontSrcEntityTranslationsDocs = async (
       `src/i18n/${lang.id}/${lang.id}Docs.ts`
     )
 
-    write(filePath, uiTranslationsLangDocsTmpl(args, lang.id))
+    fileWriter.write(filePath, uiTranslationsLangDocsTmpl(args, lang.id))
   }
 }
 
 export const generateFrontSrcEntityTranslationsCatalogs = async (
-  args: ProjectWideGenerationArgs
+  fileWriter: FileWriter,
+  args: ProjectWideGenerationArgs,
 ) => {
   for (const lang of args.system.languages) {
     const filePath = join(
@@ -422,12 +441,13 @@ export const generateFrontSrcEntityTranslationsCatalogs = async (
       `src/i18n/${lang.id}/${lang.id}Catalogs.ts`
     )
 
-    write(filePath, uiTranslationsLangCatalogsTmpl(args, lang.id))
+    fileWriter.write(filePath, uiTranslationsLangCatalogsTmpl(args, lang.id))
   }
 }
 
 export const generateFrontSrcEntityTranslationsInfoRegistries = async (
-  args: ProjectWideGenerationArgs
+  fileWriter: FileWriter,
+  args: ProjectWideGenerationArgs,
 ) => {
   for (const lang of args.system.languages) {
     const filePath = join(
@@ -435,12 +455,13 @@ export const generateFrontSrcEntityTranslationsInfoRegistries = async (
       `src/i18n/${lang.id}/${lang.id}InfoRegistries.ts`
     )
 
-    write(filePath, uiTranslationsLangInfoRegistriesTmpl(args, lang.id))
+    fileWriter.write(filePath, uiTranslationsLangInfoRegistriesTmpl(args, lang.id))
   }
 }
 
 export const generateFrontSrcEntityTranslationsSumRegistries = async (
-  args: ProjectWideGenerationArgs
+  fileWriter: FileWriter,
+  args: ProjectWideGenerationArgs,
 ) => {
   for (const lang of args.system.languages) {
     const filePath = join(
@@ -448,12 +469,13 @@ export const generateFrontSrcEntityTranslationsSumRegistries = async (
       `src/i18n/${lang.id}/${lang.id}SumRegistries.ts`
     )
 
-    write(filePath, uiTranslationsLangSumRegistriesTmpl(args, lang.id))
+    fileWriter.write(filePath, uiTranslationsLangSumRegistriesTmpl(args, lang.id))
   }
 }
 
 export const generateFrontSrcEntityTranslationsReports = async (
-  args: ProjectWideGenerationArgs
+  fileWriter: FileWriter,
+  args: ProjectWideGenerationArgs,
 ) => {
   for (const lang of args.system.languages) {
     const filePath = join(
@@ -461,12 +483,13 @@ export const generateFrontSrcEntityTranslationsReports = async (
       `src/i18n/${lang.id}/${lang.id}Reports.ts`
     )
 
-    write(filePath, uiTranslationsLangReportsTmpl(args, lang.id))
+    fileWriter.write(filePath, uiTranslationsLangReportsTmpl(args, lang.id))
   }
 }
 
 export const generateFrontSrcEntityIcon = async (
-  entityWideGenerationArgs: EntityWideGenerationArgs
+  fileWriter: FileWriter,
+  entityWideGenerationArgs: EntityWideGenerationArgs,
 ) => {
   const {
     entity: { name },
@@ -477,11 +500,12 @@ export const generateFrontSrcEntityIcon = async (
     `src/adm/pages/${name}/${pascalSingular(name)}Icon.tsx`
   )
 
-  write(filePath, uiEntityIconTmpl(entityWideGenerationArgs))
+  fileWriter.write(filePath, uiEntityIconTmpl(entityWideGenerationArgs))
 }
 
 export const generateFrontSrcGetEntityValidation = async (
-  entityWideGenerationArgs: EntityWideGenerationArgs
+  fileWriter: FileWriter,
+  entityWideGenerationArgs: EntityWideGenerationArgs,
 ) => {
   const {
     entity: { name },
@@ -492,42 +516,51 @@ export const generateFrontSrcGetEntityValidation = async (
     `src/adm/pages/${name}/get${pascalSingular(name)}Validation.tsx`
   )
 
-  write(filePath, uiGetEntityValidationTmpl(entityWideGenerationArgs))
+  fileWriter.write(filePath, uiGetEntityValidationTmpl(entityWideGenerationArgs))
 }
 
 export const generateFrontSrcEntity = async (
-  entityWideGenerationArgs: EntityWideGenerationArgs
+  fileWriter: FileWriter,
+  entityWideGenerationArgs: EntityWideGenerationArgs,
 ) => {
-  await generateFrontSrcEntityIcon(entityWideGenerationArgs)
-  await generateFrontSrcGetEntityValidation(entityWideGenerationArgs)
+  await Promise.all([
+    generateFrontSrcEntityIcon(fileWriter, entityWideGenerationArgs),
+    generateFrontSrcGetEntityValidation(fileWriter, entityWideGenerationArgs),
+  ]);
 }
 
-export const generateFrontSrc = async (args: ProjectWideGenerationArgs) => {
-  await Promise.all(
+export const generateFrontSrc = async (fileWriter: FileWriter, args: ProjectWideGenerationArgs) => {
+  await Promise.all([
     args.entities.map((entity) =>
-      generateFrontSrcEntity(prepareEntityWideGenerationArgs(args, entity))
-    )
-  )
-
-  await Promise.all([
-    generateFrontSrcEntityTranslationsDocs(args),
-    generateFrontSrcEntityTranslationsCatalogs(args),
-    generateFrontSrcEntityTranslationsSumRegistries(args),
-    generateFrontSrcEntityTranslationsInfoRegistries(args),
-    generateFrontSrcEntityTranslationsReports(args),
-  ])
+      generateFrontSrcEntity(fileWriter, prepareEntityWideGenerationArgs(args, entity))
+    ),
+    generateFrontSrcEntityTranslationsDocs(fileWriter, args),
+    generateFrontSrcEntityTranslationsCatalogs(fileWriter, args),
+    generateFrontSrcEntityTranslationsSumRegistries(fileWriter, args),
+    generateFrontSrcEntityTranslationsInfoRegistries(fileWriter, args),
+    generateFrontSrcEntityTranslationsReports(fileWriter, args),
+  ]);
 }
 
-export const generateFront = async (args: ProjectWideGenerationArgs) => {
+export const generateFront = async (fileWriter: FileWriter, args: ProjectWideGenerationArgs) => {
   await Promise.all([
-    generateFrontSrc(args),
-  ])
+    generateFrontSrc(fileWriter, args),
+  ]);
 }
 
 const generateProject = async (
   system: System,
   initialOpts = defaultBootstrapEntityOptions
 ) => {
+  const {
+    filesToWrite,
+    reset,
+    write,
+    writeFileIfNotExists,
+  } = createFilesToWriteUtils();
+
+  const fileWriter: FileWriter = {write, writeFileIfNotExists};
+
   const dir = cwd('..').cwd();
 
   const detachedBackProject = join(dir, `${initialOpts.projectPrefix}-back`);
@@ -541,60 +574,62 @@ const generateProject = async (
   }
 
   const args = prepareProjectWideGenerationArgs(system, opts);
-  const { entities } = args
-
-  // Pre grapgql types compose generation
-  const typeFiles = await Promise.all([
-    ...entities.map((entity) =>
-      generateEntity(
-        prepareEntityWideGenerationArgs(
-          {
-            ...args,
-            options: {
-              ...opts,
-              typesOnly: true,
-            },
-          },
-          entity
-        )
-      )
-    ),
-    ...system.additionalServices.map((service) =>
-      generateAdditionalService(
-        prepareAdditionalServiceWideGenerationArgs(
-          {
-            ...args,
-            options: {
-              ...opts,
-              typesOnly: true,
-            },
-          },
-          service
-        )
-      )
-    ),
-  ]).then(files => files.flat());
-
-  writeFiles(typeFiles);
-
-  await generateBack(args)
-  await generateFront(args)
-
-  let prjBackSrcPrefixedDir = ''
-  const prjDetachedBackSrcDir = join(opts.detachedBackProject, 'src')
-
-  prjBackSrcPrefixedDir = join(prjDetachedBackSrcDir, 'adm')
+  const { entities } = args;
 
   await cleanFiles(args);
 
-  await genGraphSchemesByLocalGenerator(opts)
-
-  await generateHelpService(args, false)
-
-  // Full generation
-  const fullFiles = await Promise.all([
+  // Pre grapgql types compose generation
+  await Promise.all([
     ...entities.map((entity) =>
       generateEntity(
+        fileWriter,
+        prepareEntityWideGenerationArgs(
+          {
+            ...args,
+            options: {
+              ...opts,
+              typesOnly: true,
+            },
+          },
+          entity
+        )
+      )
+    ),
+    ...system.additionalServices.map((service) =>
+      generateAdditionalService(
+        fileWriter,
+        prepareAdditionalServiceWideGenerationArgs(
+          {
+            ...args,
+            options: {
+              ...opts,
+              typesOnly: true,
+            },
+          },
+          service
+        )
+      )
+    ),
+    generateBack(fileWriter, args, true),
+  ]);
+
+  writeFiles(filesToWrite);
+  reset();
+
+  await genGraphSchemesByLocalGenerator(opts);
+
+  await generateFront(fileWriter, args);
+
+  let prjBackSrcPrefixedDir = '';
+  const prjDetachedBackSrcDir = join(opts.detachedBackProject, 'src');
+
+  prjBackSrcPrefixedDir = join(prjDetachedBackSrcDir, 'adm');
+
+  // Full generation
+  await Promise.all([
+    ...entities.map((entity) =>
+      generateEntity(
+        fileWriter,
         prepareEntityWideGenerationArgs(
           {
             ...args,
@@ -608,6 +643,7 @@ const generateProject = async (
     ),
     ...system.additionalServices.map((service) =>
       generateAdditionalService(
+        fileWriter,
         prepareAdditionalServiceWideGenerationArgs(
           {
             ...args,
@@ -619,9 +655,8 @@ const generateProject = async (
         )
       )
     ),
-  ]).then(files => files.flat());
-
-  writeFiles(fullFiles);
+    generateBack(fileWriter, args, false),
+  ]);
 
   // Prisma schema
   const servicesDir = join(prjBackSrcPrefixedDir, 'services')
@@ -631,7 +666,7 @@ const generateProject = async (
 
   // Types
   if (opts.genContext) {
-    write(
+    fileWriter.write(
       join(servicesDir, 'BaseServices.ts'),
       graphBaseServicesTmpl(args)
     )
@@ -639,29 +674,29 @@ const generateProject = async (
 
   // Types
   if (opts.genContext) {
-    write(
+    fileWriter.write(
       join(servicesDir, 'serviceConstrictors.ts'),
       graphServiceConstrictorsTmpl(args)
     )
   }
 
-  write(
+  fileWriter.write(
     join(servicesDir, 'IntegrationClients.ts'),
     genIntegrationClientsTmpl(args)
   )
 
-  write(
+  fileWriter.write(
     join(servicesDir, 'integrationClientConstrictors.ts'),
     genIntegrationClientConstrictorsTmpl(args)
   )
 
   const generatedAdditionalServices = additionalServicesTmpl()
-  await writeFileIfNotExists(
+  fileWriter.writeFileIfNotExists(
     join(servicesDir, 'AdditionalServices.ts'),
     generatedAdditionalServices
   )
 
-  write(
+  fileWriter.write(
     join(graphDir, 'permissionsToGraphql.ts'),
     backPermissionToGraphqlTmpl(args, opts)
   )
@@ -669,7 +704,7 @@ const generateProject = async (
   // Root
 
   const restRouter = restRouterTmpl()
-  await writeFileIfNotExists(
+  fileWriter.writeFileIfNotExists(
     join(prjDetachedBackSrcDir, 'rest', 'restRouter.ts'),
     restRouter
   )
@@ -686,29 +721,29 @@ const generateProject = async (
     if (opts.genUiResources) {
       const {resources, resourcesChunk0, resourcesChunk1} = uiResourcesTmpl(args)
 
-      write(join(prjUiSrcPrefixedDir, 'resources.tsx'), resources);
-      write(join(prjUiSrcPrefixedDir, 'resourcesChunk0.tsx'), resourcesChunk0);
-      write(join(prjUiSrcPrefixedDir, 'resourcesChunk1.tsx'), resourcesChunk1);
+      fileWriter.write(join(prjUiSrcPrefixedDir, 'resources.tsx'), resources);
+      fileWriter.write(join(prjUiSrcPrefixedDir, 'resourcesChunk0.tsx'), resourcesChunk0);
+      fileWriter.write(join(prjUiSrcPrefixedDir, 'resourcesChunk1.tsx'), resourcesChunk1);
     }
 
     // Resources page
     if (opts.genUiResourcesPage) {
       const generatedResources = uiResourcesPageTmpl(args)
 
-      write(
+      fileWriter.write(
         join(prjUiSrcPrefixedDir, 'ResourcesPage.tsx'),
         generatedResources
       )
     }
 
     const generatedUiMetaPage = uiMetaPageTmpl()
-    write(join(prjUiSrcPrefixedDir, 'MetaPage.tsx'), generatedUiMetaPage)
+    fileWriter.write(join(prjUiSrcPrefixedDir, 'MetaPage.tsx'), generatedUiMetaPage)
 
     // Resources page
     if (opts.genUiEntityMapping) {
       const generatedResources = uiEntityMappingTmpl(args, opts)
 
-      write(
+      fileWriter.write(
         join(prjUiSrcPrefixedDir, 'entityMapping.ts'),
         generatedResources
       )
@@ -719,11 +754,11 @@ const generateProject = async (
       const generatedSubMenu = uiGetDefaultMenuTmpl(args)
       const generatedAdditionalMenu = uiGetAdditionalMenuTmpl()
 
-      write(
+      fileWriter.write(
         join(prjUiSrcPrefixedDir, 'getDefaultMenu.ts'),
         generatedSubMenu
       )
-      await writeFileIfNotExists(
+      fileWriter.writeFileIfNotExists(
         join(prjUiSrcPrefixedDir, 'getAdditionalMenu.ts'),
         generatedAdditionalMenu
       )
@@ -733,11 +768,11 @@ const generateProject = async (
     if (opts.genUiRoutes) {
       const generatedResources = uiRoutesTmpl(args)
 
-      write(join(prjUiSrcPrefixedDir, 'routes.tsx'), generatedResources)
+      fileWriter.write(join(prjUiSrcPrefixedDir, 'routes.tsx'), generatedResources)
     }
 
     const generatedUiAdditionalRoutesTmpl = uiAdditionalRoutesTmpl()
-    await writeFileIfNotExists(
+    fileWriter.writeFileIfNotExists(
       join(prjUiSrcPrefixedDir, 'additionalRoutes.tsx'),
       generatedUiAdditionalRoutesTmpl
     )
@@ -748,21 +783,24 @@ const generateProject = async (
 
       const uiFunctionsDir = join(prjUiSrcPrefixedDir, 'functions')
 
-      write(join(uiFunctionsDir, 'Functions.tsx'), generatedResources)
+      fileWriter.write(join(uiFunctionsDir, 'Functions.tsx'), generatedResources)
     }
 
     // Dashboard page
     if (opts.genUiDashboard) {
       const generatedResources = uiDashboardTmpl()
 
-      await writeFileIfNotExists(
+      fileWriter.writeFileIfNotExists(
         join(prjUiSrcPrefixedDir, 'Dashboard.tsx'),
         generatedResources
       )
     }
   }
 
-  await generateEnvironment(args)
+  await generateEnvironment(fileWriter, args);
+
+  writeFiles(filesToWrite);
+  reset();
 }
 
 export default generateProject;

@@ -7,16 +7,12 @@ import {backAdditionalServiceTypeDefsTmpl} from './generators/fileTemplates/back
 import { backAdditionalServicePermissionToGraphqlTmpl } from './generators/fileTemplates/back/graph/additionalService/permissionToGraphql'
 import { genGraphAdditionalServiceSchema } from './generators/graph/genGraphAdditionalServiceSchema'
 import { backAdditionalServiceTypesTmpl } from './generators/fileTemplates/back/services/additionalService/types'
-import { createFilesToWriteUtils } from './utils'
+import { FileWriter } from './types'
 
 export const generateAdditionalService = async (
-  serviceWideGenerationArgs: AdditionalServiceWideGenerationArgs
+  fileWriter: FileWriter,
+  serviceWideGenerationArgs: AdditionalServiceWideGenerationArgs,
 ) => {
-  const {
-    filesToWrite,
-    write
-  } = createFilesToWriteUtils();
-
   const {
     service,
     options,
@@ -29,7 +25,7 @@ export const generateAdditionalService = async (
   const serviceName = `${pascal(service.name)}Service`
   const serviceDir = join(prjBackSrcPrefixedDir, 'services', serviceName)
 
-  await write(
+  fileWriter.write(
     join(serviceDir, 'types.ts'),
     backAdditionalServiceTypesTmpl(serviceWideGenerationArgs)
   )
@@ -44,7 +40,7 @@ export const generateAdditionalService = async (
 
   // Graph schema
   if (options.genGraphSchema) {
-    await write(
+    fileWriter.write(
       join(graphServiceDir, 'typeDefs.ts'),
       backAdditionalServiceTypeDefsTmpl(printSchema(genGraphAdditionalServiceSchema(service)), options)
     )
@@ -52,7 +48,7 @@ export const generateAdditionalService = async (
 
   // Graph resolvers
   if (options.genGraphResolvers && !options.typesOnly) {
-    await write(
+    fileWriter.write(
       `${graphServiceDir}/resolvers.ts`,
       backAdditionalServiceResolversTmpl(serviceWideGenerationArgs)
     )
@@ -60,11 +56,9 @@ export const generateAdditionalService = async (
 
   if (!options.typesOnly) {
     // Permissions
-    await write(
+    fileWriter.write(
       `${graphServiceDir}/permissionsToGraphql.ts`,
       backAdditionalServicePermissionToGraphqlTmpl(serviceWideGenerationArgs)
     )
   }
-
-  return filesToWrite;
 }

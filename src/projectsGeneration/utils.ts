@@ -38,12 +38,13 @@ export const addComma = (content: string) => content + ','
 export const newStrBefore = (content: string) => '\n' + content
 
 export const createFilesToWriteUtils = () => {
-  const filesToWrite: FileToWrite[] = [];
+  let filesToWrite: FileToWrite[] = [];
 
   return {
     filesToWrite,
     write: (path: string, content: string) => filesToWrite.push({path, content, ifNotExists: false}),
     writeFileIfNotExists: (path: string, content: string) => filesToWrite.push({path, content, ifNotExists: true}),
+    reset: () => filesToWrite = [],
   };
 }
 

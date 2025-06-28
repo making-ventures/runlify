@@ -1,5 +1,5 @@
 import { join } from 'path'
-import { defaultBootstrapEntityOptions } from './types'
+import { defaultBootstrapEntityOptions, FileWriter } from './types'
 import { prismaGetterTmpl } from './generators/fileTemplates/back/environment/src/clients/getPrisma'
 import { getQueueTmpl } from './generators/fileTemplates/back/environment/src/clients/queue/getQueue'
 import { environmentIndexTmpl } from './generators/fileTemplates/back/environment/src'
@@ -20,7 +20,6 @@ import { uiI18nProviderTmpl } from './generators/fileTemplates/ui/environment/sr
 import { uiSpacesContextTmpl } from './generators/fileTemplates/ui/environment/src/contexts/SpacesContext'
 import { uiLayoutAppBarTmpl } from './generators/fileTemplates/ui/environment/src/layout/AppBar'
 import { genPrismaSchemaForEntitiesWithClientAdnDb } from './generators/prisma/scheme/genPrismaSchemaForEntitiesWithClientAdnDb'
-import { write } from 'fs-jetpack'
 import { Entity } from './builders'
 import { ProjectWideGenerationArgs } from './args'
 import { dockerfileTmplUI } from './generators/fileTemplates/back/environment/dockerfileTmplUI'
@@ -30,7 +29,8 @@ import { ciNotifyTmpl } from './generators/fileTemplates/back/environment/ciNoti
 import { uiGetAdditionalMethodsTmpl } from './generators/fileTemplates/ui/environment/src/dataProvider/getAdditionalMethods'
 
 export const generateEnvironment = async (
-  projectWideGenerationArgs: ProjectWideGenerationArgs
+  fileWriter: FileWriter,
+  projectWideGenerationArgs: ProjectWideGenerationArgs,
 ) => {
   const { entities, options } = projectWideGenerationArgs
   const opts = {
@@ -50,7 +50,7 @@ export const generateEnvironment = async (
     if (opts.corePrismaGetter) {
       const clientsFolderDir = join(prjDetachedBackSrcDir, 'clients')
 
-      await write(
+      fileWriter.write(
         join(clientsFolderDir, 'getPrisma.ts'),
         prismaGetterTmpl(opts)
       )
@@ -59,12 +59,12 @@ export const generateEnvironment = async (
     if (opts.corePrismaGetter) {
       const queueFolderDir = join(prjDetachedBackSrcDir, 'clients', 'queue')
 
-      await write(join(queueFolderDir, 'getQueue.ts'), getQueueTmpl(opts))
+      fileWriter.write(join(queueFolderDir, 'getQueue.ts'), getQueueTmpl(opts))
     }
 
     // coreIndex
     if (opts.coreIndex) {
-      await write(
+      fileWriter.write(
         join(prjDetachedBackSrcDir, 'index.ts'),
         environmentIndexTmpl(opts)
       )
@@ -78,7 +78,7 @@ export const generateEnvironment = async (
         projectWideGenerationArgs
       )
 
-      await write(join(prismaFolderDir, 'schema.prisma'), prismaSchema)
+      fileWriter.write(join(prismaFolderDir, 'schema.prisma'), prismaSchema)
 
       if (opts.sharding) {
         const prismaSchema = genPrismaSchemaForEntitiesWithClientAdnDb(
@@ -86,7 +86,7 @@ export const generateEnvironment = async (
           true,
         )
 
-        await write(join(prismaFolderDir, 'shards', 'schema.prisma'), prismaSchema)
+        fileWriter.write(join(prismaFolderDir, 'shards', 'schema.prisma'), prismaSchema)
       }
     }
 
@@ -94,14 +94,14 @@ export const generateEnvironment = async (
     const chartDir = join(opts.detachedBackProject, 'chart')
 
     // chart itself
-    await write(
+    fileWriter.write(
       join(chartDir, 'Chart.yaml'),
       chartTmpl(projectWideGenerationArgs)
     )
 
     // chart values
     if (opts.genBackChartValues) {
-      await write(
+      fileWriter.write(
         join(chartDir, 'values.yaml'),
         chartValuesTmpl(projectWideGenerationArgs)
       )
@@ -112,7 +112,7 @@ export const generateEnvironment = async (
 
     // chart ingress
     if (opts.genBackChartIngress) {
-      await write(
+      fileWriter.write(
         join(chartTemplatesDir, 'ingress.yaml'),
         chartIngressTmpl(projectWideGenerationArgs)
       )
@@ -120,7 +120,7 @@ export const generateEnvironment = async (
 
     // chart back
     if (opts.genBackChartBack) {
-      await write(
+      fileWriter.write(
         join(chartTemplatesDir, 'back.yaml'),
         chartBackTmpl(projectWideGenerationArgs)
       )
@@ -128,7 +128,7 @@ export const generateEnvironment = async (
 
     // gitlab-ci
     if (opts.genBackGitlabCi) {
-      await write(
+      fileWriter.write(
         join(opts.detachedBackProject, '.gitlab-ci.yml'),
         gitlabCiTmpl(projectWideGenerationArgs)
       )
@@ -136,14 +136,14 @@ export const generateEnvironment = async (
 
     // ci-notify
     if (opts.genBackCiNotify) {
-      await write(
+      fileWriter.write(
         join(opts.detachedBackProject, 'ci-notify.sh'),
         ciNotifyTmpl(projectWideGenerationArgs)
       )
     }
 
     // dockerfileTmplBack
-    await write(
+    fileWriter.write(
       join(opts.detachedBackProject, 'Dockerfile'),
       dockerfileTmplBack(projectWideGenerationArgs)
     )
@@ -152,7 +152,7 @@ export const generateEnvironment = async (
     const prjDetachedUiSrcDir = join(opts.detachedUiProject, 'src')
 
     if (opts.genUIApp) {
-      await write(
+      fileWriter.write(
         join(prjDetachedUiSrcDir, 'App.tsx'),
         uiAppTmpl(projectWideGenerationArgs, opts)
       )
@@ -161,32 +161,32 @@ export const generateEnvironment = async (
     // layout
     const uiLayoutFolder = join(prjDetachedUiSrcDir, 'layout')
 
-    await write(join(uiLayoutFolder, 'Menu.tsx'), uiLayoutMenuTmpl(opts))
+    fileWriter.write(join(uiLayoutFolder, 'Menu.tsx'), uiLayoutMenuTmpl(opts))
 
     if (opts.genUiAppBar) {
-      await write(join(uiLayoutFolder, 'AppBar.tsx'), uiLayoutAppBarTmpl(opts))
+      fileWriter.write(join(uiLayoutFolder, 'AppBar.tsx'), uiLayoutAppBarTmpl(opts))
     }
 
     const uiContextsFolder = join(prjDetachedUiSrcDir, 'contexts')
 
-    await write(
+    fileWriter.write(
       join(uiContextsFolder, 'SpacesContext.tsx'),
       uiSpacesContextTmpl(projectWideGenerationArgs)
     )
 
     const uiDataProviderFolder = join(prjDetachedUiSrcDir, 'dataProvider')
-    await write(
+    fileWriter.write(
       join(uiDataProviderFolder, 'index.ts'),
       uiDataProviderTmpl(entities, opts)
     )
 
-    await write(
+    fileWriter.write(
       join(uiDataProviderFolder, 'getAdditionalMethods.ts'),
       uiGetAdditionalMethodsTmpl(projectWideGenerationArgs.system.additionalServices, opts)
     )
 
     const uiI18nProviderFolder = join(prjDetachedUiSrcDir, 'i18nProvider')
-    await write(
+    fileWriter.write(
       join(uiI18nProviderFolder, 'index.ts'),
       uiI18nProviderTmpl(projectWideGenerationArgs, opts)
     )
@@ -195,13 +195,13 @@ export const generateEnvironment = async (
     const uiChartDir = join(opts.detachedUiProject, 'chart')
 
     // chart itself
-    await write(
+    fileWriter.write(
       join(uiChartDir, 'Chart.yaml'),
       uiChartTmpl(projectWideGenerationArgs)
     )
 
     // chart values
-    await write(
+    fileWriter.write(
       join(uiChartDir, 'values.yaml'),
       uiChartValuesTmpl(projectWideGenerationArgs)
     )
@@ -211,7 +211,7 @@ export const generateEnvironment = async (
 
     // chart ingress
     if (opts.genUiChartIngress) {
-      await write(
+      fileWriter.write(
         join(uiChartTemplatesDir, 'ingress.yaml'),
         uiChartIngressTmpl(projectWideGenerationArgs)
       )
@@ -219,7 +219,7 @@ export const generateEnvironment = async (
 
     // chart front
     if (opts.genUiChartFront) {
-      await write(
+      fileWriter.write(
         join(uiChartTemplatesDir, 'front.yaml'),
         uiChartFrontTmpl(projectWideGenerationArgs)
       )
@@ -227,7 +227,7 @@ export const generateEnvironment = async (
 
     // gitlab-ci
     if (opts.genUiGitlabCi) {
-      await write(
+      fileWriter.write(
         join(opts.detachedUiProject, '.gitlab-ci.yml'),
         uiGitlabCiTmpl(projectWideGenerationArgs)
       )
@@ -235,14 +235,14 @@ export const generateEnvironment = async (
 
     // ci-notify
     if (opts.genUiCiNotify) {
-      await write(
+      fileWriter.write(
         join(opts.detachedUiProject, 'ci-notify.sh'),
         uiCiNotifyTmpl(projectWideGenerationArgs)
       )
     }
 
     // dockerfileTmplUI
-    await write(
+    fileWriter.write(
       join(opts.detachedUiProject, 'Dockerfile'),
       dockerfileTmplUI(projectWideGenerationArgs)
     )
