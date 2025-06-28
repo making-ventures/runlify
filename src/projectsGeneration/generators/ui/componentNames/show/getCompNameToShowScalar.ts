@@ -21,7 +21,7 @@ export const getCompNameToShowScalar = (field: Field): ShowComponentName => {
       return 'DateField'
     case 'date':
       return 'DateField'
-    // default:
-    //   throw new Error(`Unexpected "${field.type}" type`)
+    default:
+      throw new Error(`Unexpected "${(field as any).type}" type`)
   }
 }

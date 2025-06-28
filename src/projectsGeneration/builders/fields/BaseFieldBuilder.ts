@@ -271,57 +271,6 @@ abstract class BaseFieldBuilder {
     return this
   }
 
-  // setConstantOnCreate(value: ConstantOnCreate) {
-  //   if (this.type !== 'datetime' && this.type !== 'int') {
-  //     throw new Error('Operation not permitted')
-  //   }
-
-  //   if (this.type === 'datetime' && value !== false && value !== 'now') {
-  //     throw new Error('Constant not permitted')
-  //   }
-
-  //   if (this.type === 'int' && value !== false && value !== 'currentUser') {
-  //     throw new Error('Constant not permitted')
-  //   }
-
-  //   if (this.constantOnUpdate) {
-  //     throw new Error(
-  //       'constantOnCreate and constantOnUpdate can not be set at the same time'
-  //     )
-  //   }
-
-  //   this.constantOnCreate = value
-  //   this.setRequiredOnInput(false)
-  //   this.setUpdatable(false)
-
-  //   return this
-  // }
-
-  // setConstantOnUpdate(value: ConstantOnUpdate) {
-  //   if (this.type !== 'datetime' && this.type !== 'int') {
-  //     throw new Error('Operation not permitted')
-  //   }
-
-  //   if (this.type === 'datetime' && value !== false && value !== 'now') {
-  //     throw new Error('Constant not permitted')
-  //   }
-
-  //   if (this.type === 'int' && value !== false && value !== 'currentUser') {
-  //     throw new Error('Constant not permitted')
-  //   }
-
-  //   if (this.constantOnCreate) {
-  //     throw new Error(
-  //       'constantOnCreate and constantOnUpdate can not be set at the same time'
-  //     )
-  //   }
-
-  //   this.constantOnUpdate = value
-  //   this.setRequiredOnInput(false)
-
-  //   return this
-  // }
-
   setRequired(value = true) {
     this.required = value
 

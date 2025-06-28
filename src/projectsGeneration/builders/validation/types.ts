@@ -90,12 +90,3 @@ export interface FloatValidation extends NumberValidation {
 export interface BigIntValidation extends NumberValidation {
   type: 'bigint'
 }
-
-// int
-// required
-
-// .number()
-// .required()
-// .integer()
-// .max(2147483647, t('validation.maxValue', {max: 2147483647}))
-// .typeError(t('validation.required')),

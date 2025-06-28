@@ -2,6 +2,7 @@ import { join } from "path";
 import { Entity } from "../../../builders";
 import { readdirSync, statSync, unlinkSync } from "fs";
 import { camelCase } from "change-case";
+import fs from 'fs-jetpack'
 
 const patternByType = {
   count: '(?<=^Count)(.*)(?=Widget.tsx)',
@@ -15,6 +16,8 @@ const cleanWidgetsByType = async (
   widgetGenOn: boolean,
 ) => {
   const listWidgetsDirPath = join(widgetsDirPath, type);
+
+  fs.dir(listWidgetsDirPath);
 
   const listWidgetsDirContent = readdirSync(listWidgetsDirPath);
   const listWidgetFilenameRegex = new RegExp(patternByType[type], 'gum');

@@ -9,7 +9,6 @@ export const backAdditionalServiceResolversTmpl = ({
   options,
 }: AdditionalServiceWideGenerationArgs) => {
   const modelsToImport = service.methods.filter(method => method.exportedToApi).map(q => q.argsModel).filter(m => m.fields.length);
-  // return `import {ApolloClient, gql} from '@apollo/client';${serviceWithModelsToImport.length ? `\nimport {\n${serviceWithModelsToImport.flatMap(s => s.models.map(m => `  Mutation${pascalCase(s.service.name)}${pascalCase(m.name)},\n`)).join('')}} from '../generated/graphql';` : ''}
 
   const mutations = service.methods.filter((method) => method.exportedToApi && method.methodType === MethodType.Mutation);
   const queries = service.methods.filter((method) => method.exportedToApi && method.methodType === MethodType.Query);

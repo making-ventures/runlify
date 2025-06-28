@@ -6,7 +6,6 @@ import { LinkShowComponentName, ShowComponentName } from '../types'
 
 export const getCompNamesToShowField = (
   field: Field,
-  // allEntities: Map<string, Entity>
 ): Array<ShowComponentName | LinkShowComponentName> => {
   const { category } = field
   switch (category) {

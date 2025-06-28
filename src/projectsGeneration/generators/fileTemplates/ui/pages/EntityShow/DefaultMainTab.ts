@@ -10,7 +10,6 @@ export const uiEntityShowDefaultMainTabTmpl = ({
   entity,
   options,
 }: EntityWideGenerationArgs) => {
-  // const fieldsToImport = R.flatten(entity.fields.filter(f => !f.hidden))
   const fieldsToImport = R.flatten(entity.fields.filter(f => !f.hidden && f.showInShow).filter(f => !isMarkdownField(f)))
   const dateFieldsToImport = fieldsToImport.filter((f) =>
     ['datetime', 'date'].includes(f.type)

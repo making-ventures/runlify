@@ -14,20 +14,6 @@ import PageBuilder from './PageBuilder'
 import BaseModelBuilder from './mehods/BaseModelBuilder'
 import MethodBuilder, { MethodsModelsHolder } from './mehods/MethodBuilder'
 
-// const readPermissions: string[] = [
-//   'all',
-//   'get',
-//   'count',
-//   'meta',
-// ]
-
-// const permissions: string[] = [
-//   ...readPermissions,
-//   'create',
-//   'update',
-//   'delete',
-// ]
-
 abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsModelsHolder {
   id: IdFieldBuilder
   permissions: PermissionBuilder[] = []
@@ -398,10 +384,8 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsMo
   addUniqueConstraint(fields: string[]): BaseSavableEntityBuilder {
     const currentFields = this.getFileds()
 
-    // const currentRequiredFields = currentFields.filter(f => f.required);
     const currentFieldNames = currentFields.map((f) => f.name)
 
-    // const currentRequiredFieldNames = currentRequiredFields.map(f => f.name);
     if (fields.some((f) => !currentFieldNames.includes(f))) {
       throw new Error(`You trying to add constraint for non existing field.
       Current fields: ${currentFields.map(f => f.title[this.defaultLanguage]).join(', ')}, fields for constraint: ${fields.join(', ')}, field not in current: ${fields.filter(
@@ -409,12 +393,6 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsMo
       )}.
       Entity ${this.name}`)
     }
-
-    // if (fields.some(f => !currentRequiredFieldNames.includes(f))) {
-    //   throw new Error(`You trying to add constraint for not required field. Presence of not required filed breaks uniquiness check.
-    //   Current required fields: ${currentFields}, fields for constrain: ${fields}, field not in current: ${fields.filter(f => !currentRequiredFieldNames.includes(f))}.
-    //   Entity ${this.name}`);
-    // }
 
     this.uniqueConstraints.push(fields)
 
@@ -613,10 +591,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsMo
       ...super.build(),
       title: this.title,
       singleKey: this.singleKey,
-      // titleField: this.titleField.build(),
       titleField: this.titleField.name,
-      // linkFields: this.getLinkFileds().map(f => f.build()),
-      // keyField: this.getKey().build(),
       keyField: this.getKey().name,
       fields: this.getFileds().map((field) => field.build()),
       uniqueConstraints: this.getUniqueConstraints(),

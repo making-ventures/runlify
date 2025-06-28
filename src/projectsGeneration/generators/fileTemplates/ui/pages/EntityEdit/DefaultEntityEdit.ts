@@ -186,8 +186,6 @@ export const uiDefaultEditTmpl = ({
     .fields
     .filter(f => !f.hidden && f.showInEdit)
     .filter(f => !fileRefFields.includes(f))
-
-    // .filter(f => f.requiredOnInput || f.requiredOnInput === null)
     .filter(f => f.name !== 'id');
   const dateFieldsToImport = fieldsToImport
     .filter(f => ['datetime', 'date'].includes(f.type));
@@ -224,8 +222,6 @@ export const uiDefaultEditTmpl = ({
   const fieldsToWorkWith = entity
     .fields
     .filter(f => !f.hidden && f.showInEdit)
-
-    // .filter(f => f.requiredOnInput || f.requiredOnInput === null)
     .filter(f => f.name !== 'id');
 
   const initialValues = fieldsToWorkWith.filter(f => getTsDefaultTypeValueExpression(f));

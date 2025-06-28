@@ -26,8 +26,6 @@ export const getPreparedModelsForGraph = (service: AdditionalService): InputOutp
     inputModels: clearedFromArgsInputs,
   };
 
-  // const modelsWithoutVoids = removeVoidsInServiceModels(clearedFromArgsModels);
-
   const preparedModels = {
     ...clearedFromArgsModels,
     args,

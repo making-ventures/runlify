@@ -16,8 +16,6 @@ export const genPrismaLinkFields = (
     ? field.name.replaceAll(/Id$/gu, '')
     : field.name
 
-  // const trivialField = `${trivialFieldName}	${fieldIdTypeToPrismaType(field.type)}${field.required ? '' : '?'}`
-  //   .trim();
   const trivialField = joinPrismaFieldParts([
     trivialFieldName,
     `${fieldIdTypeToPrismaType(field.type)}${field.required ? '' : '?'}`,

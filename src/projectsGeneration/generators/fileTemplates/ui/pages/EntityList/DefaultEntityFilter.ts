@@ -13,7 +13,6 @@ export const uiDefaultFilterTmpl = ({
 }: EntityWideGenerationArgs) => {
   const fields = entity.forms.listForm.filter.fields
     .filter((f) => !f.hidden)
-    // .filter(f => f.showInList) // todo: delete in generation
     .filter((f) => f.name !== 'id' && f.name !== 'photoId')
 
   const hasSearch = entity.type === 'catalog' || entity.type === 'document' && entity.searchEnabled

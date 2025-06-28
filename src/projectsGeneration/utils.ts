@@ -9,15 +9,6 @@ export const printWarningIfRequired = (options: BootstrapEntityOptions, commentT
 ${commentType === 'slash' ? '//' : '#'} ${generatedWarning}
 `;
 
-// export const writeFileIfNotExists = async (
-//   path: string,
-//   content: string
-// ): Promise<void> => {
-//   if (!exists(path)) {
-//     await write(path, content)
-//   }
-// }
-
 export const padN = (content: string, num: number) =>
   content
     .split('\n')

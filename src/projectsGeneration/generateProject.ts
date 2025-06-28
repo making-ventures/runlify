@@ -50,7 +50,7 @@ import { devEnumTmpl } from './generators/fileTemplates/back/devEnum'
 import { initCommonEnumTmpl } from './generators/fileTemplates/back/initCommon'
 import { initDevEnumTmpl } from './generators/fileTemplates/back/initDev'
 import graphServiceConstrictorsTmpl from './generators/fileTemplates/back/services/serviceConstrictors'
-import { Entities } from './generators/fileTemplates/back/Entities'
+import { backEntitiesEnumTmpl } from './generators/fileTemplates/back/backEntitiesEnumTmpl'
 import { initEntities } from './generators/fileTemplates/back/initEntities'
 import { uiGetEntityValidationTmpl } from './generators/fileTemplates/ui/pages/getEntityValidation'
 import {generateBackElasticBootstrap} from './generators/fileTemplates/back/elastic/elastic';
@@ -276,7 +276,7 @@ export const generateBackEntityEnum = async (
 
   return fileWriter.write(
     filePath,
-    Entities({
+    backEntitiesEnumTmpl({
       entities: args.entities,
       options: args.options,
     } as ProjectWideGenerationArgs)

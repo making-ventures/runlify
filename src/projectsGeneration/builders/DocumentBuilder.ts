@@ -11,12 +11,6 @@ class DocumentBuilder extends BaseSavableEntityBuilder {
   constructor(name: string, defaultLanguage: string, title?: {singular?: string, plural?: string}) {
     super(name, defaultLanguage, title)
 
-    // this
-    //   .addField('carriedOut')
-    //   .setType('bool')
-    //   .setRequired()
-    //   .setNotUpdatableByUser('false');
-
     this.addField('date')
       .setType('datetime')
       .setRequired()

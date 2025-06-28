@@ -106,14 +106,6 @@ class SumRegistryBuilder extends BaseSavableEntityBuilder {
     }
   }
 
-  // addField(
-  //   _: string,
-  //   __?: string,
-  //   ___: { isTitleField?: boolean } = {}
-  // ): ScalarFieldBuilder {
-  //   throw new Error('Use addDimension or addResource')
-  // }
-
   getFileds(): FieldBuilder[] {
     return [
       this.id,
@@ -122,10 +114,6 @@ class SumRegistryBuilder extends BaseSavableEntityBuilder {
       ...(this.resources || []),
     ]
   }
-
-  // addLinkField (_: string, __: string): LinkFieldBuilder {
-  //   throw new Error('Use addDimensionLinkField');
-  // }
 
   addDimensionLinkField(
     entity: string,

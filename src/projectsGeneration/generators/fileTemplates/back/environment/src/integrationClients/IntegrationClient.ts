@@ -32,17 +32,14 @@ class ${pascalCase(client.name)}Client extends IntegrationClient implements I${p
 
   protected async beforeRequest(_args: ClientBeforeRequestArgs) {
     log.info(\`!!!!!! beforeRequest, managers count: \${await this.ctx.service('managers').count()}\`);
-    // log.info(args);
   }
 
   protected async afterRequest(_args: ClientAfterRequestArgs) {
     log.info(\`!!!!!! afterRequest, managers count: \${await this.ctx.service('managers').count()}\`);
-    // log.info(args);
   }
 
   protected async onError(_args: ClientOnErrorArgs) {
     log.info(\`!!!!!! onError, managers count: \${await this.ctx.service('managers').count()}\`);
-    // log.info(args);
   }
 
 ${client.queryMethods.map(m => `  async ${m.name}(args: ${pascalCase(m.name)}Args): Promise<${pascalCase(m.name)}Result> {

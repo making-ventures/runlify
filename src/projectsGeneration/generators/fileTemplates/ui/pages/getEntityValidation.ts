@@ -76,7 +76,6 @@ export const uiGetEntityValidationTmpl = ({
   entity,
 }: EntityWideGenerationArgs) => {
   const validations = entity.fields
-    // .filter((f) => f.requiredOnInput)
     .map((field) => ({ field, validation: getFieldValidation(field) }))
     .filter(({ validation }) => validation)
   const hasValidations = validations.length > 0

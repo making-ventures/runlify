@@ -11,14 +11,6 @@ export type ConfigVarScope =
   | 'worker'
   | 'telegramBot'
 
-// {id: 'ui', title: 'Ui', gitSshTemplate: 'git@gitlab.com:mtbase/mtbase-ui.git', educational: false},
-// {id: 'back', title: 'Back', gitSshTemplate: 'git@gitlab.com:mtbase/mtbase-back.git', educational: false},
-// {id: 'app', title: 'App', gitSshTemplate: 'git@gitlab.com:mtbase/mtbase-app.git', educational: false},
-// {id: 'land', title: 'Land', gitSshTemplate: 'git@gitlab.com:mtbase/mtbase-app.git', educational: false},
-// {id: 'learningBaseTs', title: 'Учебный Базовый Ts', gitSshTemplate: 'git@gitlab.com:js-learning/nodets-template.git', educational: true},
-// {id: 'learningReact', title: 'Учебный React', gitSshTemplate: 'git@gitlab.com:js-learning/react-template.git', educational: true},
-// {id: 'learningFigma', title: 'Учебный Figma', gitSshTemplate: 'git@gitlab.com:js-learning/nodets-template.git', educational: true},
-
 export type ConfigValue<T extends FieldType> = T extends 'string'
     ?
       string

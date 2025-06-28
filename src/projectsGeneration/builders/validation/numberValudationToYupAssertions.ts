@@ -9,21 +9,6 @@ const numberValudationToYupAssertions = (validation: NumberValidation): string[]
 
   assertions.push(...baseValudationToYupAssertions(validation))
 
-  // .number()
-  // .required()
-  // .integer()
-  // .max(2147483647, t('validation.maxValue', {max: 2147483647}))
-  // .typeError(t('validation.required')),
-
-  // max?: number;
-  // min?: number;
-
-  // positive?: boolean;
-  // negative?: boolean;
-
-  // notPositive?: boolean;
-  // notNegative?: boolean;
-
   if (validation.positive) {
     assertions.push(`positive(0, t('validation.positive'))`)
   }

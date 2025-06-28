@@ -6,7 +6,6 @@ const baseValudationToYupAssertions = (validation: BaseValidation): string[] => 
 
   if (validation.required) {
     assertions.push(`required()`)
-    // assertions.push(`typeError(t('validation.required'))`)
   }
 
   return assertions;

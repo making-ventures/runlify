@@ -24,7 +24,6 @@ class LinkFieldBuilder extends BaseFieldBuilder {
     this.checkName(name)
     this.entity = entity
     this.category = 'link'
-    // this.setTitle(title);
   }
 
   checkName(name: string) {

@@ -81,10 +81,6 @@ class SystemMetaBuilder implements MethodsModelsHolder {
 
   back: DeploymentBuilder
 
-  // requests: MemoryAndCpu = { memory: '128Mi', cpu: '0.15' }
-  // limits: MemoryAndCpu = { memory: '256Mi', cpu: '1' }
-
-  // space = '';
   constructor(
     prefix: string,
     defOpts: BootstrapEntityOptions = defaultBootstrapEntityOptions,
@@ -189,13 +185,6 @@ class SystemMetaBuilder implements MethodsModelsHolder {
       undefined,
       'Эндпоинт S3, доступный для фронтенда',
     ).setSecure()
-    // this.addConfigVar(
-    //   's3.publicEndpoint',
-    //   'string',
-    //   true,
-    //   's3.eu-central-1.wasabisys.com',
-    //   'Публичныйм эндпоинт S3, к которому имеет доступ полььзователь',
-    // )
     this.addConfigVar(
       's3.region',
       'string',
@@ -381,12 +370,6 @@ class SystemMetaBuilder implements MethodsModelsHolder {
       runnerTag: 'dev',
       gitlabEnvPrefix: 'dev',
     })
-    // this.addDeployEnvironment({
-    //   name: 'stage',
-    //   manualDeploy: false,
-    //   clusterName: 'stage01',
-    //   branchName: 'stage',
-    // })
     this.addDeployEnvironment({
       name: 'prod',
       manualDeploy: true,
@@ -407,17 +390,7 @@ class SystemMetaBuilder implements MethodsModelsHolder {
 
     this.defaultLanguage = defaultLanguage
 
-    // this.addTelegramBot('hello');
-
     this.initDefaultCatalogs()
-
-    // this
-    //   .addWorker('general', 'Таски общего назначения')
-    //   .setNeedFor('Для выполнения тасков общего назначения');
-
-    // this
-    //   .addWorker('emails', 'Отправка почты')
-    //   .setNeedFor('Для отправки почты');
   }
 
   setName(name: string) {
@@ -437,15 +410,6 @@ class SystemMetaBuilder implements MethodsModelsHolder {
 
     return this
   }
-
-
-  // | 'string'
-  // | 'int'
-  // | 'bigint'
-  // | 'float'
-  // | 'bool'
-  // | 'datetime'
-  // | 'date'
 
   addConfigVar<T extends FieldType>(
     name: string,
@@ -536,10 +500,6 @@ class SystemMetaBuilder implements MethodsModelsHolder {
 
     this.deployEnvironments.push(deployEnvironment)
 
-    // if (this.deployEnvironments.filter((f) => f.main)?.length > 1) {
-    //   throw new Error(`Main deployEnvironment shuold be only one"`)
-    // }
-
     return this
   }
 
@@ -553,10 +513,6 @@ class SystemMetaBuilder implements MethodsModelsHolder {
       ...deployEnvironment,
       name,
     } : env)
-
-    // if (this.deployEnvironments.filter((f) => f.main)?.length > 1) {
-    //   throw new Error(`Main deployEnvironment shuold be only one"`)
-    // }
 
     return this
   }
@@ -723,12 +679,6 @@ class SystemMetaBuilder implements MethodsModelsHolder {
 
     return role
   }
-  
-  // constructor(assurePageExists: (pageId: string) => void, name: string, defaultLanguage: string, title?: string, level?: number) {
-  //   super(name, defaultLanguage, title, level);
-
-  //   this.assurePageExists = assurePageExists;
-  // }
 
   getAllPages() {
     return [
@@ -1081,30 +1031,6 @@ class SystemMetaBuilder implements MethodsModelsHolder {
   getOutputModels() {
     return this.outputModels;
   }
-
-  // setMemory(request: string, limit?: string) {
-  //   this.requests.memory = request
-
-  //   if (limit) {
-  //     this.limits.memory = limit
-  //   } else {
-  //     this.limits.memory = request
-  //   }
-
-  //   return this
-  // }
-
-  // setCpu(request: string, limit?: string) {
-  //   this.requests.cpu = request
-
-  //   if (limit) {
-  //     this.limits.cpu = limit
-  //   } else {
-  //     this.limits.cpu = request
-  //   }
-
-  //   return this
-  // }
 
   private _build(): System {
     const sortByName = <T extends { entity: { name: string } }>(entries: T[]) =>

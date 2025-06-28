@@ -7,62 +7,14 @@ describe('getCompNamesToShowLinkField', () => {
     const cards = new CatalogBuilder('cards', 'ru')
     cards.getKey().setType('bigint')
 
-    expect(
-      getCompNamesToShowLinkField(
-        // {
-        //   ...baseField,
-        //   category: 'link',
-        //   needFor: 'notSet',
-        //   externalEntity: 'cards',
-        //   name: 'someField',
-        //   required: true,
-        //   requiredOnInput: true,
-        //   type: 'bigint',
-        //   updatable: true,
-        //   updatableByUser: false,
-        //   title: { ru: 'title' },
-        //   showInCreate: true,
-        //   showInEdit: true,
-        //   showInList: true,
-        //   showInFilter: true,
-        //   linkCategory: 'entity',
-        //   defaultDbValue: undefined,
-        //   predefinedLinkedEntity: 'none',
-        // },
-        // new Map([['cards', cards.build()]])
-      )
-    ).toEqual(['ReferenceField'])
+    expect(getCompNamesToShowLinkField()).toEqual(['ReferenceField'])
   })
 
   it('generates ReferenceField for link to entity with string id which is also title field', () => {
     const cards = new CatalogBuilder('cards', 'ru')
     cards.getKey().setType('string')
 
-    expect(
-      getCompNamesToShowLinkField(
-        // {
-        //   ...baseField,
-        //   category: 'link',
-        //   needFor: 'notSet',
-        //   externalEntity: 'cards',
-        //   name: 'someField',
-        //   required: true,
-        //   requiredOnInput: true,
-        //   type: 'string',
-        //   updatable: true,
-        //   updatableByUser: false,
-        //   title: { ru: 'title' },
-        //   showInCreate: true,
-        //   showInEdit: true,
-        //   showInList: true,
-        //   showInFilter: true,
-        //   linkCategory: 'entity',
-        //   defaultDbValue: undefined,
-        //   predefinedLinkedEntity: 'none',
-        // },
-        // new Map([['cards', cards.build()]])
-      )
-    ).toEqual(['ReferenceField'])
+    expect(getCompNamesToShowLinkField()).toEqual(['ReferenceField'])
   })
 
   it('generates ReferenceField for link to entity with int id and string title', () => {
@@ -72,31 +24,7 @@ describe('getCompNamesToShowLinkField', () => {
       .addField('someField', undefined, { isTitleField: true })
       .setType('string')
 
-    expect(
-      getCompNamesToShowLinkField(
-        // {
-        //   ...baseField,
-        //   category: 'link',
-        //   needFor: 'notSet',
-        //   externalEntity: 'cards',
-        //   name: 'someField',
-        //   required: true,
-        //   requiredOnInput: true,
-        //   type: 'bigint',
-        //   updatable: true,
-        //   updatableByUser: false,
-        //   title: { ru: 'title' },
-        //   showInCreate: true,
-        //   showInEdit: true,
-        //   showInList: true,
-        //   showInFilter: true,
-        //   linkCategory: 'entity',
-        //   defaultDbValue: undefined,
-        //   predefinedLinkedEntity: 'none',
-        // },
-        // new Map([['cards', cards.build()]])
-      )
-    ).toEqual(['ReferenceField'])
+    expect(getCompNamesToShowLinkField()).toEqual(['ReferenceField'])
   })
 
   it('generates ReferenceField for link to entity with string id and string title', () => {
@@ -106,31 +34,7 @@ describe('getCompNamesToShowLinkField', () => {
       .addField('someField', undefined, { isTitleField: true })
       .setType('string')
 
-    expect(
-      getCompNamesToShowLinkField(
-        // {
-        //   ...baseField,
-        //   category: 'link',
-        //   needFor: 'notSet',
-        //   externalEntity: 'cards',
-        //   name: 'someField',
-        //   required: true,
-        //   requiredOnInput: true,
-        //   type: 'string',
-        //   updatable: true,
-        //   updatableByUser: false,
-        //   title: { ru: 'title' },
-        //   showInCreate: true,
-        //   showInEdit: true,
-        //   showInList: true,
-        //   showInFilter: true,
-        //   linkCategory: 'entity',
-        //   defaultDbValue: undefined,
-        //   predefinedLinkedEntity: 'none',
-        // },
-        // new Map([['cards', cards.build()]])
-      )
-    ).toEqual(['ReferenceField'])
+    expect(getCompNamesToShowLinkField()).toEqual(['ReferenceField'])
   })
 
   it('generates ReferenceField for link to entity with int id and int title', () => {
@@ -140,31 +44,7 @@ describe('getCompNamesToShowLinkField', () => {
       .addField('someField', undefined, { isTitleField: true })
       .setType('int')
 
-    expect(
-      getCompNamesToShowLinkField(
-        // {
-        //   ...baseField,
-        //   category: 'link',
-        //   needFor: 'notSet',
-        //   externalEntity: 'cards',
-        //   name: 'someField',
-        //   required: true,
-        //   requiredOnInput: true,
-        //   type: 'bigint',
-        //   updatable: true,
-        //   updatableByUser: false,
-        //   title: { ru: 'title' },
-        //   showInCreate: true,
-        //   showInEdit: true,
-        //   showInList: true,
-        //   showInFilter: true,
-        //   linkCategory: 'entity',
-        //   defaultDbValue: undefined,
-        //   predefinedLinkedEntity: 'none',
-        // },
-        // new Map([['cards', cards.build()]])
-      )
-    ).toEqual(['ReferenceField'])
+    expect(getCompNamesToShowLinkField()).toEqual(['ReferenceField'])
   })
 
   it('generates ReferenceField for link to entity with string id and int title', () => {
@@ -174,30 +54,6 @@ describe('getCompNamesToShowLinkField', () => {
       .addField('someField', undefined, { isTitleField: true })
       .setType('int')
 
-    expect(
-      getCompNamesToShowLinkField(
-        // {
-        //   ...baseField,
-        //   category: 'link',
-        //   needFor: 'notSet',
-        //   externalEntity: 'cards',
-        //   name: 'someField',
-        //   required: true,
-        //   requiredOnInput: true,
-        //   type: 'string',
-        //   updatable: true,
-        //   updatableByUser: false,
-        //   title: { ru: 'title' },
-        //   showInCreate: true,
-        //   showInEdit: true,
-        //   showInList: true,
-        //   showInFilter: true,
-        //   linkCategory: 'entity',
-        //   defaultDbValue: undefined,
-        //   predefinedLinkedEntity: 'none',
-        // },
-        // new Map([['cards', cards.build()]])
-      )
-    ).toEqual(['ReferenceField'])
+    expect(getCompNamesToShowLinkField()).toEqual(['ReferenceField'])
   })
 })
