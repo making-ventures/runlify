@@ -54,7 +54,7 @@ const generateFrontSrc = (fileCreator: FileCreator, args: ProjectWideGenerationA
       fileCreator.createIfNotExists(join(prjUiSrcPrefixedDir, 'getAdditionalMenu.ts'), uiGetAdditionalMenuTmpl());
     }
 
-    // Resources page
+    // Routes
     if (args.options.genUiRoutes) {
       fileCreator.create(join(prjUiSrcPrefixedDir, 'routes.tsx'), uiRoutesTmpl(args));
     }
