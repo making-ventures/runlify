@@ -22,6 +22,7 @@ export interface ProjectWideGenerationArgs {
   allDocuments: Map<string, Document>
   allCatalogs: Map<string, Catalog>
   allLinks: LinkedEntities[]
+  additionalServices: AdditionalService[]
   options: BootstrapEntityInnerOptions
 }
 
@@ -90,6 +91,7 @@ export const prepareProjectWideGenerationArgs = (
     allSumRegistries,
     allInfoRegistries,
     allLinks,
+    additionalServices: system.additionalServices,
     options: opts,
   }
 }

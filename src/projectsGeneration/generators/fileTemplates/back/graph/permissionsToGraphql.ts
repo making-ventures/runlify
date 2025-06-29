@@ -1,13 +1,8 @@
-import {
-  BootstrapEntityOptions,
-  defaultBootstrapEntityOptions,
-} from '../../../../types'
 import {addComma, printWarningIfRequired} from '../../../../utils'
 import {ProjectWideGenerationArgs} from '../../../../args'
 
 export const backPermissionToGraphqlTmpl = (
-  { entities }: ProjectWideGenerationArgs,
-  options: BootstrapEntityOptions = defaultBootstrapEntityOptions
+  { entities, options }: ProjectWideGenerationArgs,
 ) => `import * as R from 'ramda';
 import {additionalServicesPermissionToGraphql} from './additionalServicesPermissionToGraphql';
 import {MutationResolvers, QueryResolvers} from '../../generated/graphql';
