@@ -43,12 +43,12 @@ const generateFrontSrc = (fileCreator: FileCreator, args: ProjectWideGenerationA
 
     fileCreator.create(join(prjUiSrcPrefixedDir, 'MetaPage.tsx'), uiMetaPageTmpl());
 
-    // Resources page
+    // Entity mapping
     if (args.options.genUiEntityMapping) {
       fileCreator.create(join(prjUiSrcPrefixedDir, 'entityMapping.ts'), uiEntityMappingTmpl(args, args.options));
     }
 
-    // Resources page
+    // Menu
     if (args.options.genUiMenu) {
       fileCreator.create(join(prjUiSrcPrefixedDir, 'getDefaultMenu.ts'), uiGetDefaultMenuTmpl(args));
       fileCreator.createIfNotExists(join(prjUiSrcPrefixedDir, 'getAdditionalMenu.ts'), uiGetAdditionalMenuTmpl());
