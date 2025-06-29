@@ -1,15 +1,28 @@
 import {GluegunToolbox} from 'gluegun'
-import {generateProject} from '../projectsGeneration';
+import {generateProject, System} from '../projectsGeneration';
+import log from '../log';
+
+export enum ValidationLevel {
+  Error = 'error',
+  Warning = 'warning',
+}
+interface ValidationMessageBase {
+  message: string;
+}
+export interface ValidationError extends ValidationMessageBase {
+  level: ValidationLevel.Error;
+}
+export interface ValidationWarning extends ValidationMessageBase {
+  level: ValidationLevel.Warning;
+}
+
+export type ValidationMessage = ValidationError | ValidationWarning;
 
 module.exports = {
   name: 'regenerate',
   alias: ['regen'],
   run: async (toolbox: GluegunToolbox) => {
-    const {
-      // parameters,
-      // print: { info },
-      filesystem,
-    } = toolbox
+    const {filesystem} = toolbox
 
 
     const metaPath = 'src/meta/metadata.json';
@@ -21,11 +34,28 @@ module.exports = {
     const meta = JSON.parse(metaJson);
     const options = JSON.parse(optionsJson);
 
-    // info(meta);
-    // info(options);
+    const validateMeta = (system: System): ValidationMessage[] => {
+      return [
+        // {
+        //   level: ValidationLevel.Error,
+        //   message: 'Some validation error'
+        // },
+        // {
+        //   level: ValidationLevel.Warning,
+        //   message: 'Some validation warning'
+        // },
+      ];
+    }
 
-    // info(`detachedBackProject: ${options.detachedBackProject}`);
-    // info(`detachedUiProject: ${options.detachedUiProject}`);
+    const validationMessages = validateMeta(meta);
+    const validationWarinigs = validationMessages.filter(({level}) => level === ValidationLevel.Warning);
+    validationWarinigs.forEach(m => log.warn(m.message));
+    const validationErrors = validationMessages.filter(({level}) => level === ValidationLevel.Error);
+    validationErrors.forEach(m => log.error(m.message));
+
+    if (validationErrors.length) {
+      throw new Error(`Metadata has ${validationWarinigs.length} warnings and ${validationErrors.length} errors`)
+    }
 
     generateProject(meta, options);
   },

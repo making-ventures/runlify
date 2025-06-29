@@ -1,19 +1,29 @@
 export interface ListFormFilterField {
-  name: string
-  hidden: boolean
-  alwaysOn: boolean
+  name: string;
+  hidden: boolean;
+  alwaysOn: boolean;
 }
 
 export interface ListFormFilter {
-  fields: ListFormFilterField[]
+  fields: ListFormFilterField[];
 }
 
 export interface ListForm {
-  filter: ListFormFilter
+  filter: ListFormFilter;
+}
+
+export interface LinkedEntity {
+  entity: string;
+  field?: string;
+}
+
+export interface ShowForm {
+  ignoredLinkedEntities: LinkedEntity[];
 }
 
 interface Forms {
-  listForm: ListForm
+  list: ListForm;
+  show: ShowForm;
 }
 
 export default Forms;

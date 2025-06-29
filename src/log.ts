@@ -2,7 +2,7 @@ import * as winston from 'winston'
 
 const log = winston.createLogger({
   defaultMeta: {
-    loggerName: 'adm-graph-server',
+    loggerName: 'runlify',
   },
   format: winston.format.combine(
     winston.format.colorize(),

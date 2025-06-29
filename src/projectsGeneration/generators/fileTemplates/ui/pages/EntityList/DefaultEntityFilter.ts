@@ -11,7 +11,7 @@ export const uiDefaultFilterTmpl = ({
   entity,
   options,
 }: EntityWideGenerationArgs) => {
-  const fields = entity.forms.listForm.filter.fields
+  const fields = entity.forms.list.filter.fields
     .filter((f) => !f.hidden)
     .filter((f) => f.name !== 'id' && f.name !== 'photoId')
 

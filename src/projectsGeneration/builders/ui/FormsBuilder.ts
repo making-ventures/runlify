@@ -1,24 +1,32 @@
 import BaseSavableEntityBuilder from '../BaseSavableEntityBuilder'
 import Forms from './Forms'
 import ListFormBuilder from './ListFormBuilder'
+import ShowFormBuilder from './ShowFormBuilder';
 
 class FormsBuilder {
-  getEntity: () => BaseSavableEntityBuilder
-  listForm: ListFormBuilder
+  private getEntity: () => BaseSavableEntityBuilder;
+  private list: ListFormBuilder;
+  private show: ShowFormBuilder;
 
   constructor(getEntity: () => BaseSavableEntityBuilder) {
-    this.getEntity = getEntity
+    this.getEntity = getEntity;
 
-    this.listForm = new ListFormBuilder(this.getEntity)
+    this.list = new ListFormBuilder(this.getEntity);
+    this.show = new ShowFormBuilder(this.getEntity);
   }
 
   getListForm(): ListFormBuilder {
-    return this.listForm
+    return this.list;
+  }
+
+  getShowForm(): ShowFormBuilder {
+    return this.show;
   }
 
   build(): Forms {
     return {
-      listForm: this.listForm.build(),
+      list: this.list.build(),
+      show: this.show.build(),
     }
   }
 }

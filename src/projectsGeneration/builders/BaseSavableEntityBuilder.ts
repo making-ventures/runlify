@@ -626,7 +626,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsMo
     }
   }
 
-  initFormas(): BaseSavableEntityBuilder {
+  initForms(): BaseSavableEntityBuilder {
     if (!this.forms) {
       this.forms = new FormsBuilder(() => this)
     }
@@ -635,7 +635,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsMo
   }
 
   getForms(): FormsBuilder {
-    this.initFormas()
+    this.initForms()
 
     return this.forms as FormsBuilder
   }

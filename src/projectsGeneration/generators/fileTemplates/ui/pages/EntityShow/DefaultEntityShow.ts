@@ -26,7 +26,13 @@ export const uiDefaultShowTmpl = ({
   toLinks,
   options,
 }: EntityWideGenerationArgs) => {
-  const linksWithEntities = toLinks.map((link) => {
+  const ignoredLinkedEntitiesFull = entity.forms.show.ignoredLinkedEntities.filter(e => !e.field).map(e => e.entity);
+  const ignoredLinkedEntitiesByFormField = entity.forms.show.ignoredLinkedEntities.filter(e => e.field !== undefined);
+  const filteredToLinks = toLinks
+    .filter(l => !ignoredLinkedEntitiesFull.includes(l.entityOwnerName))
+    .filter(l => !ignoredLinkedEntitiesByFormField.some(i => i.entity === l.entityOwnerName && i.field === l.fromField.name));
+
+  const linksWithEntities = filteredToLinks.map((link) => {
     const entity = allEntities.get(link.entityOwnerName)
 
     if (!entity) {
@@ -37,7 +43,7 @@ export const uiDefaultShowTmpl = ({
       link,
       entity,
     }
-  })
+  });
 
   const linkedTabCompImports = linksWithEntities.map(
     ({ entity, link }) =>
