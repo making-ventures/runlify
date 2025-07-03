@@ -335,6 +335,7 @@ export type BaseSavableEntity = BaseEntity & {
   outputModels: TsModel[];
   methods: ServiceMethod[]
   labels: string[]
+  excludeFromMenu: boolean
 }
 
 export type Report = BaseEntity & {

@@ -31,6 +31,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsMo
   updatableByUser = true
   removableByUser = true
   exportableByUser = true
+  excludeFromMenu = false
   space = ''
   sortField = 'id'
   sortOrder: 'ASC' | 'DESC' = 'DESC'
@@ -614,6 +615,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsMo
       updatableByUser: this.updatableByUser,
       removableByUser: this.removableByUser,
       exportableByUser: this.exportableByUser,
+      excludeFromMenu: this.excludeFromMenu,
       clearDBAfter: this.clearDBAfter,
       allowedToChange: this.allowedToChange,
       permissions: this.permissions.map(p => p.build()),
@@ -706,6 +708,11 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsMo
   }
   setAllowedToChange (value: string = '') {
     this.allowedToChange = value
+
+    return this
+  }
+  setExcludeFromMenu(exclude: boolean = true) {
+    this.excludeFromMenu = exclude
 
     return this
   }

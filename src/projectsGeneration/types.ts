@@ -119,6 +119,11 @@ export const defaultBootstrapEntityOptions = {
   mainColorOfAppTitile: true,
   sharding: false,
   breadcrumb: false,
+
+  // System menu pages
+  showFunctionsInMenu: true,
+  showResourcesInMenu: true,
+  showMetaInMenu: true,
 }
 
 export type BootstrapEntityOptions = typeof defaultBootstrapEntityOptions;
