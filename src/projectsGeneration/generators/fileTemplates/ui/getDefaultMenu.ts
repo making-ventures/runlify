@@ -70,7 +70,7 @@ export const uiGetDefaultMenuTmpl = ({
   const getEntitiesByType = (type: string) => 
   entitiesToShow
     .filter((m) => m.type === type)
-    .filter((m) => !m.excludeFromMenu)
+    .filter((m) => !m.excludeFromCommonMenu)
 
   const infoRegistries = getEntitiesByType('infoRegistry')
   const sumRegistries = getEntitiesByType('sumRegistry') 
