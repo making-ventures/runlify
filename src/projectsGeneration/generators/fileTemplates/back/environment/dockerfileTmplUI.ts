@@ -38,5 +38,6 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 
 EXPOSE 80
 
+CMD chmod +x /app/run.sh
 CMD /app/run.sh
 `.trimStart()
