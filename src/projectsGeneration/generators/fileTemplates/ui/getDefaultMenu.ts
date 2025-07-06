@@ -67,10 +67,15 @@ export const uiGetDefaultMenuTmpl = ({
     )
   )
 
-  const infoRegistries = entitiesToShow.filter((m) => m.type === 'infoRegistry')
-  const sumRegistries = entitiesToShow.filter((m) => m.type === 'sumRegistry')
-  const documents = entitiesToShow.filter((m) => m.type === 'document')
-  const catalogs = entitiesToShow.filter((m) => m.type === 'catalog')
+  const getEntitiesByType = (type: string) => 
+  entitiesToShow
+    .filter((m) => m.type === type)
+    .filter((m) => !m.excludeFromCommonMenu)
+
+  const infoRegistries = getEntitiesByType('infoRegistry')
+  const sumRegistries = getEntitiesByType('sumRegistry') 
+  const documents = getEntitiesByType('document')
+  const catalogs = getEntitiesByType('catalog')
 
   const hasMenuExternalEnv = system.menuItems.some(checkHasMenuItemEnv);
 
@@ -85,25 +90,25 @@ export const uiGetDefaultMenuTmpl = ({
 ${printWarningIfRequired(options)}
 const getDefaultMenu = () => {
   const menuData: MenuElement[] = [
-${system.menuItems.map(i => `${menuItemTmpl(i)},`).map(pad2).join('\n')}
+${system.menuItems.map(i => `${menuItemTmpl(i)},`).map(pad2).join('\n')}${options.showFunctionsInMenu ? `
     {
       label: 'app.menu.functions',
       link: '/functions',
       icon: 'DetailsOutlined',
       debugOnly: true,
-    },
+    },` : ''}${options.showResourcesInMenu ? `
     {
       label: 'app.menu.resources',
       link: '/resources',
       icon: 'DetailsOutlined',
       debugOnly: true,
-    },
+    },` : ''}${options.showMetaInMenu ? `
     {
       label: 'app.menu.meta',
       link: '/meta',
       icon: 'DetailsOutlined',
       debugOnly: true,
-    },
+    },` : ''}
   ];
 
   const infoRegistriesMenuData: MenuElement[] = [
