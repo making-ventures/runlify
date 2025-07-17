@@ -16,7 +16,7 @@ ${printWarningIfRequired(options)}
 // Configure the SDK
 const sdk = new NodeSDK({
   resource: resourceFromAttributes({
-    [ATTR_SERVICE_NAME]: 'rlw-back',
+    [ATTR_SERVICE_NAME]: '${options.projectPrefix}-back', // Or use env OTEL_SERVICE_NAME="my-service"
     // [ATTR_SERVICE_VERSION]: '1.2.3',
   }),
   traceExporter: new OTLPTraceExporter(),
