@@ -13,6 +13,7 @@ import {createContext} from './adm/services/context';
 import express from 'express';
 import defaultContainer from './adm/services/defaultContainer';
 import initEndpoints from './initEndpoints';
+import expressListEndpoints from 'express-list-endpoints';
 ${printWarningIfRequired(options)}
 const app = express();
 
@@ -23,10 +24,11 @@ const start = async () => {
   const production = process.env.NODE_ENV === 'production';
   log.info(\`production: \${production}\`);
 
-  const endpoints = await initEndpoints(app, ctx, port, production);
+  await initEndpoints(app, ctx, port, production);
 
   app.listen({port}, () => {
-    log.info('\\n' + endpoints.map(e => \`🚀 Server ready at \${e}\`).join('\\n'));
+    log.info('🚀 Server ready\\n' +
+      expressListEndpoints(app).map(e => \` ➜ http://localhost:\${port}\${e.path} [\${e.methods}]\`).join('\\n'));
   });
 };
 
