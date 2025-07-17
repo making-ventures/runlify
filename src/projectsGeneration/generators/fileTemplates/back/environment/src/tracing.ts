@@ -2,7 +2,6 @@ import {
   BootstrapEntityOptions,
   defaultBootstrapEntityOptions,
 } from '../../../../../types'
-import {printWarningIfRequired} from '../../../../../utils'
 
 export const environmentTracerTmpl = (
   options: BootstrapEntityOptions = defaultBootstrapEntityOptions
@@ -12,7 +11,7 @@ import {getNodeAutoInstrumentations} from '@opentelemetry/auto-instrumentations-
 import {OTLPTraceExporter} from '@opentelemetry/exporter-trace-otlp-http';
 import {resourceFromAttributes} from '@opentelemetry/resources';
 import {ATTR_SERVICE_NAME} from '@opentelemetry/semantic-conventions';
-${printWarningIfRequired(options)}
+
 // Configure the SDK
 const sdk = new NodeSDK({
   resource: resourceFromAttributes({
