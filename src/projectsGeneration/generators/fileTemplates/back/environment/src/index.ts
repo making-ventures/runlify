@@ -6,7 +6,9 @@ import {printWarningIfRequired} from '../../../../../utils'
 
 export const environmentIndexTmpl = (
   options: BootstrapEntityOptions = defaultBootstrapEntityOptions
-) => `import log from './log';
+) => `import './tracing'; // Import tracing first to ensure instrumentation is set up
+
+import log from './log';
 import {createContext} from './adm/services/context';
 import express from 'express';
 import defaultContainer from './adm/services/defaultContainer';
