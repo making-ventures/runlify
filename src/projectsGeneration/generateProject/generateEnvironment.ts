@@ -28,6 +28,7 @@ import {dockerfileTmplBack} from '../generators/fileTemplates/back/environment/d
 import {uiCiNotifyTmpl} from '../generators/fileTemplates/ui/environment/ciNotify'
 import {ciNotifyTmpl} from '../generators/fileTemplates/back/environment/ciNotify'
 import {uiGetAdditionalMethodsTmpl} from '../generators/fileTemplates/ui/environment/src/dataProvider/getAdditionalMethods'
+import {environmentTracerTmpl} from '../generators/fileTemplates/back/environment/src/tracing'
 
 export const generateEnvironment = (
   fileCreator: FileCreator,
@@ -66,9 +67,9 @@ export const generateEnvironment = (
     // coreIndex
     if (opts.coreIndex) {
       fileCreator.create(
-        join(prjDetachedBackSrcDir, 'index.ts'),
-        environmentIndexTmpl(opts)
-      )
+        join(prjDetachedBackSrcDir, 'index.ts'), environmentIndexTmpl(opts))
+      fileCreator.createIfNotExists(
+        join(prjDetachedBackSrcDir, 'tracing.ts'), environmentTracerTmpl(opts))
     }
 
     // schema.prisma
