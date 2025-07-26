@@ -83,7 +83,7 @@ export const configTmpl = ({
   const registrarDependedRegistries = docRegistries.filter((r) => r.registrarDepended);
   const externalSearchDeps = registrarDependedRegistries.filter(r => r.externalSearchName).map((r) => [singular(r.name), singular(r.externalSearchName as string)]);
 
-  return `/* eslint-disable */
+  return `/* eslint-disable quote-props,comma-dangle,@typescript-eslint/ban-types */
 import Entity from '../../../types/Entity';
 import {${configType}} from '../types';
 ${printWarningIfRequired(options)}
