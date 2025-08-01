@@ -3,7 +3,7 @@ import {GluegunToolbox} from 'gluegun'
 module.exports = async (toolbox: GluegunToolbox) => {
   toolbox.print.info(`version: ${toolbox.meta.version()}`)
 
-  const res = await toolbox.meta.checkForUpdate()
+  /* const res = await toolbox.meta.checkForUpdate()
   if (res) {
     const pathEnv = process.env.PATH
     toolbox.print.info(`pathEnv: ${pathEnv}`)
@@ -22,5 +22,5 @@ You can update by running: ${
     } if you use global \`runlify\` or yarn add -D runlify@latest if you run command specified in package.json
 `)
     process.exit()
-  }
+  } */
 }
