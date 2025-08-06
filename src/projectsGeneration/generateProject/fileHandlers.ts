@@ -20,7 +20,7 @@ type addWarningsInput = {
   addDoNotEdit?: boolean,
 }
 
-export function addWarnings({options, fileType = 'yaml', disableEslint = true, addDoNotEdit = true}: addWarningsInput): FileHandler[] {
+export function addWarnings({options, fileType = 'code', disableEslint = true, addDoNotEdit = true}: addWarningsInput): FileHandler[] {
   if (options.skipWarningThisIsGenerated) {
     return []
   }
