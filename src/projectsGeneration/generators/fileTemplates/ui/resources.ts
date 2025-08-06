@@ -2,20 +2,18 @@ import {plural} from "pluralize";
 import {pascalSingular} from "../../../../utils/cases";
 import {ProjectWideGenerationArgs} from "../../../args";
 import {Entity} from "../../../builders";
-import {printWarningIfRequired} from "../../../utils";
 import {BootstrapEntityInnerOptions} from "../../../../types";
 
-const imports = `/* eslint-disable max-len */
-import * as React from 'react';
+const imports = `import * as React from 'react';
 import {Resource, Translate} from 'react-admin';
 import Loadable from '../shared/Loadable';
 import {hasPermission} from '../utils/permissions';`
 
-function uiResources(options: BootstrapEntityInnerOptions, chunks: number[]) {
+function uiResources(_options: BootstrapEntityInnerOptions, chunks: number[]) {
   const imports = chunks.map(num => `import {resourcesChunk${num}} from './resourcesChunk${num}';`).join("\n");
   return `import {Translate} from 'react-admin';
 ${imports}
-${printWarningIfRequired(options)}
+
 export function getResources(translate: Translate, permissions: string[]) {
   return permissions ? [
 ${chunks.map(num => `    ...resourcesChunk${num}(translate, permissions),`).join("\n")}
@@ -35,9 +33,9 @@ export function uiResourcesTmpl({entities, options}: ProjectWideGenerationArgs) 
   }
 }
 
-function genChunk(options: BootstrapEntityInnerOptions, num: number, entities: Entity[]) {
+function genChunk(_options: BootstrapEntityInnerOptions, num: number, entities: Entity[]) {
   return `${imports}
-${printWarningIfRequired(options)}
+
 ${entities.map((m) => `const Loadable${pascalSingular(m.name)}Show = Loadable(() => import('./pages/${m.name}/${pascalSingular(m.name)}Show'));${m.updatableByUser ? `
 const Loadable${pascalSingular(m.name)}Edit = Loadable(() => import('./pages/${m.name}/${pascalSingular(m.name)}Edit'));` : ""}${m.creatableByUser ? `
 const Loadable${pascalSingular(m.name)}Create = Loadable(() => import('./pages/${m.name}/${pascalSingular(m.name)}Create'));` : ""}

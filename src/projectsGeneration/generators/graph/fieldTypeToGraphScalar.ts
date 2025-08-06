@@ -12,7 +12,7 @@ import {GraphFieldPurpose} from './fields/genGraphField';
 
 export const fieldTypeToGraphScalar = <T extends GraphQLNamedInputType | GraphQLNamedOutputType>(
   field: Field | ModelField,
-  purpose: GraphFieldPurpose,
+  _purpose: GraphFieldPurpose,
   externalTypes: T[] = [],
 ) => {
   if (field.category === 'model') {

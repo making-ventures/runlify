@@ -1,17 +1,16 @@
 import {pascalSingular} from '../../../../utils/cases'
 import {ProjectWideGenerationArgs} from '../../../args'
-import {printWarningIfRequired, pad1} from '../../../utils'
+import {pad1} from '../../../utils'
 
 export const initEntities = ({
-  system: { defaultLanguage },
+  system: {defaultLanguage},
   entities,
-  options,
 }: ProjectWideGenerationArgs) => {
   const contextName = 'Context'
 
   return `import {${contextName}} from '../../adm/services/types';
 import Entity from '../../types/Entity';
-${printWarningIfRequired(options)}
+
 const initEntities = async (ctx: ${contextName}) => {
   await ctx.service('entities').createMany([
 ${entities

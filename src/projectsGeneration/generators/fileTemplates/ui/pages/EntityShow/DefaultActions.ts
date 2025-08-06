@@ -1,11 +1,10 @@
 import {pascalSingular} from '../../../../../../utils/cases'
 import {singular} from 'pluralize'
 import {EntityWideGenerationArgs} from '../../../../../args'
-import {pad5, printWarningIfRequired} from '../../../../../utils'
+import {pad5} from '../../../../../utils'
 
 export const uiDefaultActionTmpl = (
   {
-    options,
     entity,
     allEntities,
   }: EntityWideGenerationArgs,
@@ -29,7 +28,7 @@ import OpenRegistries from '../../../commonActions/OpenRegistries';`
       : ''
   }${isAllowedToChange && isUpdatableByUser ? `
 import {useAllowedToEdit} from '../../../../uiLib/AllowedToEdit';` : ''}
-${printWarningIfRequired(options)}
+
 const Default${pascalSingular(entity.name)}Actions = () => {${isUpdatableByUser ? `
   const {permissions} = usePermissions<string[]>();${isAllowedToChange ? `
   const allowedToEdit = useAllowedToEdit(${entity.allowedToChange});`: ''}

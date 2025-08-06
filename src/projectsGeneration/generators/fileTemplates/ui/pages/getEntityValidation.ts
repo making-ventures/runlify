@@ -2,7 +2,6 @@ import {pascalSingular} from '../../../../../utils/cases'
 import {EntityWideGenerationArgs} from '../../../../args'
 import {Field} from '../../../../builders/buildedTypes'
 import {isMoneyField, isStringNumberField} from '../../../../metaUtils'
-import {printWarningIfRequired} from '../../../../utils'
 
 const getFieldValidation = (field: Field): string | null => {
   if (field.requiredOnInput) {
@@ -72,7 +71,6 @@ const getFieldValidation = (field: Field): string | null => {
 }
 
 export const uiGetEntityValidationTmpl = ({
-  options,
   entity,
 }: EntityWideGenerationArgs) => {
   const validations = entity.fields
@@ -81,7 +79,7 @@ export const uiGetEntityValidationTmpl = ({
   const hasValidations = validations.length > 0
 
   return `import * as Yup from 'yup';
-${printWarningIfRequired(options)}
+
 const get${pascalSingular(entity.name)}Validation = () => ${
     hasValidations
       ? `Yup.object({

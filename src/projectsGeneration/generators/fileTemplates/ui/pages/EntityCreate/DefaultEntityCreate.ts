@@ -6,7 +6,7 @@ import {
 } from '../EntityEdit/DefaultEntityEdit'
 import {getCompNamesToEditField} from '../../../../ui/componentNames/edit/getCompNamesToEditField'
 import {EntityWideGenerationArgs} from '../../../../../args'
-import {printWarningIfRequired, pad1, pad} from '../../../../../utils'
+import {pad1, pad} from '../../../../../utils'
 import {getKeyField, isImageFileRef, isMarkdownField, isMultilineField} from '../../../../../metaUtils'
 
 export const uiDefaultCreateTmpl = ({
@@ -52,8 +52,7 @@ export const uiDefaultCreateTmpl = ({
     getTsDefaultTypeValueExpression(f)
   )
 
-  return `/* eslint-disable max-len */
-import React, {FC, useMemo, useCallback} from 'react';
+  return `import React, {FC, useMemo, useCallback} from 'react';
 import {
   ${R.uniq(reactAdminImports.map((el) => `${el},`)).join(`
   `)}
@@ -84,7 +83,7 @@ import {LoadingContext} from '../../../../contexts/LoadingContext';${
     : ''
 }${options.breadcrumb ?
     "\nimport {Breadcrumbs} from '../../../../raUiLib/Breadcrumbs';" : ''}
-${printWarningIfRequired(options)}
+
 const defaultValues = ${initialValues.length === 0 ? '{}' : `{
 ${initialValues.map(f => `${f.name}: ${getTsDefaultTypeValueExpression(f)},`).map(pad(1)).join('\n')}
 }`};

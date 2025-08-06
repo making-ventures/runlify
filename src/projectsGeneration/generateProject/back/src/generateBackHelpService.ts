@@ -5,6 +5,7 @@ import baseResolversTmpl from '../../../generators/fileTemplates/back/graph/help
 import helpServiceTmpl from '../../../generators/fileTemplates/back/services/HelpService/HelpService'
 import baseTypeDefsTmpl from '../../../generators/fileTemplates/back/graph/help/baseTypeDefs'
 import permissionsToGraphqlTmpl from '../../../generators/fileTemplates/back/graph/help/permissionsToGraphql'
+import {addWarnings} from '../../fileHandlers'
 
 const generateBackHelpService = (
   fileCreator: FileCreator,
@@ -20,8 +21,10 @@ const generateBackHelpService = (
       'help',
       'baseTypeDefs.ts'
     ),
-    baseTypeDefsTmpl(args)
+    baseTypeDefsTmpl(args),
+    addWarnings({options: args.options})
   )
+
   if (!args.options.typesOnly) {
     fileCreator.create(
       join(
@@ -33,8 +36,10 @@ const generateBackHelpService = (
         'help',
         'baseResolvers.ts'
       ),
-      baseResolversTmpl()
+      baseResolversTmpl(),
+      addWarnings({options: args.options})
     )
+
     fileCreator.create(
       join(
         args.options.detachedBackProject,
@@ -45,8 +50,10 @@ const generateBackHelpService = (
         'help',
         'permissionsToGraphql.ts'
       ),
-      permissionsToGraphqlTmpl()
+      permissionsToGraphqlTmpl(),
+      addWarnings({options: args.options})
     )
+
     fileCreator.create(
       join(
         args.options.detachedBackProject,
@@ -56,7 +63,8 @@ const generateBackHelpService = (
         'HelpService',
         'HelpService.ts'
       ),
-      helpServiceTmpl(args)
+      helpServiceTmpl(args),
+      addWarnings({options: args.options})
     )
   }
 }

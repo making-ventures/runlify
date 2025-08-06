@@ -1,10 +1,7 @@
 import {join} from 'path'
 import {FileCreator} from '../../../types'
 import {pascal} from '../../../../../utils/cases'
-import {
-  EntityWideGenerationArgs,
-  ProjectWideGenerationArgs,
-} from '../../../../args'
+import {ProjectWideGenerationArgs} from '../../../../args'
 import {singular} from 'pluralize'
 import {enumTmpl} from '../../../../generators/fileTemplates/back/enum'
 import {devEnumTmpl} from '../../../../generators/fileTemplates/back/devEnum'
@@ -12,6 +9,7 @@ import {initCommonEnumTmpl} from '../../../../generators/fileTemplates/back/init
 import {initDevEnumTmpl} from '../../../../generators/fileTemplates/back/initDev'
 import {backEntitiesEnumTmpl} from '../../../../generators/fileTemplates/back/backEntitiesEnumTmpl'
 import {initEntities} from '../../../../generators/fileTemplates/back/initEntities'
+import {addWarnings} from '../../../fileHandlers'
 
 const generateBackEnums = (fileCreator: FileCreator, args: ProjectWideGenerationArgs) => {
   args.entities
@@ -26,10 +24,8 @@ const generateBackEnums = (fileCreator: FileCreator, args: ProjectWideGeneration
 
       fileCreator.create(
         filePath,
-        enumTmpl({
-          entity,
-          options: args.options,
-        } as EntityWideGenerationArgs)
+        enumTmpl(entity, args.options),
+        addWarnings({options: args.options})
       )
     })
 }
@@ -47,10 +43,8 @@ const generateBackEntityEnum = (
 
   fileCreator.create(
     filePath,
-    backEntitiesEnumTmpl({
-      entities: args.entities,
-      options: args.options,
-    } as ProjectWideGenerationArgs)
+    backEntitiesEnumTmpl(args),
+    addWarnings({options: args.options})
   )
 }
 
@@ -71,10 +65,8 @@ const generateBackEnumsInit = (
 
       fileCreator.create(
         filePath,
-        initCommonEnumTmpl({
-          entity,
-          options: args.options,
-        } as EntityWideGenerationArgs)
+        initCommonEnumTmpl(entity, args.options),
+        addWarnings({options: args.options})
       )
   })
 }
@@ -91,7 +83,11 @@ const generateBackEntitiesEnumInit = (
     'initEntities.ts'
   )
 
-  fileCreator.create(filePath, initEntities(args))
+  fileCreator.create(
+    filePath,
+    initEntities(args),
+    addWarnings({options: args.options})
+  )
 }
 
 const generateBackDevEnums = (fileCreator: FileCreator, args: ProjectWideGenerationArgs) => {
@@ -107,10 +103,8 @@ const generateBackDevEnums = (fileCreator: FileCreator, args: ProjectWideGenerat
 
       fileCreator.create(
         filePath,
-        devEnumTmpl({
-          entity,
-          options: args.options,
-        } as EntityWideGenerationArgs)
+        devEnumTmpl(entity, args.options),
+        addWarnings({options: args.options})
       )
     })
 }
@@ -132,10 +126,8 @@ const generateBackDevEnumsInit = (
 
       fileCreator.create(
         filePath,
-        initDevEnumTmpl({
-          entity,
-          options: args.options,
-        } as EntityWideGenerationArgs)
+        initDevEnumTmpl(entity, args.options),
+        addWarnings({options: args.options})
       )
     })
 }

@@ -6,6 +6,7 @@ import {pascalCase} from 'change-case'
 import backIntegrationClientTypesTmpl from '../../../generators/fileTemplates/back/environment/src/integrationClients/types'
 import genIntegrationClientConstrictorsTmpl from '../../../generators/fileTemplates/back/environment/src/integrationClients/integrationClientConstrictors'
 import genIntegrationClientsTmpl from '../../../generators/fileTemplates/back/environment/src/integrationClients/IntegrationClients'
+import {addWarnings} from '../../fileHandlers'
 
 const generateBackIntegrationClients = (
   fileCreator: FileCreator,
@@ -18,16 +19,32 @@ const generateBackIntegrationClients = (
     const clientFolder = join(prjDetachedBackSrcDir, 'integrationClients', `${client.name}`);
 
     if (!args.options.typesOnly) {
-      fileCreator.createIfNotExists(join(clientFolder, `${pascalCase(client.name)}Client.ts`), backIntegrationClientTmpl(args, client));
+      fileCreator.createIfNotExists(
+        join(clientFolder, `${pascalCase(client.name)}Client.ts`),
+        backIntegrationClientTmpl(args, client)
+      );
     }
-    fileCreator.create(join(clientFolder, `types.ts`), backIntegrationClientTypesTmpl(args, client));
+
+    fileCreator.create(
+      join(clientFolder, `types.ts`),
+      backIntegrationClientTypesTmpl(args, client),
+      addWarnings({options: args.options})
+    );
   }
 
   if (!args.options.typesOnly) {
-    fileCreator.create(join(servicesDir, 'integrationClientConstrictors.ts'), genIntegrationClientConstrictorsTmpl(args));
+    fileCreator.create(
+      join(servicesDir, 'integrationClientConstrictors.ts'),
+      genIntegrationClientConstrictorsTmpl(args),
+      addWarnings({options: args.options})
+    );
   }
 
-  fileCreator.create(join(servicesDir, 'IntegrationClients.ts'), genIntegrationClientsTmpl(args));
+  fileCreator.create(
+    join(servicesDir, 'IntegrationClients.ts'),
+    genIntegrationClientsTmpl(args),
+    addWarnings({options: args.options})
+  );
 }
 
 export default generateBackIntegrationClients;

@@ -1,10 +1,8 @@
 import {ProjectWideGenerationArgs} from '../../../../args'
-import {printWarningIfRequired} from '../../../../utils'
 
 export const dockerfileTmplBack = ({
   options,
-}: ProjectWideGenerationArgs) => `${printWarningIfRequired(options, 'hash')}
-FROM registry.gitlab.com/making.ventures/images/node-with-tools AS builder
+}: ProjectWideGenerationArgs) => `FROM registry.gitlab.com/making.ventures/images/node-with-tools AS builder
 
 # docker build --tag aloyal-back .
 # docker run --rm -p 3000:3000 --name aloyal-back aloyal-back

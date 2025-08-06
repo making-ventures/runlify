@@ -3,6 +3,7 @@ import {FileCreator} from '../../types'
 import {uiEntityIconTmpl} from '../../../generators/fileTemplates/ui/pages/Icon'
 import {pascalSingular} from '../../../../utils/cases'
 import {EntityWideGenerationArgs} from '../../../args'
+import {addWarnings} from '../../fileHandlers'
 
 const generateFrontSrcEntityIcon = (
   fileCreator: FileCreator,
@@ -17,7 +18,11 @@ const generateFrontSrcEntityIcon = (
     `src/adm/pages/${name}/${pascalSingular(name)}Icon.tsx`
   )
 
-  fileCreator.create(filePath, uiEntityIconTmpl(args))
+  fileCreator.create(
+    filePath,
+    uiEntityIconTmpl(args),
+    addWarnings({options: args.options})
+  )
 }
 
 export default generateFrontSrcEntityIcon;

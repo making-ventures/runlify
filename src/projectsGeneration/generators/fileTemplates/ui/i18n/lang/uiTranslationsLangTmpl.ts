@@ -1,14 +1,11 @@
 import {ProjectWideGenerationArgs} from '../../../../../args'
-import {printWarningIfRequired} from '../../../../../utils'
 
 const uiTranslationsLangTmpl = (
-  { options, system: { defaultLanguage } }: ProjectWideGenerationArgs,
+  {system: {defaultLanguage}}: ProjectWideGenerationArgs,
   entities: { name: string; title: Record<string, {singular: string, plural?: string}> }[],
   lang: string,
   postfix: string
-) => `/* eslint-disable max-len */
-${printWarningIfRequired(options)}
-const ${lang}${postfix} = ${
+) => `const ${lang}${postfix} = ${
   entities.length > 0
     ? `{
 ${entities

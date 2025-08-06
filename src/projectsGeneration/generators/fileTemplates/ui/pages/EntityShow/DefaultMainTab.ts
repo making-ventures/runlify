@@ -2,13 +2,12 @@ import {getCompNamesToShowField} from '../../../../ui/componentNames/show/getCom
 import * as R from 'ramda'
 import {getShowComponent} from '../../../../ui/getShowComponent'
 import {EntityWideGenerationArgs} from '../../../../../args'
-import {pad3, printWarningIfRequired, pad2} from '../../../../../utils'
+import {pad3, pad2} from '../../../../../utils'
 import {isMarkdownField} from "../../../../../metaUtils";
 
 export const uiEntityShowDefaultMainTabTmpl = ({
   allEntities,
   entity,
-  options,
 }: EntityWideGenerationArgs) => {
   const fieldsToImport = R.flatten(entity.fields.filter(f => !f.hidden && f.showInShow).filter(f => !isMarkdownField(f)))
   const dateFieldsToImport = fieldsToImport.filter((f) =>
@@ -26,8 +25,7 @@ export const uiEntityShowDefaultMainTabTmpl = ({
     ),
   ]
 
-  return `/* eslint-disable max-len */
-import React, {FC} from 'react';
+  return `import React, {FC} from 'react';
 import {
   ${R.uniq(reactAdminImports.map((el) => `${el},`)).join(`
   `)}
@@ -39,7 +37,7 @@ import DateField from '../../../../uiLib/DateField';`
       : ''
   }
 import {Grid} from '@mui/material';${entity.fields.some(isMarkdownField) ? '\nimport ReactMarkdownField from \'../../../../uiLib/ReactMarkdownField\';' : ''}
-${printWarningIfRequired(options)}
+
 const DefaultMainTab: FC<Omit<TabProps, 'children'>> = (props) => {
   return (<Tab {...props}>
     <Grid container spacing={2}>

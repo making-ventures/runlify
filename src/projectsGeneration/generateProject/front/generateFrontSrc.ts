@@ -16,6 +16,7 @@ import { uiEntityMappingTmpl } from '../../generators/fileTemplates/ui/entityMap
 import { uiMetaPageTmpl } from '../../generators/fileTemplates/ui/MetaPage'
 import { uiResourcesPageTmpl } from '../../generators/fileTemplates/ui/ResourcesPage'
 import { uiResourcesTmpl } from '../../generators/fileTemplates/ui/resources'
+import {addWarnings} from '../fileHandlers'
 
 const generateFrontSrc = (fileCreator: FileCreator, args: ProjectWideGenerationArgs) => {
   args.entities.forEach((entity) => {
@@ -31,44 +32,89 @@ const generateFrontSrc = (fileCreator: FileCreator, args: ProjectWideGenerationA
     if (args.options.genUiResources) {
       const {resources, resourcesChunk0, resourcesChunk1} = uiResourcesTmpl(args);
 
-      fileCreator.create(join(prjUiSrcPrefixedDir, 'resources.tsx'), resources);
-      fileCreator.create(join(prjUiSrcPrefixedDir, 'resourcesChunk0.tsx'), resourcesChunk0);
-      fileCreator.create(join(prjUiSrcPrefixedDir, 'resourcesChunk1.tsx'), resourcesChunk1);
+      fileCreator.create(
+        join(prjUiSrcPrefixedDir, 'resources.tsx'),
+        resources,
+        addWarnings({options: args.options})
+      );
+      fileCreator.create(
+        join(prjUiSrcPrefixedDir, 'resourcesChunk0.tsx'),
+        resourcesChunk0,
+        addWarnings({options: args.options})
+      );
+      fileCreator.create(
+        join(prjUiSrcPrefixedDir, 'resourcesChunk1.tsx'),
+        resourcesChunk1,
+        addWarnings({options: args.options})
+      );
     }
 
     // Resources page
     if (args.options.genUiResourcesPage) {
-      fileCreator.create(join(prjUiSrcPrefixedDir, 'ResourcesPage.tsx'), uiResourcesPageTmpl(args));
+      fileCreator.create(
+        join(prjUiSrcPrefixedDir, 'ResourcesPage.tsx'),
+        uiResourcesPageTmpl(args),
+        addWarnings({options: args.options})
+      );
     }
 
-    fileCreator.create(join(prjUiSrcPrefixedDir, 'MetaPage.tsx'), uiMetaPageTmpl());
+    fileCreator.create(
+      join(prjUiSrcPrefixedDir, 'MetaPage.tsx'),
+      uiMetaPageTmpl(),
+      addWarnings({options: args.options})
+    );
 
     // Entity mapping
     if (args.options.genUiEntityMapping) {
-      fileCreator.create(join(prjUiSrcPrefixedDir, 'entityMapping.ts'), uiEntityMappingTmpl(args, args.options));
+      fileCreator.create(
+        join(prjUiSrcPrefixedDir, 'entityMapping.ts'),
+        uiEntityMappingTmpl(args, args.options),
+        addWarnings({options: args.options})
+      );
     }
 
     // Menu
     if (args.options.genUiMenu) {
-      fileCreator.create(join(prjUiSrcPrefixedDir, 'getDefaultMenu.ts'), uiGetDefaultMenuTmpl(args));
-      fileCreator.createIfNotExists(join(prjUiSrcPrefixedDir, 'getAdditionalMenu.ts'), uiGetAdditionalMenuTmpl());
+      fileCreator.create(
+        join(prjUiSrcPrefixedDir, 'getDefaultMenu.ts'),
+        uiGetDefaultMenuTmpl(args),
+        addWarnings({options: args.options})
+      );
+      fileCreator.createIfNotExists(
+        join(prjUiSrcPrefixedDir, 'getAdditionalMenu.ts'),
+        uiGetAdditionalMenuTmpl()
+      );
     }
 
     // Routes
     if (args.options.genUiRoutes) {
-      fileCreator.create(join(prjUiSrcPrefixedDir, 'routes.tsx'), uiRoutesTmpl(args));
+      fileCreator.create(
+        join(prjUiSrcPrefixedDir, 'routes.tsx'),
+        uiRoutesTmpl(args),
+        addWarnings({options: args.options})
+      );
     }
 
-    fileCreator.createIfNotExists(join(prjUiSrcPrefixedDir, 'additionalRoutes.tsx'), uiAdditionalRoutesTmpl());
+    fileCreator.createIfNotExists(
+      join(prjUiSrcPrefixedDir, 'additionalRoutes.tsx'),
+      uiAdditionalRoutesTmpl()
+    );
 
     // Functions page
     if (args.options.genUiFunctions) {
-      fileCreator.create(join(prjUiSrcPrefixedDir, 'functions', 'Functions.tsx'), uiFunctionsTmpl(args.options));
+      fileCreator.create(
+        join(prjUiSrcPrefixedDir, 'functions', 'Functions.tsx'),
+        uiFunctionsTmpl(args.options),
+        addWarnings({options: args.options})
+      );
     }
 
     // Dashboard page
     if (args.options.genUiDashboard) {
-      fileCreator.createIfNotExists(join(prjUiSrcPrefixedDir, 'Dashboard.tsx'), uiDashboardTmpl());
+      fileCreator.createIfNotExists(
+        join(prjUiSrcPrefixedDir, 'Dashboard.tsx'),
+        uiDashboardTmpl()
+      );
     }
   }
 }

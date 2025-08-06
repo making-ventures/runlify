@@ -1,13 +1,11 @@
 import {camelSingular, pascalSingular} from '../../../../utils/cases'
 import {ProjectWideGenerationArgs} from '../../../args'
-import {printWarningIfRequired, pad1} from '../../../utils'
+import {pad1} from '../../../utils'
 
 // todo: can delete
 export const backEntitiesEnumTmpl = ({
   entities,
-  options,
-}: ProjectWideGenerationArgs) => `${printWarningIfRequired(options)}
-enum Entity {
+}: ProjectWideGenerationArgs) => `enum Entity {
 ${entities
   .map(
     (entity) =>

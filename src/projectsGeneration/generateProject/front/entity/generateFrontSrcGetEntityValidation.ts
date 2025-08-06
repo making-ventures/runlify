@@ -3,6 +3,7 @@ import {FileCreator} from '../../types'
 import {pascalSingular} from '../../../../utils/cases'
 import {EntityWideGenerationArgs} from '../../../args'
 import {uiGetEntityValidationTmpl} from '../../../generators/fileTemplates/ui/pages/getEntityValidation'
+import {addWarnings} from '../../fileHandlers'
 
 const generateFrontSrcGetEntityValidation = (
   fileCreator: FileCreator,
@@ -17,7 +18,11 @@ const generateFrontSrcGetEntityValidation = (
     `src/adm/pages/${name}/get${pascalSingular(name)}Validation.tsx`
   )
 
-  fileCreator.create(filePath, uiGetEntityValidationTmpl(args))
+  fileCreator.create(
+    filePath,
+    uiGetEntityValidationTmpl(args),
+    addWarnings({options: args.options})
+  )
 }
 
 export default generateFrontSrcGetEntityValidation;

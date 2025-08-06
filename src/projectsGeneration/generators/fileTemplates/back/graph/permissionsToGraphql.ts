@@ -1,8 +1,8 @@
-import {addComma, printWarningIfRequired} from '../../../../utils'
+import {addComma} from '../../../../utils'
 import {ProjectWideGenerationArgs} from '../../../../args'
 
 export const backPermissionToGraphqlTmpl = (
-  { entities, options }: ProjectWideGenerationArgs,
+  {entities}: ProjectWideGenerationArgs,
 ) => `import * as R from 'ramda';
 import {additionalServicesPermissionToGraphql} from './additionalServicesPermissionToGraphql';
 import {MutationResolvers, QueryResolvers} from '../../generated/graphql';
@@ -13,7 +13,7 @@ ${entities.map(
     `import ${m.name}PermissionToGraphql from './services/${m.name}/permissionsToGraphql';`
 ).join(`
 `)}
-${printWarningIfRequired(options)}
+
 type queryKeys = keyof QueryResolvers;
 type mutationKeys = keyof MutationResolvers;
 

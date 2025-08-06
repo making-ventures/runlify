@@ -1,13 +1,9 @@
 import {pascal} from '../../../../../utils/cases'
 import {ProjectWideGenerationArgs} from '../../../../args'
-import {printWarningIfRequired} from '../../../../utils'
 
 const graphBaseServicesTmpl = ({
-  system: {
-    additionalServices,
-  },
+  system: {additionalServices},
   entities,
-  options,
 }: ProjectWideGenerationArgs) => `${entities.map(
   (m) =>
     `import {Additional${pascal(m.name)}Service} from './${pascal(
@@ -20,7 +16,7 @@ const graphBaseServicesTmpl = ({
     )}Service/${pascal(s.name)}Service';\n`
 ).join('')}
 import {HelpService} from './HelpService/HelpService';
-${printWarningIfRequired(options)}
+
 export interface BaseServices {
   help: HelpService;
   ${[

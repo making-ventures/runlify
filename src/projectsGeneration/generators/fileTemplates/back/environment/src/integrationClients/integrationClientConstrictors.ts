@@ -1,14 +1,10 @@
 import {pascal} from '../../../../../../../utils/cases'
 import {ProjectWideGenerationArgs} from '../../../../../../args'
-import {printWarningIfRequired} from '../../../../../../utils'
 
 const genIntegrationClientConstrictorsTmpl = ({
-  system: {
-    integrationClients,
-  },
-  options,
+  system: {integrationClients},
 }: ProjectWideGenerationArgs) => `import {IntegrationClientsConstrictors${integrationClients.length ? ', Context' : '' }} from './types';
-${integrationClients.map(client => `import ${pascal(client.name)}Client from '../../integrationClients/${client.name}/${pascal(client.name)}Client';\n`).join('')}${printWarningIfRequired(options)}
+${integrationClients.map(client => `import ${pascal(client.name)}Client from '../../integrationClients/${client.name}/${pascal(client.name)}Client';\n`).join('')}
 const integrationClientConstrictors: IntegrationClientsConstrictors = ${integrationClients.length ? `{
 ${integrationClients.map(client => `  ${client.name}: (context: Context) => new ${pascal(client.name)}Client(context),`).join('\n')}
 };` : '{};'}

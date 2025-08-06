@@ -1,10 +1,8 @@
 import {pascal} from '../../../../../../../utils/cases'
 import {ProjectWideGenerationArgs} from '../../../../../../args'
-import {printWarningIfRequired} from '../../../../../../utils'
 
 export const uiSpacesContextTmpl = ({
-  system: { prefix },
-  options,
+  system: {prefix},
 }: ProjectWideGenerationArgs) => `import React, {
   createContext,
   memo,
@@ -17,7 +15,7 @@ export const uiSpacesContextTmpl = ({
 import {
   envConfig,
 } from '../config/envConfig';
-${printWarningIfRequired(options)}
+
 export enum Space {
   ${pascal(prefix)} = '${pascal(prefix)}',
   Demo = 'Demo',

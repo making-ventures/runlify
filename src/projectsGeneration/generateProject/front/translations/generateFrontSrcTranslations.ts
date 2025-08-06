@@ -6,6 +6,7 @@ import {uiTranslationsLangCatalogsTmpl} from '../../../generators/fileTemplates/
 import {uiTranslationsLangInfoRegistriesTmpl} from '../../../generators/fileTemplates/ui/i18n/lang/uiLangInfoRegistriesTmpl'
 import {uiTranslationsLangSumRegistriesTmpl} from '../../../generators/fileTemplates/ui/i18n/lang/uiLangSumRegistriesTmpl'
 import {ProjectWideGenerationArgs} from '../../../args'
+import {addWarnings} from '../../fileHandlers'
 
 const generateFrontSrcEntityTranslationsDocs = (
   fileCreator: FileCreator,
@@ -17,7 +18,11 @@ const generateFrontSrcEntityTranslationsDocs = (
       `src/i18n/${lang.id}/${lang.id}Docs.ts`
     )
 
-    fileCreator.create(filePath, uiTranslationsLangDocsTmpl(args, lang.id))
+    fileCreator.create(
+      filePath,
+      uiTranslationsLangDocsTmpl(args, lang.id),
+      addWarnings({options: args.options})
+    )
   }
 }
 
@@ -31,7 +36,11 @@ const generateFrontSrcEntityTranslationsCatalogs = (
       `src/i18n/${lang.id}/${lang.id}Catalogs.ts`
     )
 
-    fileCreator.create(filePath, uiTranslationsLangCatalogsTmpl(args, lang.id))
+    fileCreator.create(
+      filePath,
+      uiTranslationsLangCatalogsTmpl(args, lang.id),
+      addWarnings({options: args.options})
+    )
   }
 }
 
@@ -45,7 +54,11 @@ const generateFrontSrcEntityTranslationsInfoRegistries = (
       `src/i18n/${lang.id}/${lang.id}InfoRegistries.ts`
     )
 
-    fileCreator.create(filePath, uiTranslationsLangInfoRegistriesTmpl(args, lang.id))
+    fileCreator.create(
+      filePath,
+      uiTranslationsLangInfoRegistriesTmpl(args, lang.id),
+      addWarnings({options: args.options})
+    )
   }
 }
 
@@ -59,7 +72,11 @@ const generateFrontSrcEntityTranslationsSumRegistries = (
       `src/i18n/${lang.id}/${lang.id}SumRegistries.ts`
     )
 
-    fileCreator.create(filePath, uiTranslationsLangSumRegistriesTmpl(args, lang.id))
+    fileCreator.create(
+      filePath,
+      uiTranslationsLangSumRegistriesTmpl(args, lang.id),
+      addWarnings({options: args.options})
+    )
   }
 }
 
@@ -73,7 +90,11 @@ const generateFrontSrcEntityTranslationsReports = (
       `src/i18n/${lang.id}/${lang.id}Reports.ts`
     )
 
-    fileCreator.create(filePath, uiTranslationsLangReportsTmpl(args, lang.id))
+    fileCreator.create(
+      filePath,
+      uiTranslationsLangReportsTmpl(args, lang.id),
+      addWarnings({options: args.options})
+    )
   }
 }
 

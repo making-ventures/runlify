@@ -1,11 +1,9 @@
 import {pascalPlural} from '../../../../utils/cases'
 import {ProjectWideGenerationArgs} from '../../../args'
-import {printWarningIfRequired} from '../../../utils'
 import {plural} from 'pluralize'
 
 export const uiResourcesPageTmpl = ({
   entities,
-  options,
 }: ProjectWideGenerationArgs) => {
   return `import React, {
   FC,
@@ -16,7 +14,7 @@ import {
 } from '@apollo/client';
 import {Title, useTranslate} from 'react-admin';
 import Grid from '@mui/material/Grid';
-${printWarningIfRequired(options)}
+
 const ResourcesPage: FC = () => {
   const translate = useTranslate();
 

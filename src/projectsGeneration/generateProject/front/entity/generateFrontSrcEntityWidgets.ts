@@ -4,6 +4,7 @@ import {pascal} from '../../../../utils/cases'
 import {EntityWideGenerationArgs} from '../../../args'
 import {uiListWidgetTmpl} from '../../../generators/fileTemplates/ui/widgets/list/ListWidget'
 import {uiCountWidgetTmpl} from '../../../generators/fileTemplates/ui/widgets/count/CountWidget'
+import {addWarnings} from '../../fileHandlers'
 
 const generateFrontSrcEntityWidgets = (
   fileCreator: FileCreator,
@@ -25,7 +26,8 @@ const generateFrontSrcEntityWidgets = (
 
       fileCreator.create(
         join(countWdgetsDir, `Count${pascal(entity.name)}Widget.tsx`),
-        generatedResources
+        generatedResources,
+        addWarnings({options: args.options})
       );
     }
 
@@ -37,7 +39,8 @@ const generateFrontSrcEntityWidgets = (
 
       fileCreator.create(
         join(listWdgetsDir, `List${pascal(entity.name)}Widget.tsx`),
-        generatedResources
+        generatedResources,
+        addWarnings({options: args.options})
       );
     }
   }

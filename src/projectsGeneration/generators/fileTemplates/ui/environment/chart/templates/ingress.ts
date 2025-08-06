@@ -1,10 +1,5 @@
-import {ProjectWideGenerationArgs} from '../../../../../../args'
-import {printWarningIfRequired} from '../../../../../../utils'
 
-export const uiChartIngressTmpl = ({
-  options,
-}: ProjectWideGenerationArgs) => `${printWarningIfRequired(options, 'hash')}
-apiVersion: networking.k8s.io/v1
+export const uiChartIngressTmpl = () => `apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ $.Values.global.projectName }}-{{ $.Values.global.deployKind }}

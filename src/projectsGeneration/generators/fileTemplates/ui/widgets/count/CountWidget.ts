@@ -1,12 +1,9 @@
 import {pascal, pascalSingular} from '../../../../../../utils/cases'
 import {EntityWideGenerationArgs} from '../../../../../args'
-import {printWarningIfRequired} from '../../../../../utils'
 
 export const uiCountWidgetTmpl = ({
   entity,
-  options,
-}: EntityWideGenerationArgs) => `/* eslint-disable max-len */
-import React, {
+}: EntityWideGenerationArgs) => `import React, {
   FC,
 } from 'react';
 import NumberWidget, {
@@ -16,7 +13,7 @@ import {
   gql,
 } from '@apollo/client';
 import {${pascalSingular(entity.name)}Filter} from '../../../generated/graphql';
-${printWarningIfRequired(options)}
+
 interface Count${pascal(entity.name)}WidgetProps extends
 Omit<NumberWidgetProps, 'request' | 'resultToValue'> {
   filter?: ${pascalSingular(entity.name)}Filter;

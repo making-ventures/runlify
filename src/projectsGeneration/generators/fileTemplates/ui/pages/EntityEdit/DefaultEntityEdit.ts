@@ -6,7 +6,7 @@ import * as R from 'ramda';
 import {Entity, Field, LinkField} from '../../../../../builders/buildedTypes';
 import {getCompNameToEditScalar} from '../../../../ui/componentNames/edit/getCompNameToEditScalar';
 import {EntityWideGenerationArgs} from '../../../../../args';
-import {pad, printWarningIfRequired} from '../../../../../utils'
+import {pad} from '../../../../../utils'
 import {isImageFileRef, isMarkdownField, isMoneyField, isMultilineField, isStringNumberField} from '../../../../../metaUtils';
 import {getFieldLabel} from '../../../../ui/getShowComponent';
 
@@ -229,8 +229,7 @@ export const uiDefaultEditTmpl = ({
 
   const dateFields = fieldsToWorkWith.filter(f => f.requiredOnInput !== false && ['datetime', 'date'].includes(f.type))
 
-  return `/* eslint-disable max-len */
-import React, {FC, useMemo, useCallback} from 'react';
+  return `import React, {FC, useMemo, useCallback} from 'react';
 import {
   ${R.uniq(reactAdminImports.map(el => `${el},`)).join(`
   `)}
@@ -248,7 +247,7 @@ import {LoadingContext} from '../../../../contexts/LoadingContext';${withFileRef
 import {FileInput} from '../../../../uiLib/file/FileInput';` : ''}${isAllowedToChange ? `
 import {AllowedToEdit} from '../../../../uiLib/AllowedToEdit';` : ''}${options.breadcrumb ?
     "\nimport {Breadcrumbs} from '../../../../raUiLib/Breadcrumbs';" : ''}
-${printWarningIfRequired(options)}
+
 const DefaultToolbar = (props: ToolbarProps) => {${entity.removableByUser ? `
   const {permissions} = usePermissions<string[]>();
 ` : ''}
