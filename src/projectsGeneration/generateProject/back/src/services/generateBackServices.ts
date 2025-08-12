@@ -8,6 +8,7 @@ import generateBackEntityService from './generateBackEntityService'
 import generateBackEntityGraph from './generateBackEntityGraph'
 import graphBaseServicesTmpl from '../../../../generators/fileTemplates/back/services/BaseServices'
 import graphServiceConstrictorsTmpl from '../../../../generators/fileTemplates/back/services/serviceConstrictors'
+import {addWarnings} from '../../../fileHandlers'
 
 const generateBackServices = (fileCreator: FileCreator, args: ProjectWideGenerationArgs) => {
   const servicesDir = join(args.options.detachedBackProject, 'src', 'adm', 'services');
@@ -19,9 +20,17 @@ const generateBackServices = (fileCreator: FileCreator, args: ProjectWideGenerat
 
   if (args.options.genContext) {
     // Types
-    fileCreator.create(join(servicesDir, 'BaseServices.ts'), graphBaseServicesTmpl(args));
+    fileCreator.create(
+      join(servicesDir, 'BaseServices.ts'),
+      graphBaseServicesTmpl(args),
+      addWarnings({options: args.options})
+    );
     // Constructors
-    fileCreator.create(join(servicesDir, 'serviceConstrictors.ts'), graphServiceConstrictorsTmpl(args));
+    fileCreator.create(
+      join(servicesDir, 'serviceConstrictors.ts'),
+      graphServiceConstrictorsTmpl(args),
+      addWarnings({options: args.options})
+    );
   }
 }
 

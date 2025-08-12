@@ -1,10 +1,8 @@
 import {pascalCase} from 'change-case'
 import {ProjectWideGenerationArgs} from '../../../../../args'
-import {printWarningIfRequired} from '../../../../../utils'
 
 const uiRoutesTmpl = ({
   system,
-  options,
 }: ProjectWideGenerationArgs) => `import * as React from 'react';
 import {
   Route,
@@ -12,7 +10,7 @@ import {
 import Loadable from '../shared/Loadable';
 import Guard from '../raUiLib/Guard';
 import additionalRoutes from './additionalRoutes';
-${printWarningIfRequired(options)}
+
 const LoadableDashboard = Loadable(() => import('./Dashboard'));
 const LoadableFunctions = Loadable(() => import('./functions/Functions'));
 // const LoadableResourcesPage = Loadable(() => import('./ResourcesPage'));

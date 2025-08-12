@@ -1,12 +1,9 @@
 import {constantCase} from 'change-case'
 import {ProjectWideGenerationArgs} from '../../../../../../args'
-import {printWarningIfRequired} from '../../../../../../utils'
 
 export const chartBackTmpl = ({
   system,
-  options,
-}: ProjectWideGenerationArgs) => `${printWarningIfRequired(options, 'hash')}
-{{- if .Values.back.enabled }}
+}: ProjectWideGenerationArgs) => `{{- if .Values.back.enabled }}
 apiVersion: v1
 kind: Service
 metadata:

@@ -1,12 +1,10 @@
 import {pascalCase} from 'change-case'
 import {pascal} from '../../../../../../utils/cases'
 import {AdditionalServiceWideGenerationArgs} from '../../../../../args'
-import {printWarningIfRequired} from '../../../../../utils'
 import {MethodType} from '../../../../../builders'
 
 export const backAdditionalServiceResolversTmpl = ({
   service,
-  options,
 }: AdditionalServiceWideGenerationArgs) => {
   const modelsToImport = service.methods.filter(method => method.exportedToApi).map(q => q.argsModel).filter(m => m.fields.length);
 
@@ -17,7 +15,7 @@ export const backAdditionalServiceResolversTmpl = ({
   Resolvers,
 } from '../../../../generated/graphql';${modelsToImport.length ? `\nimport {\n${modelsToImport.map(m => `  ${pascalCase(m.name)},\n`).join('')}} from '../../../services/${pascalCase(service.name)}Service/types';` : ''}
 import {Context} from '../../../services/types';
-${printWarningIfRequired(options)}
+
 const resolvers: Resolvers = {
   Query: ${queries.length ? `{
 ${queries.map(m => `    ${service.name}${pascal(m.name)}:

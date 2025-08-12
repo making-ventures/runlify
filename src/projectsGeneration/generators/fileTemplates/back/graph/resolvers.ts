@@ -4,11 +4,9 @@ import {
   camelPlural,
 } from '../../../../../utils/cases'
 import {EntityWideGenerationArgs} from '../../../../args'
-import {printWarningIfRequired} from '../../../../utils'
 
 export const backBaseResolversTmpl = ({
   entity,
-  options,
 }: EntityWideGenerationArgs) => `import {
   QueryAll${pascalPlural(entity.name)}Args,
   Query_All${pascalPlural(entity.name)}MetaArgs,
@@ -24,7 +22,7 @@ export const backBaseResolversTmpl = ({
 }
 } from '../../../../generated/graphql';
 import {Context} from '../../../services/types';
-${printWarningIfRequired(options)}
+
 const queryResolvers: Resolvers = {
   Query: {
     ${pascalSingular(entity.name)}: (_, {id}, {context}: {context: Context}) =>

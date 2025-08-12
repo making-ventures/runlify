@@ -19,6 +19,7 @@ import {uiEntityShowDefaultMainTabTmpl} from '../../../generators/fileTemplates/
 import {uiEntityShowDependencyTabTmpl} from '../../../generators/fileTemplates/ui/pages/EntityShow/DependencyTab'
 import {uiDefaultActionTmpl} from '../../../generators/fileTemplates/ui/pages/EntityShow/DefaultActions'
 import {uiAdditionalTabsTmpl} from '../../../generators/fileTemplates/ui/pages/EntityShow/additionalTabs'
+import {addWarnings} from '../../fileHandlers'
 
 const generateEntityUiShow = (
   fileCreator: FileCreator,
@@ -45,24 +46,33 @@ const generateEntityUiShow = (
 
     // MainTab
     const mainTab = uiEntityShowMainTabTmpl();
-    fileCreator.createIfNotExists(join(entityShowDir, 'MainTab.tsx'), mainTab);
+    fileCreator.createIfNotExists(
+      join(entityShowDir, 'MainTab.tsx'),
+      mainTab
+    );
 
     // DefaultMainTab
     const defaultMainTab = uiEntityShowDefaultMainTabTmpl(
       args
     );
-    fileCreator.create(join(entityShowDir, 'DefaultMainTab.tsx'), defaultMainTab);
+    fileCreator.create(
+      join(entityShowDir, 'DefaultMainTab.tsx'),
+      defaultMainTab,
+      addWarnings({options: args.options})
+    );
 
     // DefaultEntityShow
     fileCreator.create(
       join(entityShowDir, `Default${pascalSingular(entity.name)}Show.tsx`),
-      uiDefaultShowTmpl(args)
+      uiDefaultShowTmpl(args),
+      addWarnings({options: args.options})
     );
 
     // DefaultActions
     fileCreator.create(
       join(entityShowDir, 'DefaultActions.tsx'),
-      uiDefaultActionTmpl(args)
+      uiDefaultActionTmpl(args),
+      addWarnings({options: args.options})
     );
 
     // index
@@ -97,7 +107,11 @@ const generateEntityUiShow = (
         link,
         options
       );
-      fileCreator.create(join(tabsDir, `${componentName}.tsx`), dependencyTab);
+      fileCreator.create(
+        join(tabsDir, `${componentName}.tsx`),
+        dependencyTab,
+        addWarnings({options: args.options})
+      );
     }
   }
 }
@@ -126,7 +140,8 @@ const generateEntityUiCreate = (
         entityCreateDir,
         `Default${pascalSingular(entity.name)}Create.tsx`
       ),
-      uiDefaultCreateTmpl(args)
+      uiDefaultCreateTmpl(args),
+      addWarnings({options: args.options})
     );
     fileCreator.createIfNotExists(
       join(entityCreateDir, 'index.tsx'),
@@ -156,11 +171,12 @@ const generateEntityUiEdit = (
 
     fileCreator.create(
       join(entityEditDir, `Default${pascalSingular(entity.name)}Edit.tsx`),
-      uiDefaultEditTmpl(args)
+      uiDefaultEditTmpl(args),
+      addWarnings({options: args.options})
     );
     fileCreator.createIfNotExists(
       join(entityEditDir, 'index.tsx'),
-      uiEditTmpl(args)
+      uiEditTmpl(args),      
     );
   }
 }
@@ -186,7 +202,8 @@ const generateEntityUiList = (
 
     fileCreator.create(
       join(entityListDir, `Default${pascalSingular(entity.name)}List.tsx`),
-      uiDefaultListTmpl(args)
+      uiDefaultListTmpl(args),
+      addWarnings({options: args.options})
     );
     fileCreator.createIfNotExists(
       join(entityListDir, `${pascalSingular(entity.name)}Filter.tsx`),
@@ -198,7 +215,8 @@ const generateEntityUiList = (
     );
     fileCreator.create(
       join(entityListDir, `Default${pascalSingular(entity.name)}Filter.tsx`),
-      uiDefaultFilterTmpl(args)
+      uiDefaultFilterTmpl(args),
+      addWarnings({options: args.options})
     );
     fileCreator.createIfNotExists(
       join(entityListDir, 'index.tsx'),

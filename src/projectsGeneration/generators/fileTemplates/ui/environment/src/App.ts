@@ -3,7 +3,6 @@ import {
   BootstrapEntityOptions,
   defaultBootstrapEntityOptions,
 } from '../../../../../types'
-import {printWarningIfRequired} from '../../../../../utils'
 
 export const uiAppTmpl = (
   _: ProjectWideGenerationArgs,
@@ -29,7 +28,7 @@ import {routes} from './adm/routes';
 import i18nProvider from './i18nProvider';
 import {BrowserRouter} from 'react-router-dom';
 import {LogoutType} from './authProvider/types';
-${printWarningIfRequired(options)}
+
 onStart();
 
 const App = () => {

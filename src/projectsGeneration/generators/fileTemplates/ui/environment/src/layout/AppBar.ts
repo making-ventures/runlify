@@ -2,7 +2,6 @@ import {
   BootstrapEntityOptions,
   defaultBootstrapEntityOptions,
 } from '../../../../../../types'
-import {printWarningIfRequired} from '../../../../../../utils'
 
 export const uiLayoutAppBarTmpl = (
   options: BootstrapEntityOptions = defaultBootstrapEntityOptions
@@ -13,7 +12,7 @@ import {Link} from 'react-router-dom';
 import UserMenu from './UserMenu/UserMenu';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import {Theme} from '@mui/system';
-${printWarningIfRequired(options)}
+
 const AppBar = (props: any) => {
   const wide = useMediaQuery((theme: Theme) => theme.breakpoints.up('sm'));
 

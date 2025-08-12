@@ -4,14 +4,13 @@ import * as R from 'ramda'
 import {getShowComponent} from '../../../../ui/getShowComponent'
 import {Entity} from '../../../../../builders/buildedTypes'
 import {EntityWideGenerationArgs} from '../../../../../args'
-import {printWarningIfRequired, pad5} from '../../../../../utils'
+import {pad5} from '../../../../../utils'
 import {isImageFileRef, isMarkdownField} from '../../../../../metaUtils'
 import {plural} from 'pluralize'
 
 export const uiDefaultListTmpl = ({
   allEntities,
   entity,
-  options,
 }: EntityWideGenerationArgs) => {
   const fileRefFields = entity.fields.filter(isImageFileRef)
   const withFileRef = fileRefFields.length > 0
@@ -57,8 +56,7 @@ export const uiDefaultListTmpl = ({
     'registrarDepended' in entity &&
     entity.registrarDepended
 
-  return `/* eslint-disable max-len */
-import React, {FC} from 'react';
+  return `import React, {FC} from 'react';
 import {
   ${R.uniq(reactAdminImports).map((s) => s + ',').join(`
   `)}
@@ -83,7 +81,7 @@ import ${pascalSingular(entity.name)}ListBreadcrumbs from './${pascalSingular(en
     ? "\nimport ImageViewField from '../../../../uiLib/file/ImageViewField';"
     : ''
 }
-${printWarningIfRequired(options)}${entity.removableByUser ? `
+${entity.removableByUser ? `
 const DefaultBulkActionButton = (props: BulkActionProps) => {
   const {permissions} = usePermissions<string[]>();
 

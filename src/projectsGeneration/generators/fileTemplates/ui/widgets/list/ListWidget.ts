@@ -1,10 +1,9 @@
 import {pascal, pascalPlural, pascalSingular, sentence} from '../../../../../../utils/cases';
 import {EntityWideGenerationArgs} from '../../../../../args'
-import {printWarningIfRequired, pad1, pad5} from '../../../../../utils'
+import {pad1, pad5} from '../../../../../utils'
 
 export const uiListWidgetTmpl = ({
   entity,
-  options,
 }: EntityWideGenerationArgs) => {
   const fields = entity.fields
     .filter((f) => !f.hidden)
@@ -15,8 +14,7 @@ export const uiListWidgetTmpl = ({
 </div>`
     )
 
-  return `/* eslint-disable max-len */
-import React, {
+  return `import React, {
   FC,
 } from 'react';
 import {
@@ -33,7 +31,7 @@ import {
   ${pascalSingular(entity.name)},
   QueryAll${pascalPlural(entity.name)}Args,
 } from '../../../generated/graphql';
-${printWarningIfRequired(options)}
+
 interface List${pascal(entity.name)}WidgetProps extends
 Omit<ListWidgetProps<${pascalSingular(
     entity.name

@@ -2,10 +2,9 @@ import {
   BootstrapEntityOptions,
   defaultBootstrapEntityOptions,
 } from '../../../../../types'
-import {printWarningIfRequired} from '../../../../../utils'
 
 export const environmentIndexTmpl = (
-  options: BootstrapEntityOptions = defaultBootstrapEntityOptions
+  _options: BootstrapEntityOptions = defaultBootstrapEntityOptions
 ) => `import './tracing'; // Import tracing first to ensure instrumentation is set up
 
 import log from './log';
@@ -14,7 +13,7 @@ import express from 'express';
 import defaultContainer from './adm/services/defaultContainer';
 import initEndpoints from './initEndpoints';
 import expressListEndpoints from 'express-list-endpoints';
-${printWarningIfRequired(options)}
+
 const app = express();
 
 const start = async () => {

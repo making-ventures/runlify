@@ -11,6 +11,7 @@ import {backEntityPermissionToGraphqlTmpl} from '../../../../generators/fileTemp
 import {backEntityAdditionalPermissionToGraphqlTmpl} from '../../../../generators/fileTemplates/back/graph/entityAdditionalPermissionToGraphqlTmpl'
 import {backBasePermissionToGraphqlTmpl} from '../../../../generators/fileTemplates/back/graph/entityBasePermissionToGraphql'
 import {backAdditionalTypesTmpl} from '../../../../generators/fileTemplates/back/graph/additionalTypes'
+import {addWarnings} from '../../../fileHandlers'
 
 const generateBackEntityGraph = (
   fileCreator: FileCreator,
@@ -34,7 +35,8 @@ const generateBackEntityGraph = (
   if (options.genGraphSchema) {
     fileCreator.create(
       join(graphServiceDir, 'baseTypeDefs.ts'),
-      backBaseTypesTmpl(printSchema(genGraphCrudSchema(entity)), options)
+      backBaseTypesTmpl(printSchema(genGraphCrudSchema(entity)), options),
+      addWarnings({options})
     );
 
     fileCreator.createIfNotExists(
@@ -47,27 +49,31 @@ const generateBackEntityGraph = (
     // Graph resolvers
     if (options.genGraphResolvers) {
       fileCreator.create(
-        `${graphServiceDir}/baseResolvers.ts`,
-        backBaseResolversTmpl(args)
+        join(graphServiceDir, 'baseResolvers.ts'),
+        backBaseResolversTmpl(args),
+        addWarnings({options})
       );
       fileCreator.createIfNotExists(
-        `${graphServiceDir}/additionalResolvers.ts`,
+        join(graphServiceDir, 'additionalResolvers.ts'),
         backAdditionalResolversTmpl()
       );
     }
 
     // Permissions
     fileCreator.create(
-      `${graphServiceDir}/permissionsToGraphql.ts`,
-      backEntityPermissionToGraphqlTmpl(args)
+      join(graphServiceDir, 'permissionsToGraphql.ts'),
+      backEntityPermissionToGraphqlTmpl(args),
+      addWarnings({options})
     );
     fileCreator.create(
-      `${graphServiceDir}/basePermissionsToGraphql.ts`,
-      backBasePermissionToGraphqlTmpl(args)
+      join(graphServiceDir, 'basePermissionsToGraphql.ts'),
+      backBasePermissionToGraphqlTmpl(args),
+      addWarnings({options})
     );
     fileCreator.create(
-      `${graphServiceDir}/additionalPermissionsToGraphql.ts`,
-      backEntityAdditionalPermissionToGraphqlTmpl(args)
+      join(graphServiceDir, 'additionalPermissionsToGraphql.ts'),
+      backEntityAdditionalPermissionToGraphqlTmpl(args),
+      addWarnings({options})
     );
   }
 }

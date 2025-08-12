@@ -4,12 +4,11 @@ import {
   defaultBootstrapEntityOptions,
 } from '../../../../../../types'
 import {Entity} from '../../../../../../builders/buildedTypes'
-import {printWarningIfRequired} from '../../../../../../utils'
 import {getKeyField} from '../../../../../../metaUtils'
 
 export const uiDataProviderTmpl = (
   entities: Entity[],
-  options: BootstrapEntityOptions = defaultBootstrapEntityOptions
+  _options: BootstrapEntityOptions = defaultBootstrapEntityOptions
 ) => `import buildGraphQLProvider, {buildQuery as buildQueryFactory} from 'ra-data-graphql-simple';
 import {IntrospectionResult} from 'ra-data-graphql';
 import {DELETE} from 'ra-core';
@@ -21,7 +20,7 @@ import {ApolloClient} from '@apollo/client';
 import getCustomMethods from './getCustomMethods';
 import getAdditionalMethods from './getAdditionalMethods';
 import {DataProvider} from './types';
-${printWarningIfRequired(options)}
+
 const schema = sch.__schema;
 
 const getGqlResource = (resource: string) => {

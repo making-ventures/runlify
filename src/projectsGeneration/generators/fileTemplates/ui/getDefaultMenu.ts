@@ -1,6 +1,6 @@
 import {Entity, MenuItem, MenuItemType} from '../../../builders/buildedTypes'
 import {ProjectWideGenerationArgs} from '../../../args'
-import {printWarningIfRequired, pad2} from '../../../utils'
+import {pad2} from '../../../utils'
 import {plural} from 'pluralize'
 
 const checkHasMenuItemEnv = (item: MenuItem) => {
@@ -87,7 +87,7 @@ export const uiGetDefaultMenuTmpl = ({
     },`
 
   return `import {MenuElement} from '../uiLib/menu/MenuItem';${hasMenuExternalEnv ? "\nimport getConfigByName from '../config/getConfigByName';" : ''}
-${printWarningIfRequired(options)}
+
 const getDefaultMenu = () => {
   const menuData: MenuElement[] = [
 ${system.menuItems.map(i => `${menuItemTmpl(i)},`).map(pad2).join('\n')}${options.showFunctionsInMenu ? `

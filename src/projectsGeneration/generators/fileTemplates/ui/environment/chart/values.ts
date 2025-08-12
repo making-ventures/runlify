@@ -1,11 +1,9 @@
 import {ProjectWideGenerationArgs} from '../../../../../args'
-import {printWarningIfRequired} from '../../../../../utils'
 
 export const uiChartValuesTmpl = ({
   system: { prefix },
   options,
-}: ProjectWideGenerationArgs) => `${printWarningIfRequired(options, 'hash')}
-global:
+}: ProjectWideGenerationArgs) => `global:
   env: noName
   clusterName: noName
   projectName: ${options.k8sChartName || prefix}
