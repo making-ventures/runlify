@@ -5,8 +5,6 @@ set -v
 
 ./check.sh
 
-arg="$@"
-
 namber=$(cat package.json | grep '\"version\": \"' | grep -o '[0-9]*\.[0-9]*\.[0-9]*')
 num1=$(echo -e "$namber" | awk -F"." '{print $1}')
 num2=$(echo -e "$namber" | awk -F"." '{print $2}')
@@ -16,7 +14,7 @@ new_number="$num1.$num2.$num3"
 echo new_number $new_number
 sed -i "s/^  \"version\": \".*\"/  \"version\": \"$new_number\"/" package.json
 
-git commit -am "$arg"
+git commit -am "New version: $new_number"
 git push
 
 npm publish
