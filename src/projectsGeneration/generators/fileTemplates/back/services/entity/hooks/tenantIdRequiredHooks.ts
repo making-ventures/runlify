@@ -1,9 +1,7 @@
 import {EntityWideGenerationArgs} from '../../../../../../args'
 import {pascalPlural, pascalSingular} from '../../../../../../../utils/cases'
-import {printWarningIfRequired} from '../../../../../../utils'
 
 export const tenantIdRequiredHooksTmpl = ({
-  options,
   entity,
 }: EntityWideGenerationArgs): string => {
   if (!['optional', 'required'].includes(entity.multitenancy)) {
@@ -21,7 +19,7 @@ import {
   StrictCreate${pascalSingular(entity.name)}Args,
   StrictUpdate${pascalSingular(entity.name)}Args,
 } from '../${pascalPlural(entity.name)}Service';
-${printWarningIfRequired(options)}
+
 export const changeListFilter = async (
   ctx: Context,
   args: QueryAll${pascalPlural(entity.name)}Args,

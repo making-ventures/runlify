@@ -2,10 +2,9 @@ import {
   BootstrapEntityOptions,
   defaultBootstrapEntityOptions,
 } from '../../../../types'
-import {printWarningIfRequired} from '../../../../utils'
 
 export const uiFunctionsTmpl = (
-  options: BootstrapEntityOptions = defaultBootstrapEntityOptions
+  _options: BootstrapEntityOptions = defaultBootstrapEntityOptions
 ) => {
   return `import React, {
   useCallback,
@@ -17,7 +16,7 @@ import SendIcon from '@mui/icons-material/SendOutlined';
 import {
   gql, useLazyQuery,
 } from '@apollo/client';
-${printWarningIfRequired(options)}
+
 const HELLO = gql\`
   query testHello($name: String!) {
     testHello(name: $name)

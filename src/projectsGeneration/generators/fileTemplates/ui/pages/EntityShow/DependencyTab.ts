@@ -8,14 +8,14 @@ import * as R from 'ramda'
 import {pascal} from '../../../../../../utils/cases'
 import {getShowComponent} from '../../../../ui/getShowComponent'
 import {Entity} from '../../../../../builders/buildedTypes'
-import {addComma, pad4, printWarningIfRequired} from '../../../../../utils'
+import {addComma, pad4} from '../../../../../utils'
 import {isMarkdownField} from "../../../../../metaUtils"
 
 export const uiEntityShowDependencyTabTmpl = (
   allEntities: Map<string, Entity>,
   entity: Entity,
   toLink: LinkedEntities,
-  options: BootstrapEntityOptions = defaultBootstrapEntityOptions
+  _options: BootstrapEntityOptions = defaultBootstrapEntityOptions
 ) => {
   const allEntitiesForImport: Entity[] = [
     entity,
@@ -53,8 +53,7 @@ export const uiEntityShowDependencyTabTmpl = (
     throw new Error(`There is no "${toLink.entityOwnerName}" entity`)
   }
 
-  return `/* eslint-disable max-len */
-import React, {FC} from 'react';
+  return `import React, {FC} from 'react';
 import {
   ${R.uniq(reactAdminImports).map(addComma).join(`
   `)}
@@ -64,7 +63,7 @@ import {
 import DateField from '../../../../../uiLib/DateField';`
       : ''
   }
-${printWarningIfRequired(options)}
+
 const ${pascal(entity.name)}${pascal(
     toLink.fromField.name
   )}Tab: FC<Omit<TabProps, 'children'>> = (props) => {

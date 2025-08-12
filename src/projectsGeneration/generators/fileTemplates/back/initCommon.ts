@@ -1,8 +1,8 @@
 import {singular} from 'pluralize'
 import {pascal} from '../../../../utils/cases'
-import {EntityWideGenerationArgs} from '../../../args'
-import {printWarningIfRequired, pad1, pad2} from '../../../utils'
+import {pad1, pad2} from '../../../utils'
 import * as R from 'ramda'
+import {BootstrapEntityOptions, Entity} from '../../../../types'
 
 export const toTsValue = (value: any): string => {
   switch (typeof value) {
@@ -13,17 +13,14 @@ export const toTsValue = (value: any): string => {
   }
 }
 
-export const initCommonEnumTmpl = ({
-  entity,
-  options,
-}: EntityWideGenerationArgs) => {
+export const initCommonEnumTmpl = (entity: Entity, _options: BootstrapEntityOptions) => {
   const contextName = 'Context'
 
   return `import {${contextName}} from '../../adm/services/types';
 import ${pascal(singular(entity.name))} from '../../types/${pascal(
     singular(entity.name)
   )}';
-${printWarningIfRequired(options)}
+
 const init${pascal(entity.name)} = async (ctx: ${contextName}) => {
   await ctx.service('${entity.name}').createMany([
 ${entity.predefinedElements

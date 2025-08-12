@@ -1,13 +1,12 @@
 import {constantCase} from 'change-case'
 import {ProjectWideGenerationArgs} from '../../../../args'
-import {printWarningIfRequired} from '../../../../utils'
 
 export const uiGitlabCiTmpl = ({
   system: { prefix },
   system,
   options,
 }: ProjectWideGenerationArgs) => `image: node:20
-${printWarningIfRequired(options, 'hash')}
+
 stages:
   - check
   - previous-image

@@ -1,12 +1,9 @@
 import {constantCase} from 'change-case'
 import {ProjectWideGenerationArgs} from '../../../../../../args'
-import {printWarningIfRequired} from '../../../../../../utils'
 
 export const uiChartFrontTmpl = ({
   system,
-  options,
-}: ProjectWideGenerationArgs) => `${printWarningIfRequired(options, 'hash')}
-apiVersion: v1
+}: ProjectWideGenerationArgs) => `apiVersion: v1
 kind: Service
 metadata:
   name: {{ $.Values.global.projectName }}-{{ $.Values.global.deployKind }}

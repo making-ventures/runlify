@@ -6,12 +6,11 @@ import {
 } from '../../../../../../utils/cases'
 import {singular} from 'pluralize'
 import {EntityWideGenerationArgs} from '../../../../../args'
-import {addComma, printWarningIfRequired, newStrBefore, pad} from '../../../../../utils'
+import {addComma, newStrBefore, pad} from '../../../../../utils'
 import {Document} from '../../../../../builders'
 
 export const prismaServiceBaseClassTmpl = ({
   entity,
-  options,
 }: EntityWideGenerationArgs) => {
   const contextName = 'Context'
 
@@ -132,7 +131,7 @@ import config from './config';
 import {configUtils} from '../../../config';
 import {DefinedFieldsInRecord, DefinedRecord, PartialFieldsInRecord} from '../../../types/utils';${additionalImports.length ?
     additionalImports.map(newStrBefore).join('\n') : ''}
-${printWarningIfRequired(options)}${
+${
     entity.type === 'infoRegistry' && entity.period !== 'notPeriodic'
       ? `
 export type Slice${pascalPlural(entity.name)}Filter = QueryAll${pascalPlural(

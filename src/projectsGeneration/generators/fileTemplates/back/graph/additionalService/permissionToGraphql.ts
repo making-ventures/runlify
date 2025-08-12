@@ -1,10 +1,8 @@
 import {pascal} from '../../../../../../utils/cases'
 import {AdditionalServiceWideGenerationArgs} from '../../../../../args'
-import {printWarningIfRequired} from '../../../../../utils'
 
 export const backAdditionalServicePermissionToGraphqlTmpl = ({
   service,
-  options,
 }: AdditionalServiceWideGenerationArgs) =>
   `import ${pascal(
     service.name
@@ -12,7 +10,7 @@ export const backAdditionalServicePermissionToGraphqlTmpl = ({
     service.name
   )}Service/${pascal(service.name)}Service';
 import {PermissionToGraphql} from '../../permissionsToGraphql';
-${printWarningIfRequired(options)}
+
 const ${
     service.name
   }PermissionToGraphql: Partial<PermissionToGraphql<${pascal(

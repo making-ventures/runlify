@@ -1,21 +1,18 @@
 import {singular} from 'pluralize'
 import {pascal} from '../../../../utils/cases'
-import {EntityWideGenerationArgs} from '../../../args'
-import {printWarningIfRequired, pad1} from '../../../utils'
+import {pad1} from '../../../utils'
 import * as R from 'ramda'
 import {toTsValue} from './initCommon'
+import {BootstrapEntityOptions, Entity} from '../../../../types'
 
-export const initDevEnumTmpl = ({
-  entity,
-  options,
-}: EntityWideGenerationArgs) => {
+export const initDevEnumTmpl = (entity: Entity, _options: BootstrapEntityOptions) => {
   const contextName = 'Context'
 
   return `import {${contextName}} from '../../adm/services/types';
 import Dev${pascal(singular(entity.name))} from '../../types/Dev${pascal(
     singular(entity.name)
   )}';
-${printWarningIfRequired(options)}
+
 const initDev${pascal(entity.name)} = async (ctx: ${contextName}) => {
 ${entity.devPerefinedElements
   .map(

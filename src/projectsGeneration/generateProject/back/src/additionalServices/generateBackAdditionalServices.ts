@@ -15,7 +15,11 @@ const generateBackAdditionalServices = (fileCreator: FileCreator, args: ProjectW
   args.additionalServices.forEach((service) =>
     generateBackAdditionalService(fileCreator, prepareAdditionalServiceWideGenerationArgs(args, service))
   );
-  fileCreator.createIfNotExists(join(servicesDir, 'AdditionalServices.ts'), additionalServicesTmpl());
+
+  fileCreator.createIfNotExists(
+    join(servicesDir, 'AdditionalServices.ts'),
+    additionalServicesTmpl()
+  );
 }
 
 export default generateBackAdditionalServices;

@@ -1,7 +1,6 @@
 import {camelCase} from 'change-case'
 
 import {ProjectWideGenerationArgs} from '../../../../../args'
-import {printWarningIfRequired} from '../../../../../utils'
 import {FieldType} from '../../../../../../types'
 
 const getTSTypeForEnvVar = (type: FieldType) => {
@@ -25,10 +24,9 @@ const getTSTypeForEnvVar = (type: FieldType) => {
 
 export const configItemsTmpl = ({
   system,
-  options,
-}: ProjectWideGenerationArgs) => `/* eslint-disable max-len */
-import {EnvVarConfig} from './types';
-${printWarningIfRequired(options)}
+}: ProjectWideGenerationArgs) => 
+`import {EnvVarConfig} from './types';
+
 export interface Config {
   env: string;
   ${system.configVars

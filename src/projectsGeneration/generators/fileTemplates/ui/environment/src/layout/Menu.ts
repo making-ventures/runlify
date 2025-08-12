@@ -2,10 +2,9 @@ import {
   BootstrapEntityOptions,
   defaultBootstrapEntityOptions,
 } from '../../../../../../types'
-import {printWarningIfRequired} from '../../../../../../utils'
 
 export const uiLayoutMenuTmpl = (
-  options: BootstrapEntityOptions = defaultBootstrapEntityOptions
+  _options: BootstrapEntityOptions = defaultBootstrapEntityOptions
 ) => `import * as React from 'react';
 import Box from '@mui/material/Box';
 import {hasPermission} from '../utils/permissions';
@@ -17,7 +16,7 @@ import {
 import getAdditionalMenu from '../adm/getAdditionalMenu';
 import defaultMenu from '../adm/getDefaultMenu';
 import MenuItem from '../uiLib/menu/MenuItem';
-${printWarningIfRequired(options)}
+
 const Menu = () => {
   const [open] = useSidebarState();
   const {permissions} = usePermissions<string[]>();

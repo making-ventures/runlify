@@ -1,13 +1,11 @@
 import {paramCase} from 'change-case'
 import {ProjectWideGenerationArgs} from '../../../../../args'
-import {printWarningIfRequired} from '../../../../../utils'
 
 export const chartValuesTmpl = ({
   system: { prefix },
   system,
   options,
-}: ProjectWideGenerationArgs) => `${printWarningIfRequired(options, 'hash')}
-global:
+}: ProjectWideGenerationArgs) => `global:
   env: noName
   clusterName: noName
   projectName: ${options.k8sChartName || prefix}

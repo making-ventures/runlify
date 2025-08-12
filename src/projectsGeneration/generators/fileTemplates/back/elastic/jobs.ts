@@ -2,7 +2,6 @@ import {Entity, Field} from '../../../../builders'
 import * as R from 'ramda'
 import {pascalSingular} from '../../../../../utils/cases';
 import {defaultBootstrapEntityOptions} from '../../../../types';
-import {printWarningIfRequired} from '../../../../utils';
 
 type GroupedByType = Partial<Record<Field['type'] | 'keyword', string[]>>
 
@@ -41,18 +40,18 @@ const getConstructor = (g: string) => {
   }
 }
 
-const genJobsBlankTmpl = (options = defaultBootstrapEntityOptions) => {
+const genJobsBlankTmpl = (_options = defaultBootstrapEntityOptions) => {
   return `import {ElasticJobs} from './type';
-${printWarningIfRequired(options)}
+
 export const genJobs: ElasticJobs = {};
 `;
 }
 
-export const genJobsDataTmpl = (entities: Entity[], options = defaultBootstrapEntityOptions) => {
+export const genJobsDataTmpl = (entities: Entity[], _options = defaultBootstrapEntityOptions) => {
   return `import Entity from '../../types/Entity';
 import {textFields, keywordFields, integerFields, dateFields, booleanFields} from './utils';
 import {ElasticJobs} from './type';
-${printWarningIfRequired(options)}
+
 export const genJobs: ElasticJobs = {
   ${entities.map((e) => `[Entity.${pascalSingular(e.name)}]: {
     ${Object.entries(getGroupedByType(e)).map(([type, fields]) => `...${getConstructor(type)}([

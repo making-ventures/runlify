@@ -2,15 +2,14 @@ import {
   BootstrapEntityOptions,
   defaultBootstrapEntityOptions,
 } from '../../../../../../types'
-import {printWarningIfRequired} from '../../../../../../utils'
 
 export const prismaGetterTmpl = (
-  options: BootstrapEntityOptions = defaultBootstrapEntityOptions
+  _options: BootstrapEntityOptions = defaultBootstrapEntityOptions
 ) => `import {PrismaClient} from '@prisma/client';
 import {getConfig} from '../config';
 import log from '../log';
 import {addParamsToDatabaseUri} from '../utils/addParamsToPgUri';
-${printWarningIfRequired(options)}
+
 let prisma: PrismaClient | null = null;
 
 export const getPrisma = async (connectionType: 'write' | 'readOnly') => {

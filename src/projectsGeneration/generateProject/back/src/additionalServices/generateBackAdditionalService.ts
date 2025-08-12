@@ -8,6 +8,7 @@ import {backAdditionalServicePermissionToGraphqlTmpl} from '../../../../generato
 import {genGraphAdditionalServiceSchema} from '../../../../generators/graph/genGraphAdditionalServiceSchema'
 import {backAdditionalServiceTypesTmpl} from '../../../../generators/fileTemplates/back/services/additionalService/types'
 import {FileCreator} from '../../../types'
+import {addWarnings} from '../../../fileHandlers'
 
 const generateBackAdditionalService = (
   fileCreator: FileCreator,
@@ -22,7 +23,11 @@ const generateBackAdditionalService = (
   const serviceName = `${pascal(service.name)}Service`;
   const serviceDir = join(prjBackSrcPrefixedDir, 'services', serviceName);
 
-  fileCreator.create(join(serviceDir, 'types.ts'), backAdditionalServiceTypesTmpl(args));
+  fileCreator.create(
+    join(serviceDir, 'types.ts'),
+    backAdditionalServiceTypesTmpl(args),
+    addWarnings({options: args.options})
+  );
 
   // Graph
   const graphServiceDir = join(prjBackSrcPrefixedDir, 'graph', 'services', service.name);
@@ -31,18 +36,27 @@ const generateBackAdditionalService = (
   if (options.genGraphSchema) {
     fileCreator.create(
       join(graphServiceDir, 'typeDefs.ts'),
-      backAdditionalServiceTypeDefsTmpl(printSchema(genGraphAdditionalServiceSchema(service)), options)
+      backAdditionalServiceTypeDefsTmpl(printSchema(genGraphAdditionalServiceSchema(service)), options),
+      addWarnings({options: args.options})
     );
   }
 
   // Graph resolvers
   if (options.genGraphResolvers && !options.typesOnly) {
-    fileCreator.create(`${graphServiceDir}/resolvers.ts`, backAdditionalServiceResolversTmpl(args));
+    fileCreator.create(
+      join(graphServiceDir, 'resolvers.ts'),
+      backAdditionalServiceResolversTmpl(args),
+      addWarnings({options: args.options})
+    );
   }
 
   if (!options.typesOnly) {
     // Permissions
-    fileCreator.create(`${graphServiceDir}/permissionsToGraphql.ts`, backAdditionalServicePermissionToGraphqlTmpl(args));
+    fileCreator.create(
+      join(graphServiceDir, 'permissionsToGraphql.ts'),
+      backAdditionalServicePermissionToGraphqlTmpl(args),
+      addWarnings({options: args.options})
+    );
   }
 }
 

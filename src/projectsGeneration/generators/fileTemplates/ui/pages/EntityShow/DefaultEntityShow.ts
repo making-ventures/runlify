@@ -2,7 +2,7 @@ import {plural} from 'pluralize'
 import {pascal, pascalSingular} from '../../../../../../utils/cases'
 import {EntityWideGenerationArgs} from '../../../../../args'
 import {Entity} from '../../../../../builders'
-import {pad4, printWarningIfRequired} from '../../../../../utils'
+import {pad4} from '../../../../../utils'
 
 const getEntityTitle = (entity: Entity) => {
   switch (entity.type) {
@@ -54,8 +54,7 @@ export const uiDefaultShowTmpl = ({
       )}Tab';`
   )
 
-  return `/* eslint-disable max-len */
-import React, {FC} from 'react';
+  return `import React, {FC} from 'react';
 import {
   Show,
   ShowProps,
@@ -73,7 +72,7 @@ import {additionalTabs} from './additionalTabs';
 import DefaultActions from './DefaultActions';
 import ${getEntityTitle(entity)} from '../../../../raUiLib/${getEntityTitle(entity)}';${options.breadcrumb ?
     "\nimport {Breadcrumbs} from '../../../../raUiLib/Breadcrumbs';" : ''}
-${printWarningIfRequired(options)}
+
 const Default${pascalSingular(
     entity.name
   )}Show: FC<ShowProps> = (props: ShowProps) => {

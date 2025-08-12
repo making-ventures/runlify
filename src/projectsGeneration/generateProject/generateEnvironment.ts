@@ -29,6 +29,7 @@ import {uiCiNotifyTmpl} from '../generators/fileTemplates/ui/environment/ciNotif
 import {ciNotifyTmpl} from '../generators/fileTemplates/back/environment/ciNotify'
 import {uiGetAdditionalMethodsTmpl} from '../generators/fileTemplates/ui/environment/src/dataProvider/getAdditionalMethods'
 import {environmentTracerTmpl} from '../generators/fileTemplates/back/environment/src/tracing'
+import {addWarnings} from './fileHandlers'
 
 export const generateEnvironment = (
   fileCreator: FileCreator,
@@ -54,22 +55,32 @@ export const generateEnvironment = (
 
       fileCreator.create(
         join(clientsFolderDir, 'getPrisma.ts'),
-        prismaGetterTmpl(opts)
+        prismaGetterTmpl(opts),
+        addWarnings({options: opts})
       )
     }
 
     if (opts.corePrismaGetter) {
       const queueFolderDir = join(prjDetachedBackSrcDir, 'clients', 'queue')
 
-      fileCreator.create(join(queueFolderDir, 'getQueue.ts'), getQueueTmpl(opts))
+      fileCreator.create(
+        join(queueFolderDir, 'getQueue.ts'),
+        getQueueTmpl(opts),
+        addWarnings({options: opts})
+      )
     }
 
     // coreIndex
     if (opts.coreIndex) {
       fileCreator.create(
-        join(prjDetachedBackSrcDir, 'index.ts'), environmentIndexTmpl(opts))
+        join(prjDetachedBackSrcDir, 'index.ts'),
+        environmentIndexTmpl(opts),
+        addWarnings({options: opts})
+      )
       fileCreator.createIfNotExists(
-        join(prjDetachedBackSrcDir, 'tracing.ts'), environmentTracerTmpl(opts))
+        join(prjDetachedBackSrcDir, 'tracing.ts'),
+        environmentTracerTmpl(opts)
+      )
     }
 
     // schema.prisma
@@ -80,7 +91,10 @@ export const generateEnvironment = (
         projectWideGenerationArgs
       )
 
-      fileCreator.create(join(prismaFolderDir, 'schema.prisma'), prismaSchema)
+      fileCreator.create(
+        join(prismaFolderDir, 'schema.prisma'),
+        prismaSchema
+      )
 
       if (opts.sharding) {
         const prismaSchema = genPrismaSchemaForEntitiesWithClientAdnDb(
@@ -88,7 +102,10 @@ export const generateEnvironment = (
           true,
         )
 
-        fileCreator.create(join(prismaFolderDir, 'shards', 'schema.prisma'), prismaSchema)
+        fileCreator.create(
+          join(prismaFolderDir, 'shards', 'schema.prisma'),
+          prismaSchema
+        )
       }
     }
 
@@ -98,14 +115,16 @@ export const generateEnvironment = (
     // chart itself
     fileCreator.create(
       join(chartDir, 'Chart.yaml'),
-      chartTmpl(projectWideGenerationArgs)
+      chartTmpl(projectWideGenerationArgs),
+      addWarnings({options: opts, fileType: 'yaml'})
     )
 
     // chart values
     if (opts.genBackChartValues) {
       fileCreator.create(
         join(chartDir, 'values.yaml'),
-        chartValuesTmpl(projectWideGenerationArgs)
+        chartValuesTmpl(projectWideGenerationArgs),
+        addWarnings({options: opts, fileType: 'yaml'})
       )
     }
 
@@ -116,7 +135,8 @@ export const generateEnvironment = (
     if (opts.genBackChartIngress) {
       fileCreator.create(
         join(chartTemplatesDir, 'ingress.yaml'),
-        chartIngressTmpl(projectWideGenerationArgs)
+        chartIngressTmpl(),
+        addWarnings({options: opts, fileType: 'yaml'})
       )
     }
 
@@ -124,7 +144,8 @@ export const generateEnvironment = (
     if (opts.genBackChartBack) {
       fileCreator.create(
         join(chartTemplatesDir, 'back.yaml'),
-        chartBackTmpl(projectWideGenerationArgs)
+        chartBackTmpl(projectWideGenerationArgs),
+        addWarnings({options: opts, fileType: 'yaml'})
       )
     }
 
@@ -132,7 +153,8 @@ export const generateEnvironment = (
     if (opts.genBackGitlabCi) {
       fileCreator.create(
         join(opts.detachedBackProject, '.gitlab-ci.yml'),
-        gitlabCiTmpl(projectWideGenerationArgs)
+        gitlabCiTmpl(projectWideGenerationArgs),
+        addWarnings({options: opts, fileType: 'yaml'})
       )
     }
 
@@ -147,7 +169,8 @@ export const generateEnvironment = (
     // dockerfileTmplBack
     fileCreator.create(
       join(opts.detachedBackProject, 'Dockerfile'),
-      dockerfileTmplBack(projectWideGenerationArgs)
+      dockerfileTmplBack(projectWideGenerationArgs),
+      addWarnings({options: opts, fileType: 'yaml'})
     )
 
     // UI
@@ -156,41 +179,54 @@ export const generateEnvironment = (
     if (opts.genUIApp) {
       fileCreator.create(
         join(prjDetachedUiSrcDir, 'App.tsx'),
-        uiAppTmpl(projectWideGenerationArgs, opts)
+        uiAppTmpl(projectWideGenerationArgs, opts),
+        addWarnings({options: opts})
       )
     }
 
     // layout
     const uiLayoutFolder = join(prjDetachedUiSrcDir, 'layout')
 
-    fileCreator.create(join(uiLayoutFolder, 'Menu.tsx'), uiLayoutMenuTmpl(opts))
+    fileCreator.create(
+      join(uiLayoutFolder, 'Menu.tsx'),
+      uiLayoutMenuTmpl(opts),
+      addWarnings({options: opts})
+    )
 
     if (opts.genUiAppBar) {
-      fileCreator.create(join(uiLayoutFolder, 'AppBar.tsx'), uiLayoutAppBarTmpl(opts))
+      fileCreator.create(
+        join(uiLayoutFolder, 'AppBar.tsx'),
+        uiLayoutAppBarTmpl(opts),
+        addWarnings({options: opts})
+      )
     }
 
     const uiContextsFolder = join(prjDetachedUiSrcDir, 'contexts')
 
     fileCreator.create(
       join(uiContextsFolder, 'SpacesContext.tsx'),
-      uiSpacesContextTmpl(projectWideGenerationArgs)
+      uiSpacesContextTmpl(projectWideGenerationArgs),
+      addWarnings({options: opts})
     )
 
     const uiDataProviderFolder = join(prjDetachedUiSrcDir, 'dataProvider')
     fileCreator.create(
       join(uiDataProviderFolder, 'index.ts'),
-      uiDataProviderTmpl(entities, opts)
+      uiDataProviderTmpl(entities, opts),
+      addWarnings({options: opts})
     )
 
     fileCreator.create(
       join(uiDataProviderFolder, 'getAdditionalMethods.ts'),
-      uiGetAdditionalMethodsTmpl(projectWideGenerationArgs.system.additionalServices, opts)
+      uiGetAdditionalMethodsTmpl(projectWideGenerationArgs.system.additionalServices, opts),
+      addWarnings({options: opts})
     )
 
     const uiI18nProviderFolder = join(prjDetachedUiSrcDir, 'i18nProvider')
     fileCreator.create(
       join(uiI18nProviderFolder, 'index.ts'),
-      uiI18nProviderTmpl(projectWideGenerationArgs, opts)
+      uiI18nProviderTmpl(projectWideGenerationArgs, opts),
+      addWarnings({options: opts})
     )
 
     // chart
@@ -199,13 +235,15 @@ export const generateEnvironment = (
     // chart itself
     fileCreator.create(
       join(uiChartDir, 'Chart.yaml'),
-      uiChartTmpl(projectWideGenerationArgs)
+      uiChartTmpl(projectWideGenerationArgs),
+      addWarnings({options: opts, fileType: 'yaml'})
     )
 
     // chart values
     fileCreator.create(
       join(uiChartDir, 'values.yaml'),
-      uiChartValuesTmpl(projectWideGenerationArgs)
+      uiChartValuesTmpl(projectWideGenerationArgs),
+      addWarnings({options: opts, fileType: 'yaml'})
     )
 
     // chart templates
@@ -215,7 +253,8 @@ export const generateEnvironment = (
     if (opts.genUiChartIngress) {
       fileCreator.create(
         join(uiChartTemplatesDir, 'ingress.yaml'),
-        uiChartIngressTmpl(projectWideGenerationArgs)
+        uiChartIngressTmpl(),
+        addWarnings({options: opts, fileType: 'yaml'})
       )
     }
 
@@ -223,7 +262,8 @@ export const generateEnvironment = (
     if (opts.genUiChartFront) {
       fileCreator.create(
         join(uiChartTemplatesDir, 'front.yaml'),
-        uiChartFrontTmpl(projectWideGenerationArgs)
+        uiChartFrontTmpl(projectWideGenerationArgs),
+        addWarnings({options: opts, fileType: 'yaml'})
       )
     }
 
@@ -231,7 +271,8 @@ export const generateEnvironment = (
     if (opts.genUiGitlabCi) {
       fileCreator.create(
         join(opts.detachedUiProject, '.gitlab-ci.yml'),
-        uiGitlabCiTmpl(projectWideGenerationArgs)
+        uiGitlabCiTmpl(projectWideGenerationArgs),
+        addWarnings({options: opts, fileType: 'yaml'})
       )
     }
 
@@ -246,7 +287,8 @@ export const generateEnvironment = (
     // dockerfileTmplUI
     fileCreator.create(
       join(opts.detachedUiProject, 'Dockerfile'),
-      dockerfileTmplUI(projectWideGenerationArgs)
+      dockerfileTmplUI(projectWideGenerationArgs),
+      addWarnings({options: opts, fileType: 'yaml'})
     )
   }
 }

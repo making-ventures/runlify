@@ -1,10 +1,9 @@
 import {ProjectWideGenerationArgs} from '../../../../../args'
-import {printWarningIfRequired} from '../../../../../utils'
 
 export const chartTmpl = ({
   system: { prefix },
   options,
-}: ProjectWideGenerationArgs): string => `${printWarningIfRequired(options, 'hash')}
+}: ProjectWideGenerationArgs): string => `
 apiVersion: v1
 appVersion: "1.0"
 description: A Helm chart for Kubernetes

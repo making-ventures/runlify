@@ -19,6 +19,7 @@ import {tenantIdRequiredHooksTmpl} from '../../../../generators/fileTemplates/ba
 import {configTmpl} from '../../../../generators/fileTemplates/back/services/entity/config'
 import {prismaServiceBaseClassTmpl} from '../../../../generators/fileTemplates/back/services/entity/class'
 import {prismaAdditionalServiceClassTmpl} from '../../../../generators/fileTemplates/back/services/entity/additionalClass'
+import {addWarnings} from '../../../fileHandlers'
 
 const generateBackEntityService = (
   fileCreator: FileCreator,
@@ -39,17 +40,28 @@ const generateBackEntityService = (
     const additionalServicePath = join(serviceDir, `Additional${serviceName}.ts`);
 
     const additionalClassService = prismaAdditionalServiceClassTmpl(args);
-    fileCreator.createIfNotExists(additionalServicePath, additionalClassService);
+    fileCreator.createIfNotExists(
+      additionalServicePath,
+      additionalClassService
+    );
 
     const generatedClassService = prismaServiceBaseClassTmpl(args);
-    fileCreator.create(servicePath, generatedClassService);
+    fileCreator.create(
+      servicePath,
+      generatedClassService,
+      addWarnings({options: args.options})
+    );
 
     const config = configTmpl(
       args,
       allSumRegistries,
       allInfoRegistries,
     );
-    fileCreator.create(configPath, config);
+    fileCreator.create(
+      configPath,
+      config,
+      addWarnings({options: args.options})
+    );
 
     fileCreator.createIfNotExists(
       join(serviceDir, 'initUserHooks.ts'),
@@ -68,13 +80,15 @@ const generateBackEntityService = (
 
       fileCreator.create(
         join(hooksDir, 'tenantIdRequiredHooks.ts'),
-        tenantIdRequiredHooksTmpl(args)
+        tenantIdRequiredHooksTmpl(args),
+        addWarnings({options: args.options})
       );
     }
 
     fileCreator.create(
       join(serviceDir, 'initBuiltInHooks.ts'),
-      initBuiltInHooksTmpl(args)
+      initBuiltInHooksTmpl(args),
+      addWarnings({options: args.options})
     );
 
     if (!entity.elasticOnly) {
@@ -88,7 +102,7 @@ const generateBackEntityService = (
       );
       fileCreator.createIfNotExists(
         join(hooksDir, 'additionalOperationsOnDelete.ts'),
-        additionalOperationsOnDeleteTmpl(args)
+        additionalOperationsOnDeleteTmpl(args),
       );
     }
 
