@@ -27,7 +27,7 @@ release:
     - git checkout $CI_COMMIT_REF_NAME
     - npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
     - chmod +x ./newVersion.sh
-    - ./newVersion.sh "${CI_COMMIT_MESSAGE:-Автоматическое обновление версии через CI}"
+    - ./newVersion.sh
   when: manual
   only:
     - main
