@@ -30,24 +30,25 @@ export const permissionsToGraphql: Partial<Record<keyof Services, Partial<Permis
   `)}
 };
 
-const flattenPermissionToGraphqlRaw = R.unnest(
-  R.toPairs(permissionsToGraphql)
-    .filter(([, mapping]) => mapping)
-    .map(
-      ([service, mapping]) =>
-        R
-          .toPairs(mapping as Partial<PermissionToGraphql<any>>)
-          .map(
-            ([serviceMethod, graphqlMethod]) => [\`\${service}.\${String(serviceMethod)}\`, graphqlMethod],
-          ),
-    ),
-) as R.KeyValuePair<string, string>[];
+const flattenPermissionToGraphql: Map<string, string> = new Map([])
+const flattenGraphqlToPermission: Map<string, string> = new Map([])
 
-export const flattenPermissionToGraphql = R.fromPairs(flattenPermissionToGraphqlRaw);
+R.keys(permissionsToGraphql).forEach((service) => {
+  const mapping = permissionsToGraphql[service]
+  if (!mapping) return
 
-export const flattenGraphqlToPermission = R.fromPairs(
-  flattenPermissionToGraphqlRaw.map(
-    ([permission, graphql]) => [graphql, permission],
-  ),
-);
+  R.keys(mapping).forEach(serviceMethod => {
+    const graphqlMethod = mapping[serviceMethod]
+    if (!graphqlMethod) return
+
+    const permission = \`\${service}.\${String(serviceMethod)}\`
+
+    flattenPermissionToGraphql.set(permission, graphqlMethod)
+    flattenGraphqlToPermission.set(graphqlMethod, permission)
+  })
+})
+
+export function permissionToGraphql (permission: string):string | undefined {return flattenPermissionToGraphql.get(permission)}
+
+export function graphqlToPermission (graphql: string):string | undefined {return flattenGraphqlToPermission.get(graphql)}
 `
