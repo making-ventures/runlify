@@ -15,7 +15,7 @@ export const uiDefaultFilterTmpl = ({
     .filter((f) => !f.hidden)
     .filter((f) => f.name !== 'id' && f.name !== 'photoId')
 
-  const hasSearch = entity.type === 'catalog' || entity.type === 'document' && entity.searchEnabled
+  const hasSearch = entity.type === 'catalog' || entity.type === 'document' || entity.type === 'infoRegistry' && entity.searchEnabled
 
   const useTranslate = fields.some((f) => {
     const field = getEntityField(entity, f.name);
