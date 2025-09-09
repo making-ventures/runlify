@@ -124,6 +124,9 @@ export const defaultBootstrapEntityOptions = {
   showFunctionsInMenu: true,
   showResourcesInMenu: true,
   showMetaInMenu: true,
+
+  genDockerfileBack: true,
+  genDockerfileUI: true,
 }
 
 export type BootstrapEntityOptions = typeof defaultBootstrapEntityOptions;

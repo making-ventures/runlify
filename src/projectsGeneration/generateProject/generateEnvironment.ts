@@ -167,11 +167,13 @@ export const generateEnvironment = (
     }
 
     // dockerfileTmplBack
+    if (opts.genDockerfileBack) {
     fileCreator.create(
-      join(opts.detachedBackProject, 'Dockerfile'),
-      dockerfileTmplBack(projectWideGenerationArgs),
-      addWarnings({options: opts, fileType: 'yaml'})
-    )
+        join(opts.detachedBackProject, 'Dockerfile'),
+        dockerfileTmplBack(projectWideGenerationArgs),
+        addWarnings({options: opts, fileType: 'yaml'})
+      )
+    }
 
     // UI
     const prjDetachedUiSrcDir = join(opts.detachedUiProject, 'src')
@@ -285,10 +287,12 @@ export const generateEnvironment = (
     }
 
     // dockerfileTmplUI
+    if (opts.genDockerfileUI) {
     fileCreator.create(
       join(opts.detachedUiProject, 'Dockerfile'),
       dockerfileTmplUI(projectWideGenerationArgs),
-      addWarnings({options: opts, fileType: 'yaml'})
-    )
+        addWarnings({options: opts, fileType: 'yaml'})
+      )
+    }
   }
 }
