@@ -26,6 +26,14 @@ export class InfoRegistryBuilder extends BaseSavableEntityBuilder {
     this.options = options ?? defaultRegistryOptions
     this.registrarDepended = registrarDepended
 
+    this.addField('search')
+      .setType('string')
+      .setSearchable(false)
+      .setNotUpdatableByUser("''")
+      .setHidden()
+      .setTitle('Search', 'en')
+      .setTitle('Поиск', 'ru')
+
     if (this.registrarDepended) {
       this.addDimensionLinkField('entities', 'registrarTypeId')
         .setTitles({ ru: 'Тип регистратора', en: 'Registrar type' })
