@@ -12,6 +12,7 @@ export class InfoRegistryBuilder extends BaseSavableEntityBuilder {
   dimensions: FieldBuilder[] = []
   resources: FieldBuilder[] = []
   period: InfoRegistryPeriod = 'notPeriodic'
+  searchEnabled: boolean = false
   options: RegistryOptions
 
   constructor(
@@ -301,5 +302,24 @@ export class InfoRegistryBuilder extends BaseSavableEntityBuilder {
     }
 
     return uniqueConstraints;
+  }
+
+  setSearchEnabled(searchEnabled?: boolean) {
+    this.searchEnabled = searchEnabled ?? false
+    const filed = this.getFieldIfExist('search');
+    
+    if (searchEnabled && !filed) {
+        this.addField('search')
+          .setType('string')
+          .setSearchable(false)
+          .setNotUpdatableByUser("''")
+          .setHidden()
+          .setTitle('Search', 'en')
+          .setTitle('Поиск', 'ru')
+    } else if (!searchEnabled && filed) {
+      this.delField('search')
+    }
+    
+    return this
   }
 }
