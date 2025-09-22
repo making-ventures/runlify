@@ -325,7 +325,7 @@ class SystemMetaBuilder implements MethodsModelsHolder {
     this.addConfigVar('kafka.auth.enabled', 'bool', true, true, 'Включена проверка аутентификации');
     this.addConfigVar('kafka.ssl.enabled', 'bool', true, true, 'Включена работа по ssl');
     this.addConfigVar('kafka.ssl.rejectUnauthorized', 'bool', false, false, 'Запрещать невалидный ssl сертификат');
-    this.addConfigVar('kafka.sasl.mechanism', 'string', false, 'plain', 'SASL mechanism');
+    this.addConfigVar('kafka.sasl.mechanism', 'string', true, 'plain', 'SASL mechanism');
 
     // es
     this.addConfigVar('es.enabled', 'bool', false, false, 'Эластик включен');
