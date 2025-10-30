@@ -127,6 +127,7 @@ export const defaultBootstrapEntityOptions = {
 
   genDockerfileBack: true,
   genDockerfileUI: true,
+  auditableOnlyByUser: false,
 }
 
 export type BootstrapEntityOptions = typeof defaultBootstrapEntityOptions;
