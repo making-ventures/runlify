@@ -28,6 +28,17 @@ yarn run build
 npm publish
 ```
 
+## Publishing custom tag to NPM
+
+```shell
+npm login
+npm whoami
+yarn test
+npm version 0.0.762-update-react-admin.1 --no-git-tag-version
+yarn run build
+npm publish --tag update-react-admin
+```
+
 # License
 
 MIT - see LICENSE
