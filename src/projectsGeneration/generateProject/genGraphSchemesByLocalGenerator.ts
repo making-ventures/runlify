@@ -12,12 +12,16 @@ export const genGraphSchemesByLocalGenerator = async (
   log.info(`detachedBackProject: ${options.detachedBackProject}`);
   log.info(`detachedUiProject: ${options.detachedUiProject}`);
 
-  const command = `yarn ts-node ${path.join(
-    options.detachedBackProject,
-    'src',
-    'gen',
-    'genGQSchemes.ts'
-  )}`;
+  let command = options.graphGeneratorCommand
+
+  if (!command) {
+    command = `yarn ts-node ${path.join(
+      options.detachedBackProject,
+      'src',
+      'gen',
+      'genGQSchemes.ts'
+    )}`;
+  }
   log.info(`command: ${command}`);
 
   await new Promise((resolve, reject) =>

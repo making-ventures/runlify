@@ -128,6 +128,9 @@ export const defaultBootstrapEntityOptions = {
   genDockerfileBack: true,
   genDockerfileUI: true,
   auditableOnlyByUser: false,
+
+  // genGraphSchemesByLocalGenerator: true,
+  graphGeneratorCommand: '' 
 }
 
 export type BootstrapEntityOptions = typeof defaultBootstrapEntityOptions;
