@@ -224,7 +224,7 @@ export class ${serviceName} extends ${extendedType}<
 > {
   logger = configUtils.getLog(${serviceName}.name);
 
-  constructor(public ctx: Context) {
+  constructor(public override ctx: Context) {
     super(ctx,${isSharded ? ` '${camelSingular(entity.name)}'${entity.externalSearchName ? `, 'external${pascal(entity.name)}SearchTracking'` : ''},`
     : entity.elasticOnly ? '' : ` ctx.prisma.${camelSingular(entity.name)},${isExternalSearch ? ` ctx.prisma.external${pascal(entity.name)}SearchTracking,` : ''}`} config);
     initBuiltInHooks(this);
