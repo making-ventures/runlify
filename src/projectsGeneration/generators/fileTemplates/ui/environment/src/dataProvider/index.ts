@@ -15,13 +15,18 @@ import {DELETE} from 'ra-core';
 import gql from 'graphql-tag';
 import {IntrospectionType, IntrospectionSchema} from 'graphql';
 import {mapping} from '../adm/entityMapping';
-import sch from '../generated/graphql.schema.json';
 import {ApolloClient} from '@apollo/client';
 import getCustomMethods from './getCustomMethods';
 import getAdditionalMethods from './getAdditionalMethods';
 import {DataProvider} from './types';
 
-const schema = sch.__schema;
+let schema: any = undefined;
+
+if (import.meta.env.DEV) {
+  const sch = await import('../generated/graphql.schema.json');
+  schema = sch.default.__schema;
+}
+
 
 const getGqlResource = (resource: string) => {
   if (resource in mapping) {

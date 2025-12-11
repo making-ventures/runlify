@@ -36,7 +36,7 @@ import {
 import DateField from '../../../../uiLib/DateField';`
       : ''
   }
-import {Grid} from '@mui/material';${entity.fields.some(isMarkdownField) ? '\nimport ReactMarkdownField from \'../../../../uiLib/ReactMarkdownField\';' : ''}
+import {Grid} from 'shared/Components/Grid';${entity.fields.some(isMarkdownField) ? '\nimport ReactMarkdownField from \'../../../../uiLib/ReactMarkdownField\';' : ''}
 
 const DefaultMainTab: FC<Omit<TabProps, 'children'>> = (props) => {
   return (<Tab {...props}>

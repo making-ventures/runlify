@@ -5,13 +5,14 @@ import {Entity} from "../../../builders";
 import {BootstrapEntityInnerOptions} from "../../../../types";
 
 const imports = `import * as React from 'react';
-import {Resource, Translate} from 'react-admin';
+import {Resource} from 'react-admin';
+import {Translate} from 'shared/type';
 import Loadable from '../shared/Loadable';
 import {hasPermission} from '../utils/permissions';`
 
 function uiResources(_options: BootstrapEntityInnerOptions, chunks: number[]) {
   const imports = chunks.map(num => `import {resourcesChunk${num}} from './resourcesChunk${num}';`).join("\n");
-  return `import {Translate} from 'react-admin';
+  return `import {Translate} from 'shared/type';
 ${imports}
 
 export function getResources(translate: Translate, permissions: string[]) {

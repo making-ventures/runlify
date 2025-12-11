@@ -13,7 +13,7 @@ import {
   gql,
 } from '@apollo/client';
 import {Title, useTranslate} from 'react-admin';
-import Grid from '@mui/material/Grid';
+import {Grid} from 'shared/Components/Grid';
 
 const ResourcesPage: FC = () => {
   const translate = useTranslate();

@@ -237,7 +237,7 @@ import {
 import DateTimeInput from '../../../../uiLib/DateTimeInput';` : ''}${dateFieldsToImport.some(f => f.type === 'date') ? `
 import DateInput from '../../../../uiLib/DateInput';` : ''}${hasHidden ? `
 import {useDebug} from '../../../../contexts/DebugContext';` : ''}
-import {Grid} from '@mui/material';
+import {Grid} from 'shared/Components/Grid';
 import {yupResolver} from '@hookform/resolvers/yup';
 import get${pascalSingular(entity.name)}Validation from '../get${pascalSingular(
   entity.name

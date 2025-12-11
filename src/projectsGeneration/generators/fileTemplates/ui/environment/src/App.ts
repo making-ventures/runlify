@@ -17,7 +17,6 @@ import Login from './layout/Login';
 import dataProviderFactory from './dataProvider';
 import getConfig from './config/config';
 import {getResources} from './adm/resources';
-import Dashboard from './adm/Dashboard';
 import {DebugProvider} from './contexts/DebugContext';
 import getAuthProvider from './authProvider/getAuthProvider';
 import {onStart} from './systemHooks';
@@ -75,7 +74,6 @@ const App = () => {
         <ApolloProvider client={client}>
           <DebugProvider>
             <Admin
-              dashboard={Dashboard}
               dataProvider={dataProvider.current}
               i18nProvider={i18nProvider}
               layout={Layout}

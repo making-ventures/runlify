@@ -32,9 +32,8 @@ export const uiDefaultListTmpl = ({
   )
   const reactAdminImports: string[] = [
     'List',
-    'Datagrid',
+    'DatagridConfigurable',
     'ListProps',
-    // 'BulkActionProps',
     // 'usePermissions',
     // 'BulkDeleteButton',
 
@@ -45,7 +44,6 @@ export const uiDefaultListTmpl = ({
 
   if (entity.removableByUser) {
     reactAdminImports.push(
-      'BulkActionProps',
       'usePermissions',
       'BulkDeleteButton',
     )
@@ -76,6 +74,7 @@ import ${pascalSingular(entity.name)}Filter from './${pascalSingular(
   )}Filter';${entity.removableByUser ? `
 import {hasPermission} from '../../../../utils/permissions';` : ''}
 import ListActions from '../../../../raUiLib/ListActions';
+import {BulkActionProps} from "shared/type";
 import ${pascalSingular(entity.name)}ListBreadcrumbs from './${pascalSingular(entity.name)}ListBreadcrumbs';${
   withFileRef
     ? "\nimport ImageViewField from '../../../../uiLib/file/ImageViewField';"
@@ -110,7 +109,7 @@ const Default${pascalSingular(
         exporter={false}` : ''}
         {...props}
       >
-        <Datagrid
+        <DatagridConfigurable
           rowClick='show'
           bulkActionButtons={${entity.removableByUser ? '<DefaultBulkActionButton />' : 'false'}}
         >
@@ -125,7 +124,7 @@ ${entity.fields
           <RegistrarField label='Registrar' />`
       : ''
   }
-        </Datagrid>
+        </DatagridConfigurable>
       </List>
     </>
   );
