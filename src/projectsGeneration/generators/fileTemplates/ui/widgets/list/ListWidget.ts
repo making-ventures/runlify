@@ -23,7 +23,8 @@ import {
 import {
   Link,
 } from 'react-router-dom';
-import {ListItem, ListItemText} from '@mui/material';
+import {ListItemText} from '@mui/material';
+import {ListItem} from 'shared/Components/ListItem';
 import ListWidget, {
   ListWidgetProps,
 } from '../../../widgets/ListWidget';

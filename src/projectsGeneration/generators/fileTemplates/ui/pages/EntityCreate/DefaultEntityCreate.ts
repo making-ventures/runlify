@@ -72,7 +72,7 @@ import DateInput from '../../../../uiLib/DateInput';`
 import {useDebug} from '../../../../contexts/DebugContext';`
       : ''
   }
-import {Grid} from '@mui/material';
+import {Grid} from 'shared/Components/Grid';
 import {yupResolver} from '@hookform/resolvers/yup';
 import get${pascalSingular(entity.name)}Validation from '../get${pascalSingular(
     entity.name

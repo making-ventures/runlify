@@ -4,7 +4,7 @@ import {
   gql,
   useQuery,
 } from '@apollo/client';
-import {makeStyles, createStyles} from '@mui/styles';
+import {makeStyles, createStyles} from 'shared/mui-styles-adapter';
 
 const useStyles = makeStyles(() => createStyles({
   section: {

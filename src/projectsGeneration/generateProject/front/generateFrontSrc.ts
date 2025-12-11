@@ -17,6 +17,8 @@ import { uiMetaPageTmpl } from '../../generators/fileTemplates/ui/MetaPage'
 import { uiResourcesPageTmpl } from '../../generators/fileTemplates/ui/ResourcesPage'
 import { uiResourcesTmpl } from '../../generators/fileTemplates/ui/resources'
 import {addWarnings} from '../fileHandlers'
+import { uiGetMenuIconsTmpl } from '../../generators/fileTemplates/ui/getMenuIconsTmpl'
+import { uiGetAdditionalMenuIconsTmpl } from '../../generators/fileTemplates/ui/getAdditionalMenuIconsTmp'
 
 const generateFrontSrc = (fileCreator: FileCreator, args: ProjectWideGenerationArgs) => {
   args.entities.forEach((entity) => {
@@ -83,6 +85,15 @@ const generateFrontSrc = (fileCreator: FileCreator, args: ProjectWideGenerationA
       fileCreator.createIfNotExists(
         join(prjUiSrcPrefixedDir, 'getAdditionalMenu.ts'),
         uiGetAdditionalMenuTmpl()
+      );
+      fileCreator.create(
+        join(args.options.detachedUiProject, 'src', 'uiLib', 'menu', 'menuIcons.ts'),
+        uiGetMenuIconsTmpl(args),
+        addWarnings({options: args.options})
+      )
+      fileCreator.createIfNotExists(
+        join(prjUiSrcPrefixedDir, 'additionalMenuIcons.ts'),
+        uiGetAdditionalMenuIconsTmpl()
       );
     }
 
