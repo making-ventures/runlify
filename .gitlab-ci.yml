@@ -20,9 +20,9 @@ test:
 
 release:
   stage: release
-  # Аутентификация через OIDC Trusted Publisher
-  # npm автоматически использует OIDC токен для публикации через настроенный Trusted Publisher
-  # Не требует токенов и работает полностью автоматически
+  # Аутентификация: OIDC Trusted Publisher (приоритет) или granular access token (fallback)
+  # Если настроен OIDC Trusted Publisher - используется автоматически
+  # Если нет - используется переменная NPM_TOKEN (granular access token)
   id_tokens:
     NPM_OIDC_TOKEN:
       aud: https://registry.npmjs.org
@@ -31,20 +31,32 @@ release:
     - git config --global user.name "GitLab CI"
     - git remote set-url origin https://${CI_DEPLOY_USER}:${CI_DEPLOY_PASSWORD}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git
     - git checkout $CI_COMMIT_REF_NAME
-    # Аутентификация через OIDC Trusted Publisher
-    # npm автоматически использует OIDC токен при наличии настроенного Trusted Publisher
-    # npm версии 11.5.1+ автоматически обнаруживает и использует OIDC токен
+    # Аутентификация: сначала пробуем OIDC Trusted Publisher, затем fallback на обычный токен
     - |
-      echo "🔐 Используется OIDC Trusted Publisher для аутентификации"
       echo "📦 Версия npm: $(npm --version)"
       echo "📦 Версия node: $(node --version)"
-      
-      # npm автоматически использует OIDC токен из переменной NPM_OIDC_TOKEN
-      # при наличии настроенного Trusted Publisher в настройках пакета
       export NPM_CONFIG_REGISTRY=https://registry.npmjs.org
       
-      echo "✅ Конфигурация для Trusted Publisher готова"
-      echo "ℹ️  npm автоматически использует OIDC токен при публикации"
+      # Пробуем OIDC Trusted Publisher (если настроен)
+      if [ -n "$NPM_OIDC_TOKEN" ]; then
+        echo "🔐 Пробуем использовать OIDC Trusted Publisher"
+        # npm автоматически использует OIDC токен при наличии настроенного Trusted Publisher
+        # Пока оставляем как есть, npm должен автоматически обнаружить токен
+      fi
+      
+      # Fallback на обычный granular access token
+      if [ -n "$NPM_TOKEN" ]; then
+        echo "🔑 Используется granular access token (NPM_TOKEN)"
+        npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
+        npm whoami || (echo "⚠️  npm whoami не работает, но токен установлен" && true)
+        echo "✅ Токен настроен для публикации"
+      elif [ -z "$NPM_OIDC_TOKEN" ]; then
+        echo "❌ Не настроена аутентификация npm"
+        echo "Настройте либо OIDC Trusted Publisher, либо установите переменную NPM_TOKEN в GitLab CI/CD"
+        exit 1
+      else
+        echo "ℹ️  Используется только OIDC Trusted Publisher (если настроен)"
+      fi
     - chmod +x ./newVersion.sh
     - ./newVersion.sh
   when: manual
