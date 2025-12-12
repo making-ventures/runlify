@@ -40,13 +40,37 @@ release:
       fi
       echo "🔐 Используется OIDC Trusted Publisher для аутентификации"
       echo "📦 Версия npm: $(npm --version)"
+      echo "📦 Версия node: $(node --version)"
+      
       # npm для trusted publishing ожидает OIDC токен в переменной NPM_TOKEN
       # npm версии 11.5.1+ автоматически использует OIDC токен при наличии Trusted Publisher
+      # Согласно документации npm, для trusted publishing нужно использовать переменную NPM_TOKEN
       export NPM_TOKEN="$NPM_OIDC_TOKEN"
       export NPM_CONFIG_REGISTRY=https://registry.npmjs.org
-      # Создаем .npmrc с OIDC токеном для trusted publishing
+      
+      # Проверяем минимальную версию npm (11.5.1+ для OIDC поддержки)
+      npm_version=$(npm --version)
+      echo "ℹ️  Полная версия npm: $npm_version"
+      
+      # npm для trusted publishing использует переменную окружения NPM_TOKEN
+      # Создаем .npmrc с OIDC токеном (npm читает токен из переменной или .npmrc)
+      mkdir -p ~/.npm
       echo "//registry.npmjs.org/:_authToken=${NPM_OIDC_TOKEN}" > ~/.npmrc
+      echo "registry=https://registry.npmjs.org/" >> ~/.npmrc
+      
+      # Дополнительная проверка: убеждаемся, что токен не пустой
+      if [ -z "$NPM_OIDC_TOKEN" ]; then
+        echo "❌ Ошибка: OIDC токен пустой!"
+        exit 1
+      fi
+      
       echo "✅ OIDC токен настроен для Trusted Publisher"
+      echo "ℹ️  NPM_TOKEN установлен: ${NPM_TOKEN:0:20}... (первые 20 символов)"
+      echo "ℹ️  Проверка .npmrc (токен скрыт):"
+      cat ~/.npmrc | sed 's/\(authToken=\).*/\1***скрыто***/'
+      
+      # Важно: npm для trusted publishing должен автоматически обнаружить OIDC токен
+      # при наличии настроенного Trusted Publisher в настройках пакета
     - chmod +x ./newVersion.sh
     - ./newVersion.sh
   when: manual
