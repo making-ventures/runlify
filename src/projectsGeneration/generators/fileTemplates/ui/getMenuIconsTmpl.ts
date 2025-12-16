@@ -1,13 +1,16 @@
 import { ProjectWideGenerationArgs } from '../../../args'
-import { MenuItemType } from '../../../builders'
+import { MenuItem, MenuItemType } from '../../../builders'
+
+function resolveMenuItems(item: MenuItem): string[] {
+  if (item.itemType === MenuItemType.Group) {
+    return [item.materialUiIcon, ...item.items.flatMap(resolveMenuItems)]
+  }
+  
+  return [item.materialUiIcon]
+}
 
 export const uiGetMenuIconsTmpl = (args: ProjectWideGenerationArgs) => {
-  const icons = args.system.menuItems
-    .flatMap((item) =>
-      item.itemType === MenuItemType.Group ? item.items ?? [] : [item]
-    )
-    .map(({ materialUiIcon }) => materialUiIcon)
-    .filter((icon): icon is string => typeof icon === 'string' && !!icon.trim())
+  const icons = args.system.menuItems.flatMap(resolveMenuItems)
 
   const uniqueIcons = [...new Set([...icons, 'DetailsOutlined'])]
 
@@ -21,11 +24,10 @@ export const uiGetMenuIconsTmpl = (args: ProjectWideGenerationArgs) => {
 
 import {type SvgIconComponent} from '@mui/icons-material';
 ${imports}
-
 export const menuIcons = {
   ...additionalMenuIcons,
-  ${iconsObject}
-} as const satisfies Record<string, SvgIconComponent>
+${iconsObject}
+} as const
 
 export type MuiMenuIconName = keyof typeof menuIcons;
 
