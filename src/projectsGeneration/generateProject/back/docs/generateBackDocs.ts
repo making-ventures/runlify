@@ -108,7 +108,10 @@ const generateBackDocs = (fileCreator: FileCreator, args: ProjectWideGenerationA
   generateBackDocsRestApis(fileCreator, args);
   generateBackDocsIntegrationClients(fileCreator, args);
   generateBackDocsEntities(fileCreator, args);
-  generateAdminAppDocsConfiguration(fileCreator, args);
+
+  if (args.options.genFrontend !== false) {
+    generateAdminAppDocsConfiguration(fileCreator, args);
+  }
 }
 
 export default generateBackDocs;
