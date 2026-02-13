@@ -176,6 +176,7 @@ export const generateEnvironment = (
     }
 
     // UI
+    if (opts.genFrontend) {
     const prjDetachedUiSrcDir = join(opts.detachedUiProject, 'src')
 
     if (opts.genUIApp) {
@@ -294,5 +295,6 @@ export const generateEnvironment = (
         addWarnings({options: opts, fileType: 'yaml'})
       )
     }
+    } // end genFrontend
   }
 }

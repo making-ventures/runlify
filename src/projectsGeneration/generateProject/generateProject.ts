@@ -38,7 +38,9 @@ const generateProject = async (
 
   const args = prepareProjectWideGenerationArgs(system, opts);
 
-  cleanFiles(args);
+  if (opts.genFrontend) {
+    cleanFiles(args);
+  }
 
   // Pre grapgql types compose generation
   generateBack(fileCreator, {...args, options: {...args.options, typesOnly: true}});
@@ -51,7 +53,9 @@ const generateProject = async (
   // Full generation
   generateBack(fileCreator, args);
 
-  generateFront(fileCreator, args);
+  if (opts.genFrontend) {
+    generateFront(fileCreator, args);
+  }
 
   generateEnvironment(fileCreator, args);
 

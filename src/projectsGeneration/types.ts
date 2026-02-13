@@ -125,6 +125,8 @@ export const defaultBootstrapEntityOptions = {
   showResourcesInMenu: true,
   showMetaInMenu: true,
 
+  genFrontend: true,
+
   genDockerfileBack: true,
   genDockerfileUI: true,
   auditableOnlyByUser: false,

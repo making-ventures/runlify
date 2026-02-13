@@ -21,8 +21,9 @@ module.exports = {
   name: 'regenerate',
   alias: ['regen'],
   run: async (toolbox: GluegunToolbox) => {
-    const {filesystem} = toolbox
+    const {filesystem, parameters} = toolbox
 
+    const backOnly = parameters.options.backOnly || parameters.options['back-only']
 
     const metaPath = 'src/meta/metadata.json';
     const optionsPath = 'src/meta/options.json';
@@ -32,6 +33,10 @@ module.exports = {
 
     const meta = JSON.parse(metaJson);
     const options = JSON.parse(optionsJson);
+
+    if (backOnly) {
+      options.genFrontend = false
+    }
 
     // const validateMeta = (system: System): ValidationMessage[] => {
     //   return [

@@ -46,23 +46,25 @@ export const genGraphSchemesByLocalGenerator = async (
     )
   )
 
-  await fs.copyFile(
-    path.join(options.detachedBackProject, 'src', 'generated', 'graphql.ts'),
-    path.join(options.detachedUiProject, 'src', 'generated', 'graphql.ts')
-  )
-
-  await fs.copyFile(
-    path.join(
-      options.detachedBackProject,
-      'src',
-      'generated',
-      'graphql.schema.json'
-    ),
-    path.join(
-      options.detachedUiProject,
-      'src',
-      'generated',
-      'graphql.schema.json'
+  if (options.genFrontend) {
+    await fs.copyFile(
+      path.join(options.detachedBackProject, 'src', 'generated', 'graphql.ts'),
+      path.join(options.detachedUiProject, 'src', 'generated', 'graphql.ts')
     )
-  )
+
+    await fs.copyFile(
+      path.join(
+        options.detachedBackProject,
+        'src',
+        'generated',
+        'graphql.schema.json'
+      ),
+      path.join(
+        options.detachedUiProject,
+        'src',
+        'generated',
+        'graphql.schema.json'
+      )
+    )
+  }
 }
