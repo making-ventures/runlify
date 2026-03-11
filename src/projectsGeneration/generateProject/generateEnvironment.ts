@@ -46,70 +46,73 @@ export const generateEnvironment = (
     allEntities.set(entity.name, entity)
   }
 
-  if (opts.detachedBackProject) {
-    const prjDetachedBackSrcDir = join(opts.detachedBackProject, 'src')
+  const prjDetachedBackSrcDir = join(opts.detachedBackProject, 'src')
 
-    // corePrismaGetter
-    if (opts.corePrismaGetter) {
-      const clientsFolderDir = join(prjDetachedBackSrcDir, 'clients')
+  // corePrismaGetter
+  if (opts.corePrismaGetter) {
+    const clientsFolderDir = join(prjDetachedBackSrcDir, 'clients')
 
-      fileCreator.create(
-        join(clientsFolderDir, 'getPrisma.ts'),
-        prismaGetterTmpl(opts),
-        addWarnings({options: opts})
-      )
-    }
+    fileCreator.create(
+      join(clientsFolderDir, 'getPrisma.ts'),
+      prismaGetterTmpl(opts),
+      addWarnings({options: opts})
+    )
+  }
 
-    if (opts.corePrismaGetter) {
-      const queueFolderDir = join(prjDetachedBackSrcDir, 'clients', 'queue')
+  if (opts.corePrismaGetter) {
+    const queueFolderDir = join(prjDetachedBackSrcDir, 'clients', 'queue')
 
-      fileCreator.create(
-        join(queueFolderDir, 'getQueue.ts'),
-        getQueueTmpl(opts),
-        addWarnings({options: opts})
-      )
-    }
+    fileCreator.create(
+      join(queueFolderDir, 'getQueue.ts'),
+      getQueueTmpl(opts),
+      addWarnings({options: opts})
+    )
+  }
 
-    // coreIndex
-    if (opts.coreIndex) {
-      fileCreator.create(
-        join(prjDetachedBackSrcDir, 'index.ts'),
-        environmentIndexTmpl(opts),
-        addWarnings({options: opts})
-      )
-      fileCreator.createIfNotExists(
-        join(prjDetachedBackSrcDir, 'tracing.ts'),
-        environmentTracerTmpl(opts)
-      )
-    }
+  // coreIndex
+  if (opts.coreIndex) {
+    fileCreator.create(
+      join(prjDetachedBackSrcDir, 'index.ts'),
+      environmentIndexTmpl(opts),
+      addWarnings({options: opts})
+    )
+    fileCreator.createIfNotExists(
+      join(prjDetachedBackSrcDir, 'tracing.ts'),
+      environmentTracerTmpl(opts)
+    )
+  }
 
-    // schema.prisma
-    if (opts.genPrismaSchema) {
-      const prismaFolderDir = join(opts.detachedBackProject, 'prisma')
+  // schema.prisma
+  if (opts.genPrismaSchema) {
+    const prismaFolderDir = join(opts.detachedBackProject, 'prisma')
 
+    const prismaSchema = genPrismaSchemaForEntitiesWithClientAdnDb(
+      projectWideGenerationArgs
+    )
+
+    fileCreator.create(
+      join(prismaFolderDir, 'schema.prisma'),
+      prismaSchema
+    )
+
+    if (opts.sharding) {
       const prismaSchema = genPrismaSchemaForEntitiesWithClientAdnDb(
-        projectWideGenerationArgs
+        projectWideGenerationArgs,
+        true,
       )
 
       fileCreator.create(
-        join(prismaFolderDir, 'schema.prisma'),
+        join(prismaFolderDir, 'shards', 'schema.prisma'),
         prismaSchema
       )
-
-      if (opts.sharding) {
-        const prismaSchema = genPrismaSchemaForEntitiesWithClientAdnDb(
-          projectWideGenerationArgs,
-          true,
-        )
-
-        fileCreator.create(
-          join(prismaFolderDir, 'shards', 'schema.prisma'),
-          prismaSchema
-        )
-      }
     }
+  }
 
-    // chart
+
+
+  // chart back
+  if (opts.genBackChartBack) {
+     // chart
     const chartDir = join(opts.detachedBackProject, 'chart')
 
     // chart itself
@@ -118,7 +121,6 @@ export const generateEnvironment = (
       chartTmpl(projectWideGenerationArgs),
       addWarnings({options: opts, fileType: 'yaml'})
     )
-
     // chart values
     if (opts.genBackChartValues) {
       fileCreator.create(
@@ -139,44 +141,41 @@ export const generateEnvironment = (
         addWarnings({options: opts, fileType: 'yaml'})
       )
     }
-
-    // chart back
-    if (opts.genBackChartBack) {
-      fileCreator.create(
-        join(chartTemplatesDir, 'back.yaml'),
-        chartBackTmpl(projectWideGenerationArgs),
-        addWarnings({options: opts, fileType: 'yaml'})
-      )
-    }
-
-    // gitlab-ci
-    if (opts.genBackGitlabCi) {
-      fileCreator.create(
-        join(opts.detachedBackProject, '.gitlab-ci.yml'),
-        gitlabCiTmpl(projectWideGenerationArgs),
-        addWarnings({options: opts, fileType: 'yaml'})
-      )
-    }
-
-    // ci-notify
-    if (opts.genBackCiNotify) {
-      fileCreator.create(
-        join(opts.detachedBackProject, 'ci-notify.sh'),
-        ciNotifyTmpl(projectWideGenerationArgs)
-      )
-    }
-
-    // dockerfileTmplBack
-    if (opts.genDockerfileBack) {
     fileCreator.create(
-        join(opts.detachedBackProject, 'Dockerfile'),
-        dockerfileTmplBack(projectWideGenerationArgs),
-        addWarnings({options: opts, fileType: 'yaml'})
-      )
-    }
+      join(chartTemplatesDir, 'back.yaml'),
+      chartBackTmpl(projectWideGenerationArgs),
+      addWarnings({options: opts, fileType: 'yaml'})
+    )
+  }
 
-    // UI
-    if (opts.genFrontend) {
+  // gitlab-ci
+  if (opts.genBackGitlabCi) {
+    fileCreator.create(
+      join(opts.detachedBackProject, '.gitlab-ci.yml'),
+      gitlabCiTmpl(projectWideGenerationArgs),
+      addWarnings({options: opts, fileType: 'yaml'})
+    )
+  }
+
+  // ci-notify
+  if (opts.genBackCiNotify) {
+    fileCreator.create(
+      join(opts.detachedBackProject, 'ci-notify.sh'),
+      ciNotifyTmpl(projectWideGenerationArgs)
+    )
+  }
+
+  // dockerfileTmplBack
+  if (opts.genDockerfileBack) {
+  fileCreator.create(
+      join(opts.detachedBackProject, 'Dockerfile'),
+      dockerfileTmplBack(projectWideGenerationArgs),
+      addWarnings({options: opts, fileType: 'yaml'})
+    )
+  }
+
+  // UI
+  if (opts.genFrontend) {
     const prjDetachedUiSrcDir = join(opts.detachedUiProject, 'src')
 
     if (opts.genUIApp) {
@@ -232,42 +231,40 @@ export const generateEnvironment = (
       addWarnings({options: opts})
     )
 
-    // chart
-    const uiChartDir = join(opts.detachedUiProject, 'chart')
-
-    // chart itself
-    fileCreator.create(
-      join(uiChartDir, 'Chart.yaml'),
-      uiChartTmpl(projectWideGenerationArgs),
-      addWarnings({options: opts, fileType: 'yaml'})
-    )
-
-    // chart values
-    fileCreator.create(
-      join(uiChartDir, 'values.yaml'),
-      uiChartValuesTmpl(projectWideGenerationArgs),
-      addWarnings({options: opts, fileType: 'yaml'})
-    )
-
-    // chart templates
-    const uiChartTemplatesDir = join(uiChartDir, 'templates')
-
-    // chart ingress
-    if (opts.genUiChartIngress) {
-      fileCreator.create(
-        join(uiChartTemplatesDir, 'ingress.yaml'),
-        uiChartIngressTmpl(),
-        addWarnings({options: opts, fileType: 'yaml'})
-      )
-    }
-
     // chart front
     if (opts.genUiChartFront) {
+      // chart
+      const uiChartDir = join(opts.detachedUiProject, 'chart')
+
+      // chart itself
+      fileCreator.create(
+        join(uiChartDir, 'Chart.yaml'),
+        uiChartTmpl(projectWideGenerationArgs),
+        addWarnings({options: opts, fileType: 'yaml'})
+      )
+      // chart values
+      fileCreator.create(
+        join(uiChartDir, 'values.yaml'),
+        uiChartValuesTmpl(projectWideGenerationArgs),
+        addWarnings({options: opts, fileType: 'yaml'})
+      )
+
+      // chart templates
+      const uiChartTemplatesDir = join(uiChartDir, 'templates')
+
       fileCreator.create(
         join(uiChartTemplatesDir, 'front.yaml'),
         uiChartFrontTmpl(projectWideGenerationArgs),
         addWarnings({options: opts, fileType: 'yaml'})
-      )
+      ) 
+      // chart ingress
+      if (opts.genUiChartIngress) {
+        fileCreator.create(
+          join(uiChartTemplatesDir, 'ingress.yaml'),
+          uiChartIngressTmpl(),
+          addWarnings({options: opts, fileType: 'yaml'})
+        )
+      }
     }
 
     // gitlab-ci
@@ -295,6 +292,5 @@ export const generateEnvironment = (
         addWarnings({options: opts, fileType: 'yaml'})
       )
     }
-    } // end genFrontend
-  }
+  } // end genFrontend
 }
