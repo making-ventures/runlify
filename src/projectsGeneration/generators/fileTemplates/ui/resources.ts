@@ -2,7 +2,7 @@ import {plural} from "pluralize";
 import {pascalSingular} from "../../../../utils/cases";
 import {ProjectWideGenerationArgs} from "../../../args";
 import {Entity} from "../../../builders";
-import {BootstrapEntityInnerOptions} from "../../../../types";
+import {BootstrapEntityOptions} from "../../../../types";
 
 const imports = `import * as React from 'react';
 import {Resource} from 'react-admin';
@@ -10,7 +10,7 @@ import {Translate} from 'shared/type';
 import Loadable from '../shared/Loadable';
 import {hasPermission} from '../utils/permissions';`
 
-function uiResources(_options: BootstrapEntityInnerOptions, chunks: number[]) {
+function uiResources(_options: BootstrapEntityOptions, chunks: number[]) {
   const imports = chunks.map(num => `import {resourcesChunk${num}} from './resourcesChunk${num}';`).join("\n");
   return `import {Translate} from 'shared/type';
 ${imports}
@@ -34,7 +34,7 @@ export function uiResourcesTmpl({entities, options}: ProjectWideGenerationArgs) 
   }
 }
 
-function genChunk(_options: BootstrapEntityInnerOptions, num: number, entities: Entity[]) {
+function genChunk(_options: BootstrapEntityOptions, num: number, entities: Entity[]) {
   return `${imports}
 
 ${entities.map((m) => `const Loadable${pascalSingular(m.name)}Show = Loadable(() => import('./pages/${m.name}/${pascalSingular(m.name)}Show'));${m.updatableByUser ? `

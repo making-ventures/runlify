@@ -1,11 +1,11 @@
 import * as path from 'path'
 import fs from 'fs-extra'
 import {exec} from 'child_process'
-import {BootstrapEntityInnerOptions} from '../types'
+import {BootstrapEntityOptions} from '../types'
 import log from '../../log'
 
 export const genGraphSchemesByLocalGenerator = async (
-  options: BootstrapEntityInnerOptions
+  options: BootstrapEntityOptions
 ) => {
   // yarn ts-node src/gen/genGQSchemes.ts
 

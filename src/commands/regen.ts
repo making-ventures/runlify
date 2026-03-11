@@ -1,5 +1,7 @@
 import {GluegunToolbox} from 'gluegun'
-import {generateProject} from '../projectsGeneration';
+import {BootstrapEntityOptions, generateProject, System} from '../projectsGeneration';
+import {cwd} from 'fs-jetpack'
+import {join} from 'path'
 
 export enum ValidationLevel {
   Error = 'error',
@@ -31,12 +33,24 @@ module.exports = {
     const metaJson = filesystem.read(metaPath) || '{}';
     const optionsJson = filesystem.read(optionsPath) || '{}';
 
-    const meta = JSON.parse(metaJson);
-    const options = JSON.parse(optionsJson);
+    const meta = JSON.parse(metaJson) as System; // TODO парсить валидатором в заданную структуру
+    const options = JSON.parse(optionsJson) as BootstrapEntityOptions; // TODO парсить валидатором в заданную структуру
 
     if (backOnly) {
       options.genFrontend = false
     }
+
+    if (!options.detachedBackProject) {
+      options.detachedBackProject = `${options.projectPrefix}-back`;
+    }
+    if (!options.detachedUiProject) {
+      options.detachedUiProject = `${options.projectPrefix}-ui`;
+    }
+
+    const dir = cwd('..').cwd();
+
+    options.detachedBackProject = join(dir, options.detachedBackProject);
+    options.detachedUiProject = join(dir, options.detachedUiProject);
 
     // const validateMeta = (system: System): ValidationMessage[] => {
     //   return [

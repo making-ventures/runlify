@@ -132,12 +132,13 @@ export const defaultBootstrapEntityOptions = {
   auditableOnlyByUser: false,
 
   // genGraphSchemesByLocalGenerator: true,
-  graphGeneratorCommand: '' 
+  graphGeneratorCommand: '',
+
+  detachedBackProject: '',
+  detachedUiProject: ''
 }
 
 export type BootstrapEntityOptions = typeof defaultBootstrapEntityOptions;
-
-export type BootstrapEntityInnerOptions = BootstrapEntityOptions  & {detachedBackProject: string, detachedUiProject: string};
 
 export interface EntityBuilderWithOptions<
   T extends BaseBuilder | ReportBuilder = CatalogBuilder
