@@ -1,4 +1,4 @@
-export const graphMetaTypesTmpl = () => `import {gql} from 'apollo-server';
+export const graphMetaTypesTmpl = () => `import gql from 'graphql-tag';
 
 // getEntityIds: () => Promise<string[]>
 // getEntityById: (id: string) => Promise<Catalog | Document | InfoRegistry | SumRegistry>
