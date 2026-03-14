@@ -10,7 +10,7 @@ export const backAdditionalServiceTypeDefsTmpl = (
 ) => {
   const scheme = pad1(printedSchema.replaceAll('`', "'"));
 
-  return `import {gql} from 'apollo-server';
+  return `import gql from 'graphql-tag';
 
 export default gql\`
 ${scheme}

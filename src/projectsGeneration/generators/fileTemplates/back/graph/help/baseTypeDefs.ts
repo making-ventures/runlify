@@ -2,7 +2,7 @@ import {ProjectWideGenerationArgs} from '../../../../../args'
 
 const baseTypeDefsTmpl = ({
   entities,
-}: ProjectWideGenerationArgs) => `import {gql} from 'apollo-server';
+}: ProjectWideGenerationArgs) => `import gql from 'graphql-tag';
 
 export default gql\`
   enum EntityType {
