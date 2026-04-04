@@ -107,6 +107,7 @@ ${externalSearchDeps.map(([key, val]) => `'${key}': '${val}',`).map(pad(2)).join
   uniqKeys: ${arrToStr(shardUniqKeys)},` : ''}${isClearFromDB ? `
   clearDBAfter: ${arrToStr(entity.clearDBAfter)},` : ''}${options.auditableOnlyByUser ? `
   auditableOnlyByUser: true,` : ''}
+  cacheable: ${entity.cacheable},
 };
 
 export default config;

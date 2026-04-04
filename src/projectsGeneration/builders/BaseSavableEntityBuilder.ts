@@ -27,6 +27,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsMo
   singleKey = true
   logging = false
   auditable = true
+  cacheable = false
   creatableByUser = true
   updatableByUser = true
   removableByUser = true
@@ -127,6 +128,11 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsMo
   }
   setEditable(editable?: boolean) {
     this.editable = editable ?? true
+
+    return this
+  }
+  setCacheable(cacheable?: boolean) {
+    this.cacheable = cacheable ?? true
 
     return this
   }
@@ -409,7 +415,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsMo
       throw new Error(`You trying to add index for non existing field.
       Current fields: ${currentFields.map(f => f.title[this.defaultLanguage]).join(', ')}, fields for indexing: ${fields.join(', ')}, field not in current: ${fields.filter(
         (f) => !currentFieldNames.includes(f)
-      )}.
+      ).join(', ')}.
       Entity ${this.name}`)
     }
 
@@ -625,6 +631,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsMo
       outputModels: this.outputModels.map(m => m.build()),
       methods: this.methods.map(m => m.build()),
       labels: this.labels,
+      cacheable: this.cacheable,
     }
   }
 
