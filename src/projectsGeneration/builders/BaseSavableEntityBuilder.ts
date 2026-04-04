@@ -27,6 +27,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsMo
   singleKey = true
   logging = false
   auditable = true
+  cacheable = false
   creatableByUser = true
   updatableByUser = true
   removableByUser = true
@@ -127,6 +128,11 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsMo
   }
   setEditable(editable?: boolean) {
     this.editable = editable ?? true
+
+    return this
+  }
+  setCacheable(cacheable?: boolean) {
+    this.cacheable = cacheable ?? true
 
     return this
   }
