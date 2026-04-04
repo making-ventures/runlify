@@ -195,6 +195,7 @@ export enum StringType {
 export enum IndexType {
   BTree = 'bTree',
   Hash = 'hash',
+  Gin = 'gin',
 }
 
 export type PlainStringField = BaseStringField & {
