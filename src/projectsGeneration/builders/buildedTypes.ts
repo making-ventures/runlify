@@ -336,6 +336,7 @@ export type BaseSavableEntity = BaseEntity & {
   methods: ServiceMethod[]
   labels: string[]
   excludeFromCommonMenu: boolean
+  cacheable: boolean
 }
 
 export type Report = BaseEntity & {
@@ -345,6 +346,7 @@ export type Report = BaseEntity & {
 
 export type Document = BaseSavableEntity & {
   type: 'document'
+  cacheable: boolean
   deletable: boolean
   editable: boolean
   registries: string[]
@@ -355,6 +357,7 @@ export type Catalog = BaseSavableEntity & {
   type: 'catalog'
   deletable: boolean
   editable: boolean
+  cacheable: boolean
 }
 
 export type TsModel = BaseEntity & {
@@ -533,6 +536,7 @@ export type InfoRegistryPeriod =
 export type InfoRegistry = BaseSavableEntity & {
   type: 'infoRegistry'
   registrarDepended: boolean
+  cacheable: boolean
   dimensions: Field[]
   resources: Field[]
   period: InfoRegistryPeriod
@@ -541,6 +545,7 @@ export type InfoRegistry = BaseSavableEntity & {
 export type SumRegistry = BaseSavableEntity & {
   type: 'sumRegistry'
   registrarDepended: boolean
+  cacheable: boolean
   dimensions: Field[]
   resources: Field[]
 }

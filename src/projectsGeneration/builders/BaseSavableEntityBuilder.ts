@@ -631,6 +631,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsMo
       outputModels: this.outputModels.map(m => m.build()),
       methods: this.methods.map(m => m.build()),
       labels: this.labels,
+      cacheable: this.cacheable,
     }
   }
 
