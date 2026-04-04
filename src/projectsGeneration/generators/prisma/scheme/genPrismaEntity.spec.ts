@@ -2,7 +2,7 @@ import {expect} from 'jest-without-globals'
 import CatalogBuilder from '../../../builders/CatalogBuilder'
 import {genPrismaEntity} from './genPrismaEntity'
 import {baseField} from '../../../dataForTests';
-import {IndexType} from '../../../builders';
+import {IndexType, StringType} from '../../../builders';
 
 // yarn test --testPathPattern genPrismaEntity
 // yarn test --testPathPattern genPrismaEntity -t 'with true default db field'
@@ -158,6 +158,41 @@ describe('genPrismaEntity', () => {
 	lastDigits	Int
 	active	Boolean?
 	@@index([lastDigits, active], type: BTree)
+}
+`)
+  })
+
+  test('with Gin index on Json (auto JsonbPathOps)', () => {
+    const cards = new CatalogBuilder('cards', 'ru')
+    cards.addField('name').setType('string').setRequired()
+    cards.addField('meta').setType('string').setStringType(StringType.Json).setRequired()
+    cards.addIndex({
+      fields: ['meta'],
+      type: IndexType.Gin,
+    })
+
+    expect(genPrismaEntity(cards.build(), [])).toBe(`model Card {
+	id	Int	@default(autoincrement())	@id
+	search	String?
+	name	String
+	meta	Json
+	@@index([meta(ops: JsonbPathOps)], type: Gin)
+}
+`)
+  })
+
+  test('with Gin index on non-Json field (no ops)', () => {
+    const cards = new CatalogBuilder('cards', 'ru')
+    cards.addField('name').setType('string').setRequired()
+    cards.addField('tags').setType('string').setRequired()
+    cards.addIndex({fields: ['tags'], type: IndexType.Gin})
+
+    expect(genPrismaEntity(cards.build(), [])).toBe(`model Card {
+	id	Int	@default(autoincrement())	@id
+	search	String?
+	name	String
+	tags	String
+	@@index([tags], type: Gin)
 }
 `)
   })

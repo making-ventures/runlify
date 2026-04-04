@@ -193,7 +193,7 @@ export enum StringType {
 }
 
 export enum IndexType {
-  BTree = 'bTree',
+  BTree = 'btree',
   Hash = 'hash',
   Gin = 'gin',
 }
