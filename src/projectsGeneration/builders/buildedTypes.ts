@@ -45,6 +45,10 @@ export interface Glossary {
   definition: string
 }
 
+export type DataBaseMeta = {
+  name: string
+}
+
 export type ProjectCategory = 'back' | 'ui' | 'app' | 'land'
 
 export interface Command {
@@ -338,6 +342,7 @@ export type BaseSavableEntity = BaseEntity & {
   labels: string[]
   excludeFromCommonMenu: boolean
   cacheable: boolean
+  database: string
 }
 
 export type Report = BaseEntity & {
@@ -576,6 +581,7 @@ export type System = {
   prefix: string
   needFor?: string
   configVars: ConfigVar[]
+  dataBases: DataBaseMeta[]
   catalogs: Catalog[]
   documents: Document[]
   infoRegistries: InfoRegistry[]

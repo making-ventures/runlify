@@ -30,17 +30,40 @@ const prismaIndexFieldFragment = (
   return `${fieldName}(ops: JsonbPathOps)`;
 }
 
+const inwardEntityLinks = (
+  entity: Entity,
+  links: LinkedEntities[],
+  allEntities?: Map<string, Entity>,
+): LinkedEntities[] => {
+  let inward = getLinksFromExternalEntities(entity, links).filter(
+    (el) => el.fromField.linkCategory === 'entity',
+  )
+  if (allEntities) {
+    inward = inward.filter((el) => {
+      const owner = allEntities.get(el.entityOwnerName)
+      return !!owner && owner.database === entity.database
+    })
+  }
+  return inward
+}
+
 export const genPrismaEntity = (
   entity: Entity,
   links: LinkedEntities[],
   forShards = false,
+  allEntities?: Map<string, Entity>,
 ): string => {
   const fields = [
-    ...R.flatten(entity.fields.map((field) => genPrismaField(entity, field, forShards))),
-    ...forShards ? [] : getLinksFromExternalEntities(entity, links)
-      .filter((el) => el.fromField.linkCategory === 'entity')
-      .map((link) => genPrismaFieldFromExternalEntity(link))
-      .filter((l) => l),
+    ...R.flatten(
+      entity.fields.map((field) =>
+        genPrismaField(entity, field, forShards, allEntities),
+      ),
+    ),
+    ...forShards
+      ? []
+      : inwardEntityLinks(entity, links, allEntities)
+          .map((link) => genPrismaFieldFromExternalEntity(link))
+          .filter((l) => l),
   ]
 
   return `model ${pascalSingular(entity.name)} {

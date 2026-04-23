@@ -26,7 +26,9 @@ export const prismaServiceBaseClassTmpl = ({
       .filter((f) => f.defaultBackendValueExpression)
       .filter((f) => !f.hidden)
 
-  const isSharded = entity.sharded;
+  const isSharded = entity.sharded && entity.database === 'main';
+  const prismaCtxKey =
+    entity.database === 'main' ? 'prisma' : `prisma${pascal(entity.database)}`;
   const isExternalSearch = entity.externalSearch;
   const isDocument = entity.type === 'document';
   const isSumRegistry = entity.type === 'sumRegistry';
@@ -109,7 +111,11 @@ export interface ${pascalSingular(document.name)}RegistryEntries {${
   }
 
   if (isPrismaDelegatable) {
-    additionalImports.push('import {Prisma} from \'@prisma/client\';');
+    const prismaMod =
+      entity.database === 'main'
+        ? '@prisma/client'
+        : `../../../../prisma/databases/${entity.database}/client`;
+    additionalImports.push(`import {Prisma} from '${prismaMod}';`);
   }
 
   const serviceName = `${pascal(entity.name)}Service`
@@ -226,7 +232,7 @@ export class ${serviceName} extends ${extendedType}<
 
   constructor(public override ctx: Context) {
     super(ctx,${isSharded ? ` '${camelSingular(entity.name)}'${entity.externalSearchName ? `, 'external${pascal(entity.name)}SearchTracking'` : ''},`
-    : entity.elasticOnly ? '' : ` ctx.prisma.${camelSingular(entity.name)},${isExternalSearch ? ` ctx.prisma.external${pascal(entity.name)}SearchTracking,` : ''}`} config);
+    : entity.elasticOnly ? '' : ` ctx.${prismaCtxKey}.${camelSingular(entity.name)},${isExternalSearch ? ` ctx.${prismaCtxKey}.external${pascal(entity.name)}SearchTracking,` : ''}`} config);
     initBuiltInHooks(this);
     initUserHooks(this);${getDefaultableFields().length > 0 ? `
 
