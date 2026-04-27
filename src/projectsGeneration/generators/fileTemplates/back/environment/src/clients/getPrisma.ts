@@ -26,10 +26,11 @@ export const prismaGetterTmpl = (args: ProjectWideGenerationArgs) => {
 let prisma${p}: PrismaClient${p} | null = null;
 
 export const getPrisma${p} = async (connectionType: 'write' | 'readOnly') => {
-  const cfg = (await getConfig()) as Record<string, unknown>;
-  const writeUri = cfg['${writeKey}'] as string;
-  const readOnlyUri = cfg['${readUriKey}'] as string | undefined;
-  const readOnlyEnabled = cfg['${readEnabledKey}'] as boolean;
+  const {
+    ${writeKey}: writeUri,
+    ${readUriKey}: readOnlyUri,
+    ${readEnabledKey}: readOnlyEnabled,
+  } = await getConfig();
 
   let uri: string;
 

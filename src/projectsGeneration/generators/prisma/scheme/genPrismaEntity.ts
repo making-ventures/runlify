@@ -56,7 +56,7 @@ export const genPrismaEntity = (
   const fields = [
     ...R.flatten(
       entity.fields.map((field) =>
-        genPrismaField(entity, field, forShards, allEntities),
+        genPrismaField(entity, field, forShards),
       ),
     ),
     ...forShards
