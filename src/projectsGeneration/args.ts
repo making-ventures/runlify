@@ -1,6 +1,7 @@
 import {getLinksOfEntities} from './links/getLinksOfEntities'
 import {BootstrapEntityOptions, LinkedEntities} from './types'
 import {
+  DataBaseMeta,
   Entity,
   InfoRegistry,
   SumRegistry,
@@ -9,6 +10,7 @@ import {
   Catalog,
   AdditionalService,
 } from './builders/buildedTypes'
+import {validateEntityDatabaseName} from './utils/databaseMeta'
 import {getLinksToExternalEntities} from './links/getLinksToExternalEntities'
 import {getLinksFromExternalEntities} from './links/getLinksFromExternalEntities'
 import * as R from 'ramda'
@@ -36,16 +38,63 @@ export interface AdditionalServiceWideGenerationArgs extends ProjectWideGenerati
   service: AdditionalService
 }
 
+const withEntityDatabaseDefault = (e: Entity): Entity => ({
+  ...e,
+  database: (e as {database?: string}).database ?? 'main',
+})
+
+const normalizeDataBasesFromSystem = (system: System): DataBaseMeta[] => {
+  const raw = system.dataBases
+  if (!raw?.length) {
+    throw new Error(
+      'System metadata is missing dataBases. Rebuild system meta so dataBases is populated (main plus any addDatabase names).',
+    )
+  }
+  for (const db of raw) {
+    validateEntityDatabaseName(db.name)
+  }
+  const names = raw.map((d) => d.name)
+  const uniq = new Set(names)
+  if (uniq.size !== names.length) {
+    throw new Error(`Duplicate database names in system.dataBases: ${names.join(', ')}`)
+  }
+  if (!uniq.has('main')) {
+    throw new Error('system.dataBases must include a database named "main".')
+  }
+  const others = names.filter((d) => d !== 'main').sort((a, b) => a.localeCompare(b))
+  return [{name: 'main'}, ...others.map((name) => ({name}))]
+}
+
 export const prepareProjectWideGenerationArgs = (
   system: System,
   opts: BootstrapEntityOptions
 ): ProjectWideGenerationArgs => {
-  const entities = R.sortBy(R.prop('name'), [
+  const entitiesRaw = R.sortBy(R.prop('name'), [
     ...system.catalogs,
     ...system.documents,
     ...system.infoRegistries,
     ...system.sumRegistries,
   ])
+
+  const entities = entitiesRaw.map(withEntityDatabaseDefault)
+
+  const dataBases = normalizeDataBasesFromSystem(system)
+  const allowedDbNames = new Set(dataBases.map((d) => d.name))
+  for (const ent of entities) {
+    validateEntityDatabaseName(ent.database)
+    if (!allowedDbNames.has(ent.database)) {
+      const known = [...allowedDbNames].sort((a, b) => a.localeCompare(b)).join(', ')
+      throw new Error(
+        `Entity "${ent.name}" uses database "${ent.database}", which is not listed in system.dataBases. ` +
+          `Known databases: ${known}`,
+      )
+    }
+  }
+
+  const systemNormalized: System = {
+    ...system,
+    dataBases,
+  }
 
   const allEntities: Map<string, Entity> = new Map()
   for (const entity of entities) {
@@ -83,7 +132,7 @@ export const prepareProjectWideGenerationArgs = (
   const allLinks = getLinksOfEntities(entities)
 
   return {
-    system,
+    system: systemNormalized,
     entities,
     allDocuments,
     allCatalogs,

@@ -2,6 +2,7 @@ import ScalarFieldBuilder from './fields/ScalarFieldBuilder'
 import IdFieldBuilder from './fields/IdFieldBuilder'
 import LinkFieldBuilder from './fields/LinkFieldBuilder'
 import {TKeyFieldType, Multitenancy, BaseSavableEntity, PermissionType, MethodType, DateUnit, IndexType} from './buildedTypes'
+import {validateEntityDatabaseName} from '../utils/databaseMeta'
 import CatalogBuilder from './CatalogBuilder'
 import BaseBuilder from './BaseBuilder'
 import FormsBuilder from './ui/FormsBuilder'
@@ -48,6 +49,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsMo
   title: Record<string, {singular: string, plural: string}> = {}
   externalSearchName: string | undefined = undefined
   sharded = false
+  database = 'main' // default database name
   isExternalSearch = false
   clearDBAfter: {count: number, unit: DateUnit}[] = [];
   allowedToChange: string = ''
@@ -616,6 +618,7 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsMo
       commonElementsVisibleToAll: this.commonElementsVisibleToAll,
       externalSearchName: this.externalSearchName,
       sharded: this.sharded,
+      database: this.database,
       isExternalSearch: this.isExternalSearch,
       creatableByUser: this.creatableByUser,
       updatableByUser: this.updatableByUser,
@@ -701,6 +704,14 @@ abstract class BaseSavableEntityBuilder extends BaseBuilder implements MethodsMo
 
   setSharded (value = true) {
     this.sharded = value
+
+    return this
+  }
+
+  setDatabase(name: string) {
+    const normalized = name === 'main' ? 'main' : name
+    validateEntityDatabaseName(normalized)
+    this.database = normalized
 
     return this
   }

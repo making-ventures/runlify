@@ -12,7 +12,9 @@ import {
   ConfigValue,
   ConfigVar,
   ConfigVarScope,
+  DataBaseMeta,
   DeployEnvironment,
+  Entity,
   FieldType,
   Glossary,
   Language,
@@ -20,6 +22,11 @@ import {
   ProjectCategory,
   System,
 } from './buildedTypes'
+import {
+  buildConfigVarsForAdditionalDatabase,
+  postgresUrlDatabaseName,
+  validateEntityDatabaseName,
+} from '../utils/databaseMeta'
 import {addFilesCatalog} from '../defaultCatalogs'
 import * as R from 'ramda'
 import ReportBuilder from './ReportBuilder'
@@ -74,6 +81,8 @@ class SystemMetaBuilder implements MethodsModelsHolder {
   protected outputModels: BaseModelBuilder[] = []; // models that may be used only as output
   labels: string[] = [];
   additionalServices: AdditionalServiceBuilder[] = [];
+
+  private readonly registeredDatabaseNames = new Set<string>(['main'])
 
   name: string
   prefix: string
@@ -131,14 +140,14 @@ class SystemMetaBuilder implements MethodsModelsHolder {
       'database.main.write.uri',
       'string',
       true,
-      'postgresql://postgres:password@localhost:5432',
+      `postgresql://postgres:password@localhost:5432/${postgresUrlDatabaseName('main')}`,
       'Строка подключения к основной базе данных для записи'
     ).setSecure()
     this.addConfigVar(
       'database.main.readOnly.uri',
       'string',
       false,
-      'postgresql://postgres:password@localhost:5432',
+      `postgresql://postgres:password@localhost:5432/${postgresUrlDatabaseName('main')}`,
       'Строка подключения к основной базе только для чтения'
     ).setSecure()
     this.addConfigVar(
@@ -152,7 +161,7 @@ class SystemMetaBuilder implements MethodsModelsHolder {
       'database.main.migration.uri',
       'string',
       true,
-      'postgresql://postgres:password@localhost:5432',
+      `postgresql://postgres:password@localhost:5432/${postgresUrlDatabaseName('main')}`,
       'Строка подключения к основной базе для миграций (должна быть прямой строкой подключения к бд минуя pgbouncer, если он используется)'
     ).setSecure()
 
@@ -778,6 +787,16 @@ class SystemMetaBuilder implements MethodsModelsHolder {
     return this.back
   }
 
+  addDatabase(name: string): this {
+    const normalized = name === 'main' ? 'main' : name
+    validateEntityDatabaseName(normalized)
+    if (normalized === 'main') {
+      return this
+    }
+    this.registeredDatabaseNames.add(normalized)
+    return this
+  }
+
   // documents
   getDocuments(): EntityBuilderWithOptions<DocumentBuilder>[] {
     return this.documents
@@ -1040,6 +1059,55 @@ class SystemMetaBuilder implements MethodsModelsHolder {
         entries
       ) as T[]
 
+    const catalogsBuilt = sortByName(this.catalogs).map((el) => el.entity.build())
+    const documentsBuilt = sortByName(this.documents).map((el) => el.entity.build())
+    const infoRegistriesBuilt = sortByName(this.infoRegistries).map((el) =>
+      el.entity.build()
+    )
+    const sumRegistriesBuilt = sortByName(this.sumRegistries).map((el) =>
+      el.entity.build()
+    )
+
+    const savableEntities: Entity[] = [
+      ...catalogsBuilt,
+      ...documentsBuilt,
+      ...infoRegistriesBuilt,
+      ...sumRegistriesBuilt,
+    ]
+
+    for (const ent of savableEntities) {
+      validateEntityDatabaseName(ent.database)
+    }
+
+    const otherDbNames = [...this.registeredDatabaseNames]
+      .filter((d) => d !== 'main')
+      .sort((a, b) => a.localeCompare(b))
+    const dataBases: DataBaseMeta[] = [
+      {name: 'main'},
+      ...otherDbNames.map((name) => ({name})),
+    ]
+
+    const allowedDbNames = new Set(dataBases.map((d) => d.name))
+    for (const ent of savableEntities) {
+      if (!allowedDbNames.has(ent.database)) {
+        const known = [...allowedDbNames].sort((a, b) => a.localeCompare(b)).join(', ')
+        throw new Error(
+          `Entity "${ent.name}" uses database "${ent.database}", which is not registered. ` +
+            `Call system.addDatabase("${ent.database}") (or fix the name) before defining entities. ` +
+            `Registered databases: ${known}`,
+        )
+      }
+    }
+
+    const extraConfigVars: ConfigVar[] = otherDbNames.flatMap((dbName) =>
+      buildConfigVarsForAdditionalDatabase(dbName)
+    )
+
+    const configVars = R.sortBy(R.prop('name'), [
+      ...this.configVars.map((cv) => cv.build()),
+      ...extraConfigVars,
+    ])
+
     return {
       name: this.name,
       prefix: this.prefix,
@@ -1050,15 +1118,12 @@ class SystemMetaBuilder implements MethodsModelsHolder {
       telegramBots: R.sortBy(R.prop('name'), this.telegramBots).map((el) =>
         el.build()
       ),
-      configVars: R.sortBy(R.prop('name'), this.configVars.map((cv) => cv.build())),
-      catalogs: sortByName(this.catalogs).map((el) => el.entity.build()),
-      documents: sortByName(this.documents).map((el) => el.entity.build()),
-      infoRegistries: sortByName(this.infoRegistries).map((el) =>
-        el.entity.build()
-      ),
-      sumRegistries: sortByName(this.sumRegistries).map((el) =>
-        el.entity.build()
-      ),
+      configVars,
+      dataBases,
+      catalogs: catalogsBuilt,
+      documents: documentsBuilt,
+      infoRegistries: infoRegistriesBuilt,
+      sumRegistries: sumRegistriesBuilt,
       languages: this.languages.sort(),
       defaultLanguage: this.defaultLanguage,
       reports: sortByName(this.reports).map(({ entity }) => entity.build()),

@@ -32,7 +32,7 @@ export const configTmpl = ({
     (f) => !['date', 'datetime'].includes(f.type)
   )
 
-  const isSharded = entity.sharded
+  const isSharded = entity.sharded && entity.database === 'main'
   const shardUniqKeys = entity.fields.filter(f => f.sharded).map(f => f.name)
   const isDocument = entity.type === 'document'
   const isInfoRegistry = entity.type === 'infoRegistry'
