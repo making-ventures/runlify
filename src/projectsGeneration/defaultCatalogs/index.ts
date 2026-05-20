@@ -1,2 +1,2 @@
 export * from './files'
-export * from './addElasticSearch'
+export * from './addExternalSearch'

@@ -53,7 +53,7 @@ export const genPrismaSchemaForEntitiesWithClientAdnDb = (
   const effectiveForShards = database === 'main' && forShards
 
   const ent = entities
-    .filter((e) => !e.elasticOnly)
+    .filter((e) => e.storage !== 'elastic' && e.storage !== 'clickhouse')
     .filter((e) => {
       if (database !== 'main') {
         return e.database === database
