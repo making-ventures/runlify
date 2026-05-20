@@ -28,6 +28,11 @@ import {
   validateEntityDatabaseName,
 } from '../utils/databaseMeta'
 import {addFilesCatalog} from '../defaultCatalogs'
+import {
+  entityUsesClickHouseBootstrap,
+  entityUsesElasticBootstrap,
+  isStorageExternalSearch,
+} from './storage'
 import * as R from 'ramda'
 import ReportBuilder from './ReportBuilder'
 import RestApiBuilder from './RestApiBuilder'
@@ -343,6 +348,14 @@ class SystemMetaBuilder implements MethodsModelsHolder {
     this.addConfigVar('es.password', 'string', false, '', 'Пароль для авторизации в облачном сервисе ElasticSearch').setSecure();
     this.addConfigVar('es.node', 'string', false, 'http://localhost:9200', 'Нода эластика');
     this.addConfigVar('es.tls.rejectUnauthorized', 'bool', false, false, 'Запрещать невалидный ssl сертификат');
+
+    // clickhouse
+    this.addConfigVar('ch.enabled', 'bool', false, false, 'ClickHouse включен');
+    this.addConfigVar('ch.host', 'string', false, 'localhost', 'Хост ClickHouse');
+    this.addConfigVar('ch.port', 'int', false, 8123, 'Порт ClickHouse');
+    this.addConfigVar('ch.database', 'string', false, 'default', 'База данных ClickHouse');
+    this.addConfigVar('ch.username', 'string', false, 'default', 'Пользователь ClickHouse');
+    this.addConfigVar('ch.password', 'string', false, '', 'Пароль ClickHouse').setSecure();
 
     this.addConfigVar('sentry.dsn', 'string', false, '', 'Sentry dsn');
 
@@ -933,10 +946,22 @@ class SystemMetaBuilder implements MethodsModelsHolder {
     ].flat();
   }
 
-  getExternalSearchEntities(): Array<CatalogBuilder | DocumentBuilder | InfoRegistryBuilder | SumRegistryBuilder> {
+  getEntitiesWithExternalSearch(): Array<CatalogBuilder | DocumentBuilder | InfoRegistryBuilder | SumRegistryBuilder> {
     return this.getSavableEntities()
       .map(e => e.entity)
-      .filter((e) => e.externalSearch)
+      .filter((e) => isStorageExternalSearch(e.getStorage()))
+  }
+
+  getEntitiesWithElasticSearch(): Array<CatalogBuilder | DocumentBuilder | InfoRegistryBuilder | SumRegistryBuilder> {
+    return this.getSavableEntities()
+      .map(e => e.entity)
+      .filter((e) => entityUsesElasticBootstrap(e.getStorage()))
+  }
+
+  getEntitiesWithClickHouseSearch(): Array<CatalogBuilder | DocumentBuilder | InfoRegistryBuilder | SumRegistryBuilder> {
+    return this.getSavableEntities()
+      .map(e => e.entity)
+      .filter((e) => entityUsesClickHouseBootstrap(e.getStorage()))
   }
 
   addMethod(
