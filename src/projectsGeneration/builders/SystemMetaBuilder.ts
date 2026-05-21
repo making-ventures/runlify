@@ -353,7 +353,7 @@ class SystemMetaBuilder implements MethodsModelsHolder {
     this.addConfigVar('ch.enabled', 'bool', false, false, 'ClickHouse включен');
     this.addConfigVar('ch.host', 'string', false, 'localhost', 'Хост ClickHouse');
     this.addConfigVar('ch.port', 'int', false, 8123, 'Порт ClickHouse');
-    this.addConfigVar('ch.database', 'string', false, 'default', 'База данных ClickHouse');
+    this.addConfigVar('ch.database', 'string', false, 'rlw', 'База данных ClickHouse');
     this.addConfigVar('ch.username', 'string', false, 'default', 'Пользователь ClickHouse');
     this.addConfigVar('ch.password', 'string', false, '', 'Пароль ClickHouse').setSecure();
 
