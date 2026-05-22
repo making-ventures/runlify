@@ -40,6 +40,18 @@ const getConstructor = (g: string) => {
   }
 }
 
+const getUsedUtilsImports = (entities: Entity[]) => {
+  const used = new Set<string>()
+
+  for (const entity of entities) {
+    for (const type of Object.keys(getGroupedByType(entity))) {
+      used.add(getConstructor(type))
+    }
+  }
+
+  return [...used].sort()
+}
+
 const genJobsBlankTmpl = (_options = defaultBootstrapEntityOptions) => {
   return `import {ClickHouseJobs} from './type';
 
@@ -48,9 +60,13 @@ export const genJobs: ClickHouseJobs = {};
 }
 
 export const genClickHouseJobsDataTmpl = (entities: Entity[], _options = defaultBootstrapEntityOptions) => {
+  const utilsImports = getUsedUtilsImports(entities)
+  const utilsImportLine = utilsImports.length > 0
+    ? `import {${utilsImports.join(', ')}} from './utils';\n`
+    : ''
+
   return `import Entity from '../../types/Entity';
-import {textFields, keywordFields, integerFields, dateFields, booleanFields} from './utils';
-import {ClickHouseJobs} from './type';
+${utilsImportLine}import {ClickHouseJobs} from './type';
 
 export const genJobs: ClickHouseJobs = {
   ${entities.map((e) => `[Entity.${pascalSingular(e.name)}]: {
