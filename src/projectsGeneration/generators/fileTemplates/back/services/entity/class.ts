@@ -8,13 +8,6 @@ import {singular} from 'pluralize'
 import {EntityWideGenerationArgs} from '../../../../../args'
 import {addComma, newStrBefore, pad} from '../../../../../utils'
 import {Document} from '../../../../../builders'
-import {
-  getSearchServicePrefix,
-  isStorageClickHouseOnly,
-  isStorageElasticOnly,
-  isStorageExternalSearch,
-  usesPrismaDelegate,
-} from '../../../../../builders/storage'
 import {detectPrismaMajorVersion} from '../../../../../utils/detectPrismaMajorVersion'
 
 export const prismaServiceBaseClassTmpl = ({
