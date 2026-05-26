@@ -797,6 +797,13 @@ class SystemMetaBuilder implements MethodsModelsHolder {
     return this
   }
 
+  getRegisteredDatabaseNames(): string[] {
+    const others = [...this.registeredDatabaseNames]
+      .filter((d) => d !== 'main')
+      .sort((a, b) => a.localeCompare(b))
+    return ['main', ...others]
+  }
+
   // documents
   getDocuments(): EntityBuilderWithOptions<DocumentBuilder>[] {
     return this.documents
