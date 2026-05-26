@@ -25,6 +25,17 @@ import {
   genDeployConnectionPrisma,
   genPrismaSchemaForEntitiesWithClientAdnDb,
 } from '../generators/prisma/scheme/genPrismaSchemaForEntitiesWithClientAdnDb'
+import {
+  genExtraDbDeployPrismaConfig,
+  genExtraDbPrismaConfig,
+  genMainDeployPrismaConfig,
+  genMainPrismaConfig,
+  genShardsDeployPrismaConfig,
+  genShardsPrismaConfig,
+} from '../generators/prisma/scheme/genPrismaConfig'
+import {createPgPrismaClientTmpl} from '../generators/fileTemplates/back/environment/src/clients/createPgPrismaClient'
+import {writeClientPackageStubsTmpl} from '../generators/fileTemplates/back/environment/prisma/scripts/writeClientPackageStubs'
+import {detectPrismaMajorVersion} from '../utils/detectPrismaMajorVersion'
 import {Entity} from '../builders'
 import {ProjectWideGenerationArgs} from '../args'
 import {dockerfileTmplUI} from '../generators/fileTemplates/back/environment/dockerfileTmplUI'
@@ -51,6 +62,8 @@ export const generateEnvironment = (
   }
 
   const prjDetachedBackSrcDir = join(opts.detachedBackProject, 'src')
+  const prismaMajor = detectPrismaMajorVersion(opts.detachedBackProject)
+  const isPrisma7 = prismaMajor >= 7
 
   // corePrismaGetter
   if (opts.corePrismaGetter) {
@@ -58,9 +71,16 @@ export const generateEnvironment = (
 
     fileCreator.create(
       join(clientsFolderDir, 'getPrisma.ts'),
-      prismaGetterTmpl(projectWideGenerationArgs),
+      prismaGetterTmpl(projectWideGenerationArgs, prismaMajor),
       addWarnings({options: opts})
     )
+
+    if (isPrisma7) {
+      fileCreator.createIfNotExists(
+        join(clientsFolderDir, 'createPgPrismaClient.ts'),
+        createPgPrismaClientTmpl(),
+      )
+    }
   }
 
   if (opts.corePrismaGetter) {
@@ -90,6 +110,14 @@ export const generateEnvironment = (
   if (opts.genPrismaSchema) {
     const prismaFolderDir = join(opts.detachedBackProject, 'prisma')
     const dbNames = projectWideGenerationArgs.system.dataBases.map((d) => d.name)
+    const schemaOpts = {prismaMajor}
+
+    if (isPrisma7) {
+      fileCreator.createIfNotExists(
+        join(prismaFolderDir, 'scripts', 'writeClientPackageStubs.ts'),
+        writeClientPackageStubsTmpl(projectWideGenerationArgs),
+      )
+    }
 
     for (const database of dbNames) {
       if (database === 'main') {
@@ -98,6 +126,7 @@ export const generateEnvironment = (
           genPrismaSchemaForEntitiesWithClientAdnDb(projectWideGenerationArgs, {
             database: 'main',
             forShards: false,
+            ...schemaOpts,
           }),
           addWarnings({options: opts})
         )
@@ -108,16 +137,49 @@ export const generateEnvironment = (
             genPrismaSchemaForEntitiesWithClientAdnDb(projectWideGenerationArgs, {
               database: 'main',
               forShards: true,
+              ...schemaOpts,
             }),
             addWarnings({options: opts})
           )
+
+          fileCreator.create(
+            join(prismaFolderDir, 'shards', 'deployConnection.prisma'),
+            genDeployConnectionPrisma('main', prismaMajor),
+            addWarnings({options: opts})
+          )
+
+          if (isPrisma7) {
+            fileCreator.create(
+              join(prismaFolderDir, 'shards', 'prisma.config.ts'),
+              genShardsPrismaConfig(),
+              addWarnings({options: opts})
+            )
+            fileCreator.create(
+              join(prismaFolderDir, 'shards', 'deploy.prisma.config.ts'),
+              genShardsDeployPrismaConfig(),
+              addWarnings({options: opts})
+            )
+          }
         }
 
         fileCreator.create(
           join(prismaFolderDir, 'deployConnection.prisma'),
-          genDeployConnectionPrisma('main'),
+          genDeployConnectionPrisma('main', prismaMajor),
           addWarnings({options: opts})
         )
+
+        if (isPrisma7) {
+          fileCreator.create(
+            join(prismaFolderDir, 'prisma.config.ts'),
+            genMainPrismaConfig(),
+            addWarnings({options: opts})
+          )
+          fileCreator.create(
+            join(prismaFolderDir, 'deploy.prisma.config.ts'),
+            genMainDeployPrismaConfig(),
+            addWarnings({options: opts})
+          )
+        }
       } else {
         const dbDir = join(prismaFolderDir, 'databases', database)
         const legacyDeployConnection = join(
@@ -133,15 +195,29 @@ export const generateEnvironment = (
           genPrismaSchemaForEntitiesWithClientAdnDb(projectWideGenerationArgs, {
             database,
             forShards: false,
+            ...schemaOpts,
           }),
           addWarnings({options: opts})
         )
 
         fileCreator.create(
           join(dbDir, 'deployConnection.prisma'),
-          genDeployConnectionPrisma(database),
+          genDeployConnectionPrisma(database, prismaMajor),
           addWarnings({options: opts})
         )
+
+        if (isPrisma7) {
+          fileCreator.create(
+            join(dbDir, 'prisma.config.ts'),
+            genExtraDbPrismaConfig(database),
+            addWarnings({options: opts})
+          )
+          fileCreator.create(
+            join(dbDir, 'deploy.prisma.config.ts'),
+            genExtraDbDeployPrismaConfig(database),
+            addWarnings({options: opts})
+          )
+        }
 
         fileCreator.createIfNotExists(
           join(dbDir, 'migrations', 'migration_lock.toml'),
