@@ -8,9 +8,18 @@ import {singular} from 'pluralize'
 import {EntityWideGenerationArgs} from '../../../../../args'
 import {addComma, newStrBefore, pad} from '../../../../../utils'
 import {Document} from '../../../../../builders'
+import {
+  getSearchServicePrefix,
+  isStorageClickHouseOnly,
+  isStorageElasticOnly,
+  isStorageExternalSearch,
+  usesPrismaDelegate,
+} from '../../../../../builders/storage'
+import {detectPrismaMajorVersion} from '../../../../../utils/detectPrismaMajorVersion'
 
 export const prismaServiceBaseClassTmpl = ({
   entity,
+  options,
 }: EntityWideGenerationArgs) => {
   const contextName = 'Context'
 
@@ -111,10 +120,13 @@ export interface ${pascalSingular(document.name)}RegistryEntries {${
   }
 
   if (isPrismaDelegatable) {
+    const isPrisma7 = detectPrismaMajorVersion(options.detachedBackProject) >= 7
     const prismaMod =
       entity.database === 'main'
         ? '@prisma/client'
-        : `../../../../prisma/databases/${entity.database}/client`;
+        : isPrisma7
+          ? `@prisma/${entity.database}/client`
+          : `../../../../prisma/databases/${entity.database}/client`;
     additionalImports.push(`import {Prisma} from '${prismaMod}';`);
   }
 
