@@ -1,4 +1,4 @@
-import {ProjectWideGenerationArgs} from '../../../../../args'
+import {ProjectWideGenerationArgs} from '../../../../../../../args'
 
 export const writeClientPackageStubsTmpl = (args: ProjectWideGenerationArgs): string => {
   const extraDbs = args.system.dataBases
