@@ -34,7 +34,7 @@ import {
   genShardsPrismaConfig,
 } from '../generators/prisma/scheme/genPrismaConfig'
 import {createPgPrismaClientTmpl} from '../generators/fileTemplates/back/environment/src/clients/createPgPrismaClient'
-import {writeClientPackageStubsTmpl} from '../generators/fileTemplates/back/environment/prisma/scripts/writeClientPackageStubs'
+import {writeClientPackageStubsTmpl} from '../generators/fileTemplates/back/environment/src/init/prisma/writeClientPackageStubs'
 import {detectPrismaMajorVersion} from '../utils/detectPrismaMajorVersion'
 import {Entity} from '../builders'
 import {ProjectWideGenerationArgs} from '../args'
@@ -114,7 +114,7 @@ export const generateEnvironment = (
 
     if (isPrisma7) {
       fileCreator.createIfNotExists(
-        join(prismaFolderDir, 'scripts', 'writeClientPackageStubs.ts'),
+        join(prjDetachedBackSrcDir, 'init', 'prisma', 'writeClientPackageStubs.ts'),
         writeClientPackageStubsTmpl(projectWideGenerationArgs),
       )
     }

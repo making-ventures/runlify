@@ -22,7 +22,7 @@ export const buildPrismaGenCommand = ({
       ...extras.map(
         (db) => `prisma generate --config prisma/databases/${db}/prisma.config.ts`,
       ),
-      'tsx prisma/scripts/writeClientPackageStubs.ts',
+      'tsx src/init/prisma/writeClientPackageStubs.ts',
     ]
     return joinSteps(steps)
   }
@@ -46,7 +46,7 @@ export const buildShardsGenCommand = ({
   if (prismaMajor >= 7) {
     return joinSteps([
       'prisma generate --config prisma/shards/prisma.config.ts',
-      'tsx prisma/scripts/writeClientPackageStubs.ts --shards-only',
+      'tsx src/init/prisma/writeClientPackageStubs.ts --shards-only',
     ])
   }
 

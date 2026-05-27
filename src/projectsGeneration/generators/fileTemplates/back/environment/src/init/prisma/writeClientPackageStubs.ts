@@ -1,16 +1,16 @@
-import {ProjectWideGenerationArgs} from '../../../../../../args'
+import {ProjectWideGenerationArgs} from '../../../../../args'
 
 export const writeClientPackageStubsTmpl = (args: ProjectWideGenerationArgs): string => {
   const extraDbs = args.system.dataBases
     .map((d) => d.name)
     .filter((d) => d !== 'main')
 
-  return `import {existsSync, writeFileSync} from 'fs';
-import {join} from 'path';
+  return `import {existsSync, writeFileSync} from 'node:fs';
+import {join} from 'node:path';
 
 const extraDatabases = ${JSON.stringify(extraDbs)};
 
-const writeStub = (dir: string, packageName: string) => {
+const writeStub = (dir: string, packageName: string): void => {
   const clientTs = join(dir, 'client.ts');
   if (!existsSync(clientTs)) {
     return;
@@ -29,7 +29,7 @@ if (shardsOnly) {
   for (const db of extraDatabases) {
     writeStub(
       join('prisma', 'databases', db, 'client'),
-      '@prisma/' + db + '/client',
+      \`@prisma/\${db}/client\`,
     );
   }
 }

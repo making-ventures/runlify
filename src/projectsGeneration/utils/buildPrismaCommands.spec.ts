@@ -25,7 +25,7 @@ describe('buildPrismaCommands', () => {
     })
     expect(cmd).toContain('prisma generate --config prisma/prisma.config.ts')
     expect(cmd).toContain('prisma/databases/bsDocuments/prisma.config.ts')
-    expect(cmd).toContain('tsx prisma/scripts/writeClientPackageStubs.ts')
+    expect(cmd).toContain('tsx src/init/prisma/writeClientPackageStubs.ts')
   })
 
   it('builds legacy shards:gen', () => {
