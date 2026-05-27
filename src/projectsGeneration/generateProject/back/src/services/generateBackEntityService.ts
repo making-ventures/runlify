@@ -91,7 +91,7 @@ const generateBackEntityService = (
       addWarnings({options: args.options})
     );
 
-    if (!entity.elasticOnly) {
+    if (entity.storage !== 'elastic' && entity.storage !== 'clickhouse') {
       fileCreator.createIfNotExists(
         join(hooksDir, 'additionalOperationsOnCreate.ts'),
         additionalOperationsOnCreateTmpl(args)
