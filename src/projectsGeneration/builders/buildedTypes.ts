@@ -1,5 +1,6 @@
 import {HttpMethod} from './curlTypes'
 import {DocumentationOfDocument} from './docs/DocumentationOfDocument'
+import {StorageType} from './storage'
 import {Index} from './types'
 import Forms from './ui/Forms'
 
@@ -316,8 +317,7 @@ export type BaseSavableEntity = BaseEntity & {
   predefinedElements: Record<string, any>[]
   devPerefinedElements: Record<string, any>[]
   auditable: boolean
-  externalSearch: boolean
-  elasticOnly: boolean
+  storage: StorageType
   searchEnabled: boolean
   sortField: string
   creatableByUser: boolean

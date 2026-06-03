@@ -58,7 +58,7 @@ export const genPrismaSchemaForEntitiesWithClientAdnDb = (
   const p7 = isPrisma7(prismaMajor)
 
   const ent = entities
-    .filter((e) => !e.elasticOnly)
+    .filter((e) => e.storage !== 'elastic' && e.storage !== 'clickhouse')
     .filter((e) => {
       if (database !== 'main') {
         return e.database === database

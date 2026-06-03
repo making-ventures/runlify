@@ -9,6 +9,13 @@ import {EntityWideGenerationArgs} from '../../../../../args'
 import {addComma, newStrBefore, pad} from '../../../../../utils'
 import {Document} from '../../../../../builders'
 import {detectPrismaMajorVersion} from '../../../../../utils/detectPrismaMajorVersion'
+import {
+  getSearchServicePrefix,
+  isStorageClickHouseOnly,
+  isStorageElasticOnly,
+  isStorageExternalSearch,
+  usesPrismaDelegate,
+} from '../../../../../builders/storage'
 
 export const prismaServiceBaseClassTmpl = ({
   entity,
@@ -31,16 +38,19 @@ export const prismaServiceBaseClassTmpl = ({
   const isSharded = entity.sharded && entity.database === 'main';
   const prismaCtxKey =
     entity.database === 'main' ? 'prisma' : `prisma${pascal(entity.database)}`;
-  const isExternalSearch = entity.externalSearch;
+  const storage = entity.storage;
+  const isHybridExternalSearch = isStorageExternalSearch(storage);
+  const searchPrefix = getSearchServicePrefix(storage);
   const isDocument = entity.type === 'document';
   const isSumRegistry = entity.type === 'sumRegistry';
   const isInfoRegistry = entity.type === 'infoRegistry';
   const isClearFromDB = entity.clearDBAfter.length > 0;
-  const isPrismaDelegatable = !entity.elasticOnly && !isSharded;
+  const isPrismaDelegatable = usesPrismaDelegate(storage) && !isSharded;
+  const isExternalStoreOnly = isStorageElasticOnly(storage) || isStorageClickHouseOnly(storage);
 
   let extendedType = 'BaseService';
-  if (isExternalSearch) {
-    extendedType = 'ElasticBaseSearch';
+  if (isHybridExternalSearch && searchPrefix) {
+    extendedType = `${searchPrefix}BaseSearch`;
   }
   if (isSharded) {
     extendedType = 'ShardsService';
@@ -48,31 +58,31 @@ export const prismaServiceBaseClassTmpl = ({
 
   if (isDocument) {
     extendedType = 'DocumentBaseService';
-    if (isExternalSearch) {
-      extendedType = 'ElasticDocumentBaseService';
+    if (isHybridExternalSearch && searchPrefix) {
+      extendedType = `${searchPrefix}DocumentBaseService`;
     }
   }
 
   if (isSumRegistry) {
     extendedType = 'SumRegistryService';
-    if (isExternalSearch) {
-      extendedType = 'ElasticSumRegistryService';
+    if (isHybridExternalSearch && searchPrefix) {
+      extendedType = `${searchPrefix}SumRegistryService`;
     }
   }
 
   if (isInfoRegistry) {
     extendedType = 'InfoRegistryService';
-    if (isExternalSearch) {
-      extendedType = 'ElasticInfoRegistryService';
+    if (isHybridExternalSearch && searchPrefix) {
+      extendedType = `${searchPrefix}InfoRegistryService`;
     }
   }
 
   if (isSharded) {
     extendedType = 'ShardsService';
-    if (isExternalSearch) {
-      extendedType = 'ElasticShardsService';
+    if (isHybridExternalSearch && searchPrefix) {
+      extendedType = `${searchPrefix}ShardsService`;
       if (isClearFromDB) {
-        extendedType = 'ElasticClearDBShardsService';
+        extendedType = `${searchPrefix}ClearDBShardsService`;
       }
     }
     if (isDocument) {
@@ -83,8 +93,12 @@ export const prismaServiceBaseClassTmpl = ({
     }
   }
 
-  if (entity.elasticOnly) {
+  if (isStorageElasticOnly(storage)) {
     extendedType = 'ElasticOnlyService';
+  }
+
+  if (isStorageClickHouseOnly(storage)) {
+    extendedType = 'ClickHouseOnlyService';
   }
 
   const additionalImports: string[] = [];
@@ -130,7 +144,7 @@ export interface ${pascalSingular(document.name)}RegistryEntries {${
   MutationUpdate${pascalSingular(entity.name)}Args,
   MutationRemove${pascalSingular(entity.name)}Args,
   QueryAll${pascalPlural(entity.name)}Args,
-  ${pascalSingular(entity.name)},${isExternalSearch ? `
+  ${pascalSingular(entity.name)},${isHybridExternalSearch ? `
   External${pascal(entity.name)}SearchTracking,` : ''}
 } from '../../../generated/graphql';
 import {${contextName}} from '../types';
@@ -228,7 +242,7 @@ export class ${serviceName} extends ${extendedType}<
   QueryAll${pascalPlural(entity.name)}Args,
   Autodefinable${pascalSingular(entity.name)}Keys,
   ForbidenForUser${pascalSingular(entity.name)}Keys,
-  RequiredDbNotUser${pascalSingular(entity.name)}Keys${isExternalSearch ? `,
+  RequiredDbNotUser${pascalSingular(entity.name)}Keys${isHybridExternalSearch ? `,
   External${pascal(entity.name)}SearchTracking` : ''}${isDocument ? `,
   ${pascalSingular(entity.name)}RegistryEntries` : ''}${isPrismaDelegatable ? `,
   Prisma.${pascalSingular(entity.name)}Delegate<any>` : ''}
@@ -237,7 +251,7 @@ export class ${serviceName} extends ${extendedType}<
 
   constructor(public override ctx: Context) {
     super(ctx,${isSharded ? ` '${camelSingular(entity.name)}'${entity.externalSearchName ? `, 'external${pascal(entity.name)}SearchTracking'` : ''},`
-    : entity.elasticOnly ? '' : ` ctx.${prismaCtxKey}.${camelSingular(entity.name)},${isExternalSearch ? ` ctx.${prismaCtxKey}.external${pascal(entity.name)}SearchTracking,` : ''}`} config);
+    : isExternalStoreOnly ? '' : ` ctx.${prismaCtxKey}.${camelSingular(entity.name)},${isHybridExternalSearch ? ` ctx.${prismaCtxKey}.external${pascal(entity.name)}SearchTracking,` : ''}`} config);
     initBuiltInHooks(this);
     initUserHooks(this);${getDefaultableFields().length > 0 ? `
 
