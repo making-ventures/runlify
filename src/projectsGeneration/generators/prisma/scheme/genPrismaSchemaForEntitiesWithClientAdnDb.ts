@@ -41,16 +41,21 @@ export type GenPrismaSchemaDbOptions = {
    * For `database !== 'main'`, callers must pass `false` (sharding ignored).
    */
   forShards: boolean
+  /** Prisma major version from package.json; >= 7 enables P7 schema format. */
+  prismaMajor?: number
 }
+
+const isPrisma7 = (prismaMajor?: number): boolean => (prismaMajor ?? 6) >= 7
 
 export const genPrismaSchemaForEntitiesWithClientAdnDb = (
   args: ProjectWideGenerationArgs,
   opts: GenPrismaSchemaDbOptions,
 ) => {
-  const {database, forShards} = opts
+  const {database, forShards, prismaMajor} = opts
   const {entities, allLinks, allEntities} = args
 
   const effectiveForShards = database === 'main' && forShards
+  const p7 = isPrisma7(prismaMajor)
 
   const ent = entities
     .filter((e) => e.storage !== 'elastic' && e.storage !== 'clickhouse')
@@ -76,10 +81,14 @@ export const genPrismaSchemaForEntitiesWithClientAdnDb = (
     allEntities,
   )
 
-  const writeEnv = prismaDatasourceWriteEnvVar(database)
+  const provider = p7 ? 'prisma-client' : 'prisma-client-js'
+  const previewFeatures = p7 ? '' : '\n  previewFeatures = ["metrics"]'
 
   let outputLine = ''
-  if (database === 'main' && effectiveForShards) {
+  if (p7 && database === 'main' && !effectiveForShards) {
+    outputLine = `
+  output   = "./generated/client"`
+  } else if (database === 'main' && effectiveForShards) {
     outputLine = `
   output   = "./build"`
   } else if (database !== 'main') {
@@ -87,21 +96,36 @@ export const genPrismaSchemaForEntitiesWithClientAdnDb = (
   output   = "./client"`
   }
 
+  const datasourceBlock = p7
+    ? `datasource db {
+  provider = "postgresql"
+}`
+    : `datasource db {
+  provider = "postgresql"
+  url      = env("${prismaDatasourceWriteEnvVar(database)}")
+}`
+
   return `generator client {
-  provider = "prisma-client-js"
-  previewFeatures = ["metrics"]${outputLine}
+  provider = "${provider}"${previewFeatures}${outputLine}
 }
 
-datasource db {
-  provider = "postgresql"
-  url      = env("${writeEnv}")
-}
+${datasourceBlock}
 
 ${joined}`
 }
 
 /** Minimal deploy schema (migrate URL only). */
-export const genDeployConnectionPrisma = (database: string): string => {
+export const genDeployConnectionPrisma = (
+  database: string,
+  prismaMajor?: number,
+): string => {
+  if (isPrisma7(prismaMajor)) {
+    return `datasource db {
+  provider = "postgresql"
+}
+`
+  }
+
   const migrationEnv = prismaDatasourceMigrationEnvVar(database)
   return `datasource db {
   provider = "postgresql"
