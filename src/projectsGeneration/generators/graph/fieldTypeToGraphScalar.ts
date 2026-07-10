@@ -8,6 +8,7 @@ import {
 } from 'graphql'
 import {GraphQLDateTime, GraphQLDate, GraphQLBigInt, GraphQLJSON} from 'graphql-scalars'
 import {Field, ModelField} from '../../builders/buildedTypes'
+import {isMoneyField} from '../../metaUtils'
 import {GraphFieldPurpose} from './fields/genGraphField';
 
 export const fieldTypeToGraphScalar = <T extends GraphQLNamedInputType | GraphQLNamedOutputType>(
@@ -24,6 +25,10 @@ export const fieldTypeToGraphScalar = <T extends GraphQLNamedInputType | GraphQL
     }
 
     return type;
+  }
+
+  if (isMoneyField(field)) {
+    return GraphQLBigInt
   }
 
   switch (field.type) {

@@ -112,6 +112,10 @@ abstract class BaseFieldBuilder {
   }
 
   setType(type: FieldType) {
+    if (type === 'int' && this.numberType === NumberType.Money) {
+      type = 'bigint'
+    }
+
     this.assertFiltersAllowedForType(this.filters, type);
     this.type = type 
 
@@ -148,7 +152,17 @@ abstract class BaseFieldBuilder {
       )
     }
 
+    if (numberType === NumberType.Money && this.type === 'float') {
+      throw new Error(
+        `numberType Money can not be set for float field. Current type: ${this.type}`
+      )
+    }
+
     this.numberType = numberType
+
+    if (numberType === NumberType.Money) {
+      this.setType('bigint')
+    }
 
     return this
   }

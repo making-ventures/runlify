@@ -1,6 +1,11 @@
 import {Field} from '../../builders/buildedTypes'
+import {isMoneyField} from '../../metaUtils'
 
 const fieldTypeToGraphScalarStringifiedPlain = (field: Field) => {
+  if (isMoneyField(field)) {
+    return 'GraphQLBigInt'
+  }
+
   switch (field.type) {
     case 'int':
       return 'GraphQLInt'
