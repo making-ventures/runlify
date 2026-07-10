@@ -55,6 +55,9 @@ export const isMultilineField = (f: Field) => f.type === 'string' && 'stringType
 
 export const isRequiredField = (f: Field) => f.required;
 
-export const isMoneyField = (f: Field) => ['int', 'bigint', 'float'].includes(f.type) && 'numberType' in f && f.numberType === 'money';
+export const isMoneyField = (f: Field) =>
+  ['int', 'bigint'].includes(f.type) &&
+  'numberType' in f &&
+  f.numberType === 'money';
 
 export const isStringNumberField = (f: Field) => f.type === 'string' && 'stringType' in f && f.stringType === 'number'

@@ -1,5 +1,6 @@
 import {expect} from 'jest-without-globals'
 import ScalarFieldBuilder from '../../../../builders/fields/ScalarFieldBuilder'
+import {NumberType} from '../../../../builders/buildedTypes'
 import {genPrismaScalarField} from './genPrismaScalarField'
 
 // yarn test --testPathPattern genPrismaScalarField
@@ -20,6 +21,27 @@ describe('genPrismaScalarField', () => {
       .build()
     expect(genPrismaScalarField(someField)).toEqual([
       '  someField	Int'.replaceAll(/\s+/gu, '\t'),
+    ])
+  })
+
+  test('money field uses BigInt in prisma schema', () => {
+    const someField = new ScalarFieldBuilder('price', 'ru')
+      .setNumberType(NumberType.Money)
+      .setRequired()
+      .build()
+    expect(someField.type).toBe('bigint')
+    expect(genPrismaScalarField(someField)).toEqual([
+      '  price	BigInt'.replaceAll(/\s+/gu, '\t'),
+    ])
+  })
+
+  test('legacy money field with int type still uses BigInt in prisma schema', () => {
+    const someField = {
+      ...new ScalarFieldBuilder('price', 'ru').setType('int').build(),
+      numberType: NumberType.Money,
+    }
+    expect(genPrismaScalarField(someField)).toEqual([
+      '  price	BigInt?'.replaceAll(/\s+/gu, '\t'),
     ])
   })
 

@@ -14,7 +14,7 @@ export const genGraphScalarFilter = (
     },
   }
 
-  if (['string', 'int', 'float'].includes(field.type)) {
+  if (['string', 'int', 'bigint', 'float'].includes(field.type)) {
     fields = {
       ...fields,
       [`${field.name}_in`]: {
@@ -26,7 +26,7 @@ export const genGraphScalarFilter = (
     }
   }
 
-  if (['datetime', 'date', 'int', 'float'].includes(field.type)) {
+  if (['datetime', 'date', 'int', 'bigint', 'float'].includes(field.type)) {
     fields = {
       ...fields,
       [`${field.name}_lte`]: {

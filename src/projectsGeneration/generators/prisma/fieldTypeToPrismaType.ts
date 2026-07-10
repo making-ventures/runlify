@@ -1,6 +1,11 @@
 import {Field, StringField} from '../../builders/buildedTypes'
+import {isMoneyField} from '../../metaUtils'
 
 export const fieldTypeToPrismaType = (field: Field): string => {
+  if (isMoneyField(field)) {
+    return 'BigInt'
+  }
+
   switch (field.type) {
     case 'int':
       return 'Int'

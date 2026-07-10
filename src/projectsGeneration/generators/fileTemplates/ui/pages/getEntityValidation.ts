@@ -17,12 +17,6 @@ const getFieldValidation = (field: Field): string | null => {
       case 'datetime':
         return "Yup.date().required()"
       case 'int':
-        if (isMoneyField(field)) {
-          return `Yup
-    .number()
-    .required()
-    .max(2147483647)`
-        }
         if (field.category === 'scalar') {
           return `Yup
     .number()
@@ -35,7 +29,13 @@ const getFieldValidation = (field: Field): string | null => {
     .required()`
         }
       case 'float':
+        return "Yup.number().required()"
       case 'bigint':
+        if (isMoneyField(field)) {
+          return `Yup
+    .number()
+    .required()`
+        }
         return "Yup.number().required()"
       default:
         return null
@@ -49,12 +49,6 @@ const getFieldValidation = (field: Field): string | null => {
 
         return null;
       case 'int':
-        if (isMoneyField(field)) {
-          return `Yup
-    .number()
-    .max(2147483647)
-    .nullable()`
-        }
         if (field.category === 'scalar') {
           return `Yup
     .number()
@@ -64,6 +58,13 @@ const getFieldValidation = (field: Field): string | null => {
         } else {
           return null
         }
+      case 'bigint':
+        if (isMoneyField(field)) {
+          return `Yup
+    .number()
+    .nullable()`
+        }
+        return null
       default:
         return null
     }
