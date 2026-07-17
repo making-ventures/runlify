@@ -1,5 +1,6 @@
 import {HttpMethod} from './curlTypes'
 import {DocumentationOfDocument} from './docs/DocumentationOfDocument'
+import {GenerationPathsConfig} from './generationPaths'
 import {StorageType} from './storage'
 import {Index} from './types'
 import Forms from './ui/Forms'
@@ -608,6 +609,7 @@ export type System = {
   workers: Worker[]
 
   back: Back
+  generationPaths?: GenerationPathsConfig
 }
 
 export type EtityType = 'catalog' | 'document' | 'infoRegistry' | 'sumRegistry'
