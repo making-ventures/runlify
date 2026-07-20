@@ -34,7 +34,8 @@ const getFieldValidation = (field: Field): string | null => {
         if (isMoneyField(field)) {
           return `Yup
     .number()
-    .required()`
+    .required()
+    .integer()`
         }
         return "Yup.number().required()"
       default:
@@ -62,6 +63,7 @@ const getFieldValidation = (field: Field): string | null => {
         if (isMoneyField(field)) {
           return `Yup
     .number()
+    .integer()
     .nullable()`
         }
         return null
