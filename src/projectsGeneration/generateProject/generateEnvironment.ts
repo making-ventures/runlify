@@ -45,12 +45,17 @@ import {ciNotifyTmpl} from '../generators/fileTemplates/back/environment/ciNotif
 import {uiGetAdditionalMethodsTmpl} from '../generators/fileTemplates/ui/environment/src/dataProvider/getAdditionalMethods'
 import {environmentTracerTmpl} from '../generators/fileTemplates/back/environment/src/tracing'
 import {addWarnings} from './fileHandlers'
+import {
+  GenerationPathCategory,
+  GenerationPathVars,
+  resolveGenerationPath,
+} from '../builders/generationPaths'
 
 export const generateEnvironment = (
   fileCreator: FileCreator,
   projectWideGenerationArgs: ProjectWideGenerationArgs,
 ) => {
-  const { entities, options } = projectWideGenerationArgs
+  const { entities, options, system } = projectWideGenerationArgs
   const opts = {
     ...defaultBootstrapEntityOptions,
     ...options,
@@ -61,33 +66,41 @@ export const generateEnvironment = (
     allEntities.set(entity.name, entity)
   }
 
-  const prjDetachedBackSrcDir = join(opts.detachedBackProject, 'src')
+  const pathsConfig = system?.generationPaths
+  const resolveEnvPath = (
+    category: GenerationPathCategory,
+    vars: GenerationPathVars = {},
+  ) =>
+    resolveGenerationPath({
+      category,
+      detachedBackProject: opts.detachedBackProject,
+      detachedUiProject: opts.detachedUiProject,
+      pathsConfig,
+      vars,
+    })
+
   const prismaMajor = detectPrismaMajorVersion(opts.detachedBackProject)
   const isPrisma7 = prismaMajor >= 7
 
   // corePrismaGetter
   if (opts.corePrismaGetter) {
-    const clientsFolderDir = join(prjDetachedBackSrcDir, 'clients')
-
     fileCreator.create(
-      join(clientsFolderDir, 'getPrisma.ts'),
+      resolveEnvPath(GenerationPathCategory.BackClientsGetPrisma),
       prismaGetterTmpl(projectWideGenerationArgs, prismaMajor),
       addWarnings({options: opts})
     )
 
     if (isPrisma7) {
       fileCreator.createIfNotExists(
-        join(clientsFolderDir, 'createPgPrismaClient.ts'),
+        resolveEnvPath(GenerationPathCategory.BackClientsCreatePgPrismaClient),
         createPgPrismaClientTmpl(),
       )
     }
   }
 
   if (opts.corePrismaGetter) {
-    const queueFolderDir = join(prjDetachedBackSrcDir, 'clients', 'queue')
-
     fileCreator.create(
-      join(queueFolderDir, 'getQueue.ts'),
+      resolveEnvPath(GenerationPathCategory.BackClientsGetQueue),
       getQueueTmpl(opts),
       addWarnings({options: opts})
     )
@@ -96,25 +109,24 @@ export const generateEnvironment = (
   // coreIndex
   if (opts.coreIndex) {
     fileCreator.create(
-      join(prjDetachedBackSrcDir, 'index.ts'),
+      resolveEnvPath(GenerationPathCategory.BackIndex),
       environmentIndexTmpl(opts),
       addWarnings({options: opts})
     )
     fileCreator.createIfNotExists(
-      join(prjDetachedBackSrcDir, 'tracing.ts'),
+      resolveEnvPath(GenerationPathCategory.BackTracing),
       environmentTracerTmpl(opts)
     )
   }
 
   // schema.prisma (+ shards for main only, + extra databases)
   if (opts.genPrismaSchema) {
-    const prismaFolderDir = join(opts.detachedBackProject, 'prisma')
     const dbNames = projectWideGenerationArgs.system.dataBases.map((d) => d.name)
     const schemaOpts = {prismaMajor}
 
     if (isPrisma7) {
       fileCreator.createIfNotExists(
-        join(prjDetachedBackSrcDir, 'init', 'prisma', 'writeClientPackageStubs.ts'),
+        resolveEnvPath(GenerationPathCategory.BackInitPrismaWriteClientPackageStubs),
         writeClientPackageStubsTmpl(projectWideGenerationArgs),
       )
     }
@@ -122,7 +134,7 @@ export const generateEnvironment = (
     for (const database of dbNames) {
       if (database === 'main') {
         fileCreator.create(
-          join(prismaFolderDir, 'schema.prisma'),
+          resolveEnvPath(GenerationPathCategory.BackPrismaSchema),
           genPrismaSchemaForEntitiesWithClientAdnDb(projectWideGenerationArgs, {
             database: 'main',
             forShards: false,
@@ -133,7 +145,7 @@ export const generateEnvironment = (
 
         if (opts.sharding) {
           fileCreator.create(
-            join(prismaFolderDir, 'shards', 'schema.prisma'),
+            resolveEnvPath(GenerationPathCategory.BackPrismaShardsSchema),
             genPrismaSchemaForEntitiesWithClientAdnDb(projectWideGenerationArgs, {
               database: 'main',
               forShards: true,
@@ -143,19 +155,19 @@ export const generateEnvironment = (
           )
 
           fileCreator.create(
-            join(prismaFolderDir, 'shards', 'deployConnection.prisma'),
+            resolveEnvPath(GenerationPathCategory.BackPrismaShardsDeployConnection),
             genDeployConnectionPrisma('main', prismaMajor),
             addWarnings({options: opts})
           )
 
           if (isPrisma7) {
             fileCreator.create(
-              join(prismaFolderDir, 'shards', 'prisma.config.ts'),
+              resolveEnvPath(GenerationPathCategory.BackPrismaShardsConfig),
               genShardsPrismaConfig(),
               addWarnings({options: opts})
             )
             fileCreator.create(
-              join(prismaFolderDir, 'shards', 'deploy.prisma.config.ts'),
+              resolveEnvPath(GenerationPathCategory.BackPrismaShardsDeployConfig),
               genShardsDeployPrismaConfig(),
               addWarnings({options: opts})
             )
@@ -163,35 +175,35 @@ export const generateEnvironment = (
         }
 
         fileCreator.create(
-          join(prismaFolderDir, 'deployConnection.prisma'),
+          resolveEnvPath(GenerationPathCategory.BackPrismaDeployConnection),
           genDeployConnectionPrisma('main', prismaMajor),
           addWarnings({options: opts})
         )
 
         if (isPrisma7) {
           fileCreator.create(
-            join(prismaFolderDir, 'prisma.config.ts'),
+            resolveEnvPath(GenerationPathCategory.BackPrismaConfig),
             genMainPrismaConfig(),
             addWarnings({options: opts})
           )
           fileCreator.create(
-            join(prismaFolderDir, 'deploy.prisma.config.ts'),
+            resolveEnvPath(GenerationPathCategory.BackPrismaDeployConfig),
             genMainDeployPrismaConfig(),
             addWarnings({options: opts})
           )
         }
       } else {
-        const dbDir = join(prismaFolderDir, 'databases', database)
+        const dbVars = {database}
         const legacyDeployConnection = join(
-          prismaFolderDir,
-          `deployConnection.${database}.prisma`,
+          opts.detachedBackProject,
+          `prisma/deployConnection.${database}.prisma`,
         )
         if (exists(legacyDeployConnection)) {
           remove(legacyDeployConnection)
         }
 
         fileCreator.create(
-          join(dbDir, 'schema.prisma'),
+          resolveEnvPath(GenerationPathCategory.BackPrismaDatabaseSchema, dbVars),
           genPrismaSchemaForEntitiesWithClientAdnDb(projectWideGenerationArgs, {
             database,
             forShards: false,
@@ -201,26 +213,26 @@ export const generateEnvironment = (
         )
 
         fileCreator.create(
-          join(dbDir, 'deployConnection.prisma'),
+          resolveEnvPath(GenerationPathCategory.BackPrismaDatabaseDeployConnection, dbVars),
           genDeployConnectionPrisma(database, prismaMajor),
           addWarnings({options: opts})
         )
 
         if (isPrisma7) {
           fileCreator.create(
-            join(dbDir, 'prisma.config.ts'),
+            resolveEnvPath(GenerationPathCategory.BackPrismaDatabaseConfig, dbVars),
             genExtraDbPrismaConfig(database),
             addWarnings({options: opts})
           )
           fileCreator.create(
-            join(dbDir, 'deploy.prisma.config.ts'),
+            resolveEnvPath(GenerationPathCategory.BackPrismaDatabaseDeployConfig, dbVars),
             genExtraDbDeployPrismaConfig(database),
             addWarnings({options: opts})
           )
         }
 
         fileCreator.createIfNotExists(
-          join(dbDir, 'migrations', 'migration_lock.toml'),
+          resolveEnvPath(GenerationPathCategory.BackPrismaDatabaseMigrationLock, dbVars),
           `# Please do not edit this file manually
 # It should be added to your version-control system (e.g. Git)
 
@@ -235,37 +247,31 @@ provider = "postgresql"
 
   // chart back
   if (opts.genBackChartBack) {
-     // chart
-    const chartDir = join(opts.detachedBackProject, 'chart')
-
     // chart itself
     fileCreator.create(
-      join(chartDir, 'Chart.yaml'),
+      resolveEnvPath(GenerationPathCategory.BackChartChart),
       chartTmpl(projectWideGenerationArgs),
       addWarnings({options: opts, fileType: 'yaml'})
     )
     // chart values
     if (opts.genBackChartValues) {
       fileCreator.create(
-        join(chartDir, 'values.yaml'),
+        resolveEnvPath(GenerationPathCategory.BackChartValues),
         chartValuesTmpl(projectWideGenerationArgs),
         addWarnings({options: opts, fileType: 'yaml'})
       )
     }
 
-    // chart templates
-    const chartTemplatesDir = join(chartDir, 'templates')
-
     // chart ingress
     if (opts.genBackChartIngress) {
       fileCreator.create(
-        join(chartTemplatesDir, 'ingress.yaml'),
+        resolveEnvPath(GenerationPathCategory.BackChartIngress),
         chartIngressTmpl(),
         addWarnings({options: opts, fileType: 'yaml'})
       )
     }
     fileCreator.create(
-      join(chartTemplatesDir, 'back.yaml'),
+      resolveEnvPath(GenerationPathCategory.BackChartBack),
       chartBackTmpl(projectWideGenerationArgs),
       addWarnings({options: opts, fileType: 'yaml'})
     )
@@ -274,7 +280,7 @@ provider = "postgresql"
   // gitlab-ci
   if (opts.genBackGitlabCi) {
     fileCreator.create(
-      join(opts.detachedBackProject, '.gitlab-ci.yml'),
+      resolveEnvPath(GenerationPathCategory.BackGitlabCi),
       gitlabCiTmpl(projectWideGenerationArgs),
       addWarnings({options: opts, fileType: 'yaml'})
     )
@@ -283,7 +289,7 @@ provider = "postgresql"
   // ci-notify
   if (opts.genBackCiNotify) {
     fileCreator.create(
-      join(opts.detachedBackProject, 'ci-notify.sh'),
+      resolveEnvPath(GenerationPathCategory.BackCiNotify),
       ciNotifyTmpl(projectWideGenerationArgs)
     )
   }
@@ -291,7 +297,7 @@ provider = "postgresql"
   // dockerfileTmplBack
   if (opts.genDockerfileBack) {
   fileCreator.create(
-      join(opts.detachedBackProject, 'Dockerfile'),
+      resolveEnvPath(GenerationPathCategory.BackDockerfile),
       dockerfileTmplBack(projectWideGenerationArgs),
       addWarnings({options: opts, fileType: 'yaml'})
     )
@@ -299,91 +305,77 @@ provider = "postgresql"
 
   // UI
   if (opts.genFrontend) {
-    const prjDetachedUiSrcDir = join(opts.detachedUiProject, 'src')
-
     if (opts.genUIApp) {
       fileCreator.create(
-        join(prjDetachedUiSrcDir, 'App.tsx'),
+        resolveEnvPath(GenerationPathCategory.UiApp),
         uiAppTmpl(projectWideGenerationArgs, opts),
         addWarnings({options: opts})
       )
     }
 
     // layout
-    const uiLayoutFolder = join(prjDetachedUiSrcDir, 'layout')
-
     fileCreator.create(
-      join(uiLayoutFolder, 'Menu.tsx'),
+      resolveEnvPath(GenerationPathCategory.UiLayoutMenu),
       uiLayoutMenuTmpl(opts),
       addWarnings({options: opts})
     )
 
     if (opts.genUiAppBar) {
       fileCreator.create(
-        join(uiLayoutFolder, 'AppBar.tsx'),
+        resolveEnvPath(GenerationPathCategory.UiLayoutAppBar),
         uiLayoutAppBarTmpl(opts),
         addWarnings({options: opts})
       )
     }
 
-    const uiContextsFolder = join(prjDetachedUiSrcDir, 'contexts')
-
     fileCreator.create(
-      join(uiContextsFolder, 'SpacesContext.tsx'),
+      resolveEnvPath(GenerationPathCategory.UiSpacesContext),
       uiSpacesContextTmpl(projectWideGenerationArgs),
       addWarnings({options: opts})
     )
 
-    const uiDataProviderFolder = join(prjDetachedUiSrcDir, 'dataProvider')
     fileCreator.create(
-      join(uiDataProviderFolder, 'index.ts'),
+      resolveEnvPath(GenerationPathCategory.UiDataProvider),
       uiDataProviderTmpl(entities, opts),
       addWarnings({options: opts})
     )
 
     fileCreator.create(
-      join(uiDataProviderFolder, 'getAdditionalMethods.ts'),
+      resolveEnvPath(GenerationPathCategory.UiDataProviderGetAdditionalMethods),
       uiGetAdditionalMethodsTmpl(projectWideGenerationArgs.system.additionalServices, opts),
       addWarnings({options: opts})
     )
 
-    const uiI18nProviderFolder = join(prjDetachedUiSrcDir, 'i18nProvider')
     fileCreator.create(
-      join(uiI18nProviderFolder, 'index.ts'),
+      resolveEnvPath(GenerationPathCategory.UiI18nProvider),
       uiI18nProviderTmpl(projectWideGenerationArgs, opts),
       addWarnings({options: opts})
     )
 
     // chart front
     if (opts.genUiChartFront) {
-      // chart
-      const uiChartDir = join(opts.detachedUiProject, 'chart')
-
       // chart itself
       fileCreator.create(
-        join(uiChartDir, 'Chart.yaml'),
+        resolveEnvPath(GenerationPathCategory.UiChartChart),
         uiChartTmpl(projectWideGenerationArgs),
         addWarnings({options: opts, fileType: 'yaml'})
       )
       // chart values
       fileCreator.create(
-        join(uiChartDir, 'values.yaml'),
+        resolveEnvPath(GenerationPathCategory.UiChartValues),
         uiChartValuesTmpl(projectWideGenerationArgs),
         addWarnings({options: opts, fileType: 'yaml'})
       )
 
-      // chart templates
-      const uiChartTemplatesDir = join(uiChartDir, 'templates')
-
       fileCreator.create(
-        join(uiChartTemplatesDir, 'front.yaml'),
+        resolveEnvPath(GenerationPathCategory.UiChartFront),
         uiChartFrontTmpl(projectWideGenerationArgs),
         addWarnings({options: opts, fileType: 'yaml'})
       ) 
       // chart ingress
       if (opts.genUiChartIngress) {
         fileCreator.create(
-          join(uiChartTemplatesDir, 'ingress.yaml'),
+          resolveEnvPath(GenerationPathCategory.UiChartIngress),
           uiChartIngressTmpl(),
           addWarnings({options: opts, fileType: 'yaml'})
         )
@@ -393,7 +385,7 @@ provider = "postgresql"
     // gitlab-ci
     if (opts.genUiGitlabCi) {
       fileCreator.create(
-        join(opts.detachedUiProject, '.gitlab-ci.yml'),
+        resolveEnvPath(GenerationPathCategory.UiGitlabCi),
         uiGitlabCiTmpl(projectWideGenerationArgs),
         addWarnings({options: opts, fileType: 'yaml'})
       )
@@ -402,7 +394,7 @@ provider = "postgresql"
     // ci-notify
     if (opts.genUiCiNotify) {
       fileCreator.create(
-        join(opts.detachedUiProject, 'ci-notify.sh'),
+        resolveEnvPath(GenerationPathCategory.UiCiNotify),
         uiCiNotifyTmpl(projectWideGenerationArgs)
       )
     }
@@ -410,7 +402,7 @@ provider = "postgresql"
     // dockerfileTmplUI
     if (opts.genDockerfileUI) {
     fileCreator.create(
-      join(opts.detachedUiProject, 'Dockerfile'),
+      resolveEnvPath(GenerationPathCategory.UiDockerfile),
       dockerfileTmplUI(projectWideGenerationArgs),
         addWarnings({options: opts, fileType: 'yaml'})
       )

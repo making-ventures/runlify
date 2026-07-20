@@ -1,18 +1,24 @@
-import {join} from "path";
+import {dirname, join} from "path";
 import {ProjectWideGenerationArgs} from "../../../args";
 import {readdirSync, statSync} from "fs";
 import log from "../../../../log";
+import {
+  GenerationPathCategory,
+  resolveGenerationPath,
+} from "../../../builders/generationPaths";
 
 export default (
   entityWideGenerationArgs: ProjectWideGenerationArgs,
 ) => {
-  const pagesDirPath = join(
-    entityWideGenerationArgs.options.detachedBackProject, 
-    'src',
-    'adm',
-    'graph',
-    'services',
-  )
+  const sampleGraph = resolveGenerationPath({
+    category: GenerationPathCategory.BackGraphHelpBaseTypeDefs,
+    detachedBackProject: entityWideGenerationArgs.options.detachedBackProject,
+    detachedUiProject: entityWideGenerationArgs.options.detachedUiProject,
+    pathsConfig: entityWideGenerationArgs.system.generationPaths,
+    vars: {},
+  })
+  // …/graph/services/help/baseTypeDefs.ts → …/graph/services
+  const pagesDirPath = dirname(dirname(sampleGraph))
 
   const pagesDirContent = readdirSync(pagesDirPath);
 

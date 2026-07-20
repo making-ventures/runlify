@@ -1,17 +1,26 @@
-import {join} from "path";
+import {dirname, join} from "path";
 import {ProjectWideGenerationArgs} from "../../../args";
 import {readdirSync, statSync} from "fs";
 import log from "../../../../log";
+import {
+  GenerationPathCategory,
+  resolveGenerationPath,
+} from "../../../builders/generationPaths";
 
 export default (
   entityWideGenerationArgs: ProjectWideGenerationArgs,
 ) => {
-  const pagesDirPath = join(
-    entityWideGenerationArgs.options.detachedUiProject, 
-    'src',
-    'adm',
-    'pages',
-  )
+  const samplePage = resolveGenerationPath({
+    category: GenerationPathCategory.UiPageIcon,
+    detachedBackProject: entityWideGenerationArgs.options.detachedBackProject,
+    detachedUiProject: entityWideGenerationArgs.options.detachedUiProject,
+    pathsConfig: entityWideGenerationArgs.system.generationPaths,
+    vars: {
+      entityName: '_',
+      pascalSingular: '_',
+    },
+  })
+  const pagesDirPath = dirname(samplePage)
 
   const pagesDirContent = readdirSync(pagesDirPath);
 

@@ -1,10 +1,13 @@
-import {join} from 'path'
 import {FileCreator} from '../../types'
 import {pascal} from '../../../../utils/cases'
 import {EntityWideGenerationArgs} from '../../../args'
 import {uiListWidgetTmpl} from '../../../generators/fileTemplates/ui/widgets/list/ListWidget'
 import {uiCountWidgetTmpl} from '../../../generators/fileTemplates/ui/widgets/count/CountWidget'
 import {addWarnings} from '../../fileHandlers'
+import {
+  GenerationPathCategory,
+  resolveGenerationPath,
+} from '../../../builders/generationPaths'
 
 const generateFrontSrcEntityWidgets = (
   fileCreator: FileCreator,
@@ -13,33 +16,31 @@ const generateFrontSrcEntityWidgets = (
   const {
     entity,
     options,
+    system,
   } = args;
 
   if (!options.typesOnly) {
-    const widgetsDir = join(options.detachedUiProject, 'src', 'adm', 'widgets');
+    const resolveUiWidgetPath = (category: GenerationPathCategory) =>
+      resolveGenerationPath({
+        category,
+        detachedBackProject: options.detachedBackProject,
+        detachedUiProject: options.detachedUiProject,
+        pathsConfig: system.generationPaths,
+        vars: {PascalEntity: pascal(entity.name)},
+      });
 
-    // CountWidget
     if (options.genUiCountWidget) {
-      const countWdgetsDir = join(widgetsDir, 'count');
-
-      const generatedResources = uiCountWidgetTmpl(args);
-
       fileCreator.create(
-        join(countWdgetsDir, `Count${pascal(entity.name)}Widget.tsx`),
-        generatedResources,
+        resolveUiWidgetPath(GenerationPathCategory.UiWidgetCount),
+        uiCountWidgetTmpl(args),
         addWarnings({options: args.options})
       );
     }
 
-    // ListWidget
     if (options.genUiListWidget) {
-      const listWdgetsDir = join(widgetsDir, 'list');
-
-      const generatedResources = uiListWidgetTmpl(args);
-
       fileCreator.create(
-        join(listWdgetsDir, `List${pascal(entity.name)}Widget.tsx`),
-        generatedResources,
+        resolveUiWidgetPath(GenerationPathCategory.UiWidgetList),
+        uiListWidgetTmpl(args),
         addWarnings({options: args.options})
       );
     }

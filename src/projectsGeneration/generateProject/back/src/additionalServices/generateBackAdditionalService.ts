@@ -1,4 +1,3 @@
-import {join} from 'path'
 import {pascal} from '../../../../../utils/cases'
 import {printSchema} from 'graphql'
 import {AdditionalServiceWideGenerationArgs} from '../../../../args'
@@ -9,33 +8,46 @@ import {genGraphAdditionalServiceSchema} from '../../../../generators/graph/genG
 import {backAdditionalServiceTypesTmpl} from '../../../../generators/fileTemplates/back/services/additionalService/types'
 import {FileCreator} from '../../../types'
 import {addWarnings} from '../../../fileHandlers'
+import {
+  GenerationPathCategory,
+  GenerationPathVars,
+  resolveGenerationPath,
+} from '../../../../builders/generationPaths'
+
+const resolveBackPath = (
+  args: AdditionalServiceWideGenerationArgs,
+  category: GenerationPathCategory,
+  vars: GenerationPathVars = {},
+) =>
+  resolveGenerationPath({
+    category,
+    detachedBackProject: args.options.detachedBackProject,
+    detachedUiProject: args.options.detachedUiProject,
+    pathsConfig: args.system.generationPaths,
+    vars,
+  })
 
 const generateBackAdditionalService = (
   fileCreator: FileCreator,
   args: AdditionalServiceWideGenerationArgs,
 ) => {
   const {service, options} = args;
-  let prjBackSrcPrefixedDir = '';
-  const prjDetachedBackSrcDir = join(options.detachedBackProject, 'src');
-
-  prjBackSrcPrefixedDir = join(prjDetachedBackSrcDir, 'adm');
-
   const serviceName = `${pascal(service.name)}Service`;
-  const serviceDir = join(prjBackSrcPrefixedDir, 'services', serviceName);
 
   fileCreator.create(
-    join(serviceDir, 'types.ts'),
+    resolveBackPath(args, GenerationPathCategory.BackAdditionalServiceTypes, {
+      ServiceName: serviceName,
+    }),
     backAdditionalServiceTypesTmpl(args),
     addWarnings({options: args.options})
   );
 
-  // Graph
-  const graphServiceDir = join(prjBackSrcPrefixedDir, 'graph', 'services', service.name);
-
   // Graph schema
   if (options.genGraphSchema) {
     fileCreator.create(
-      join(graphServiceDir, 'typeDefs.ts'),
+      resolveBackPath(args, GenerationPathCategory.BackAdditionalServiceGraphTypeDefs, {
+        serviceName: service.name,
+      }),
       backAdditionalServiceTypeDefsTmpl(printSchema(genGraphAdditionalServiceSchema(service)), options),
       addWarnings({options: args.options})
     );
@@ -44,7 +56,9 @@ const generateBackAdditionalService = (
   // Graph resolvers
   if (options.genGraphResolvers && !options.typesOnly) {
     fileCreator.create(
-      join(graphServiceDir, 'resolvers.ts'),
+      resolveBackPath(args, GenerationPathCategory.BackAdditionalServiceGraphResolvers, {
+        serviceName: service.name,
+      }),
       backAdditionalServiceResolversTmpl(args),
       addWarnings({options: args.options})
     );
@@ -53,7 +67,9 @@ const generateBackAdditionalService = (
   if (!options.typesOnly) {
     // Permissions
     fileCreator.create(
-      join(graphServiceDir, 'permissionsToGraphql.ts'),
+      resolveBackPath(args, GenerationPathCategory.BackAdditionalServiceGraphPermissionsToGraphql, {
+        serviceName: service.name,
+      }),
       backAdditionalServicePermissionToGraphqlTmpl(args),
       addWarnings({options: args.options})
     );

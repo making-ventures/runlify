@@ -1,9 +1,12 @@
-import {join} from 'path'
 import {FileCreator} from '../../types'
 import {pascalSingular} from '../../../../utils/cases'
 import {EntityWideGenerationArgs} from '../../../args'
 import {uiGetEntityValidationTmpl} from '../../../generators/fileTemplates/ui/pages/getEntityValidation'
 import {addWarnings} from '../../fileHandlers'
+import {
+  GenerationPathCategory,
+  resolveGenerationPath,
+} from '../../../builders/generationPaths'
 
 const generateFrontSrcGetEntityValidation = (
   fileCreator: FileCreator,
@@ -11,12 +14,20 @@ const generateFrontSrcGetEntityValidation = (
 ) => {
   const {
     entity: { name },
+    options,
+    system,
   } = args
 
-  const filePath = join(
-    args.options.detachedUiProject,
-    `src/adm/pages/${name}/get${pascalSingular(name)}Validation.tsx`
-  )
+  const filePath = resolveGenerationPath({
+    category: GenerationPathCategory.UiPageValidation,
+    detachedBackProject: options.detachedBackProject,
+    detachedUiProject: options.detachedUiProject,
+    pathsConfig: system.generationPaths,
+    vars: {
+      entityName: name,
+      pascalSingular: pascalSingular(name),
+    },
+  })
 
   fileCreator.create(
     filePath,

@@ -1,4 +1,3 @@
-import {join} from 'path'
 import {FileCreator} from '../../types'
 import {ProjectWideGenerationArgs} from '../../../args'
 import baseResolversTmpl from '../../../generators/fileTemplates/back/graph/help/baseResolvers'
@@ -6,63 +5,48 @@ import helpServiceTmpl from '../../../generators/fileTemplates/back/services/Hel
 import baseTypeDefsTmpl from '../../../generators/fileTemplates/back/graph/help/baseTypeDefs'
 import permissionsToGraphqlTmpl from '../../../generators/fileTemplates/back/graph/help/permissionsToGraphql'
 import {addWarnings} from '../../fileHandlers'
+import {
+  GenerationPathCategory,
+  resolveGenerationPath,
+} from '../../../builders/generationPaths'
+
+const resolveBackPath = (
+  args: ProjectWideGenerationArgs,
+  category: GenerationPathCategory,
+) =>
+  resolveGenerationPath({
+    category,
+    detachedBackProject: args.options.detachedBackProject,
+    detachedUiProject: args.options.detachedUiProject,
+    pathsConfig: args.system.generationPaths,
+    vars: {},
+  })
 
 const generateBackHelpService = (
   fileCreator: FileCreator,
   args: ProjectWideGenerationArgs,
 ) => {
   fileCreator.create(
-    join(
-      args.options.detachedBackProject,
-      'src',
-      'adm',
-      'graph',
-      'services',
-      'help',
-      'baseTypeDefs.ts'
-    ),
+    resolveBackPath(args, GenerationPathCategory.BackGraphHelpBaseTypeDefs),
     baseTypeDefsTmpl(args),
     addWarnings({options: args.options})
   )
 
   if (!args.options.typesOnly) {
     fileCreator.create(
-      join(
-        args.options.detachedBackProject,
-        'src',
-        'adm',
-        'graph',
-        'services',
-        'help',
-        'baseResolvers.ts'
-      ),
+      resolveBackPath(args, GenerationPathCategory.BackGraphHelpBaseResolvers),
       baseResolversTmpl(),
       addWarnings({options: args.options})
     )
 
     fileCreator.create(
-      join(
-        args.options.detachedBackProject,
-        'src',
-        'adm',
-        'graph',
-        'services',
-        'help',
-        'permissionsToGraphql.ts'
-      ),
+      resolveBackPath(args, GenerationPathCategory.BackGraphHelpPermissionsToGraphql),
       permissionsToGraphqlTmpl(),
       addWarnings({options: args.options})
     )
 
     fileCreator.create(
-      join(
-        args.options.detachedBackProject,
-        'src',
-        'adm',
-        'services',
-        'HelpService',
-        'HelpService.ts'
-      ),
+      resolveBackPath(args, GenerationPathCategory.BackServiceHelpService),
       helpServiceTmpl(args),
       addWarnings({options: args.options})
     )

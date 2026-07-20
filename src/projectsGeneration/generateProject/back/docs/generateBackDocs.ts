@@ -1,4 +1,3 @@
-import {join} from 'path'
 import {FileCreator} from '../../types'
 import {
   prepareEntityWideGenerationArgs,
@@ -11,31 +10,43 @@ import backDocsEntity from '../../../generators/fileTemplates/back/environment/d
 import {plural} from 'pluralize'
 import backDocsIntegrationClient from '../../../generators/fileTemplates/back/environment/docs/backDocsIntegrationClient'
 import backDocSpec from '../../../generators/fileTemplates/back/environment/docs/backDocSpec'
+import {
+  GenerationPathCategory,
+  GenerationPathVars,
+  resolveGenerationPath,
+} from '../../../builders/generationPaths'
+
+const resolveDocsPath = (
+  args: ProjectWideGenerationArgs,
+  category: GenerationPathCategory,
+  vars: GenerationPathVars = {},
+) =>
+  resolveGenerationPath({
+    category,
+    detachedBackProject: args.options.detachedBackProject,
+    detachedUiProject: args.options.detachedUiProject,
+    pathsConfig: args.system.generationPaths,
+    vars,
+  })
 
 const generateBackDocsConfiguration = (
   fileCreator: FileCreator,
   args: ProjectWideGenerationArgs,
 ) => {
-  const filePath = join(
-    args.options.detachedBackProject,
-    'docs',
-    'configuration.md'
+  fileCreator.create(
+    resolveDocsPath(args, GenerationPathCategory.BackDocsConfiguration),
+    backDocsConfiguration(args)
   )
-
-  fileCreator.create(filePath, backDocsConfiguration(args))
 }
 
 const generateBackDocsSpec = (
   fileCreator: FileCreator,
   args: ProjectWideGenerationArgs,
 ) => {
-  const filePath = join(
-    args.options.detachedBackProject,
-    'docs',
-    'spec.md'
+  fileCreator.create(
+    resolveDocsPath(args, GenerationPathCategory.BackDocsSpec),
+    backDocSpec(args)
   )
-
-  fileCreator.create(filePath, backDocSpec(args))
 }
 
 const generateBackDocsRestApis = (
@@ -43,14 +54,12 @@ const generateBackDocsRestApis = (
   args: ProjectWideGenerationArgs,
 ) => {
   for (const restApi of args.system.restApis) {
-    const filePath = join(
-      args.options.detachedBackProject,
-      'docs',
-      'restApis',
-      `${restApi.name}.md`
+    fileCreator.create(
+      resolveDocsPath(args, GenerationPathCategory.BackDocsRestApi, {
+        restApiName: restApi.name,
+      }),
+      backDocsRestApi(args, restApi)
     )
-
-    fileCreator.create(filePath, backDocsRestApi(args, restApi))
   }
 }
 
@@ -59,14 +68,12 @@ const generateBackDocsIntegrationClients = (
   args: ProjectWideGenerationArgs,
 ) => {
   for (const client of args.system.integrationClients) {
-    const filePath = join(
-      args.options.detachedBackProject,
-      'docs',
-      'integrationClients',
-      `${client.name}.md`
+    fileCreator.create(
+      resolveDocsPath(args, GenerationPathCategory.BackDocsIntegrationClient, {
+        clientName: client.name,
+      }),
+      backDocsIntegrationClient(args, client)
     )
-
-    fileCreator.create(filePath, backDocsIntegrationClient(args, client))
   }
 }
 
@@ -75,15 +82,11 @@ const generateBackDocsEntities = (
   args: ProjectWideGenerationArgs,
 ) => {
   args.entities.forEach((entity) => {
-    const filePath = join(
-      args.options.detachedBackProject,
-      'docs',
-      plural(entity.type),
-      `${entity.name}.md`
-    )
-
     fileCreator.create(
-      filePath,
+      resolveDocsPath(args, GenerationPathCategory.BackDocsEntity, {
+        entityTypePlural: plural(entity.type),
+        entityName: entity.name,
+      }),
       backDocsEntity(prepareEntityWideGenerationArgs(args, entity))
     )
   })
@@ -93,13 +96,10 @@ const generateAdminAppDocsConfiguration = (
   fileCreator: FileCreator,
   args: ProjectWideGenerationArgs,
 ) => {
-  const filePath = join(
-    args.options.detachedUiProject,
-    'docs',
-    'configuration.md'
+  fileCreator.create(
+    resolveDocsPath(args, GenerationPathCategory.UiDocsConfiguration),
+    adminAppDocsConfiguration(args)
   )
-
-  fileCreator.create(filePath, adminAppDocsConfiguration(args))
 }
 
 const generateBackDocs = (fileCreator: FileCreator, args: ProjectWideGenerationArgs) => {

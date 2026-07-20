@@ -1,18 +1,24 @@
-import {join} from "path";
+import {dirname, join} from "path";
 import {ProjectWideGenerationArgs} from "../../../args";
 import {readdirSync, statSync} from "fs";
 import log from "../../../../log";
 import {camelCase} from "change-case";
+import {
+  GenerationPathCategory,
+  resolveGenerationPath,
+} from "../../../builders/generationPaths";
 
 export default (
   entityWideGenerationArgs: ProjectWideGenerationArgs,
 ) => {
-  const pagesDirPath = join(
-    entityWideGenerationArgs.options.detachedBackProject, 
-    'src',
-    'adm',
-    'services',
-  )
+  const sampleService = resolveGenerationPath({
+    category: GenerationPathCategory.BackServiceBaseServices,
+    detachedBackProject: entityWideGenerationArgs.options.detachedBackProject,
+    detachedUiProject: entityWideGenerationArgs.options.detachedUiProject,
+    pathsConfig: entityWideGenerationArgs.system.generationPaths,
+    vars: {},
+  })
+  const pagesDirPath = dirname(sampleService)
 
   const pattern = '.*(?=Service.ts)'
   const listWidgetFilenameRegex = new RegExp(pattern, 'gum');

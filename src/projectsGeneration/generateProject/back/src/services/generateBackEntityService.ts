@@ -1,4 +1,3 @@
-import {join} from 'path'
 import {FileCreator} from '../../../types'
 import {pascalPlural} from '../../../../../utils/cases'
 import {EntityWideGenerationArgs} from '../../../../args'
@@ -39,10 +38,6 @@ const generateBackEntityService = (
 
   if (options.genPrismaServices && !options.typesOnly) {
     const serviceName = `${pascalPlural(entity.name)}Service`;
-    const serviceDir = join(options.detachedBackProject, 'src', 'adm', 'services', serviceName);
-    const servicePath = join(serviceDir, `${serviceName}.ts`);
-    const configPath = join(serviceDir, `config.ts`);
-    const additionalServicePath = join(serviceDir, `Additional${serviceName}.ts`);
     const resolveBackPath = (category: GenerationPathCategory) =>
       resolveGenerationPath({
         category,
@@ -54,13 +49,13 @@ const generateBackEntityService = (
 
     const additionalClassService = prismaAdditionalServiceClassTmpl(args);
     fileCreator.createIfNotExists(
-      additionalServicePath,
+      resolveBackPath(GenerationPathCategory.BackServiceAdditionalClass),
       additionalClassService
     );
 
     const generatedClassService = prismaServiceBaseClassTmpl(args);
     fileCreator.create(
-      servicePath,
+      resolveBackPath(GenerationPathCategory.BackServiceClass),
       generatedClassService,
       addWarnings({options: args.options})
     );
@@ -71,7 +66,7 @@ const generateBackEntityService = (
       allInfoRegistries,
     );
     fileCreator.create(
-      configPath,
+      resolveBackPath(GenerationPathCategory.BackServiceConfig),
       config,
       addWarnings({options: args.options})
     );

@@ -1,4 +1,3 @@
-import {join} from 'path'
 import {FileCreator} from '../../../types'
 import {pascal} from '../../../../../utils/cases'
 import {ProjectWideGenerationArgs} from '../../../../args'
@@ -10,20 +9,33 @@ import {initDevEnumTmpl} from '../../../../generators/fileTemplates/back/initDev
 import {backEntitiesEnumTmpl} from '../../../../generators/fileTemplates/back/backEntitiesEnumTmpl'
 import {initEntities} from '../../../../generators/fileTemplates/back/initEntities'
 import {addWarnings} from '../../../fileHandlers'
+import {
+  GenerationPathCategory,
+  GenerationPathVars,
+  resolveGenerationPath,
+} from '../../../../builders/generationPaths'
+
+const resolveBackPath = (
+  args: ProjectWideGenerationArgs,
+  category: GenerationPathCategory,
+  vars: GenerationPathVars = {},
+) =>
+  resolveGenerationPath({
+    category,
+    detachedBackProject: args.options.detachedBackProject,
+    detachedUiProject: args.options.detachedUiProject,
+    pathsConfig: args.system.generationPaths,
+    vars,
+  })
 
 const generateBackEnums = (fileCreator: FileCreator, args: ProjectWideGenerationArgs) => {
   args.entities
     .filter((e) => e.predefinedElements.length > 0)
     .forEach((entity) => {
-      const filePath = join(
-        args.options.detachedBackProject,
-        'src',
-        'types',
-        `${pascal(singular(entity.name))}.ts`
-      )
-
       fileCreator.create(
-        filePath,
+        resolveBackPath(args, GenerationPathCategory.BackTypeEnum, {
+          pascalSingular: pascal(singular(entity.name)),
+        }),
         enumTmpl(entity, args.options),
         addWarnings({options: args.options})
       )
@@ -34,15 +46,8 @@ const generateBackEntityEnum = (
   fileCreator: FileCreator,
   args: ProjectWideGenerationArgs,
 ) => {
-  const filePath = join(
-    args.options.detachedBackProject,
-    'src',
-    'types',
-    'Entity.ts'
-  )
-
   fileCreator.create(
-    filePath,
+    resolveBackPath(args, GenerationPathCategory.BackTypeEntityEnum),
     backEntitiesEnumTmpl(args),
     addWarnings({options: args.options})
   )
@@ -55,16 +60,10 @@ const generateBackEnumsInit = (
   args.entities
     .filter((e) => e.predefinedElements.length > 0)
     .forEach((entity) => {
-      const filePath = join(
-        args.options.detachedBackProject,
-        'src',
-        'init',
-        'common',
-        `init${pascal(entity.name)}.ts`
-      )
-
       fileCreator.create(
-        filePath,
+        resolveBackPath(args, GenerationPathCategory.BackInitCommonEnum, {
+          PascalEntity: pascal(entity.name),
+        }),
         initCommonEnumTmpl(entity, args.options),
         addWarnings({options: args.options})
       )
@@ -75,16 +74,8 @@ const generateBackEntitiesEnumInit = (
   fileCreator: FileCreator,
   args: ProjectWideGenerationArgs,
 ) => {
-  const filePath = join(
-    args.options.detachedBackProject,
-    'src',
-    'init',
-    'common',
-    'initEntities.ts'
-  )
-
   fileCreator.create(
-    filePath,
+    resolveBackPath(args, GenerationPathCategory.BackInitCommonEntities),
     initEntities(args),
     addWarnings({options: args.options})
   )
@@ -94,15 +85,10 @@ const generateBackDevEnums = (fileCreator: FileCreator, args: ProjectWideGenerat
   args.entities
     .filter((e) => e.devPerefinedElements.length > 0)
     .forEach((entity) => {
-      const filePath = join(
-        args.options.detachedBackProject,
-        'src',
-        'types',
-        `Dev${pascal(singular(entity.name))}.ts`
-      )
-
       fileCreator.create(
-        filePath,
+        resolveBackPath(args, GenerationPathCategory.BackTypeDevEnum, {
+          pascalSingular: pascal(singular(entity.name)),
+        }),
         devEnumTmpl(entity, args.options),
         addWarnings({options: args.options})
       )
@@ -116,16 +102,10 @@ const generateBackDevEnumsInit = (
   args.entities
     .filter((e) => e.devPerefinedElements.length > 0)
     .forEach((entity) => {
-      const filePath = join(
-        args.options.detachedBackProject,
-        'src',
-        'init',
-        'dev',
-        `init${pascal(entity.name)}.ts`
-      )
-
       fileCreator.create(
-        filePath,
+        resolveBackPath(args, GenerationPathCategory.BackInitDevEnum, {
+          PascalEntity: pascal(entity.name),
+        }),
         initDevEnumTmpl(entity, args.options),
         addWarnings({options: args.options})
       )

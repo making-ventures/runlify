@@ -1,9 +1,12 @@
-import {join} from 'path'
 import {FileCreator} from '../../types'
 import {uiEntityIconTmpl} from '../../../generators/fileTemplates/ui/pages/Icon'
 import {pascalSingular} from '../../../../utils/cases'
 import {EntityWideGenerationArgs} from '../../../args'
 import {addWarnings} from '../../fileHandlers'
+import {
+  GenerationPathCategory,
+  resolveGenerationPath,
+} from '../../../builders/generationPaths'
 
 const generateFrontSrcEntityIcon = (
   fileCreator: FileCreator,
@@ -11,12 +14,20 @@ const generateFrontSrcEntityIcon = (
 ) => {
   const {
     entity: { name },
+    options,
+    system,
   } = args
 
-  const filePath = join(
-    args.options.detachedUiProject,
-    `src/adm/pages/${name}/${pascalSingular(name)}Icon.tsx`
-  )
+  const filePath = resolveGenerationPath({
+    category: GenerationPathCategory.UiPageIcon,
+    detachedBackProject: options.detachedBackProject,
+    detachedUiProject: options.detachedUiProject,
+    pathsConfig: system.generationPaths,
+    vars: {
+      entityName: name,
+      pascalSingular: pascalSingular(name),
+    },
+  })
 
   fileCreator.create(
     filePath,

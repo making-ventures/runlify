@@ -79,4 +79,81 @@ describe('resolveGenerationPath', () => {
       'Missing generation path variable "{ServiceName}" for category "back.hook.beforeCreate"',
     )
   })
+
+  test('default back service class path matches legacy join layout', () => {
+    const path = resolveGenerationPath({
+      category: GenerationPathCategory.BackServiceClass,
+      detachedBackProject,
+      detachedUiProject,
+      pathsConfig: null,
+      vars: {ServiceName: 'UsersService'},
+    })
+
+    expect(path).toBe(
+      join(detachedBackProject, 'src/adm/services/UsersService/UsersService.ts'),
+    )
+  })
+
+  test('default BaseServices path has no placeholders', () => {
+    const path = resolveGenerationPath({
+      category: GenerationPathCategory.BackServiceBaseServices,
+      detachedBackProject,
+      detachedUiProject,
+      pathsConfig: null,
+      vars: {},
+    })
+
+    expect(path).toBe(
+      join(detachedBackProject, 'src/adm/services/BaseServices.ts'),
+    )
+  })
+
+  test('default ui page path matches legacy join layout', () => {
+    const path = resolveGenerationPath({
+      category: GenerationPathCategory.UiPageShowMainTab,
+      detachedBackProject,
+      detachedUiProject,
+      pathsConfig: null,
+      vars: {entityName: 'users', pascalSingular: 'User'},
+    })
+
+    expect(path).toBe(
+      join(detachedUiProject, 'src/adm/pages/users/UserShow/MainTab.tsx'),
+    )
+  })
+
+  test('dependency tab uses OwnerPascal and FromFieldPascal', () => {
+    const path = resolveGenerationPath({
+      category: GenerationPathCategory.UiPageShowDependencyTab,
+      detachedBackProject,
+      detachedUiProject,
+      pathsConfig: null,
+      vars: {
+        entityName: 'users',
+        pascalSingular: 'User',
+        OwnerPascal: 'Orders',
+        FromFieldPascal: 'UserId',
+      },
+    })
+
+    expect(path).toBe(
+      join(
+        detachedUiProject,
+        'src/adm/pages/users/UserShow/tabs/OrdersUserIdTab.tsx',
+      ),
+    )
+  })
+
+  test('shared root uses detachedSharedProject', () => {
+    const path = resolveGenerationPath({
+      category: GenerationPathCategory.SharedGraphqlSchemaJson,
+      detachedBackProject,
+      detachedUiProject,
+      detachedSharedProject: 'D:/work/rlw-shared',
+      pathsConfig: null,
+      vars: {},
+    })
+
+    expect(path).toBe(join('D:/work/rlw-shared', 'src/graphql.schema.json'))
+  })
 })
