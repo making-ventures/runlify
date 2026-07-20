@@ -155,7 +155,6 @@ export function resolveProjectPaths(
       repoRoot,
       detachedBackProject,
       detachedUiProject,
-      detachedSharedProject: detachedBackProject,
       metaDir,
       copySchemaToUi,
       sharedSchemaPath: options.sharedSchemaPath,
@@ -194,7 +193,7 @@ export function resolveProjectPaths(
 
   const detachedSharedProject = paths.shared
     ? resolveMaybeAbsolute(repoRoot, paths.shared)
-    : detachedBackProject
+    : undefined
 
   let sharedSchemaPath = options.sharedSchemaPath
   if (!sharedSchemaPath && paths.sharedSchema) {

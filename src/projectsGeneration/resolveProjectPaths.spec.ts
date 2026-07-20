@@ -44,6 +44,8 @@ describe('resolveProjectPaths', () => {
     )
     expect(resolved.detachedBackProject).toBe(join(root, 'aloyal-back'))
     expect(resolved.detachedUiProject).toBe(join(root, 'aloyal-ui'))
+    expect(resolved.detachedSharedProject).toBeUndefined()
+    expect(resolved.sharedSchemaPath).toBeUndefined()
     expect(resolved.copySchemaToUi).toBe(true)
   })
 
@@ -215,6 +217,25 @@ describe('resolveProjectPaths', () => {
     expect(existsSync(join(detectRepoRoot(back), 'pnpm-workspace.yaml'))).toBe(
       true,
     )
+  })
+
+  test('monorepo without paths.shared leaves detachedSharedProject unset', () => {
+    const repoRoot = join(root, 'rlw')
+    const back = join(repoRoot, 'apps', 'back')
+    mkdirSync(back, {recursive: true})
+    writeWorkspace(repoRoot)
+
+    const resolved = resolveProjectPaths({
+      cwd: back,
+      runlifyConfig: {
+        monorepo: true,
+        paths: {back: 'apps/back', ui: 'apps/ui'},
+      },
+      options: {},
+    })
+
+    expect(resolved.detachedSharedProject).toBeUndefined()
+    expect(resolved.sharedSchemaPath).toBeUndefined()
   })
 
   test('shared path alone implies sharedSchema default', () => {

@@ -212,7 +212,7 @@ export interface ResolveGenerationPathArgs {
   category: GenerationPathCategory
   detachedBackProject: string
   detachedUiProject: string
-  /** Monorepo `paths.shared`; falls back to back when omitted. */
+  /** Monorepo `paths.shared` when set; otherwise omitted (do not fall back to back). */
   detachedSharedProject?: string
   pathsConfig?: GenerationPathsConfig | null
   vars: GenerationPathVars

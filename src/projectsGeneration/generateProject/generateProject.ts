@@ -34,7 +34,10 @@ const generateProject = async (
   writeFiles(getFiles());
   reset();
 
-  await genGraphSchemesByLocalGenerator(opts);
+  await genGraphSchemesByLocalGenerator({
+    ...opts,
+    generationPaths: system.generationPaths,
+  });
 
   // Full generation
   generateBack(fileCreator, args);

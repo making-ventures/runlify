@@ -9,22 +9,27 @@ import {
   resolveGenerationPath,
 } from '../builders/generationPaths'
 
+type GraphSchemesOptions = BootstrapEntityOptions & {
+  sharedSchemaPath?: string
+  copySchemaToUi?: boolean
+  generationPaths?: GenerationPathsConfig
+  detachedSharedProject?: string
+}
+
 const resolvePath = (
-  options: BootstrapEntityOptions,
+  options: GraphSchemesOptions,
   category: GenerationPathCategory,
 ) =>
   resolveGenerationPath({
     category,
     detachedBackProject: options.detachedBackProject,
     detachedUiProject: options.detachedUiProject,
-    pathsConfig: (options as BootstrapEntityOptions & {
-      generationPaths?: GenerationPathsConfig
-    }).generationPaths,
+    pathsConfig: options.generationPaths,
     vars: {},
   })
 
 export const genGraphSchemesByLocalGenerator = async (
-  options: BootstrapEntityOptions
+  options: GraphSchemesOptions,
 ) => {
   // yarn ts-node src/gen/genGQSchemes.ts
 
@@ -78,14 +83,7 @@ export const genGraphSchemesByLocalGenerator = async (
     GenerationPathCategory.BackGeneratedGraphqlTs,
   )
 
-  const opts = options as BootstrapEntityOptions & {
-    sharedSchemaPath?: string
-    copySchemaToUi?: boolean
-    generationPaths?: GenerationPathsConfig
-    detachedSharedProject?: string
-  }
-
-  if (options.genFrontend && opts.copySchemaToUi !== false) {
+  if (options.genFrontend && options.copySchemaToUi !== false) {
     await fs.copyFile(
       backGraphqlTs,
       resolvePath(options, GenerationPathCategory.UiGeneratedGraphqlTs),
@@ -97,16 +95,20 @@ export const genGraphSchemesByLocalGenerator = async (
     )
   }
 
-  if (opts.sharedSchemaPath) {
-    await fs.ensureDir(path.dirname(opts.sharedSchemaPath))
-    await fs.copyFile(schemaJsonSrc, opts.sharedSchemaPath)
-  } else if (opts.detachedSharedProject) {
+  if (options.sharedSchemaPath) {
+    await fs.ensureDir(path.dirname(options.sharedSchemaPath))
+    await fs.copyFile(schemaJsonSrc, options.sharedSchemaPath)
+  } else if (
+    options.detachedSharedProject &&
+    options.detachedSharedProject !== options.detachedBackProject
+  ) {
+    // Only when a real shared package is configured — not the back-root fallback.
     const sharedSchema = resolveGenerationPath({
       category: GenerationPathCategory.SharedGraphqlSchemaJson,
       detachedBackProject: options.detachedBackProject,
       detachedUiProject: options.detachedUiProject,
-      detachedSharedProject: opts.detachedSharedProject,
-      pathsConfig: opts.generationPaths,
+      detachedSharedProject: options.detachedSharedProject,
+      pathsConfig: options.generationPaths,
       vars: {},
     })
     await fs.ensureDir(path.dirname(sharedSchema))
