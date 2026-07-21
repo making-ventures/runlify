@@ -1,8 +1,8 @@
 import {existsSync, readFileSync} from 'fs'
 import {dirname, isAbsolute, join, resolve} from 'path'
 
-/** Режим раскладки. По умолчанию `legacy` — без изменений для aloyal и др. */
-export type RunlifyLayoutMode = 'legacy' | 'monorepo'
+/** Режим раскладки. По умолчанию `detached` — без изменений для aloyal и др. */
+export type RunlifyLayoutMode = 'detached' | 'monorepo'
 
 /**
  * Пути в monorepo-режиме — относительно `repoRoot`.
@@ -56,13 +56,13 @@ export interface ResolveProjectPathsInput {
 }
 
 const getLayoutMode = (config: RunlifyLocalConfig | null): RunlifyLayoutMode => {
-  if (config?.layout === 'legacy' || config?.layout === 'monorepo') {
+  if (config?.layout === 'detached' || config?.layout === 'monorepo') {
     return config.layout
   }
   if (config?.monorepo === true) {
     return 'monorepo'
   }
-  return 'legacy'
+  return 'detached'
 }
 
 const resolveMaybeAbsolute = (base: string, pathValue: string): string => {
@@ -105,7 +105,7 @@ export const detectRepoRoot = (cwd: string, explicitRoot?: string): string => {
     dir = parent
   }
 
-  // Legacy fallback: parent of cwd (sibling back/ui layout)
+  // Detached layout fallback: parent of cwd (sibling back/ui layout)
   return resolve(cwd, '..')
 }
 
@@ -126,7 +126,7 @@ const withMetaFiles = (
 })
 
 /**
- * Resolve absolute project paths for legacy (sibling repos) and monorepo layouts.
+ * Resolve absolute project paths for detached (sibling repos) and monorepo layouts.
  * Generators keep reading detachedBackProject / detachedUiProject.
  */
 export function resolveProjectPaths(
@@ -141,7 +141,7 @@ export function resolveProjectPaths(
     runlifyConfig?.projectName ||
     ''
 
-  if (layoutMode === 'legacy') {
+  if (layoutMode === 'detached') {
     const repoRoot = resolve(cwd, '..')
     const backName =
       options.detachedBackProject || `${projectPrefix}-back`

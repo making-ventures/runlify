@@ -35,7 +35,7 @@ export const genGraphSchemesByLocalGenerator = async (
 
   log.info(`detachedBackProject: ${options.detachedBackProject}`);
   log.info(`detachedUiProject: ${options.detachedUiProject}`);
-  log.info(`layoutMode: ${(options as BootstrapEntityOptions & {layoutMode?: string}).layoutMode ?? 'legacy'}`);
+  log.info(`layoutMode: ${(options as BootstrapEntityOptions & {layoutMode?: string}).layoutMode ?? 'detached'}`);
 
   let command = options.graphGeneratorCommand
 

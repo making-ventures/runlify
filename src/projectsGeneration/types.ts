@@ -141,7 +141,7 @@ export const defaultBootstrapEntityOptions = {
   // Filled by resolveProjectPaths during regen (optional in options.json)
   metaDir: '',
   repoRoot: '',
-  layoutMode: 'legacy' as 'legacy' | 'monorepo',
+  layoutMode: 'detached' as 'detached' | 'monorepo',
   sharedSchemaPath: '',
   copySchemaToUi: true,
 }

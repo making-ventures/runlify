@@ -26,7 +26,7 @@ describe('resolveProjectPaths', () => {
     writeFileSync(join(repoRoot, 'pnpm-workspace.yaml'), 'packages:\n  - apps/*\n')
   }
 
-  test('legacy: meta under cwd/src/meta, back/ui siblings by projectPrefix', () => {
+  test('detached: meta under cwd/src/meta, back/ui siblings by projectPrefix', () => {
     const back = join(root, 'aloyal-back')
     mkdirSync(join(back, 'src', 'meta'), {recursive: true})
 
@@ -36,7 +36,7 @@ describe('resolveProjectPaths', () => {
       options: {projectPrefix: 'aloyal'},
     })
 
-    expect(resolved.layoutMode).toBe('legacy')
+    expect(resolved.layoutMode).toBe('detached')
     expect(resolved.repoRoot).toBe(root)
     expect(resolved.metaDir).toBe(join(back, 'src', 'meta'))
     expect(resolved.metadataJsonPath).toBe(
@@ -49,7 +49,7 @@ describe('resolveProjectPaths', () => {
     expect(resolved.copySchemaToUi).toBe(true)
   })
 
-  test('legacy: explicit detached* names', () => {
+  test('detached: explicit detached* names', () => {
     const back = join(root, 'custom-back')
     mkdirSync(back, {recursive: true})
 
