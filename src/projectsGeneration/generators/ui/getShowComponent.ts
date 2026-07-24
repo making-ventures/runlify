@@ -19,7 +19,7 @@ export const getScalarShowComponent = (entity: Entity, field: ScalarField) => {
   }' ${getFieldLabel(entity, field)}${
     field.type === 'datetime' ? ' showTime' : ''
   }${
-    isMoneyField(field) ? ' transform={(val: number) => Number(val) / 100}' : ''
+    isMoneyField(field) ? ' transform={(val) => moneyMinorToMajor(val)}' : ''
   } />`
 }
 

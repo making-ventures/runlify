@@ -7,7 +7,7 @@ import {
 import {getCompNamesToEditField} from '../../../../ui/componentNames/edit/getCompNamesToEditField'
 import {EntityWideGenerationArgs} from '../../../../../args'
 import {pad1, pad} from '../../../../../utils'
-import {getKeyField, isImageFileRef, isMarkdownField, isMultilineField} from '../../../../../metaUtils'
+import {getKeyField, isImageFileRef, isMarkdownField, isMoneyField, isMultilineField} from '../../../../../metaUtils'
 
 export const uiDefaultCreateTmpl = ({
   allEntities,
@@ -27,6 +27,7 @@ export const uiDefaultCreateTmpl = ({
   const notDateFieldsToImport = fieldsToImport.filter(
     (f) => !['datetime', 'date'].includes(f.type)
   )
+  const hasMoneyField = fieldsToImport.some(isMoneyField)
   const reactAdminImports: string[] = [
     'Create',
     'SimpleForm',
@@ -65,6 +66,11 @@ import DateTimeInput from '../../../../uiLib/DateTimeInput';`
     dateFieldsToImport.some((f) => f.type === 'date')
       ? `
 import DateInput from '../../../../uiLib/DateInput';`
+      : ''
+  }${
+    hasMoneyField
+      ? `
+import {moneyMajorToMinor, moneyMinorToMajor} from '../../../../uiLib/transformations/moneyAmount';`
       : ''
   }${
     hasHidden

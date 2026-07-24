@@ -5,7 +5,7 @@ import {getShowComponent} from '../../../../ui/getShowComponent'
 import {Entity} from '../../../../../builders/buildedTypes'
 import {EntityWideGenerationArgs} from '../../../../../args'
 import {pad5} from '../../../../../utils'
-import {isImageFileRef, isMarkdownField} from '../../../../../metaUtils'
+import {isImageFileRef, isMarkdownField, isMoneyField} from '../../../../../metaUtils'
 import {plural} from 'pluralize'
 
 export const uiDefaultListTmpl = ({
@@ -30,6 +30,7 @@ export const uiDefaultListTmpl = ({
   const notDateFieldsToImport = fieldsToImport.filter(
     (f) => !['datetime', 'date'].includes(f.type)
   )
+  const hasMoneyField = fieldsToImport.some(isMoneyField)
   const reactAdminImports: string[] = [
     'List',
     'DatagridConfigurable',
@@ -67,6 +68,11 @@ import DateField from '../../../../uiLib/DateField';`
     registrarDepended
       ? `
 import RegistrarField from '../../../../raUiLib/RegistrarField';`
+      : ''
+  }${
+    hasMoneyField
+      ? `
+import {moneyMinorToMajor} from '../../../../uiLib/transformations/moneyAmount';`
       : ''
   }
 import ${pascalSingular(entity.name)}Filter from './${pascalSingular(
