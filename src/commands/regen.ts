@@ -1,7 +1,10 @@
 import {GluegunToolbox} from 'gluegun'
-import {BootstrapEntityOptions, generateProject, System} from '../projectsGeneration';
-import {cwd} from 'fs-jetpack'
-import {join} from 'path'
+import {BootstrapEntityOptions, generateProject, System} from '../projectsGeneration'
+import {
+  resolveMetaPaths,
+  resolveProjectPaths,
+} from '../projectsGeneration/resolveProjectPaths'
+import {existsSync, readFileSync} from 'fs'
 
 export enum ValidationLevel {
   Error = 'error',
@@ -23,15 +26,24 @@ module.exports = {
   name: 'regenerate',
   alias: ['regen'],
   run: async (toolbox: GluegunToolbox) => {
-    const {filesystem, parameters} = toolbox
+    const {parameters} = toolbox
 
     const backOnly = parameters.options.backOnly || parameters.options['back-only']
 
-    const metaPath = 'src/meta/metadata.json';
-    const optionsPath = 'src/meta/options.json';
+    const runlifyConfig = toolbox.localConfig.getConfig().main ?? null
+    const cwd = process.cwd()
 
-    const metaJson = filesystem.read(metaPath) || '{}';
-    const optionsJson = filesystem.read(optionsPath) || '{}';
+    const metaLoc = resolveMetaPaths(cwd, runlifyConfig)
+
+    if (!existsSync(metaLoc.metadataJsonPath)) {
+      throw new Error(`Cannot find metadata.json at ${metaLoc.metadataJsonPath}`)
+    }
+    if (!existsSync(metaLoc.optionsJsonPath)) {
+      throw new Error(`Cannot find options.json at ${metaLoc.optionsJsonPath}`)
+    }
+
+    const metaJson = readFileSync(metaLoc.metadataJsonPath, 'utf8')
+    const optionsJson = readFileSync(metaLoc.optionsJsonPath, 'utf8')
 
     const meta = JSON.parse(metaJson) as System; // TODO парсить валидатором в заданную структуру
     const options = JSON.parse(optionsJson) as BootstrapEntityOptions; // TODO парсить валидатором в заданную структуру
@@ -40,17 +52,22 @@ module.exports = {
       options.genFrontend = false
     }
 
-    if (!options.detachedBackProject) {
-      options.detachedBackProject = `${options.projectPrefix}-back`;
-    }
-    if (!options.detachedUiProject) {
-      options.detachedUiProject = `${options.projectPrefix}-ui`;
-    }
+    const resolved = resolveProjectPaths({
+      cwd,
+      runlifyConfig,
+      options: options as BootstrapEntityOptions & Record<string, unknown>,
+    })
 
-    const dir = cwd('..').cwd();
-
-    options.detachedBackProject = join(dir, options.detachedBackProject);
-    options.detachedUiProject = join(dir, options.detachedUiProject);
+    Object.assign(options, {
+      detachedBackProject: resolved.detachedBackProject,
+      detachedUiProject: resolved.detachedUiProject,
+      detachedSharedProject: resolved.detachedSharedProject,
+      metaDir: resolved.metaDir,
+      sharedSchemaPath: resolved.sharedSchemaPath,
+      copySchemaToUi: resolved.copySchemaToUi,
+      layoutMode: resolved.layoutMode,
+      repoRoot: resolved.repoRoot,
+    })
 
     // const validateMeta = (system: System): ValidationMessage[] => {
     //   return [

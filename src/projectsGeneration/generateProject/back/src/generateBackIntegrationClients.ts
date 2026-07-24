@@ -1,4 +1,3 @@
-import {join} from 'path'
 import {FileCreator} from '../../types'
 import {ProjectWideGenerationArgs} from '../../../args'
 import backIntegrationClientTmpl from '../../../generators/fileTemplates/back/environment/src/integrationClients/IntegrationClient'
@@ -7,26 +6,44 @@ import backIntegrationClientTypesTmpl from '../../../generators/fileTemplates/ba
 import genIntegrationClientConstrictorsTmpl from '../../../generators/fileTemplates/back/environment/src/integrationClients/integrationClientConstrictors'
 import genIntegrationClientsTmpl from '../../../generators/fileTemplates/back/environment/src/integrationClients/IntegrationClients'
 import {addWarnings} from '../../fileHandlers'
+import {
+  GenerationPathCategory,
+  GenerationPathVars,
+  resolveGenerationPath,
+} from '../../../builders/generationPaths'
+
+const resolveBackPath = (
+  args: ProjectWideGenerationArgs,
+  category: GenerationPathCategory,
+  vars: GenerationPathVars = {},
+) =>
+  resolveGenerationPath({
+    category,
+    detachedBackProject: args.options.detachedBackProject,
+    detachedUiProject: args.options.detachedUiProject,
+    pathsConfig: args.system.generationPaths,
+    vars,
+  })
 
 const generateBackIntegrationClients = (
   fileCreator: FileCreator,
   args: ProjectWideGenerationArgs,
 ) => {
-  const prjDetachedBackSrcDir = join(args.options.detachedBackProject, 'src');
-  const servicesDir = join(prjDetachedBackSrcDir, 'adm', 'services');
-
   for (const client of args.system.integrationClients) {
-    const clientFolder = join(prjDetachedBackSrcDir, 'integrationClients', `${client.name}`);
+    const clientVars = {
+      clientName: client.name,
+      ClientPascal: pascalCase(client.name),
+    }
 
     if (!args.options.typesOnly) {
       fileCreator.createIfNotExists(
-        join(clientFolder, `${pascalCase(client.name)}Client.ts`),
+        resolveBackPath(args, GenerationPathCategory.BackIntegrationClientClass, clientVars),
         backIntegrationClientTmpl(args, client)
       );
     }
 
     fileCreator.create(
-      join(clientFolder, `types.ts`),
+      resolveBackPath(args, GenerationPathCategory.BackIntegrationClientTypes, clientVars),
       backIntegrationClientTypesTmpl(args, client),
       addWarnings({options: args.options})
     );
@@ -34,14 +51,14 @@ const generateBackIntegrationClients = (
 
   if (!args.options.typesOnly) {
     fileCreator.create(
-      join(servicesDir, 'integrationClientConstrictors.ts'),
+      resolveBackPath(args, GenerationPathCategory.BackIntegrationClientConstrictors),
       genIntegrationClientConstrictorsTmpl(args),
       addWarnings({options: args.options})
     );
   }
 
   fileCreator.create(
-    join(servicesDir, 'IntegrationClients.ts'),
+    resolveBackPath(args, GenerationPathCategory.BackIntegrationClients),
     genIntegrationClientsTmpl(args),
     addWarnings({options: args.options})
   );

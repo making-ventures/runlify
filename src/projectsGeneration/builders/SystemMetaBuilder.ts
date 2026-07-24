@@ -50,6 +50,7 @@ import PageBuilder from './PageBuilder'
 import AdditionalServiceBuilder from './AdditionalServiceBuilder'
 import BaseModelBuilder from './mehods/BaseModelBuilder'
 import MethodBuilder, { MethodsModelsHolder} from './mehods/MethodBuilder'
+import {GenerationPathsBuilder} from './GenerationPathsBuilder'
 
 export const defaultConfigVar: Omit<ConfigVar, 'name' | 'type'> = {
   needFor: '',
@@ -86,6 +87,8 @@ class SystemMetaBuilder implements MethodsModelsHolder {
   protected outputModels: BaseModelBuilder[] = []; // models that may be used only as output
   labels: string[] = [];
   additionalServices: AdditionalServiceBuilder[] = [];
+
+  private readonly generationPathsBuilder = new GenerationPathsBuilder()
 
   private readonly registeredDatabaseNames = new Set<string>(['main'])
 
@@ -800,6 +803,10 @@ class SystemMetaBuilder implements MethodsModelsHolder {
     return this.back
   }
 
+  generationPaths(): GenerationPathsBuilder {
+    return this.generationPathsBuilder
+  }
+
   addDatabase(name: string): this {
     const normalized = name === 'main' ? 'main' : name
     validateEntityDatabaseName(normalized)
@@ -1178,6 +1185,7 @@ class SystemMetaBuilder implements MethodsModelsHolder {
       methods: this.methods.map(m => m.build()),
       labels: this.labels,
       additionalServices: this.additionalServices.map(p => p.build()),
+      generationPaths: this.generationPathsBuilder.build(),
     }
   }
 

@@ -1,4 +1,3 @@
-import {join} from 'path'
 import {FileCreator} from '../../types'
 import {uiTranslationsLangDocsTmpl} from '../../../generators/fileTemplates/ui/i18n/lang/uiLangDocsTmpl'
 import {uiTranslationsLangReportsTmpl} from '../../../generators/fileTemplates/ui/i18n/lang/uiLangReportsTmpl'
@@ -7,19 +6,31 @@ import {uiTranslationsLangInfoRegistriesTmpl} from '../../../generators/fileTemp
 import {uiTranslationsLangSumRegistriesTmpl} from '../../../generators/fileTemplates/ui/i18n/lang/uiLangSumRegistriesTmpl'
 import {ProjectWideGenerationArgs} from '../../../args'
 import {addWarnings} from '../../fileHandlers'
+import {
+  GenerationPathCategory,
+  resolveGenerationPath,
+} from '../../../builders/generationPaths'
+
+const resolveUiI18nPath = (
+  args: ProjectWideGenerationArgs,
+  category: GenerationPathCategory,
+  langId: string,
+) =>
+  resolveGenerationPath({
+    category,
+    detachedBackProject: args.options.detachedBackProject,
+    detachedUiProject: args.options.detachedUiProject,
+    pathsConfig: args.system.generationPaths,
+    vars: {langId},
+  })
 
 const generateFrontSrcEntityTranslationsDocs = (
   fileCreator: FileCreator,
   args: ProjectWideGenerationArgs,
 ) => {
   for (const lang of args.system.languages) {
-    const filePath = join(
-      args.options.detachedUiProject,
-      `src/i18n/${lang.id}/${lang.id}Docs.ts`
-    )
-
     fileCreator.create(
-      filePath,
+      resolveUiI18nPath(args, GenerationPathCategory.UiI18nDocs, lang.id),
       uiTranslationsLangDocsTmpl(args, lang.id),
       addWarnings({options: args.options})
     )
@@ -31,13 +42,8 @@ const generateFrontSrcEntityTranslationsCatalogs = (
   args: ProjectWideGenerationArgs,
 ) => {
   for (const lang of args.system.languages) {
-    const filePath = join(
-      args.options.detachedUiProject,
-      `src/i18n/${lang.id}/${lang.id}Catalogs.ts`
-    )
-
     fileCreator.create(
-      filePath,
+      resolveUiI18nPath(args, GenerationPathCategory.UiI18nCatalogs, lang.id),
       uiTranslationsLangCatalogsTmpl(args, lang.id),
       addWarnings({options: args.options})
     )
@@ -49,13 +55,8 @@ const generateFrontSrcEntityTranslationsInfoRegistries = (
   args: ProjectWideGenerationArgs,
 ) => {
   for (const lang of args.system.languages) {
-    const filePath = join(
-      args.options.detachedUiProject,
-      `src/i18n/${lang.id}/${lang.id}InfoRegistries.ts`
-    )
-
     fileCreator.create(
-      filePath,
+      resolveUiI18nPath(args, GenerationPathCategory.UiI18nInfoRegistries, lang.id),
       uiTranslationsLangInfoRegistriesTmpl(args, lang.id),
       addWarnings({options: args.options})
     )
@@ -67,13 +68,8 @@ const generateFrontSrcEntityTranslationsSumRegistries = (
   args: ProjectWideGenerationArgs,
 ) => {
   for (const lang of args.system.languages) {
-    const filePath = join(
-      args.options.detachedUiProject,
-      `src/i18n/${lang.id}/${lang.id}SumRegistries.ts`
-    )
-
     fileCreator.create(
-      filePath,
+      resolveUiI18nPath(args, GenerationPathCategory.UiI18nSumRegistries, lang.id),
       uiTranslationsLangSumRegistriesTmpl(args, lang.id),
       addWarnings({options: args.options})
     )
@@ -85,13 +81,8 @@ const generateFrontSrcEntityTranslationsReports = (
   args: ProjectWideGenerationArgs,
 ) => {
   for (const lang of args.system.languages) {
-    const filePath = join(
-      args.options.detachedUiProject,
-      `src/i18n/${lang.id}/${lang.id}Reports.ts`
-    )
-
     fileCreator.create(
-      filePath,
+      resolveUiI18nPath(args, GenerationPathCategory.UiI18nReports, lang.id),
       uiTranslationsLangReportsTmpl(args, lang.id),
       addWarnings({options: args.options})
     )

@@ -1,4 +1,3 @@
-import {join} from 'path'
 import {FileCreator} from '../../types'
 import {pascal, pascalSingular} from '../../../../utils/cases'
 import {EntityWideGenerationArgs} from '../../../args'
@@ -20,6 +19,30 @@ import {uiEntityShowDependencyTabTmpl} from '../../../generators/fileTemplates/u
 import {uiDefaultActionTmpl} from '../../../generators/fileTemplates/ui/pages/EntityShow/DefaultActions'
 import {uiAdditionalTabsTmpl} from '../../../generators/fileTemplates/ui/pages/EntityShow/additionalTabs'
 import {addWarnings} from '../../fileHandlers'
+import {
+  GenerationPathCategory,
+  GenerationPathVars,
+  resolveGenerationPath,
+} from '../../../builders/generationPaths'
+
+const resolveUiPagePath = (
+  args: EntityWideGenerationArgs,
+  category: GenerationPathCategory,
+  extraVars: GenerationPathVars = {},
+) => {
+  const {entity, options, system} = args
+  return resolveGenerationPath({
+    category,
+    detachedBackProject: options.detachedBackProject,
+    detachedUiProject: options.detachedUiProject,
+    pathsConfig: system.generationPaths,
+    vars: {
+      entityName: entity.name,
+      pascalSingular: pascalSingular(entity.name),
+      ...extraVars,
+    },
+  })
+}
 
 const generateEntityUiShow = (
   fileCreator: FileCreator,
@@ -35,19 +58,10 @@ const generateEntityUiShow = (
   if (!options.typesOnly && options.forms.show) {
     const toLinks = getLinksFromExternalEntities(entity, allLinks);
 
-    const entityShowDir = join(
-      options.detachedUiProject,
-      'src',
-      'adm',
-      'pages',
-      entity.name,
-      `${pascalSingular(entity.name)}Show`,
-    );
-
     // MainTab
     const mainTab = uiEntityShowMainTabTmpl();
     fileCreator.createIfNotExists(
-      join(entityShowDir, 'MainTab.tsx'),
+      resolveUiPagePath(args, GenerationPathCategory.UiPageShowMainTab),
       mainTab
     );
 
@@ -56,59 +70,56 @@ const generateEntityUiShow = (
       args
     );
     fileCreator.create(
-      join(entityShowDir, 'DefaultMainTab.tsx'),
+      resolveUiPagePath(args, GenerationPathCategory.UiPageShowDefaultMainTab),
       defaultMainTab,
       addWarnings({options: args.options})
     );
 
     // DefaultEntityShow
     fileCreator.create(
-      join(entityShowDir, `Default${pascalSingular(entity.name)}Show.tsx`),
+      resolveUiPagePath(args, GenerationPathCategory.UiPageShowDefaultEntityShow),
       uiDefaultShowTmpl(args),
       addWarnings({options: args.options})
     );
 
     // DefaultActions
     fileCreator.create(
-      join(entityShowDir, 'DefaultActions.tsx'),
+      resolveUiPagePath(args, GenerationPathCategory.UiPageShowDefaultActions),
       uiDefaultActionTmpl(args),
       addWarnings({options: args.options})
     );
 
     // index
     fileCreator.createIfNotExists(
-      join(entityShowDir, 'index.tsx'),
+      resolveUiPagePath(args, GenerationPathCategory.UiPageShowIndex),
       uiEntityShowIndexTmpl(args)
     );
 
     const additionalTabs = uiAdditionalTabsTmpl();
     fileCreator.createIfNotExists(
-      join(entityShowDir, 'additionalTabs.tsx'),
+      resolveUiPagePath(args, GenerationPathCategory.UiPageShowAdditionalTabs),
       additionalTabs
     );
 
     // DependencyTabs
     for (const link of toLinks) {
-      const tabsDir = join(entityShowDir, 'tabs');
+      const ownerEntity = allEntities.get(link.entityOwnerName);
 
-      const entity = allEntities.get(link.entityOwnerName);
-
-      if (!entity) {
+      if (!ownerEntity) {
         throw new Error(`The is no "${link.entityOwnerName}" entity`);
       }
 
-      const componentName = `${pascal(entity.name)}${pascal(
-        link.fromField.name
-      )}Tab`;
-
       const dependencyTab = uiEntityShowDependencyTabTmpl(
         allEntities,
-        entity,
+        ownerEntity,
         link,
         options
       );
       fileCreator.create(
-        join(tabsDir, `${componentName}.tsx`),
+        resolveUiPagePath(args, GenerationPathCategory.UiPageShowDependencyTab, {
+          OwnerPascal: pascal(ownerEntity.name),
+          FromFieldPascal: pascal(link.fromField.name),
+        }),
         dependencyTab,
         addWarnings({options: args.options})
       );
@@ -121,30 +132,17 @@ const generateEntityUiCreate = (
   args: EntityWideGenerationArgs,
 ) => {
   const {
-    entity,
     options,
   } = args;
 
   if (!options.typesOnly && options.forms.create) {
-    const entityCreateDir = join(
-      options.detachedUiProject,
-      'src',
-      'adm',
-      'pages',
-      entity.name,
-      `${pascalSingular(entity.name)}Create`
-    );
-
     fileCreator.create(
-      join(
-        entityCreateDir,
-        `Default${pascalSingular(entity.name)}Create.tsx`
-      ),
+      resolveUiPagePath(args, GenerationPathCategory.UiPageCreateDefault),
       uiDefaultCreateTmpl(args),
       addWarnings({options: args.options})
     );
     fileCreator.createIfNotExists(
-      join(entityCreateDir, 'index.tsx'),
+      resolveUiPagePath(args, GenerationPathCategory.UiPageCreateIndex),
       uiCreateTmpl(args)
     );
   }
@@ -155,27 +153,17 @@ const generateEntityUiEdit = (
   args: EntityWideGenerationArgs,
 ) => {
   const {
-    entity,
     options,
   } = args;
 
   if (!options.typesOnly && options.forms.edit) {
-    const entityEditDir = join(
-      options.detachedUiProject,
-      'src',
-      'adm',
-      'pages',
-      entity.name,
-      `${pascalSingular(entity.name)}Edit`,
-    );
-
     fileCreator.create(
-      join(entityEditDir, `Default${pascalSingular(entity.name)}Edit.tsx`),
+      resolveUiPagePath(args, GenerationPathCategory.UiPageEditDefault),
       uiDefaultEditTmpl(args),
       addWarnings({options: args.options})
     );
     fileCreator.createIfNotExists(
-      join(entityEditDir, 'index.tsx'),
+      resolveUiPagePath(args, GenerationPathCategory.UiPageEditIndex),
       uiEditTmpl(args),      
     );
   }
@@ -186,40 +174,30 @@ const generateEntityUiList = (
   args: EntityWideGenerationArgs,
 ) => {
   const {
-    entity,
     options,
   } = args;
 
   if (!options.typesOnly && options.forms.list) {
-    const entityListDir = join(
-      options.detachedUiProject,
-      'src',
-      'adm',
-      'pages',
-      entity.name,
-      `${pascalSingular(entity.name)}List`,
-    );
-
     fileCreator.create(
-      join(entityListDir, `Default${pascalSingular(entity.name)}List.tsx`),
+      resolveUiPagePath(args, GenerationPathCategory.UiPageListDefault),
       uiDefaultListTmpl(args),
       addWarnings({options: args.options})
     );
     fileCreator.createIfNotExists(
-      join(entityListDir, `${pascalSingular(entity.name)}Filter.tsx`),
+      resolveUiPagePath(args, GenerationPathCategory.UiPageListFilter),
       uiFilterTmpl(args)
     );
     fileCreator.createIfNotExists(
-      join(entityListDir, `${pascalSingular(entity.name)}ListBreadcrumbs.tsx`),
+      resolveUiPagePath(args, GenerationPathCategory.UiPageListBreadcrumbs),
       uiListBreadcrumbsTmpl(args)
     );
     fileCreator.create(
-      join(entityListDir, `Default${pascalSingular(entity.name)}Filter.tsx`),
+      resolveUiPagePath(args, GenerationPathCategory.UiPageListDefaultFilter),
       uiDefaultFilterTmpl(args),
       addWarnings({options: args.options})
     );
     fileCreator.createIfNotExists(
-      join(entityListDir, 'index.tsx'),
+      resolveUiPagePath(args, GenerationPathCategory.UiPageListIndex),
       uiListTmpl(args)
     );
   }

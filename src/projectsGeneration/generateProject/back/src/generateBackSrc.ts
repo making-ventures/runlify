@@ -1,4 +1,3 @@
-import {join} from 'path'
 import {FileCreator} from '../../types'
 import {configItemsTmpl} from '../../../generators/fileTemplates/back/root/config/config'
 import {ProjectWideGenerationArgs} from '../../../args'
@@ -10,11 +9,27 @@ import generateBackServices from './services/generateBackServices'
 import { backPermissionToGraphqlTmpl } from '../../../generators/fileTemplates/back/graph/permissionsToGraphql'
 import { restRouterTmpl } from '../../../generators/fileTemplates/back/root/restRouter'
 import {addWarnings} from '../../fileHandlers'
+import {
+  GenerationPathCategory,
+  resolveGenerationPath,
+} from '../../../builders/generationPaths'
+
+const resolveBackPath = (
+  args: ProjectWideGenerationArgs,
+  category: GenerationPathCategory,
+) =>
+  resolveGenerationPath({
+    category,
+    detachedBackProject: args.options.detachedBackProject,
+    detachedUiProject: args.options.detachedUiProject,
+    pathsConfig: args.system.generationPaths,
+    vars: {},
+  })
 
 const generateBackSrc = (fileCreator: FileCreator, args: ProjectWideGenerationArgs) => {
   if (!args.options.typesOnly) {
     fileCreator.create(
-      join(args.options.detachedBackProject, 'src', 'config', 'config.ts'),
+      resolveBackPath(args, GenerationPathCategory.BackConfig),
       configItemsTmpl(args),
       addWarnings({options: args.options})
     );
@@ -28,19 +43,16 @@ const generateBackSrc = (fileCreator: FileCreator, args: ProjectWideGenerationAr
 
   generateBackHelpService(fileCreator, args);
 
-
-  const prjDetachedBackSrcDir = join(args.options.detachedBackProject, 'src');
-
   // Graph
   fileCreator.create(
-    join(prjDetachedBackSrcDir, 'adm', 'graph', 'permissionsToGraphql.ts'),
+    resolveBackPath(args, GenerationPathCategory.BackGraphPermissionsToGraphql),
     backPermissionToGraphqlTmpl(args),
     addWarnings({options: args.options})
   );
 
   // Root
   fileCreator.createIfNotExists(
-    join(prjDetachedBackSrcDir, 'rest', 'restRouter.ts'),
+    resolveBackPath(args, GenerationPathCategory.BackRestRouter),
     restRouterTmpl()
   );
 }

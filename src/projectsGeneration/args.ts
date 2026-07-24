@@ -94,6 +94,7 @@ export const prepareProjectWideGenerationArgs = (
   const systemNormalized: System = {
     ...system,
     dataBases,
+    generationPaths: system.generationPaths ?? {overrides: {}},
   }
 
   const allEntities: Map<string, Entity> = new Map()
