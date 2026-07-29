@@ -2,16 +2,28 @@ import {Entity, Field} from '../../../../builders'
 import * as R from 'ramda'
 import {pascalSingular} from '../../../../../utils/cases';
 import {defaultBootstrapEntityOptions} from '../../../../types';
+import {isMoneyField} from '../../../../metaUtils';
 
-type GroupedByType = Partial<Record<Field['type'] | 'keyword', string[]>>
+type ClickHouseFieldType = Field['type'] | 'keyword' | 'long'
+type GroupedByType = Partial<Record<ClickHouseFieldType, string[]>>
 
-const getGroupedByType = (e: Entity) => e.fields.reduce<GroupedByType>((acc, field) => {
+const getClickHouseFieldType = (field: Field): ClickHouseFieldType => {
   const isIdField = ['id', 'link'].includes(field.category)
-  let type = isIdField ? 'keyword' : field.type
+  let type: ClickHouseFieldType = isIdField ? 'keyword' : field.type
 
   if (type === 'datetime') {
     type = 'date'
   }
+
+  if (type === 'bigint' || isMoneyField(field)) {
+    type = 'long'
+  }
+
+  return type
+}
+
+const getGroupedByType = (e: Entity) => e.fields.reduce<GroupedByType>((acc, field) => {
+  const type = getClickHouseFieldType(field)
 
   if(!R.is(Array, acc[type])) {
     acc[type] = []
@@ -33,6 +45,8 @@ const getConstructor = (g: string) => {
       return 'booleanFields'
     case 'int':
       return 'integerFields'
+    case 'long':
+      return 'longFields'
     case 'string':
       return 'textFields'
     default:
