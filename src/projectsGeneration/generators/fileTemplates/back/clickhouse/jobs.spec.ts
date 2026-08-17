@@ -9,8 +9,8 @@ describe('clickhouse jobs', () => {
   test('bigint scalar field uses longFields', () => {
     const cards = new CatalogBuilder('cards', 'ru')
     // CatalogBuilder defaults the id field to 'int' — pin it to 'string' so the default id
-    // field's own (correct, since Шаг 3.3) integerFields bucket doesn't false-positive this
-    // assertion about the unrelated 'amount' field.
+    // field's own (correctly bucketed) integerFields doesn't false-positive this assertion
+    // about the unrelated 'amount' field.
     cards.getKey().setType('string')
     cards.addField('amount').setType('bigint').setRequired()
 
