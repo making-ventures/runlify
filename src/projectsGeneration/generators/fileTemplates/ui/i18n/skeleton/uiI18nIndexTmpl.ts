@@ -10,11 +10,7 @@ import {DeepPartial} from 'utility-types';
 import * as R from 'ramda';
 
 const translationMessages: DeepPartial<TranslationMessages> = {
-  app: {
-    // Rename or remove this key once you have your own translation for
-    // 'app.insufficientPermissions' in every language you generate.
-    insufficientPermissions: 'Insufficient permissions',
-  },
+  // app: {}, // add your own keys here
   validation: ${lang}Validation,
   reports: ${lang}Reports,
   documents: ${lang}Documents,
