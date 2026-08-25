@@ -5,8 +5,11 @@ import {uiTranslationsLangReportsTmpl} from '../../../generators/fileTemplates/u
 import {uiTranslationsLangCatalogsTmpl} from '../../../generators/fileTemplates/ui/i18n/lang/uiLangCatalogsTmpl'
 import {uiTranslationsLangInfoRegistriesTmpl} from '../../../generators/fileTemplates/ui/i18n/lang/uiLangInfoRegistriesTmpl'
 import {uiTranslationsLangSumRegistriesTmpl} from '../../../generators/fileTemplates/ui/i18n/lang/uiLangSumRegistriesTmpl'
+import {uiI18nTypesTmpl} from '../../../generators/fileTemplates/ui/i18n/skeleton/uiI18nTypesTmpl'
+import {uiI18nValidationTmpl} from '../../../generators/fileTemplates/ui/i18n/skeleton/uiI18nValidationTmpl'
+import {uiI18nIndexTmpl} from '../../../generators/fileTemplates/ui/i18n/skeleton/uiI18nIndexTmpl'
 import {ProjectWideGenerationArgs} from '../../../args'
-import {addWarnings} from '../../fileHandlers'
+import {addWarnings, addGeneratedOnceNotice, disableEslintForCode} from '../../fileHandlers'
 
 const generateFrontSrcEntityTranslationsDocs = (
   fileCreator: FileCreator,
@@ -98,6 +101,43 @@ const generateFrontSrcEntityTranslationsReports = (
   }
 }
 
+const generateFrontSrcEntityTranslationsTypes = (
+  fileCreator: FileCreator,
+  args: ProjectWideGenerationArgs,
+) => {
+  const filePath = join(args.options.detachedUiProject, 'src/i18n/types.ts')
+
+  fileCreator.createIfNotExists(filePath, uiI18nTypesTmpl(), [addGeneratedOnceNotice, disableEslintForCode])
+}
+
+const generateFrontSrcEntityTranslationsValidation = (
+  fileCreator: FileCreator,
+  args: ProjectWideGenerationArgs,
+) => {
+  for (const lang of args.system.languages) {
+    const filePath = join(
+      args.options.detachedUiProject,
+      `src/i18n/${lang.id}/${lang.id}Validation.ts`
+    )
+
+    fileCreator.createIfNotExists(filePath, uiI18nValidationTmpl(lang.id), [addGeneratedOnceNotice, disableEslintForCode])
+  }
+}
+
+const generateFrontSrcEntityTranslationsIndex = (
+  fileCreator: FileCreator,
+  args: ProjectWideGenerationArgs,
+) => {
+  for (const lang of args.system.languages) {
+    const filePath = join(
+      args.options.detachedUiProject,
+      `src/i18n/${lang.id}/index.ts`
+    )
+
+    fileCreator.createIfNotExists(filePath, uiI18nIndexTmpl(lang.id), [addGeneratedOnceNotice, disableEslintForCode])
+  }
+}
+
 const generateFrontSrcTranslations = (
   fileCreator: FileCreator,
   args: ProjectWideGenerationArgs,
@@ -107,6 +147,9 @@ const generateFrontSrcTranslations = (
   generateFrontSrcEntityTranslationsSumRegistries(fileCreator, args);
   generateFrontSrcEntityTranslationsInfoRegistries(fileCreator, args);
   generateFrontSrcEntityTranslationsReports(fileCreator, args);
+  generateFrontSrcEntityTranslationsTypes(fileCreator, args);
+  generateFrontSrcEntityTranslationsValidation(fileCreator, args);
+  generateFrontSrcEntityTranslationsIndex(fileCreator, args);
 }
 
 export default generateFrontSrcTranslations;

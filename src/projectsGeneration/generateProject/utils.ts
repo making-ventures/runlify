@@ -6,7 +6,7 @@ export const createFilesToWriteUtils = () => {
 
   return {
     create: (path: string, content: string, handlers: FileHandler[] = []) => files.push({path, content, ifNotExists: false, handlers}),
-    createIfNotExists: (path: string, content: string) => files.push({path, content, ifNotExists: true, handlers: []}),
+    createIfNotExists: (path: string, content: string, handlers: FileHandler[] = []) => files.push({path, content, ifNotExists: true, handlers}),
     getFiles: () => files,
     reset: () => files = [],
   };
