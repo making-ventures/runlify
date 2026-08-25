@@ -1,6 +1,6 @@
 import {pascalSingular} from '../../../../../../utils/cases'
 import * as R from 'ramda'
-import {getEditComponent} from '../EntityEdit/DefaultEntityEdit'
+import {getEditComponents} from '../EntityEdit/DefaultEntityEdit'
 import {getCompNamesToEditField} from '../../../../ui/componentNames/edit/getCompNamesToEditField'
 import {EntityWideGenerationArgs} from '../../../../../args'
 import {getEntityField} from '../../../../../builders/utils/accessFunctions'
@@ -33,11 +33,14 @@ export const uiDefaultFilterTmpl = ({
   const notDateFieldsToImport = fieldsToImport.filter(
     (f) => !['datetime', 'date'].includes(f.type) && (f.category !== 'link' || ['equal', 'lt', 'lte', 'gt', 'gte', 'defined', 'not_defined'].some(filter => f.filters.some(item => item === filter)))
   )
+  const hasLinkField = fields.some((f) => getEntityField(entity, f.name).category === 'link')
+
   const reactAdminImports: string[] = [
     ...(options.useSortedFilter ? [] : ['Filter']),
     ...(useTranslate ? ['useTranslate'] : []),
     ...(hasSearch ? ['TextInput'] : []),
     ...(useReferenceArray ? ['ReferenceArrayInput', 'AutocompleteArrayInput'] : []),
+    ...(hasLinkField ? ['usePermissions'] : []),
 
     ...R.flatten(
       notDateFieldsToImport.map((f) => getCompNamesToEditField(f, allEntities))
@@ -65,9 +68,10 @@ import DateInput from '../../../../uiLib/DateInput';`
       ? `
 import {SortedFilter} from '../../../../uiLib/SortedFilters';`
       : ''
-  }
+  }${hasLinkField ? `
+import {hasPermission} from '../../../../utils/permissions';` : ''}
 
-const Default${pascalSingular(entity.name)}Filter: FC<any> = (props) => {${useTranslate ? `\n  const translate = useTranslate();` : ''}
+const Default${pascalSingular(entity.name)}Filter: FC<any> = (props) => {${useTranslate ? `\n  const translate = useTranslate();` : ''}${hasLinkField ? `\n  const {permissions} = usePermissions<string[]>();` : ''}
   return (
     <${options.useSortedFilter ? 'SortedFilter' : 'Filter'} {...props}>${
       hasSearch
@@ -82,15 +86,19 @@ const Default${pascalSingular(entity.name)}Filter: FC<any> = (props) => {${useTr
     }
 ${fields
   .filter(el => entity.type !== 'document' || el.name !== 'date')
-  .map((f) =>
-    getEditComponent(
+  .flatMap((f) => {
+    const entityField = getEntityField(entity, f.name)
+    const comps = getEditComponents(
       entity,
       allEntities,
-      getEntityField(entity, f.name),
+      entityField,
       'filter',
       [f.alwaysOn ? 'alwaysOn' : undefined].filter(Boolean) as string[]
     )
-  )
+    return entityField.category === 'link'
+      ? comps.map((comp) => `{hasPermission(permissions, '${entityField.externalEntity}.all') && ${comp}}`)
+      : comps
+  })
   .map(pad3)
   .join('\n')}
     </${options.useSortedFilter ? 'SortedFilter' : 'Filter'}>

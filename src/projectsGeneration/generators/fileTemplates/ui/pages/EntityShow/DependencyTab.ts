@@ -36,6 +36,7 @@ export const uiEntityShowDependencyTabTmpl = (
   const reactAdminImports: string[] = [
     'TabProps',
     'Tab',
+    'usePermissions',
 
     ...R.flatten(
       notDateFieldsToImport.map((f) => getCompNamesToShowField(f))
@@ -63,10 +64,13 @@ import {
 import DateField from '../../../../../uiLib/DateField';`
       : ''
   }
+import {hasPermission} from '../../../../../utils/permissions';
 
 const ${pascal(entity.name)}${pascal(
     toLink.fromField.name
   )}Tab: FC<Omit<TabProps, 'children'>> = (props) => {
+  const {permissions} = usePermissions<string[]>();
+
   return (<Tab {...props}>
     <ReferenceManyField
       label={false}
@@ -76,12 +80,17 @@ const ${pascal(entity.name)}${pascal(
     >
       <Datagrid
         bulkActionButtons={false}
-        rowClick='show'
+        rowClick={hasPermission(permissions, '${toLink.entityOwnerName}.get') ? 'show' : false}
       >
 ${linkedEntity.fields
   .filter((f) => !f.hidden)
   .filter((f) => !isMarkdownField(f))
-  .map((f) => getShowComponent(entity, allEntities, f))
+  .map((f) => {
+    const comp = getShowComponent(entity, allEntities, f)
+    return f.category === 'link'
+      ? `{hasPermission(permissions, '${f.externalEntity}.all') && ${comp}}`
+      : comp
+  })
   .map(pad4)
   .join('\n')}
         <ShowButton />

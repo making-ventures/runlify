@@ -112,22 +112,26 @@ export const getLinkArrayEditComponent = (
 </ReferenceArrayInput>`;
 };
 
-export const getEditComponent = (
+// Same as getEditComponent, but for type === 'filter' returns each generated
+// element separately instead of pre-joined, so callers can wrap individual
+// elements (e.g. a permission check around a single ReferenceInput) without
+// having to re-split a joined JSX string.
+export const getEditComponents = (
   entity: Entity,
   allEntities: Map<string, Entity>,
   field: Field,
   type: 'create' | 'edit' | 'filter',
   additionalProps: string[] = [],
-) => {
+): string[] => {
   const isDisabled = field.sharded && type === 'edit'
 
   if (field.category === 'link' && type !== 'filter') {
     const linkedEntity = allEntities.get(field.externalEntity);
     if (linkedEntity) {
       if (isImageFileRef(field)) {
-        return `<FileInput source='${field.name}' type='image' />`;
+        return [`<FileInput source='${field.name}' type='image' />`];
       }
-      return getLinkEditComponent(entity, linkedEntity, field, type, additionalProps, isDisabled);
+      return [getLinkEditComponent(entity, linkedEntity, field, type, additionalProps, isDisabled)];
     }
   }
 
@@ -166,13 +170,21 @@ export const getEditComponent = (
         filters.push(getTrivialEditComponent(entity, field, type, additionalProps, postfix));
       }
     });
-    return filters.join('\n');
+    return filters;
   } else if (type == 'filter' && field.filters.length == 0) {
-    return '';
+    return [];
   }
 
-  return getTrivialEditComponent(entity, field, type, additionalProps);
+  return [getTrivialEditComponent(entity, field, type, additionalProps)];
 };
+
+export const getEditComponent = (
+  entity: Entity,
+  allEntities: Map<string, Entity>,
+  field: Field,
+  type: 'create' | 'edit' | 'filter',
+  additionalProps: string[] = [],
+) => getEditComponents(entity, allEntities, field, type, additionalProps).join('\n');
 
 export const uiDefaultEditTmpl = ({
   allEntities,
@@ -210,7 +222,6 @@ export const uiDefaultEditTmpl = ({
   if (entity.removableByUser) {
     reactAdminImports.push(
       'DeleteButton',
-      'usePermissions',
     )
   }
 
@@ -218,6 +229,15 @@ export const uiDefaultEditTmpl = ({
     .filter(f => !f.hidden && f.showInEdit)
     .filter(f => f.name !== 'id')
     .some(f => !(f.requiredOnInput || f.requiredOnInput === null));
+
+  const hasOptionalLinkField = entity.fields
+    .filter(f => !f.hidden && f.showInEdit)
+    .filter(f => f.name !== 'id')
+    .some(f => f.category === 'link' && !(f.requiredOnInput || f.requiredOnInput === null));
+
+  if (entity.removableByUser || hasOptionalLinkField) {
+    reactAdminImports.push('usePermissions')
+  }
 
   const fieldsToWorkWith = entity
     .fields
@@ -241,7 +261,7 @@ import {Grid} from 'shared/Components/Grid';
 import {yupResolver} from '@hookform/resolvers/yup';
 import get${pascalSingular(entity.name)}Validation from '../get${pascalSingular(
   entity.name
-  )}Validation';${entity.removableByUser ? `
+  )}Validation';${entity.removableByUser || hasOptionalLinkField ? `
 import {hasPermission} from '../../../../utils/permissions';` : ''}
 import {LoadingContext} from '../../../../contexts/LoadingContext';${withFileRef ? `
 import {FileInput} from '../../../../uiLib/file/FileInput';` : ''}${isAllowedToChange ? `
@@ -268,6 +288,7 @@ ${initialValues.map(f => `${f.name}: ${getTsDefaultTypeValueExpression(f)},`).ma
 
 const Default${pascalSingular(entity.name)}Edit: FC<EditProps> = (props: EditProps) => {
 ${hasHidden ? `  const {debug} = useDebug();
+` : ''}${hasOptionalLinkField ? `  const {permissions} = usePermissions<string[]>();
 ` : ''}  const resolver = useMemo(() => yupResolver(get${pascalSingular(entity.name)}Validation()), []);
 
   return (
@@ -300,7 +321,9 @@ ${fieldsToWorkWith.length === 0 ? '            <div />' : fieldsToWorkWith
 ${pad(1)(getEditComponent(entity, allEntities, f, 'edit'))}
 </Grid>`;
 
-      const debuggedComp = f.requiredOnInput || f.requiredOnInput === null ? comp : `{debug && ${comp}}`;
+      const isOptional = !(f.requiredOnInput || f.requiredOnInput === null)
+      const permissionCheck = f.category === 'link' && isOptional ? `hasPermission(permissions, '${f.externalEntity}.all') && ` : ''
+      const debuggedComp = isOptional ? `{debug && ${permissionCheck}${comp}}` : comp;
 
       return pad(6)(debuggedComp);
     })

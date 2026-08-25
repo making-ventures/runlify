@@ -50,7 +50,7 @@ export const getLinkShowComponent = (
   return `<ReferenceField source='${field.name}' ${getFieldLabel(
     entity,
     field
-  )} reference='${field.externalEntity}' link='show' />`
+  )} reference='${field.externalEntity}' link={hasPermission(permissions, '${field.externalEntity}.get') ? 'show' : false} />`
 }
 
 export const getShowComponent = (

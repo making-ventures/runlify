@@ -8,6 +8,7 @@ import generateFrontSrcEntity from './entity/generateFrontSrcEntity'
 import {join} from 'path'
 import uiDashboardTmpl from '../../generators/fileTemplates/ui/Dashboard'
 import uiPermissionPageTmpl from '../../generators/fileTemplates/ui/PermissionPage'
+import uiNotFoundPageTmpl from '../../generators/fileTemplates/ui/NotFoundPage'
 import uiPermissionsTmpl from '../../generators/fileTemplates/ui/utils/permissions'
 import { uiFunctionsTmpl } from '../../generators/fileTemplates/ui/functions/Functions'
 import { uiAdditionalRoutesTmpl } from '../../generators/fileTemplates/ui/additionalRoutes'
@@ -134,6 +135,13 @@ const generateFrontSrc = (fileCreator: FileCreator, args: ProjectWideGenerationA
     fileCreator.createIfNotExists(
       join(prjUiSrcPrefixedDir, 'PermissionPage.tsx'),
       uiPermissionPageTmpl(),
+      [addGeneratedOnceNotice]
+    );
+
+    // Not found fallback page (action doesn't exist for the entity, e.g. no edit/create)
+    fileCreator.createIfNotExists(
+      join(prjUiSrcPrefixedDir, 'NotFoundPage.tsx'),
+      uiNotFoundPageTmpl(),
       [addGeneratedOnceNotice]
     );
 

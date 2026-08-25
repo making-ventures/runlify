@@ -8,7 +8,8 @@ const imports = `import * as React from 'react';
 import {Resource} from 'react-admin';
 import {Translate} from 'shared/type';
 import Loadable from '../shared/Loadable';
-import {hasPermission} from '../utils/permissions';`
+import {withPermission} from '../utils/permissions';
+import NotFoundPage from './NotFoundPage';`
 
 function uiResources(_options: BootstrapEntityOptions, chunks: number[]) {
   const imports = chunks.map(num => `import {resourcesChunk${num}} from './resourcesChunk${num}';`).join("\n");
@@ -48,10 +49,10 @@ export function resourcesChunk${num}(translate: Translate, permissions: string[]
 ${entities.map((entity) => `    <Resource
       key='${entity.name}'
       name='${entity.name}'
-      show={hasPermission(permissions, '${entity.name}.get') ? Loadable${pascalSingular(entity.name)}Show : undefined}
-      edit={${entity.updatableByUser ? `hasPermission(permissions, '${entity.name}.update') ? Loadable${pascalSingular(entity.name)}Edit : undefined` : "undefined"}}
-      create={${entity.creatableByUser ? `hasPermission(permissions, '${entity.name}.create') ? Loadable${pascalSingular(entity.name)}Create : undefined` : "undefined"}}
-      list={hasPermission(permissions, '${entity.name}.all') ? Loadable${pascalSingular(entity.name)}List : undefined}
+      show={withPermission(permissions, '${entity.name}.get', Loadable${pascalSingular(entity.name)}Show)}
+      edit={${entity.updatableByUser ? `withPermission(permissions, '${entity.name}.update', Loadable${pascalSingular(entity.name)}Edit)` : "NotFoundPage"}}
+      create={${entity.creatableByUser ? `withPermission(permissions, '${entity.name}.create', Loadable${pascalSingular(entity.name)}Create)` : "NotFoundPage"}}
+      list={withPermission(permissions, '${entity.name}.all', Loadable${pascalSingular(entity.name)}List)}
       options={{label: translate('${plural(entity.type)}.${entity.name}.title.singular')}}
       recordRepresentation='${entity.titleField}'
     />,`).join('\n')}
