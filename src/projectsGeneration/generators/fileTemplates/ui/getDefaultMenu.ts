@@ -84,6 +84,7 @@ export const uiGetDefaultMenuTmpl = ({
       link: '/${entity.name}',
       icon: 'DetailsOutlined',
       debugOnly: true,
+      permissions: ['${entity.name}.all', '${entity.name}.meta', 'ui.${entity.name}.list'],
     },`
 
   return `import {MenuElement} from '../uiLib/menu/MenuItem';${hasMenuExternalEnv ? "\nimport getConfigByName from '../config/getConfigByName';" : ''}
