@@ -87,14 +87,9 @@ globally to hide an entity from the UI is the wrong tool.
 
 Controls whether users can export records (e.g. to CSV). Defaults to `true`.
 
-#### `addPemission(name, type): this`
-
-Adds a custom permission to the entity.
-
-| Parameter | Type | Values |
-|-----------|------|--------|
-| `name` | `string` | Permission identifier |
-| `type` | `PermissionType` | `'read' \| 'create' \| 'update' \| 'delete'` |
+See [11-permissions.md](./11-permissions.md) for how access control actually works —
+both the backend-enforced `<entity>.<action>` permissions and the frontend-only
+`ui.<entity>.list` permission.
 
 ---
 
@@ -420,7 +415,8 @@ Same dimension/resource API as `InfoRegistry`.
 Created via `system.addReport(name, title?, options?)`.
 
 A report is a **read-only UI page** with no storage, no CRUD GraphQL, and no Prisma
-model. It generates a page and a `read` permission automatically.
+model. It generates a page and a `read` permission automatically — see
+[11-permissions.md](./11-permissions.md) for how permissions are structured and enforced.
 
 Reports do not inherit from `BaseSavableEntityBuilder` — they have no fields, no
 methods, and no storage configuration.

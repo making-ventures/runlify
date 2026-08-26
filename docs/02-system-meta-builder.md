@@ -196,7 +196,8 @@ Returns `['main', ...others]` sorted alphabetically.
 ### `addRole(name: string, title?: string): RoleBuilder` {#addRole}
 
 Defines an access role. Roles are referenced by permissions on entities.
-Name must be unique across all entity names.
+Name must be unique across all entity names. See
+[11-permissions.md](./11-permissions.md) for how permission strings are named and enforced.
 
 ---
 

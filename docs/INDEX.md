@@ -22,6 +22,7 @@
 | 8 | [08-frontend-file-graph.md](./08-frontend-file-graph.md) | Annotated file tree for `<prefix>-ui` |
 | 9 | [09-options.md](./09-options.md) | All `BootstrapEntityOptions` flags with defaults |
 | 10 | [10-modules.md](./10-modules.md) | Built-in modules, how to write your own |
+| 11 | [11-permissions.md](./11-permissions.md) | Data-space vs UI-space permissions, where each is checked, how they're seeded |
 
 ---
 
@@ -47,11 +48,12 @@ Business logic lives only in files Runlify creates once and never overwrites.
 
 | Class | Owner | Overwritten on `regen`? | Marker |
 |-------|-------|------------------------|--------|
-| **Generated** | Runlify | **Yes — every run** | `DO NOT EDIT! THIS IS GENERATED FILE` at top |
-| **Yours** | Developer | No — created once | No marker; safe to edit |
+| **Generated** (`[gen]`) | Runlify | **Yes — every run** | `DO NOT EDIT! THIS IS GENERATED FILE` at top |
+| **Yours** (`[yours]` / `[once]`) | Developer | No — created only if missing | Most have no marker; some (e.g. `PermissionPage.tsx`, `i18n/<lang>/index.ts`) have a short `Generated once, not overwritten on next generation. Edit freely.` note instead |
 
 Yours files: `Additional<Entity>Service.ts`, `hooks/*`, `additionalRoutes.tsx`,
-`Dashboard.tsx`, `getAdditionalMenu.ts`, `restRouter.ts`, and others.
+`Dashboard.tsx`, `getAdditionalMenu.ts`, `restRouter.ts`, `PermissionPage.tsx`,
+`NotFoundPage.tsx`, `customPermissions.ts`, `customUiPermissions.ts`, and others.
 See [07-backend-file-graph.md](./07-backend-file-graph.md) and [08-frontend-file-graph.md](./08-frontend-file-graph.md) for the full list.
 
 ---

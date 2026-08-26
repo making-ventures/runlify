@@ -95,6 +95,8 @@ These are your extension points.
 | `hooks/changeListFilter.ts` | Mutate list query filter at runtime |
 | `hooks/tenantIdRequiredHooks.ts` | Tenant isolation enforcement |
 | `rest/restRouter.ts` | Custom REST endpoints |
+| `init/roles/customPermissions.ts` | Hand-written data-space permissions — see [11-permissions.md](./11-permissions.md) |
+| `init/roles/customUiPermissions.ts` | Hand-written UI-space permissions — see [11-permissions.md](./11-permissions.md) |
 
 **Frontend:**
 | File | Purpose |
@@ -102,6 +104,12 @@ These are your extension points.
 | `Dashboard.tsx` | Home page content |
 | `additionalRoutes.tsx` | Custom pages/routes |
 | `getAdditionalMenu.ts` | Extra menu items |
+| `PermissionPage.tsx` | Shown instead of a page the user lacks permission for |
+| `NotFoundPage.tsx` | Shown for an action that doesn't exist on the entity (e.g. no edit form) |
+| `i18n/types.ts`, `i18n/<lang>/<lang>Validation.ts`, `i18n/<lang>/index.ts` | Validation messages and the per-language translation root — see [08-frontend-file-graph.md](./08-frontend-file-graph.md#i18n) |
+
+See [11-permissions.md](./11-permissions.md) for access control — a separate system from
+these "yours" files, spanning both projects.
 
 Full file trees: [07-backend-file-graph.md](./07-backend-file-graph.md) and
 [08-frontend-file-graph.md](./08-frontend-file-graph.md).

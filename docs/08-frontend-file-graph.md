@@ -6,7 +6,8 @@
 > Legend: `[gen]` = regenerated every `regen` (DO NOT EDIT) · `[yours]` = created once,
 > yours to implement · `[once]` = created once, rarely needs changes
 >
-> Related: [01-overview.md](./01-overview.md) · [07-backend-file-graph.md](./07-backend-file-graph.md)
+> Related: [01-overview.md](./01-overview.md) · [07-backend-file-graph.md](./07-backend-file-graph.md) ·
+> [11-permissions.md](./11-permissions.md)
 
 ---
 
@@ -16,90 +17,96 @@
 <prefix>-ui/
 │
 └── src/
-    └── adm/
+    │
+    ├── adm/
+    │   │
+    │   ├── pages/
+    │   │   └── <EntityName>/               One folder per entity
+    │   │       │
+    │   │       ├── <EntityName>List/
+    │   │       │   ├── index.tsx           [gen]  Entry point — re-exports Default or custom
+    │   │       │   ├── Default<Entity>List.tsx  [gen]  Generated list component
+    │   │       │   ├── <Entity>Filter.tsx  [yours] Your custom filter (created once)
+    │   │       │   ├── Default<Entity>Filter.tsx [gen]  Generated default filter
+    │   │       │   └── <Entity>ListBreadcrumbs.tsx [gen]  Breadcrumb component
+    │   │       │
+    │   │       ├── <EntityName>Show/
+    │   │       │   ├── index.tsx           [gen]  Entry point
+    │   │       │   ├── Default<Entity>Show.tsx  [gen]  Generated show component
+    │   │       │   ├── MainTab.tsx         [yours] Your custom main tab content
+    │   │       │   ├── DefaultMainTab.tsx  [gen]  Generated main tab
+    │   │       │   ├── DefaultActions.tsx  [gen]  Generated action buttons
+    │   │       │   ├── additionalTabs.tsx  [yours] Your extra tabs in show view
+    │   │       │   └── tabs/
+    │   │       │       └── <RelatedEntity>Tab.tsx  [gen]  Auto-generated dependency tabs
+    │   │       │
+    │   │       ├── <EntityName>Create/
+    │   │       │   ├── index.tsx           [gen]  Entry point
+    │   │       │   └── Default<Entity>Create.tsx [gen]  Generated create form
+    │   │       │
+    │   │       └── <EntityName>Edit/
+    │   │           ├── index.tsx           [gen]  Entry point
+    │   │           └── Default<Entity>Edit.tsx   [gen]  Generated edit form
+    │   │
+    │   ├── widgets/
+    │   │   └── <EntityName>/
+    │   │       ├── <Entity>CountWidget.tsx [gen]  Count widget for dashboard
+    │   │       └── <Entity>ListWidget.tsx  [gen]  List widget for dashboard
+    │   │
+    │   ├── resources.tsx                   [gen]  react-admin resource registry
+    │   ├── resourcesChunk0.tsx             [gen]  Chunked resource imports (code splitting)
+    │   ├── resourcesChunk1.tsx             [gen]  Chunked resource imports
+    │   ├── ResourcesPage.tsx               [gen]  /resources debug page
+    │   ├── MetaPage.tsx                    [gen]  /meta debug page
+    │   ├── entityMapping.ts                [gen]  Entity name → component mapping
+    │   ├── routes.tsx                      [gen]  All react-admin routes
+    │   ├── additionalRoutes.tsx            [yours] Your custom routes/pages
+    │   ├── Dashboard.tsx                   [yours] Home page content
+    │   ├── PermissionPage.tsx              [once]  Shown when withPermission denies access
+    │   ├── NotFoundPage.tsx                [once]  Shown when an action doesn't exist on the entity
+    │   ├── getDefaultMenu.ts               [gen]  Auto-generated sidebar menu
+    │   ├── getAdditionalMenu.ts            [yours] Your extra menu items
+    │   │
+    │   └── functions/
+    │       └── Functions.tsx               [gen]  System functions page
+    │
+    ├── i18n/
+    │   ├── types.ts                        [once]  ValidationMessages type (one per project)
+    │   └── <lang>/
+    │       ├── <lang>Catalogs.ts           [gen]   Catalog translations for this language
+    │       ├── <lang>Docs.ts               [gen]   Document translations (exports `<lang>Documents`)
+    │       ├── <lang>InfoRegistries.ts     [gen]
+    │       ├── <lang>SumRegistries.ts      [gen]
+    │       ├── <lang>Reports.ts            [gen]
+    │       ├── <lang>Validation.ts         [once]  Validation messages (one per language)
+    │       └── index.ts                    [once]  Assembles the above + custom keys, per language
+    │
+    ├── utils/
+    │   └── permissions.ts                  [gen]   hasPermission / hasAnyPermission / hasAllPermissions / withPermission
+    │
+    └── environment/
+        ├── src/
+        │   ├── App.tsx                    [gen]  Root react-admin App component
+        │   ├── dataProvider/
+        │   │   ├── index.ts               [gen]  GraphQL data provider
+        │   │   └── getAdditionalMethods.ts [once] Hook for custom data provider methods
+        │   ├── i18nProvider/
+        │   │   └── index.ts               [gen]  react-admin i18n provider — merges src/i18n/<lang> per language
+        │   ├── layout/
+        │   │   ├── AppBar.tsx             [gen]  Top application bar
+        │   │   └── Menu.tsx               [gen]  Sidebar menu component
+        │   ├── routes.ts                  [gen]  Route registration
+        │   └── contexts/
+        │       └── SpacesContext.ts       [gen]  Multi-space / tenant context
         │
-        ├── pages/
-        │   └── <EntityName>/               One folder per entity
-        │       │
-        │       ├── <EntityName>List/
-        │       │   ├── index.tsx           [gen]  Entry point — re-exports Default or custom
-        │       │   ├── Default<Entity>List.tsx  [gen]  Generated list component
-        │       │   ├── <Entity>Filter.tsx  [yours] Your custom filter (created once)
-        │       │   ├── Default<Entity>Filter.tsx [gen]  Generated default filter
-        │       │   └── <Entity>ListBreadcrumbs.tsx [gen]  Breadcrumb component
-        │       │
-        │       ├── <EntityName>Show/
-        │       │   ├── index.tsx           [gen]  Entry point
-        │       │   ├── Default<Entity>Show.tsx  [gen]  Generated show component
-        │       │   ├── MainTab.tsx         [yours] Your custom main tab content
-        │       │   ├── DefaultMainTab.tsx  [gen]  Generated main tab
-        │       │   ├── DefaultActions.tsx  [gen]  Generated action buttons
-        │       │   ├── additionalTabs.tsx  [yours] Your extra tabs in show view
-        │       │   └── tabs/
-        │       │       └── <RelatedEntity>Tab.tsx  [gen]  Auto-generated dependency tabs
-        │       │
-        │       ├── <EntityName>Create/
-        │       │   ├── index.tsx           [gen]  Entry point
-        │       │   └── Default<Entity>Create.tsx [gen]  Generated create form
-        │       │
-        │       └── <EntityName>Edit/
-        │           ├── index.tsx           [gen]  Entry point
-        │           └── Default<Entity>Edit.tsx   [gen]  Generated edit form
-        │
-        ├── widgets/
-        │   └── <EntityName>/
-        │       ├── <Entity>CountWidget.tsx [gen]  Count widget for dashboard
-        │       └── <Entity>ListWidget.tsx  [gen]  List widget for dashboard
-        │
-        ├── resources.tsx                   [gen]  react-admin resource registry
-        ├── resourcesChunk0.tsx             [gen]  Chunked resource imports (code splitting)
-        ├── resourcesChunk1.tsx             [gen]  Chunked resource imports
-        ├── ResourcesPage.tsx               [gen]  /resources debug page
-        ├── MetaPage.tsx                    [gen]  /meta debug page
-        ├── entityMapping.ts               [gen]  Entity name → component mapping
-        ├── routes.tsx                      [gen]  All react-admin routes
-        ├── additionalRoutes.tsx            [yours] Your custom routes/pages
-        ├── Dashboard.tsx                   [yours] Home page content
-        ├── getDefaultMenu.ts              [gen]  Auto-generated sidebar menu
-        ├── getAdditionalMenu.ts           [yours] Your extra menu items
-        │
-        ├── functions/
-        │   └── Functions.tsx              [gen]  System functions page
-        │
-        ├── i18n/
-        │   ├── lang/
-        │   │   ├── <lang>.catalogs.ts      [gen]  Catalog translations per language
-        │   │   ├── <lang>.documents.ts     [gen]  Document translations
-        │   │   ├── <lang>.infoRegistries.ts [gen]
-        │   │   ├── <lang>.sumRegistries.ts [gen]
-        │   │   ├── <lang>.reports.ts       [gen]
-        │   │   └── <lang>.ts               [gen]  Root translation file for this language
-        │   └── i18nProvider/
-        │       └── index.ts               [gen]  react-admin i18n provider
-        │
-        └── environment/
-            ├── src/
-            │   ├── App.tsx                [gen]  Root react-admin App component
-            │   ├── dataProvider/
-            │   │   ├── index.ts           [gen]  GraphQL data provider
-            │   │   └── getAdditionalMethods.ts [once] Hook for custom data provider methods
-            │   ├── i18nProvider/
-            │   │   └── index.ts           [gen]
-            │   ├── layout/
-            │   │   ├── AppBar.tsx         [gen]  Top application bar
-            │   │   └── Menu.tsx           [gen]  Sidebar menu component
-            │   ├── routes.ts              [gen]  Route registration
-            │   └── contexts/
-            │       └── SpacesContext.ts   [gen]  Multi-space / tenant context
-            │
-            ├── .gitlab-ci.yml             [gen]  GitLab CI pipeline for UI
-            ├── Dockerfile                 [gen]  nginx-based frontend Docker image
-            └── chart/                     Helm chart for Kubernetes
-                ├── Chart.yaml             [gen]
-                ├── values.yaml            [gen]
-                └── templates/
-                    ├── front.yaml         [gen]
-                    └── ingress.yaml       [gen]
+        ├── .gitlab-ci.yml                 [gen]  GitLab CI pipeline for UI
+        ├── Dockerfile                     [gen]  nginx-based frontend Docker image
+        └── chart/                         Helm chart for Kubernetes
+            ├── Chart.yaml                 [gen]
+            ├── values.yaml                [gen]
+            └── templates/
+                ├── front.yaml             [gen]
+                └── ingress.yaml           [gen]
 ```
 
 ---
@@ -153,6 +160,12 @@ Return extra menu items from this function. Appended to the auto-generated menu.
 Menu items added via `system.addGroupMenuItem` / `addInternalMenuItem` etc. in the meta
 are reflected in `getDefaultMenu.ts` — do not edit that file.
 
+### `PermissionPage.tsx` / `NotFoundPage.tsx` — once {#permission-fallbacks}
+
+Fallback components rendered instead of a page's real content. Both re-export a
+react-admin built-in by default and are safe to replace. See
+[11-permissions.md](./11-permissions.md#fallback-components) for when each one is used.
+
 ---
 
 ## How the menu is built
@@ -180,18 +193,35 @@ backed by a page registered in the system).
 
 ---
 
-## i18n
+## i18n {#i18n}
 
-Translation files are fully generated from entity titles and field titles defined in the
-meta. To change a translation:
+Entity/field-derived translation files (`<lang>Catalogs.ts`, `<lang>Docs.ts`,
+`<lang>InfoRegistries.ts`, `<lang>SumRegistries.ts`, `<lang>Reports.ts`) are `[gen]` —
+fully generated from entity titles and field titles defined in the meta. To change one
+of these translations:
 
 1. Update the title in `metadata.ts`: `entity.setTitle({ singular: 'Order', plural: 'Orders' }, 'en')`
 2. Run `regen`
 
-**Anti-pattern — editing translation files directly:**
+Three other files exist per project/language and are `[once]` — created only if
+missing, then yours to edit freely:
 
-Editing `<lang>.catalogs.ts` or any generated lang file is pointless — changes are
-overwritten on regen.
+| File | Scope | Purpose |
+|------|-------|---------|
+| `i18n/types.ts` | One per project | The `ValidationMessages` type — add fields here as you add validation messages |
+| `i18n/<lang>/<lang>Validation.ts` | One per language | Validation message strings, typed by `ValidationMessages` |
+| `i18n/<lang>/index.ts` | One per language | Assembles all of the above into the object `i18nProvider` imports; the place to add any translation key that isn't derived from an entity/field (UI labels, error messages, etc.) |
+
+`i18n/<lang>/index.ts` is what `environment/src/i18nProvider/index.ts` (`[gen]`)
+actually imports — it merges the entity-derived generated files, `<lang>Validation.ts`,
+and falls back to `ra-language-english` for anything not overridden. Since it's created
+once, it's safe to add project-specific keys directly into it.
+
+**Anti-pattern — editing an entity/field-derived translation file directly:**
+
+Editing `<lang>Catalogs.ts`, `<lang>Docs.ts`, or any other `[gen]` lang file is
+pointless — changes are overwritten on regen. Add custom keys to `i18n/<lang>/index.ts`
+instead.
 
 ---
 

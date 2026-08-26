@@ -62,6 +62,13 @@
 │   ├── rest/
 │   │   └── restRouter.ts                      [once] Custom REST endpoints (yours)
 │   │
+│   ├── init/
+│   │   └── roles/
+│   │       ├── initPermissions.ts             [gen]  Collects and seeds all permissions
+│   │       ├── uiPermissions.ts               [gen]  'ui.<entity>.list' per entity
+│   │       ├── customPermissions.ts           [once] Your hand-written data-space permissions
+│   │       └── customUiPermissions.ts         [once] Your hand-written UI-space permissions
+│   │
 │   ├── enums/
 │   │   ├── enums.ts                           [gen]  All entity name enums
 │   │   ├── devEnums.ts                        [gen]  Dev-only enums
@@ -175,6 +182,15 @@ They contain placeholder / default values.
 **Do not commit secrets** to these files. They are intended as value templates.
 Actual secret values should be injected from CI/CD environment variables, not from these
 files.
+
+---
+
+## Permissions (`init/roles/`)
+
+`permissionsToGraphql.ts` and its per-entity counterparts map permission strings to
+GraphQL methods. How permissions are named, structured, and seeded into the database
+(`init/roles/initPermissions.ts` and friends) is covered in full in
+[11-permissions.md](./11-permissions.md).
 
 ---
 
