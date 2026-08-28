@@ -97,18 +97,21 @@ ${system.menuItems.map(i => `${menuItemTmpl(i)},`).map(pad2).join('\n')}${option
       link: '/functions',
       icon: 'DetailsOutlined',
       debugOnly: true,
+      permissions: ['ui.functions'],
     },` : ''}${options.showResourcesInMenu ? `
     {
       label: 'app.menu.resources',
       link: '/resources',
       icon: 'DetailsOutlined',
       debugOnly: true,
+      permissions: ['ui.resources'],
     },` : ''}${options.showMetaInMenu ? `
     {
       label: 'app.menu.meta',
       link: '/meta',
       icon: 'DetailsOutlined',
       debugOnly: true,
+      permissions: ['ui.meta'],
     },` : ''}
   ];
 

@@ -1,8 +1,8 @@
-export const backInitPermissionsTmpl = () => `import {Context} from '../../adm/services/types';
-import {getRuntimePermissions} from '../../adm/services/getRuntimePermissions';
+export const backInitPermissionsTmpl = () => `import {Context} from '../../../adm/services/types';
+import {getRuntimePermissions} from '../../../adm/services/getRuntimePermissions';
 import uiPermissions from './uiPermissions';
-import customPermissions from './customPermissions';
-import customUiPermissions from './customUiPermissions';
+import customPermissions from '../customPermissions';
+import customUiPermissions from '../customUiPermissions';
 
 const initPermissions = async (ctx: Context) => {
   const runtimePermissions = getRuntimePermissions(ctx);

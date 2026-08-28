@@ -64,8 +64,9 @@
 │   │
 │   ├── init/
 │   │   └── roles/
-│   │       ├── initPermissions.ts             [gen]  Collects and seeds all permissions
-│   │       ├── uiPermissions.ts               [gen]  'ui.<entity>.list' per entity
+│   │       ├── generated/
+│   │       │   ├── initPermissions.ts         [gen]  Collects and seeds all permissions
+│   │       │   └── uiPermissions.ts           [gen]  'ui.<entity>.list' per entity + system pages
 │   │       ├── customPermissions.ts           [once] Your hand-written data-space permissions
 │   │       └── customUiPermissions.ts         [once] Your hand-written UI-space permissions
 │   │

@@ -50,13 +50,14 @@ const generateBackSrc = (fileCreator: FileCreator, args: ProjectWideGenerationAr
 
   // Roles/permissions
   const rolesDir = join(prjDetachedBackSrcDir, 'init', 'roles');
+  const rolesGeneratedDir = join(rolesDir, 'generated');
   fileCreator.create(
-    join(rolesDir, 'initPermissions.ts'),
+    join(rolesGeneratedDir, 'initPermissions.ts'),
     backInitPermissionsTmpl(),
     addWarnings({options: args.options})
   );
   fileCreator.create(
-    join(rolesDir, 'uiPermissions.ts'),
+    join(rolesGeneratedDir, 'uiPermissions.ts'),
     backUiPermissionsTmpl(args),
     addWarnings({options: args.options})
   );
