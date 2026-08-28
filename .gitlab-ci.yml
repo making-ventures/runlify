@@ -1,3 +1,6 @@
+# DEPRECATED: GitLab CI is kept only as a legacy fallback during the GitHub
+# migration. Use GitHub Actions workflows in .github/workflows/ for new CI/CD.
+
 image: node:22
 
 stages:
@@ -48,7 +51,7 @@ release:
       if [ -n "$NPM_TOKEN" ]; then
         echo "🔑 Используется granular access token (NPM_TOKEN)"
         npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
-        npm whoami || (echo "⚠️  npm whoami не работает, но токен установлен" && true)
+        npm whoami || (echo "❌ npm whoami не прошел — токен невалиден или нет прав" && exit 1)
         echo "✅ Токен настроен для публикации"
       elif [ -z "$NPM_OIDC_TOKEN" ]; then
         echo "❌ Не настроена аутентификация npm"

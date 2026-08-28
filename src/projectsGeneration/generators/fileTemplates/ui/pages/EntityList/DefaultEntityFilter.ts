@@ -5,6 +5,7 @@ import {getCompNamesToEditField} from '../../../../ui/componentNames/edit/getCom
 import {EntityWideGenerationArgs} from '../../../../../args'
 import {getEntityField} from '../../../../../builders/utils/accessFunctions'
 import {addComma, pad3} from '../../../../../utils'
+import {isMoneyField} from '../../../../../metaUtils'
 
 export const uiDefaultFilterTmpl = ({
   allEntities,
@@ -30,6 +31,7 @@ export const uiDefaultFilterTmpl = ({
   const dateFieldsToImport = fieldsToImport.filter((f) =>
     ['datetime', 'date'].includes(f.type)
   )
+  const hasMoneyField = fieldsToImport.some(isMoneyField)
   const notDateFieldsToImport = fieldsToImport.filter(
     (f) => !['datetime', 'date'].includes(f.type) && (f.category !== 'link' || ['equal', 'lt', 'lte', 'gt', 'gte', 'defined', 'not_defined'].some(filter => f.filters.some(item => item === filter)))
   )
@@ -41,7 +43,6 @@ export const uiDefaultFilterTmpl = ({
     ...(hasSearch ? ['TextInput'] : []),
     ...(useReferenceArray ? ['ReferenceArrayInput', 'AutocompleteArrayInput'] : []),
     ...(hasLinkField ? ['usePermissions'] : []),
-
     ...R.flatten(
       notDateFieldsToImport.map((f) => getCompNamesToEditField(f, allEntities))
     ),
@@ -67,6 +68,11 @@ import DateInput from '../../../../uiLib/DateInput';`
     options.useSortedFilter
       ? `
 import {SortedFilter} from '../../../../uiLib/SortedFilters';`
+      : ''
+  }${
+    hasMoneyField
+      ? `
+import {moneyMajorToMinor, moneyMinorToMajor} from '../../../../uiLib/transformations/moneyAmount';`
       : ''
   }${hasLinkField ? `
 import {hasPermission} from '../../../../utils/permissions';` : ''}

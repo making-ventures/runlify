@@ -1,7 +1,10 @@
-import {join} from 'path'
 import {FileCreator} from '../../../types'
 import {pascalPlural} from '../../../../../utils/cases'
 import {EntityWideGenerationArgs} from '../../../../args'
+import {
+  GenerationPathCategory,
+  resolveGenerationPath,
+} from '../../../../builders/generationPaths'
 import {additionalOperationsOnCreateTmpl} from '../../../../generators/fileTemplates/back/services/entity/hooks/additionalOperationsOnCreate'
 import {additionalOperationsOnDeleteTmpl} from '../../../../generators/fileTemplates/back/services/entity/hooks/additionalOperationsOnDelete'
 import {additionalOperationsOnUpdateTmpl} from '../../../../generators/fileTemplates/back/services/entity/hooks/additionalOperationsOnUpdate'
@@ -30,24 +33,29 @@ const generateBackEntityService = (
     allInfoRegistries,
     entity,
     options,
+    system,
   } = args;
 
   if (options.genPrismaServices && !options.typesOnly) {
     const serviceName = `${pascalPlural(entity.name)}Service`;
-    const serviceDir = join(options.detachedBackProject, 'src', 'adm', 'services', serviceName);
-    const servicePath = join(serviceDir, `${serviceName}.ts`);
-    const configPath = join(serviceDir, `config.ts`);
-    const additionalServicePath = join(serviceDir, `Additional${serviceName}.ts`);
+    const resolveBackPath = (category: GenerationPathCategory) =>
+      resolveGenerationPath({
+        category,
+        detachedBackProject: options.detachedBackProject,
+        detachedUiProject: options.detachedUiProject,
+        pathsConfig: system.generationPaths,
+        vars: {ServiceName: serviceName},
+      });
 
     const additionalClassService = prismaAdditionalServiceClassTmpl(args);
     fileCreator.createIfNotExists(
-      additionalServicePath,
+      resolveBackPath(GenerationPathCategory.BackServiceAdditionalClass),
       additionalClassService
     );
 
     const generatedClassService = prismaServiceBaseClassTmpl(args);
     fileCreator.create(
-      servicePath,
+      resolveBackPath(GenerationPathCategory.BackServiceClass),
       generatedClassService,
       addWarnings({options: args.options})
     );
@@ -58,17 +66,16 @@ const generateBackEntityService = (
       allInfoRegistries,
     );
     fileCreator.create(
-      configPath,
+      resolveBackPath(GenerationPathCategory.BackServiceConfig),
       config,
       addWarnings({options: args.options})
     );
 
     fileCreator.createIfNotExists(
-      join(serviceDir, 'initUserHooks.ts'),
+      resolveBackPath(GenerationPathCategory.BackHookInitUserHooks),
       initUserHooksTmpl(args)
     );
 
-    const hooksDir = join(serviceDir, 'hooks');
     if (['optional', 'required'].includes(entity.multitenancy)) {
       if (
         !args.entities.some(
@@ -79,63 +86,63 @@ const generateBackEntityService = (
       }
 
       fileCreator.create(
-        join(hooksDir, 'tenantIdRequiredHooks.ts'),
+        resolveBackPath(GenerationPathCategory.BackHookTenantIdRequiredHooks),
         tenantIdRequiredHooksTmpl(args),
         addWarnings({options: args.options})
       );
     }
 
     fileCreator.create(
-      join(serviceDir, 'initBuiltInHooks.ts'),
+      resolveBackPath(GenerationPathCategory.BackHookInitBuiltInHooks),
       initBuiltInHooksTmpl(args),
       addWarnings({options: args.options})
     );
 
     if (entity.storage !== 'elastic' && entity.storage !== 'clickhouse') {
       fileCreator.createIfNotExists(
-        join(hooksDir, 'additionalOperationsOnCreate.ts'),
+        resolveBackPath(GenerationPathCategory.BackHookAdditionalOperationsOnCreate),
         additionalOperationsOnCreateTmpl(args)
       );
       fileCreator.createIfNotExists(
-        join(hooksDir, 'additionalOperationsOnUpdate.ts'),
+        resolveBackPath(GenerationPathCategory.BackHookAdditionalOperationsOnUpdate),
         additionalOperationsOnUpdateTmpl(args)
       );
       fileCreator.createIfNotExists(
-        join(hooksDir, 'additionalOperationsOnDelete.ts'),
+        resolveBackPath(GenerationPathCategory.BackHookAdditionalOperationsOnDelete),
         additionalOperationsOnDeleteTmpl(args),
       );
     }
 
     fileCreator.createIfNotExists(
-      join(hooksDir, 'beforeCreate.ts'),
+      resolveBackPath(GenerationPathCategory.BackHookBeforeCreate),
       beforeCreateTmpl(args)
     );
     fileCreator.createIfNotExists(
-      join(hooksDir, 'beforeDelete.ts'),
+      resolveBackPath(GenerationPathCategory.BackHookBeforeDelete),
       beforeDeleteTmpl(args)
     );
     fileCreator.createIfNotExists(
-      join(hooksDir, 'beforeUpdate.ts'),
+      resolveBackPath(GenerationPathCategory.BackHookBeforeUpdate),
       beforeUpdateTmpl(args)
     );
     fileCreator.createIfNotExists(
-      join(hooksDir, 'beforeUpsert.ts'),
+      resolveBackPath(GenerationPathCategory.BackHookBeforeUpsert),
       beforeUpsertTmpl(args)
     );
     fileCreator.createIfNotExists(
-      join(hooksDir, 'afterCreate.ts'),
+      resolveBackPath(GenerationPathCategory.BackHookAfterCreate),
       afterCreateTmpl(args)
     );
     fileCreator.createIfNotExists(
-      join(hooksDir, 'afterUpdate.ts'),
+      resolveBackPath(GenerationPathCategory.BackHookAfterUpdate),
       afterUpdateTmpl(args)
     );
     fileCreator.createIfNotExists(
-      join(hooksDir, 'afterDelete.ts'),
+      resolveBackPath(GenerationPathCategory.BackHookAfterDelete),
       afterDeleteTmpl(args)
     );
     fileCreator.createIfNotExists(
-      join(hooksDir, 'changeListFilter.ts'),
+      resolveBackPath(GenerationPathCategory.BackHookChangeListFilter),
       changeListFilterTmpl(args)
     );
   }

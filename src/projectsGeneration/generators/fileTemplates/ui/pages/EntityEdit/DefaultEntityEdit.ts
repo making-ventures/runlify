@@ -52,8 +52,8 @@ export const getTrivialEditComponent = (
   sx={{m: 1}}
   source='${field.name}${postfix ? postfix.source : ''}'${field.required ? '' : '\n  defaultValue={null}'}${field.required && type !== 'filter' && field.type !== 'bool' && field.requiredOnInput !== false ? `\n  isRequired` : ''}
   ${getFieldLabel(entity, field, postfix?.label)}${isMoneyField(field) ? `
-  format={(value) => value / 100}
-  parse={(value) => value * 100}` : ''}${isStringNumberField(field) ? `
+  format={(value) => moneyMinorToMajor(value)}
+  parse={(value) => moneyMajorToMinor(value)}` : ''}${isStringNumberField(field) ? `
   type='number'` : ''}
 />`;
 };
@@ -203,6 +203,7 @@ export const uiDefaultEditTmpl = ({
     .filter(f => ['datetime', 'date'].includes(f.type));
   const notDateFieldsToImport = fieldsToImport
     .filter(f => !['datetime', 'date'].includes(f.type));
+  const hasMoneyField = fieldsToImport.some(isMoneyField);
   const reactAdminImports: string[] = [
     'Edit',
     'SimpleForm',
@@ -255,7 +256,8 @@ import {
   `)}
 } from 'react-admin';${dateFieldsToImport.some(f => f.type === 'datetime') ? `
 import DateTimeInput from '../../../../uiLib/DateTimeInput';` : ''}${dateFieldsToImport.some(f => f.type === 'date') ? `
-import DateInput from '../../../../uiLib/DateInput';` : ''}${hasHidden ? `
+import DateInput from '../../../../uiLib/DateInput';` : ''}${hasMoneyField ? `
+import {moneyMajorToMinor, moneyMinorToMajor} from '../../../../uiLib/transformations/moneyAmount';` : ''}${hasHidden ? `
 import {useDebug} from '../../../../contexts/DebugContext';` : ''}
 import {Grid} from 'shared/Components/Grid';
 import {yupResolver} from '@hookform/resolvers/yup';

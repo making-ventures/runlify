@@ -3,7 +3,7 @@ import * as R from 'ramda'
 import {getShowComponent} from '../../../../ui/getShowComponent'
 import {EntityWideGenerationArgs} from '../../../../../args'
 import {pad3, pad2} from '../../../../../utils'
-import {isMarkdownField} from "../../../../../metaUtils";
+import {isMarkdownField, isMoneyField} from "../../../../../metaUtils";
 
 export const uiEntityShowDefaultMainTabTmpl = ({
   allEntities,
@@ -13,6 +13,7 @@ export const uiEntityShowDefaultMainTabTmpl = ({
   const dateFieldsToImport = fieldsToImport.filter((f) =>
     ['datetime', 'date'].includes(f.type)
   )
+  const hasMoneyField = fieldsToImport.some(isMoneyField)
   const notDateFieldsToImport = fieldsToImport.filter(
     (f) => !['datetime', 'date'].includes(f.type)
   )
@@ -35,6 +36,11 @@ import {
     dateFieldsToImport.some((f) => ['date', 'datetime'].includes(f.type))
       ? `
 import DateField from '../../../../uiLib/DateField';`
+      : ''
+  }${
+    hasMoneyField
+      ? `
+import {moneyMinorToMajor} from '../../../../uiLib/transformations/moneyAmount';`
       : ''
   }
 import {Grid} from 'shared/Components/Grid';

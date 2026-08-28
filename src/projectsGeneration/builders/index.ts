@@ -1,3 +1,5 @@
 export * from './types'
 export * from './buildedTypes'
 export * from './curlTypes'
+export * from './generationPaths'
+export {GenerationPathsBuilder} from './GenerationPathsBuilder'

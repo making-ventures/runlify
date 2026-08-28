@@ -14,6 +14,7 @@
     "noUnusedLocals": true,
     "sourceMap": false,
     "inlineSourceMap": true,
+    "rootDir": "src",
     "outDir": "build",
     "strict": true,
     "target": "es6",
@@ -21,5 +22,5 @@
     "declarationDir": "build/types"
   },
   "include": ["src/**/*", "src/extensions/.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "src/**/*.spec.ts"]
 }

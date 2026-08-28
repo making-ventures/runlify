@@ -1,4 +1,3 @@
-import {join} from 'path'
 import {FileCreator} from '../../../types'
 import {camelPlural} from '../../../../../utils/cases'
 import {EntityWideGenerationArgs} from '../../../../args'
@@ -12,6 +11,10 @@ import {backEntityAdditionalPermissionToGraphqlTmpl} from '../../../../generator
 import {backBasePermissionToGraphqlTmpl} from '../../../../generators/fileTemplates/back/graph/entityBasePermissionToGraphql'
 import {backAdditionalTypesTmpl} from '../../../../generators/fileTemplates/back/graph/additionalTypes'
 import {addWarnings} from '../../../fileHandlers'
+import {
+  GenerationPathCategory,
+  resolveGenerationPath,
+} from '../../../../builders/generationPaths'
 
 const generateBackEntityGraph = (
   fileCreator: FileCreator,
@@ -20,27 +23,28 @@ const generateBackEntityGraph = (
   const {
     entity,
     options,
+    system,
   } = args;
 
-  const graphServiceDir = join(
-    options.detachedBackProject,
-    'src',
-    'adm',
-    'graph',
-    'services',
-    camelPlural(entity.name)
-  );
+  const resolveGraphPath = (category: GenerationPathCategory) =>
+    resolveGenerationPath({
+      category,
+      detachedBackProject: options.detachedBackProject,
+      detachedUiProject: options.detachedUiProject,
+      pathsConfig: system.generationPaths,
+      vars: {camelPlural: camelPlural(entity.name)},
+    });
 
   // Graph schema
   if (options.genGraphSchema) {
     fileCreator.create(
-      join(graphServiceDir, 'baseTypeDefs.ts'),
+      resolveGraphPath(GenerationPathCategory.BackGraphEntityBaseTypeDefs),
       backBaseTypesTmpl(printSchema(genGraphCrudSchema(entity)), options),
       addWarnings({options})
     );
 
     fileCreator.createIfNotExists(
-      join(graphServiceDir, 'additionalTypeDefs.ts'),
+      resolveGraphPath(GenerationPathCategory.BackGraphEntityAdditionalTypeDefs),
       backAdditionalTypesTmpl()
     );
   }
@@ -49,29 +53,29 @@ const generateBackEntityGraph = (
     // Graph resolvers
     if (options.genGraphResolvers) {
       fileCreator.create(
-        join(graphServiceDir, 'baseResolvers.ts'),
+        resolveGraphPath(GenerationPathCategory.BackGraphEntityBaseResolvers),
         backBaseResolversTmpl(args),
         addWarnings({options})
       );
       fileCreator.createIfNotExists(
-        join(graphServiceDir, 'additionalResolvers.ts'),
+        resolveGraphPath(GenerationPathCategory.BackGraphEntityAdditionalResolvers),
         backAdditionalResolversTmpl()
       );
     }
 
     // Permissions
     fileCreator.create(
-      join(graphServiceDir, 'permissionsToGraphql.ts'),
+      resolveGraphPath(GenerationPathCategory.BackGraphEntityPermissionsToGraphql),
       backEntityPermissionToGraphqlTmpl(args),
       addWarnings({options})
     );
     fileCreator.create(
-      join(graphServiceDir, 'basePermissionsToGraphql.ts'),
+      resolveGraphPath(GenerationPathCategory.BackGraphEntityBasePermissionsToGraphql),
       backBasePermissionToGraphqlTmpl(args),
       addWarnings({options})
     );
     fileCreator.create(
-      join(graphServiceDir, 'additionalPermissionsToGraphql.ts'),
+      resolveGraphPath(GenerationPathCategory.BackGraphEntityAdditionalPermissionsToGraphql),
       backEntityAdditionalPermissionToGraphqlTmpl(args),
       addWarnings({options})
     );

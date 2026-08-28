@@ -5,7 +5,6 @@ import {
 } from '../../args'
 import generateFrontSrcTranslations from './translations/generateFrontSrcTranslations'
 import generateFrontSrcEntity from './entity/generateFrontSrcEntity'
-import {join} from 'path'
 import uiDashboardTmpl from '../../generators/fileTemplates/ui/Dashboard'
 import uiPermissionPageTmpl from '../../generators/fileTemplates/ui/PermissionPage'
 import uiNotFoundPageTmpl from '../../generators/fileTemplates/ui/NotFoundPage'
@@ -22,6 +21,22 @@ import { uiResourcesTmpl } from '../../generators/fileTemplates/ui/resources'
 import {addWarnings, addGeneratedOnceNotice} from '../fileHandlers'
 import { uiGetMenuIconsTmpl } from '../../generators/fileTemplates/ui/getMenuIconsTmpl'
 import { uiGetAdditionalMenuIconsTmpl } from '../../generators/fileTemplates/ui/getAdditionalMenuIconsTmp'
+import {
+  GenerationPathCategory,
+  resolveGenerationPath,
+} from '../../builders/generationPaths'
+
+const resolveUiPath = (
+  args: ProjectWideGenerationArgs,
+  category: GenerationPathCategory,
+) =>
+  resolveGenerationPath({
+    category,
+    detachedBackProject: args.options.detachedBackProject,
+    detachedUiProject: args.options.detachedUiProject,
+    pathsConfig: args.system.generationPaths,
+    vars: {},
+  })
 
 const generateFrontSrc = (fileCreator: FileCreator, args: ProjectWideGenerationArgs) => {
   args.entities.forEach((entity) => {
@@ -30,25 +45,23 @@ const generateFrontSrc = (fileCreator: FileCreator, args: ProjectWideGenerationA
 
   generateFrontSrcTranslations(fileCreator, args);
 
-  const prjUiSrcPrefixedDir = join(args.options.detachedUiProject, 'src', 'adm');
-
   if (!args.options.typesOnly) {
     // Resources
     if (args.options.genUiResources) {
       const {resources, resourcesChunk0, resourcesChunk1} = uiResourcesTmpl(args);
 
       fileCreator.create(
-        join(prjUiSrcPrefixedDir, 'resources.tsx'),
+        resolveUiPath(args, GenerationPathCategory.UiResources),
         resources,
         addWarnings({options: args.options})
       );
       fileCreator.create(
-        join(prjUiSrcPrefixedDir, 'resourcesChunk0.tsx'),
+        resolveUiPath(args, GenerationPathCategory.UiResourcesChunk0),
         resourcesChunk0,
         addWarnings({options: args.options})
       );
       fileCreator.create(
-        join(prjUiSrcPrefixedDir, 'resourcesChunk1.tsx'),
+        resolveUiPath(args, GenerationPathCategory.UiResourcesChunk1),
         resourcesChunk1,
         addWarnings({options: args.options})
       );
@@ -57,14 +70,14 @@ const generateFrontSrc = (fileCreator: FileCreator, args: ProjectWideGenerationA
     // Resources page
     if (args.options.genUiResourcesPage) {
       fileCreator.create(
-        join(prjUiSrcPrefixedDir, 'ResourcesPage.tsx'),
+        resolveUiPath(args, GenerationPathCategory.UiResourcesPage),
         uiResourcesPageTmpl(args),
         addWarnings({options: args.options})
       );
     }
 
     fileCreator.create(
-      join(prjUiSrcPrefixedDir, 'MetaPage.tsx'),
+      resolveUiPath(args, GenerationPathCategory.UiMetaPage),
       uiMetaPageTmpl(),
       addWarnings({options: args.options})
     );
@@ -72,7 +85,7 @@ const generateFrontSrc = (fileCreator: FileCreator, args: ProjectWideGenerationA
     // Entity mapping
     if (args.options.genUiEntityMapping) {
       fileCreator.create(
-        join(prjUiSrcPrefixedDir, 'entityMapping.ts'),
+        resolveUiPath(args, GenerationPathCategory.UiEntityMapping),
         uiEntityMappingTmpl(args, args.options),
         addWarnings({options: args.options})
       );
@@ -81,21 +94,21 @@ const generateFrontSrc = (fileCreator: FileCreator, args: ProjectWideGenerationA
     // Menu
     if (args.options.genUiMenu) {
       fileCreator.create(
-        join(prjUiSrcPrefixedDir, 'getDefaultMenu.ts'),
+        resolveUiPath(args, GenerationPathCategory.UiGetDefaultMenu),
         uiGetDefaultMenuTmpl(args),
         addWarnings({options: args.options})
       );
       fileCreator.createIfNotExists(
-        join(prjUiSrcPrefixedDir, 'getAdditionalMenu.ts'),
+        resolveUiPath(args, GenerationPathCategory.UiGetAdditionalMenu),
         uiGetAdditionalMenuTmpl()
       );
       fileCreator.create(
-        join(args.options.detachedUiProject, 'src', 'uiLib', 'menu', 'menuIcons.ts'),
+        resolveUiPath(args, GenerationPathCategory.UiMenuIcons),
         uiGetMenuIconsTmpl(args),
         addWarnings({options: args.options})
       )
       fileCreator.createIfNotExists(
-        join(prjUiSrcPrefixedDir, 'additionalMenuIcons.ts'),
+        resolveUiPath(args, GenerationPathCategory.UiAdditionalMenuIcons),
         uiGetAdditionalMenuIconsTmpl()
       );
     }
@@ -103,21 +116,21 @@ const generateFrontSrc = (fileCreator: FileCreator, args: ProjectWideGenerationA
     // Routes
     if (args.options.genUiRoutes) {
       fileCreator.create(
-        join(prjUiSrcPrefixedDir, 'routes.tsx'),
+        resolveUiPath(args, GenerationPathCategory.UiRoutes),
         uiRoutesTmpl(args),
         addWarnings({options: args.options})
       );
     }
 
     fileCreator.createIfNotExists(
-      join(prjUiSrcPrefixedDir, 'additionalRoutes.tsx'),
+      resolveUiPath(args, GenerationPathCategory.UiAdditionalRoutes),
       uiAdditionalRoutesTmpl()
     );
 
     // Functions page
     if (args.options.genUiFunctions) {
       fileCreator.create(
-        join(prjUiSrcPrefixedDir, 'functions', 'Functions.tsx'),
+        resolveUiPath(args, GenerationPathCategory.UiFunctions),
         uiFunctionsTmpl(args.options),
         addWarnings({options: args.options})
       );
@@ -126,7 +139,7 @@ const generateFrontSrc = (fileCreator: FileCreator, args: ProjectWideGenerationA
     // Dashboard page
     if (args.options.genUiDashboard) {
       fileCreator.createIfNotExists(
-        join(prjUiSrcPrefixedDir, 'Dashboard.tsx'),
+        resolveUiPath(args, GenerationPathCategory.UiDashboard),
         uiDashboardTmpl()
       );
     }

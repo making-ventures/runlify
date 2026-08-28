@@ -9,7 +9,7 @@ import {pascal} from '../../../../../../utils/cases'
 import {getShowComponent} from '../../../../ui/getShowComponent'
 import {Entity} from '../../../../../builders/buildedTypes'
 import {addComma, pad4} from '../../../../../utils'
-import {isMarkdownField} from "../../../../../metaUtils"
+import {isMarkdownField, isMoneyField} from "../../../../../metaUtils"
 
 export const uiEntityShowDependencyTabTmpl = (
   allEntities: Map<string, Entity>,
@@ -33,6 +33,7 @@ export const uiEntityShowDependencyTabTmpl = (
   const notDateFieldsToImport = fieldsToImport.filter(
     (f) => !['datetime', 'date'].includes(f.type)
   )
+  const hasMoneyField = fieldsToImport.some(isMoneyField)
   const reactAdminImports: string[] = [
     'TabProps',
     'Tab',
@@ -62,6 +63,11 @@ import {
     dateFieldsToImport.some((f) => ['date', 'datetime'].includes(f.type))
       ? `
 import DateField from '../../../../../uiLib/DateField';`
+      : ''
+  }${
+    hasMoneyField
+      ? `
+import {moneyMinorToMajor} from '../../../../../uiLib/transformations/moneyAmount';`
       : ''
   }
 import {hasPermission} from '../../../../../utils/permissions';

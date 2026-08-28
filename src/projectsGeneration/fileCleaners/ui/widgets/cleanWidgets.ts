@@ -1,16 +1,15 @@
-import {join} from "path";
 import {ProjectWideGenerationArgs} from "../../../args";
+import {resolveUiWidgetsDir} from "../../../builders/generationPaths";
 import cleanWidgetsByType from "./cleanWidgetsByType";
 
 export default (
   entityWideGenerationArgs: ProjectWideGenerationArgs,
 ) => {
-  const widgetsDirPath = join(
-    entityWideGenerationArgs.options.detachedUiProject, 
-    'src',
-    'adm',
-    'widgets',
-  )
+  const widgetsDirPath = resolveUiWidgetsDir({
+    detachedBackProject: entityWideGenerationArgs.options.detachedBackProject,
+    detachedUiProject: entityWideGenerationArgs.options.detachedUiProject,
+    pathsConfig: entityWideGenerationArgs.system.generationPaths,
+  })
 
   cleanWidgetsByType(
     widgetsDirPath,

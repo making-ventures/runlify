@@ -135,7 +135,15 @@ export const defaultBootstrapEntityOptions = {
   graphGeneratorCommand: '',
 
   detachedBackProject: '',
-  detachedUiProject: ''
+  detachedUiProject: '',
+  detachedSharedProject: '',
+
+  // Filled by resolveProjectPaths during regen (optional in options.json)
+  metaDir: '',
+  repoRoot: '',
+  layoutMode: 'detached' as 'detached' | 'monorepo',
+  sharedSchemaPath: '',
+  copySchemaToUi: true,
 }
 
 export type BootstrapEntityOptions = typeof defaultBootstrapEntityOptions;

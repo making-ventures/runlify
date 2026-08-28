@@ -1,8 +1,16 @@
 {
   "name": "runlify",
-  "version": "0.0.784",
+  "version": "0.0.794",
   "description": "runlify CLI",
   "private": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/making-ventures/runlify.git"
+  },
+  "homepage": "https://github.com/making-ventures/runlify#readme",
+  "bugs": {
+    "url": "https://github.com/making-ventures/runlify/issues"
+  },
   "main": "build/index.js",
   "types": "build/types/types.d.ts",
   "bin": {
