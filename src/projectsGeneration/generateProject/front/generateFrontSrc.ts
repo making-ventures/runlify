@@ -146,21 +146,21 @@ const generateFrontSrc = (fileCreator: FileCreator, args: ProjectWideGenerationA
 
     // Permission fallback page
     fileCreator.createIfNotExists(
-      join(prjUiSrcPrefixedDir, 'PermissionPage.tsx'),
+      resolveUiPath(args, GenerationPathCategory.UiPermissionPage),
       uiPermissionPageTmpl(),
       [addGeneratedOnceNotice]
     );
 
     // Not found fallback page (action doesn't exist for the entity, e.g. no edit/create)
     fileCreator.createIfNotExists(
-      join(prjUiSrcPrefixedDir, 'NotFoundPage.tsx'),
+      resolveUiPath(args, GenerationPathCategory.UiNotFoundPage),
       uiNotFoundPageTmpl(),
       [addGeneratedOnceNotice]
     );
 
     // Permissions utils
     fileCreator.create(
-      join(args.options.detachedUiProject, 'src', 'utils', 'permissions.ts'),
+      resolveUiPath(args, GenerationPathCategory.UiPermissionsUtils),
       uiPermissionsTmpl(),
       addWarnings({options: args.options})
     );

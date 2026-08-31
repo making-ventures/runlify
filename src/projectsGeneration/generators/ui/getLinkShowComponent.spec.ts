@@ -15,7 +15,7 @@ describe('getLinkShowComponent', () => {
         new LinkFieldBuilder('cards', 'cardId', 'ru').build()
       )
     )
-      .toBe(`<ReferenceField source='cardId' label='catalogs.cards.fields.cardId' reference='cards' link='show' />`)
+      .toBe(`<ReferenceField source='cardId' label='catalogs.cards.fields.cardId' reference='cards' link={hasPermission(permissions, 'cards.get') ? 'show' : false} />`)
   })
 
   test('int link, title is id of linked entity', () => {
@@ -29,7 +29,7 @@ describe('getLinkShowComponent', () => {
         new LinkFieldBuilder('cards', 'cardId', 'ru').build()
       )
     )
-      .toBe(`<ReferenceField source='cardId' label='catalogs.cards.fields.cardId' reference='cards' link='show' />`)
+      .toBe(`<ReferenceField source='cardId' label='catalogs.cards.fields.cardId' reference='cards' link={hasPermission(permissions, 'cards.get') ? 'show' : false} />`)
   })
 
   test('string link, title is int field of linked entity', () => {
@@ -46,7 +46,7 @@ describe('getLinkShowComponent', () => {
         new LinkFieldBuilder('cards', 'cardId', 'ru').build()
       )
     )
-      .toBe(`<ReferenceField source='cardId' label='catalogs.cards.fields.cardId' reference='cards' link='show' />`)
+      .toBe(`<ReferenceField source='cardId' label='catalogs.cards.fields.cardId' reference='cards' link={hasPermission(permissions, 'cards.get') ? 'show' : false} />`)
   })
 
   test('int link, title is string field of linked entity', () => {
@@ -63,6 +63,6 @@ describe('getLinkShowComponent', () => {
         new LinkFieldBuilder('cards', 'cardId', 'ru').build()
       )
     )
-      .toBe(`<ReferenceField source='cardId' label='catalogs.cards.fields.cardId' reference='cards' link='show' />`)
+      .toBe(`<ReferenceField source='cardId' label='catalogs.cards.fields.cardId' reference='cards' link={hasPermission(permissions, 'cards.get') ? 'show' : false} />`)
   })
 })

@@ -7,7 +7,13 @@ async function run(argv: any) {
   // create a CLI runtime
   const cli = build()
     .brand('runlify')
-    .src(__dirname)
+    .src(__dirname, {
+      // gluegun's default only excludes *.test.{js,ts}; this project's
+      // convention is *.spec.ts, so exclude that too, otherwise a spec
+      // file colocated in src/extensions/ gets auto-loaded as an extension.
+      commandFilePattern: ['*.{js,ts}', '!*.test.{js,ts}', '!*.spec.{js,ts}'],
+      extensionFilePattern: ['*.{js,ts}', '!*.test.{js,ts}', '!*.spec.{js,ts}'],
+    })
     .plugins('./node_modules', { matching: 'runlify-*', hidden: true })
     .help() // provides default for help, h, --help, -h
     .version() // provides default for version, v, --version, -v

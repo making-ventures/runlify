@@ -78,6 +78,9 @@ export const GenerationPathCategory = {
   BackRolesUiPermissions: 'back.roles.uiPermissions',
   BackRolesCustomPermissions: 'back.roles.customPermissions',
   BackRolesCustomUiPermissions: 'back.roles.customUiPermissions',
+  UiPermissionPage: 'ui.permissionPage',
+  UiNotFoundPage: 'ui.notFoundPage',
+  UiPermissionsUtils: 'ui.permissionsUtils',
   // —— additional services ——
   BackAdditionalServiceTypes: 'back.additionalService.types',
   BackAdditionalServiceGraphTypeDefs: 'back.additionalService.graph.typeDefs',
@@ -458,6 +461,21 @@ export const DEFAULT_GENERATION_PATHS = {
   [GenerationPathCategory.BackRolesCustomUiPermissions]: {
     root: 'back',
     defaultTemplate: 'src/init/roles/customUiPermissions.ts',
+    params: [],
+  },
+  [GenerationPathCategory.UiPermissionPage]: {
+    root: 'ui',
+    defaultTemplate: 'src/adm/PermissionPage.tsx',
+    params: [],
+  },
+  [GenerationPathCategory.UiNotFoundPage]: {
+    root: 'ui',
+    defaultTemplate: 'src/adm/NotFoundPage.tsx',
+    params: [],
+  },
+  [GenerationPathCategory.UiPermissionsUtils]: {
+    root: 'ui',
+    defaultTemplate: 'src/utils/permissions.ts',
     params: [],
   },
   [GenerationPathCategory.BackAdditionalServiceTypes]: {
