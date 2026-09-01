@@ -35,7 +35,7 @@ export const uiDefaultListTmpl = ({
     'List',
     'DatagridConfigurable',
     'ListProps',
-    // 'usePermissions',
+    'usePermissions',
     // 'BulkDeleteButton',
 
     ...R.flatten(
@@ -45,7 +45,6 @@ export const uiDefaultListTmpl = ({
 
   if (entity.removableByUser) {
     reactAdminImports.push(
-      'usePermissions',
       'BulkDeleteButton',
     )
   }
@@ -77,8 +76,8 @@ import {moneyMinorToMajor} from '../../../../uiLib/transformations/moneyAmount';
   }
 import ${pascalSingular(entity.name)}Filter from './${pascalSingular(
     entity.name
-  )}Filter';${entity.removableByUser ? `
-import {hasPermission} from '../../../../utils/permissions';` : ''}
+  )}Filter';
+import {hasPermission} from '../../../../utils/permissions';
 import ListActions from '../../../../raUiLib/ListActions';
 import {BulkActionProps} from "shared/type";
 import ${pascalSingular(entity.name)}ListBreadcrumbs from './${pascalSingular(entity.name)}ListBreadcrumbs';${
@@ -100,6 +99,8 @@ const DefaultBulkActionButton = (props: BulkActionProps) => {
 const Default${pascalSingular(
     entity.name
   )}List: FC<ListProps> = (props: ListProps) => {
+  const {permissions} = usePermissions<string[]>();
+
   return (
     <>
       <${pascalSingular(entity.name)}ListBreadcrumbs />
@@ -116,13 +117,18 @@ const Default${pascalSingular(
         {...props}
       >
         <DatagridConfigurable
-          rowClick='show'
+          rowClick={hasPermission(permissions, '${entity.name}.get') ? 'show' : false}
           bulkActionButtons={${entity.removableByUser ? '<DefaultBulkActionButton />' : 'false'}}
         >
 ${entity.fields
   .filter((f) => !f.hidden)
   .filter(f => f.showInList)
-  .map((f) => getShowComponent(entity, allEntities, f, 'list'))
+  .map((f) => {
+    const comp = getShowComponent(entity, allEntities, f, 'list')
+    return f.category === 'link'
+      ? `{hasPermission(permissions, '${f.externalEntity}.all') && ${comp}}`
+      : comp
+  })
   .map(pad5)
   .join('\n')}${
     registrarDepended

@@ -13,6 +13,10 @@ export function addDoNotEditThisIsGeneratedFileForYaml(content: string): string 
   return '\n#\n# DO NOT EDIT! THIS IS GENERATED FILE\n#\n\n' + content;
 }
 
+export function addGeneratedOnceNotice(content: string): string {
+  return '//\n// Generated once, not overwritten on next generation. Edit freely.\n//\n\n' + content;
+}
+
 type addWarningsInput = {
   options: BootstrapEntityOptions,
   fileType?: 'code' | 'yaml',

@@ -6,6 +6,9 @@ import {
 import generateFrontSrcTranslations from './translations/generateFrontSrcTranslations'
 import generateFrontSrcEntity from './entity/generateFrontSrcEntity'
 import uiDashboardTmpl from '../../generators/fileTemplates/ui/Dashboard'
+import uiPermissionPageTmpl from '../../generators/fileTemplates/ui/PermissionPage'
+import uiNotFoundPageTmpl from '../../generators/fileTemplates/ui/NotFoundPage'
+import uiPermissionsTmpl from '../../generators/fileTemplates/ui/utils/permissions'
 import { uiFunctionsTmpl } from '../../generators/fileTemplates/ui/functions/Functions'
 import { uiAdditionalRoutesTmpl } from '../../generators/fileTemplates/ui/additionalRoutes'
 import uiRoutesTmpl from '../../generators/fileTemplates/ui/environment/src/routes'
@@ -15,7 +18,7 @@ import { uiEntityMappingTmpl } from '../../generators/fileTemplates/ui/entityMap
 import { uiMetaPageTmpl } from '../../generators/fileTemplates/ui/MetaPage'
 import { uiResourcesPageTmpl } from '../../generators/fileTemplates/ui/ResourcesPage'
 import { uiResourcesTmpl } from '../../generators/fileTemplates/ui/resources'
-import {addWarnings} from '../fileHandlers'
+import {addWarnings, addGeneratedOnceNotice} from '../fileHandlers'
 import { uiGetMenuIconsTmpl } from '../../generators/fileTemplates/ui/getMenuIconsTmpl'
 import { uiGetAdditionalMenuIconsTmpl } from '../../generators/fileTemplates/ui/getAdditionalMenuIconsTmp'
 import {
@@ -140,6 +143,27 @@ const generateFrontSrc = (fileCreator: FileCreator, args: ProjectWideGenerationA
         uiDashboardTmpl()
       );
     }
+
+    // Permission fallback page
+    fileCreator.createIfNotExists(
+      resolveUiPath(args, GenerationPathCategory.UiPermissionPage),
+      uiPermissionPageTmpl(),
+      [addGeneratedOnceNotice]
+    );
+
+    // Not found fallback page (action doesn't exist for the entity, e.g. no edit/create)
+    fileCreator.createIfNotExists(
+      resolveUiPath(args, GenerationPathCategory.UiNotFoundPage),
+      uiNotFoundPageTmpl(),
+      [addGeneratedOnceNotice]
+    );
+
+    // Permissions utils
+    fileCreator.create(
+      resolveUiPath(args, GenerationPathCategory.UiPermissionsUtils),
+      uiPermissionsTmpl(),
+      addWarnings({options: args.options})
+    );
   }
 }
 

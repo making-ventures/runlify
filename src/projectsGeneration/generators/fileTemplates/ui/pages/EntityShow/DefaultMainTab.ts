@@ -20,6 +20,7 @@ export const uiEntityShowDefaultMainTabTmpl = ({
   const reactAdminImports: string[] = [
     'Tab',
     'TabProps',
+    'usePermissions',
 
     ...R.flatten(
       notDateFieldsToImport.map((f) => getCompNamesToShowField(f))
@@ -42,19 +43,28 @@ import DateField from '../../../../uiLib/DateField';`
 import {moneyMinorToMajor} from '../../../../uiLib/transformations/moneyAmount';`
       : ''
   }
-import {Grid} from 'shared/Components/Grid';${entity.fields.some(isMarkdownField) ? '\nimport ReactMarkdownField from \'../../../../uiLib/ReactMarkdownField\';' : ''}
+import {Grid} from 'shared/Components/Grid';
+import {hasPermission} from '../../../../utils/permissions';${entity.fields.some(isMarkdownField) ? '\nimport ReactMarkdownField from \'../../../../uiLib/ReactMarkdownField\';' : ''}
 
 const DefaultMainTab: FC<Omit<TabProps, 'children'>> = (props) => {
+  const {permissions} = usePermissions<string[]>();
+
   return (<Tab {...props}>
     <Grid container spacing={2}>
 ${entity.fields
   .filter((f) => !f.hidden && f.showInShow)
   .map(
-    (f) => `<Grid item ${isMarkdownField(f) ? 'xs={12} sm={12} md={12} lg={12}' : 'xs={12} sm={6} md={3} lg={2}'}>
+    (f) => {
+      const gridItem = `<Grid item ${isMarkdownField(f) ? 'xs={12} sm={12} md={12} lg={12}' : 'xs={12} sm={6} md={3} lg={2}'}>
   <Labeled>
 ${pad2(getShowComponent(entity, allEntities, f))}
   </Labeled>
 </Grid>`
+
+      return f.category === 'link'
+        ? `{hasPermission(permissions, '${f.externalEntity}.all') && ${gridItem}}`
+        : gridItem
+    }
   )
   .map(pad3)
   .join('\n')}

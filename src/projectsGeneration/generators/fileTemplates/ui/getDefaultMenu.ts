@@ -84,6 +84,7 @@ export const uiGetDefaultMenuTmpl = ({
       link: '/${entity.name}',
       icon: 'DetailsOutlined',
       debugOnly: true,
+      permissions: ['${entity.name}.all', '${entity.name}.meta', 'ui.${entity.name}.list'],
     },`
 
   return `import {MenuElement} from '../uiLib/menu/MenuItem';${hasMenuExternalEnv ? "\nimport getConfigByName from '../config/getConfigByName';" : ''}
@@ -96,18 +97,21 @@ ${system.menuItems.map(i => `${menuItemTmpl(i)},`).map(pad2).join('\n')}${option
       link: '/functions',
       icon: 'DetailsOutlined',
       debugOnly: true,
+      permissions: ['ui.functions'],
     },` : ''}${options.showResourcesInMenu ? `
     {
       label: 'app.menu.resources',
       link: '/resources',
       icon: 'DetailsOutlined',
       debugOnly: true,
+      permissions: ['ui.resources'],
     },` : ''}${options.showMetaInMenu ? `
     {
       label: 'app.menu.meta',
       link: '/meta',
       icon: 'DetailsOutlined',
       debugOnly: true,
+      permissions: ['ui.meta'],
     },` : ''}
   ];
 

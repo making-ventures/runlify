@@ -20,11 +20,11 @@ const LoadableErrorMessage = Loadable(() => import('./utility/ErrorMessage'));${
 ${system.pages.map(p => `const Loadable${pascalCase(p.name)} = Loadable(() => import('./standalonePages/${pascalCase(p.name)}/${pascalCase(p.name)}'));`).join('\n')}` : ''}
 
 export const routes = [
-  <Route element={<Guard shouldHave='dashboard'><LoadableDashboard /></Guard>} key='home' path='/' />,
-  <Route element={<Guard shouldHave='dashboard'><LoadableDashboard /></Guard>} key='dashboard' path='/dashboard' />,
-  <Route element={<Guard shouldHave='functions'><LoadableFunctions /></Guard>} key='functions' path='/functions' />,
-  // <Route element={<Guard shouldHave='resources'><LoadableResourcesPage /></Guard>} key='resources' path='/resources' />,
-  <Route element={<Guard shouldHave='meta'><LoadableMetaPage /></Guard>} key='meta' path='/meta' />,
+  <Route element={<Guard shouldHave='ui.dashboard'><LoadableDashboard /></Guard>} key='home' path='/' />,
+  <Route element={<Guard shouldHave='ui.dashboard'><LoadableDashboard /></Guard>} key='dashboard' path='/dashboard' />,
+  <Route element={<Guard shouldHave='ui.functions'><LoadableFunctions /></Guard>} key='functions' path='/functions' />,
+  // <Route element={<Guard shouldHave='ui.resources'><LoadableResourcesPage /></Guard>} key='resources' path='/resources' />,
+  <Route element={<Guard shouldHave='ui.meta'><LoadableMetaPage /></Guard>} key='meta' path='/meta' />,
   <Route element={<Guard shouldHave='debug'><LoadableDebugPage /></Guard>} key='debug' path='/debug' />,
   <Route
     element={<LoadableErrorMessage />}
