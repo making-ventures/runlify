@@ -11,10 +11,6 @@ import {
 export const generateBackClickHouseBootstrap = (fileCreator: FileCreator, args: ProjectWideGenerationArgs) => {
   const entities = args.entities.filter((e) => entityUsesClickHouseBootstrap(e.storage))
 
-  if (entities.length === 0) {
-    return
-  }
-
   fileCreator.create(
     resolveGenerationPath({
       category: GenerationPathCategory.BackInitClickHouseGenJobs,
