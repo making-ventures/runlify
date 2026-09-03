@@ -39,7 +39,7 @@ const Menu = () => {
           }),
       }}
     >
-      {hasPermission(permissions, 'dashboards.main') && <DashboardMenuItem />}
+      {hasPermission(permissions, 'ui.dashboard') && <DashboardMenuItem />}
       {menuData.map((d, i) => (<MenuItem
         key={i}
         {...d}
