@@ -62,11 +62,10 @@ export const genGraphSchemesByLocalGenerator = async (
           return
         }
 
+        // Exit code (surfaced as `error` above) is the real success signal — tools like
+        // pnpm write benign warnings to stderr even when they exit 0, so don't fail on that.
         if (stderr) {
-          log.error(`stderr: ${stderr}`)
-          reject(new Error(`stderr: ${stderr}`))
-
-          return
+          log.warn(`stderr: ${stderr}`)
         }
 
         resolve(undefined)
