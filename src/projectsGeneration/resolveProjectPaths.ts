@@ -24,6 +24,8 @@ export interface RunlifyLocalConfig {
   layout?: RunlifyLayoutMode
   monorepo?: boolean
   paths?: RunlifyMonorepoPaths
+  /** Emit `moduleFormat = "cjs"` in generated Prisma schemas (P7 `prisma-client` only). Default: off. */
+  prismaModuleFormatCjs?: boolean
 }
 
 export interface RunlifyResolvedPaths {
@@ -38,6 +40,7 @@ export interface RunlifyResolvedPaths {
   layoutMode: RunlifyLayoutMode
   sharedSchemaPath?: string
   copySchemaToUi: boolean
+  prismaModuleFormatCjs: boolean
 }
 
 export interface BootstrapEntityOptionsPathOverrides {
@@ -136,6 +139,7 @@ export function resolveProjectPaths(
   const options = input.options ?? {}
   const layoutMode = getLayoutMode(runlifyConfig)
   const copySchemaToUi = options.copySchemaToUi ?? true
+  const prismaModuleFormatCjs = runlifyConfig?.prismaModuleFormatCjs === true
   const projectPrefix =
     (typeof options.projectPrefix === 'string' && options.projectPrefix) ||
     runlifyConfig?.projectName ||
@@ -158,6 +162,7 @@ export function resolveProjectPaths(
       metaDir,
       copySchemaToUi,
       sharedSchemaPath: options.sharedSchemaPath,
+      prismaModuleFormatCjs,
     })
   }
 
@@ -215,6 +220,7 @@ export function resolveProjectPaths(
     metaDir,
     copySchemaToUi,
     sharedSchemaPath,
+    prismaModuleFormatCjs,
   })
 }
 

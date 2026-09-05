@@ -47,6 +47,7 @@ describe('resolveProjectPaths', () => {
     expect(resolved.detachedSharedProject).toBeUndefined()
     expect(resolved.sharedSchemaPath).toBeUndefined()
     expect(resolved.copySchemaToUi).toBe(true)
+    expect(resolved.prismaModuleFormatCjs).toBe(false)
   })
 
   test('detached: explicit detached* names', () => {
@@ -108,6 +109,51 @@ describe('resolveProjectPaths', () => {
     expect(resolved.sharedSchemaPath).toBe(
       join(repoRoot, 'shared', 'src', 'graphql.schema.json'),
     )
+    expect(resolved.prismaModuleFormatCjs).toBe(false)
+  })
+
+  test('prismaModuleFormatCjs: off by default, on when set (detached)', () => {
+    const back = join(root, 'aloyal-back')
+    mkdirSync(join(back, 'src', 'meta'), {recursive: true})
+
+    const off = resolveProjectPaths({
+      cwd: back,
+      runlifyConfig: {projectName: 'aloyal'},
+      options: {},
+    })
+    expect(off.prismaModuleFormatCjs).toBe(false)
+
+    const on = resolveProjectPaths({
+      cwd: back,
+      runlifyConfig: {projectName: 'aloyal', prismaModuleFormatCjs: true},
+      options: {},
+    })
+    expect(on.prismaModuleFormatCjs).toBe(true)
+  })
+
+  test('prismaModuleFormatCjs: off by default, on when set (monorepo)', () => {
+    const repoRoot = join(root, 'rlw')
+    const back = join(repoRoot, 'apps', 'back')
+    mkdirSync(back, {recursive: true})
+    writeWorkspace(repoRoot)
+
+    const off = resolveProjectPaths({
+      cwd: back,
+      runlifyConfig: {monorepo: true, paths: {back: 'apps/back'}},
+      options: {},
+    })
+    expect(off.prismaModuleFormatCjs).toBe(false)
+
+    const on = resolveProjectPaths({
+      cwd: back,
+      runlifyConfig: {
+        monorepo: true,
+        paths: {back: 'apps/back'},
+        prismaModuleFormatCjs: true,
+      },
+      options: {},
+    })
+    expect(on.prismaModuleFormatCjs).toBe(true)
   })
 
   test('monorepo: layout synonym via layout field', () => {

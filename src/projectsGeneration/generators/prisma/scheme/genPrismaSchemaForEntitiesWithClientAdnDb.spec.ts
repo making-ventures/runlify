@@ -89,6 +89,75 @@ describe('genPrismaSchemaForEntitiesWithClientAdnDb', () => {
     expect(result).toContain('output   = "./client"')
   })
 
+  it('prismaModuleFormatCjs off (default): no moduleFormat line, spacing unchanged', () => {
+    const result = genPrismaSchemaForEntitiesWithClientAdnDb(minimalArgs([cardEntity]), {
+      database: 'main',
+      forShards: false,
+      prismaMajor: 7,
+    })
+    expect(result).not.toContain('moduleFormat')
+    expect(result).toContain('provider = "prisma-client"')
+    expect(result).toContain('output   = "./generated/client"')
+  })
+
+  it('prismaModuleFormatCjs on: main schema gets aligned provider/output/moduleFormat', () => {
+    const args = {
+      ...minimalArgs([cardEntity]),
+      options: {...defaultBootstrapEntityOptions, prismaModuleFormatCjs: true},
+    }
+    const result = genPrismaSchemaForEntitiesWithClientAdnDb(args, {
+      database: 'main',
+      forShards: false,
+      prismaMajor: 7,
+    })
+    expect(result).toContain('  provider     = "prisma-client"')
+    expect(result).toContain('  output       = "./generated/client"')
+    expect(result).toContain('  moduleFormat = "cjs"')
+  })
+
+  it('prismaModuleFormatCjs on: satellite DB schema also gets moduleFormat', () => {
+    const docEntity = {...cardEntity, database: 'bsDocuments'}
+    const args = {
+      ...minimalArgs([docEntity]),
+      options: {...defaultBootstrapEntityOptions, prismaModuleFormatCjs: true},
+    }
+    const result = genPrismaSchemaForEntitiesWithClientAdnDb(args, {
+      database: 'bsDocuments',
+      forShards: false,
+      prismaMajor: 7,
+    })
+    expect(result).toContain('  provider     = "prisma-client"')
+    expect(result).toContain('  output       = "./client"')
+    expect(result).toContain('  moduleFormat = "cjs"')
+  })
+
+  it('prismaModuleFormatCjs on: sharded main DB schema uses ./build output', () => {
+    const args = {
+      ...minimalArgs([cardEntity]),
+      options: {...defaultBootstrapEntityOptions, prismaModuleFormatCjs: true},
+    }
+    const result = genPrismaSchemaForEntitiesWithClientAdnDb(args, {
+      database: 'main',
+      forShards: true,
+      prismaMajor: 7,
+    })
+    expect(result).toContain('  output       = "./build"')
+    expect(result).toContain('  moduleFormat = "cjs"')
+  })
+
+  it('prismaModuleFormatCjs on but legacy (prismaMajor 6): no moduleFormat line', () => {
+    const args = {
+      ...minimalArgs([cardEntity]),
+      options: {...defaultBootstrapEntityOptions, prismaModuleFormatCjs: true},
+    }
+    const result = genPrismaSchemaForEntitiesWithClientAdnDb(args, {
+      database: 'main',
+      forShards: false,
+      prismaMajor: 6,
+    })
+    expect(result).not.toContain('moduleFormat')
+  })
+
   it('legacy deploy schema includes generator', () => {
     const result = genDeployConnectionPrisma('main', 6)
     expect(result).toContain('generator client')
