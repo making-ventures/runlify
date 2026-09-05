@@ -67,6 +67,7 @@ module.exports = {
       copySchemaToUi: resolved.copySchemaToUi,
       layoutMode: resolved.layoutMode,
       repoRoot: resolved.repoRoot,
+      prismaModuleFormatCjs: resolved.prismaModuleFormatCjs,
     })
 
     // const validateMeta = (system: System): ValidationMessage[] => {

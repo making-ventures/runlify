@@ -83,18 +83,35 @@ export const genPrismaSchemaForEntitiesWithClientAdnDb = (
 
   const provider = p7 ? 'prisma-client' : 'prisma-client-js'
   const previewFeatures = p7 ? '' : '\n  previewFeatures = ["metrics"]'
+  // moduleFormat = "cjs" is a P7 `prisma-client` concept; without it, Prisma 7 emits
+  // an ESM client, which breaks require() in a CommonJS project (project opt-in only,
+  // since most runlify consumers don't set this and get today's output unchanged).
+  const cjs = p7 && args.options.prismaModuleFormatCjs === true
+
+  const providerLine = cjs ? `provider     = "${provider}"` : `provider = "${provider}"`
 
   let outputLine = ''
   if (p7 && database === 'main' && !effectiveForShards) {
-    outputLine = `
+    outputLine = cjs
+      ? `
+  output       = "./generated/client"`
+      : `
   output   = "./generated/client"`
   } else if (database === 'main' && effectiveForShards) {
-    outputLine = `
+    outputLine = cjs
+      ? `
+  output       = "./build"`
+      : `
   output   = "./build"`
   } else if (database !== 'main') {
-    outputLine = `
+    outputLine = cjs
+      ? `
+  output       = "./client"`
+      : `
   output   = "./client"`
   }
+
+  const moduleFormatLine = cjs ? '\n  moduleFormat = "cjs"' : ''
 
   const datasourceBlock = p7
     ? `datasource db {
@@ -106,7 +123,7 @@ export const genPrismaSchemaForEntitiesWithClientAdnDb = (
 }`
 
   return `generator client {
-  provider = "${provider}"${previewFeatures}${outputLine}
+  ${providerLine}${previewFeatures}${outputLine}${moduleFormatLine}
 }
 
 ${datasourceBlock}

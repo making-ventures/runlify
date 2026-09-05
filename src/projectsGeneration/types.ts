@@ -144,6 +144,7 @@ export const defaultBootstrapEntityOptions = {
   layoutMode: 'detached' as 'detached' | 'monorepo',
   sharedSchemaPath: '',
   copySchemaToUi: true,
+  prismaModuleFormatCjs: false,
 }
 
 export type BootstrapEntityOptions = typeof defaultBootstrapEntityOptions;
