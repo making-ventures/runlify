@@ -27,9 +27,17 @@ import {ShowProps} from 'react-admin';
 import {EntityShow} from '../../../../uiLib/entityPages/EntityShow';
 import {accountLevelDescriptor} from '../AccountLevelDescriptor';
 
-const AccountLevelShow: FC<ShowProps> = (props) => <EntityShow descriptor={accountLevelDescriptor} {...props} />;
+const AccountLevelShowPage: FC<ShowProps> = (props) => <EntityShow descriptor={accountLevelDescriptor} {...props} />;
 
-export default AccountLevelShow;
+export default AccountLevelShowPage;
 `)
+  })
+
+  test('does not shadow the universal EntityShow import for an entity named "entities"', () => {
+    const out = uiDescriptorShowIndexTmpl(getArgs('entities'))
+    expect(out).toContain(`import {EntityShow} from '../../../../uiLib/entityPages/EntityShow';`)
+    expect(out).toContain(`const EntityShowPage: FC<`)
+    expect(out).not.toMatch(/const EntityShow: FC</)
+    expect(out).toContain('export default EntityShowPage;')
   })
 })

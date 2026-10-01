@@ -27,9 +27,17 @@ import {ListProps} from 'react-admin';
 import {EntityList} from '../../../../uiLib/entityPages/EntityList';
 import {accountLevelDescriptor} from '../AccountLevelDescriptor';
 
-const AccountLevelList: FC<ListProps> = (props) => <EntityList descriptor={accountLevelDescriptor} {...props} />;
+const AccountLevelListPage: FC<ListProps> = (props) => <EntityList descriptor={accountLevelDescriptor} {...props} />;
 
-export default AccountLevelList;
+export default AccountLevelListPage;
 `)
+  })
+
+  test('does not shadow the universal EntityList import for an entity named "entities"', () => {
+    const out = uiDescriptorListIndexTmpl(getArgs('entities'))
+    expect(out).toContain(`import {EntityList} from '../../../../uiLib/entityPages/EntityList';`)
+    expect(out).toContain(`const EntityListPage: FC<`)
+    expect(out).not.toMatch(/const EntityList: FC</)
+    expect(out).toContain('export default EntityListPage;')
   })
 })

@@ -4,6 +4,7 @@ import {EntityWideGenerationArgs} from '../../../../../args'
 /**
  * `index.tsx` карточки в режиме descriptor: универсальный `EntityShow` + дескриптор сущности.
  * Создаётся один раз (`[once]`) — точка переключения на кастомную страницу.
+ * Локальный компонент называется `<Pascal>ShowPage`, чтобы не затенять импорт `EntityShow` у сущности `entities`.
  */
 export const uiDescriptorShowIndexTmpl = ({entity}: EntityWideGenerationArgs) => {
   const pascal = pascalSingular(entity.name)
@@ -14,8 +15,8 @@ import {ShowProps} from 'react-admin';
 import {EntityShow} from '../../../../uiLib/entityPages/EntityShow';
 import {${camel}Descriptor} from '../${pascal}Descriptor';
 
-const ${pascal}Show: FC<ShowProps> = (props) => <EntityShow descriptor={${camel}Descriptor} {...props} />;
+const ${pascal}ShowPage: FC<ShowProps> = (props) => <EntityShow descriptor={${camel}Descriptor} {...props} />;
 
-export default ${pascal}Show;
+export default ${pascal}ShowPage;
 `
 }
