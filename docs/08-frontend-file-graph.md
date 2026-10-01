@@ -24,14 +24,14 @@
     │   │   └── <EntityName>/               One folder per entity
     │   │       │
     │   │       ├── <EntityName>List/
-    │   │       │   ├── index.tsx           [gen]  Entry point — re-exports Default or custom
+    │   │       │   ├── index.tsx           [once] Entry point — renders Default or your custom component
     │   │       │   ├── Default<Entity>List.tsx  [gen]  Generated list component
     │   │       │   ├── <Entity>Filter.tsx  [yours] Your custom filter (created once)
     │   │       │   ├── Default<Entity>Filter.tsx [gen]  Generated default filter
-    │   │       │   └── <Entity>ListBreadcrumbs.tsx [gen]  Breadcrumb component
+    │   │       │   └── <Entity>ListBreadcrumbs.tsx [once] Breadcrumb component
     │   │       │
     │   │       ├── <EntityName>Show/
-    │   │       │   ├── index.tsx           [gen]  Entry point
+    │   │       │   ├── index.tsx           [once] Entry point
     │   │       │   ├── Default<Entity>Show.tsx  [gen]  Generated show component
     │   │       │   ├── MainTab.tsx         [yours] Your custom main tab content
     │   │       │   ├── DefaultMainTab.tsx  [gen]  Generated main tab
@@ -117,17 +117,17 @@
 
 | File | Owner | When to edit |
 |------|-------|-------------|
-| `index.tsx` | `[gen]` | Never — re-exports Default or your override |
+| `index.tsx` | `[once]` | Switch the page to your own component |
 | `Default<Entity>List.tsx` | `[gen]` | Never |
 | `Default<Entity>Filter.tsx` | `[gen]` | Never |
 | `<Entity>Filter.tsx` | `[yours]` | Customise filter fields, add new filters |
-| `<Entity>ListBreadcrumbs.tsx` | `[gen]` | Never |
+| `<Entity>ListBreadcrumbs.tsx` | `[once]` | Change the breadcrumbs of the list |
 
 ### Show page
 
 | File | Owner | When to edit |
 |------|-------|-------------|
-| `index.tsx` | `[gen]` | Never |
+| `index.tsx` | `[once]` | Switch the page to your own component |
 | `Default<Entity>Show.tsx` | `[gen]` | Never |
 | `DefaultMainTab.tsx` | `[gen]` | Never |
 | `MainTab.tsx` | `[yours]` | Override the main tab layout |
@@ -137,8 +137,53 @@
 
 ### Create / Edit pages
 
-All files under `Create/` and `Edit/` are `[gen]`. Form fields and their order are
-controlled from the meta via `entity.getForms()`. See [03-entity-types.md](./03-entity-types.md).
+`Default<Entity>Create.tsx` and `Default<Entity>Edit.tsx` are `[gen]`, their
+`index.tsx` are `[once]`. Form fields and their order are controlled from the meta via
+`entity.getForms()`. See [03-entity-types.md](./03-entity-types.md).
+
+---
+
+## Descriptor mode (per entity) {#descriptor-mode}
+
+An entity can opt out of the generated `Default*` list/show components:
+
+```ts
+entity.getForms().setUiPagesMode('descriptor')   // default is 'legacy'
+```
+
+In this mode runlify generates **data instead of components** — the pages are rendered
+by universal components of the UI project (`src/uiLib/entityPages/`), which the project
+implements once for all entities.
+
+| File | Owner | Notes |
+|------|-------|-------|
+| `pages/<EntityName>/<Entity>Descriptor.ts` | `[gen]` | All the data of the list/show pages: fields, filter fields, dependency tabs, permissions, sort, i18n keys |
+| `pages/<EntityName>/<Entity>Slots.tsx` | `[yours, optional]` | Exports `<camelSingular>Slots`. If the file exists, the descriptor imports it as `slots`; it is never created by runlify |
+| `pages/<EntityName>/<Entity>List/index.tsx` | `[once]` | Renders `<EntityList descriptor={...} />` |
+| `pages/<EntityName>/<Entity>Show/index.tsx` | `[once]` | Renders `<EntityShow descriptor={...} />` |
+| `uiLib/entityPages/descriptorTypes.ts` | `[gen]` | The descriptor data type, written once per project when at least one entity uses the mode |
+
+`Create/` and `Edit/` pages are generated as usual.
+
+**Not generated any more for such an entity** (and removed by the next `regen` if they
+exist): `Default<Entity>List.tsx`, `Default<Entity>Filter.tsx`,
+`Default<Entity>Show.tsx`, `DefaultMainTab.tsx`, `DefaultActions.tsx` and
+`<Entity>Show/tabs/*`. The `[once]` stubs (`<Entity>Filter.tsx`,
+`<Entity>ListBreadcrumbs.tsx`, `MainTab.tsx`, `additionalTabs.tsx`) are never deleted by
+runlify — move their content into `<Entity>Slots.tsx` and remove them manually.
+
+**Requirements of the UI project.** The mode expects `src/uiLib/entityPages/` with the
+universal `EntityList` / `EntityShow` components and the slots type. Without them the
+generated pages will not compile — a project that does not have them should stay on
+`legacy`.
+
+**Adding or removing `<Entity>Slots.tsx` requires a `regen`:** the import is written
+into the descriptor at generation time, based on the existence of the file.
+
+**Going back to `legacy`:** remove `setUiPagesMode('descriptor')` from the meta and run
+`regen` — the `Default*` files and `tabs/*` are generated again and `<Entity>Descriptor.ts`
+is removed. The two `index.tsx` are `[once]` and are **not** overwritten: delete them
+before the regen so that the legacy ones are created.
 
 ---
 
