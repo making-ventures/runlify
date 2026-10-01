@@ -1,0 +1,61 @@
+import {camelSingular} from '../../../../../../utils/cases'
+import {EntityWideGenerationArgs} from '../../../../../args'
+import {buildEntityDescriptorData} from './buildEntityDescriptorData'
+
+export interface UiEntityDescriptorTmplOptions {
+  /** Относительный путь к рукописному файлу слотов (`./<Pascal>Slots`), если он существует. */
+  slotsImportPath?: string
+}
+
+const stringifyRow = (value: unknown) => JSON.stringify(value)
+
+/**
+ * Дескриптор сущности: `src/adm/pages/<entity>/<Pascal>Descriptor.ts`.
+ * Данные (`<camelSingular>Data`) + слоты (`<camelSingular>Descriptor`).
+ */
+export const uiEntityDescriptorTmpl = (
+  args: EntityWideGenerationArgs,
+  {slotsImportPath}: UiEntityDescriptorTmplOptions = {},
+) => {
+  const {entity} = args
+  const data = buildEntityDescriptorData(args)
+  const name = camelSingular(entity.name)
+  const slotsName = `${name}Slots`
+
+  const printArrayOfRows = (rows: unknown[]) =>
+    rows.length === 0
+      ? '[]'
+      : `[
+${rows.map((row) => `    ${stringifyRow(row)},`).join('\n')}
+  ]`
+
+  return `import type {EntityDescriptor, EntityDescriptorData} from '../../../uiLib/entityPages/descriptorTypes';${
+    slotsImportPath
+      ? `
+import {${slotsName}} from '${slotsImportPath}';`
+      : ''
+  }
+
+export const ${name}Data = {
+  name: '${data.name}', type: '${data.type}',
+  names: {singular: '${data.names.singular}', pascalSingular: '${data.names.pascalSingular}'},
+  i18n: {titlePlural: '${data.i18n.titlePlural}', titleSingular: '${data.i18n.titleSingular}'},
+  sort: {field: '${data.sort.field}', order: '${data.sort.order}'},
+  removableByUser: ${data.removableByUser}, updatableByUser: ${data.updatableByUser}, exportableByUser: ${
+    data.exportableByUser
+  }, hasSearch: ${data.hasSearch}, registrarDepended: ${data.registrarDepended}, registries: ${stringifyRow(
+    data.registries,
+  )},
+  permissions: {get: '${data.permissions.get}', update: '${data.permissions.update}', delete: '${
+    data.permissions.delete
+  }', all: '${data.permissions.all}'},
+  filterFields: [${data.filterFields.map(stringifyRow).join(', ')}],
+  fields: ${printArrayOfRows(data.fields)},
+  dependencyTabs: ${printArrayOfRows(data.dependencyTabs)},
+} satisfies EntityDescriptorData;
+
+export const ${name}Descriptor = {...${name}Data, slots: ${
+    slotsImportPath ? slotsName : '{}'
+  }} satisfies EntityDescriptor${slotsImportPath ? `<typeof ${slotsName}>` : ''};
+`
+}

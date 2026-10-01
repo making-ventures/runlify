@@ -21,6 +21,7 @@ import { uiResourcesTmpl } from '../../generators/fileTemplates/ui/resources'
 import {addWarnings, addGeneratedOnceNotice} from '../fileHandlers'
 import { uiGetMenuIconsTmpl } from '../../generators/fileTemplates/ui/getMenuIconsTmpl'
 import { uiGetAdditionalMenuIconsTmpl } from '../../generators/fileTemplates/ui/getAdditionalMenuIconsTmp'
+import { uiDescriptorTypesTmpl } from '../../generators/fileTemplates/ui/pages/EntityDescriptor/descriptorTypes'
 import {
   GenerationPathCategory,
   resolveGenerationPath,
@@ -46,6 +47,19 @@ const generateFrontSrc = (fileCreator: FileCreator, args: ProjectWideGenerationA
   generateFrontSrcTranslations(fileCreator, args);
 
   if (!args.options.typesOnly) {
+    // Descriptor data type for entities in the `descriptor` ui pages mode
+    const hasDescriptorEntities = args.entities.some(
+      (entity) => (entity.forms.uiPagesMode ?? 'legacy') === 'descriptor',
+    );
+
+    if (hasDescriptorEntities) {
+      fileCreator.create(
+        resolveUiPath(args, GenerationPathCategory.UiEntityPagesDescriptorTypes),
+        uiDescriptorTypesTmpl(),
+        addWarnings({options: args.options})
+      );
+    }
+
     // Resources
     if (args.options.genUiResources) {
       const {resources, resourcesChunk0, resourcesChunk1} = uiResourcesTmpl(args);

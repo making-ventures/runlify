@@ -48,11 +48,16 @@ export const defaultBootstrapEntityOptions = {
   genContext: true,
   typesOnly: false,
 
+  // Service flags, set from the CLI (regen --prune / --prune-dry-run), not stored in options.json
+  pruneOrphanPages: false,
+  pruneDryRun: false,
+
   genRootConfig: true,
   genRootElements: true,
 
   genUiCountWidget: true,
   genUiListWidget: true,
+  genUiEntityIcons: true,
   genUiAppBar: true,
 
   genUiEntityMapping: true,

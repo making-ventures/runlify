@@ -18,7 +18,11 @@ import {uiEntityShowDefaultMainTabTmpl} from '../../../generators/fileTemplates/
 import {uiEntityShowDependencyTabTmpl} from '../../../generators/fileTemplates/ui/pages/EntityShow/DependencyTab'
 import {uiDefaultActionTmpl} from '../../../generators/fileTemplates/ui/pages/EntityShow/DefaultActions'
 import {uiAdditionalTabsTmpl} from '../../../generators/fileTemplates/ui/pages/EntityShow/additionalTabs'
+import {uiEntityDescriptorTmpl} from '../../../generators/fileTemplates/ui/pages/EntityDescriptor/descriptor'
+import {uiDescriptorListIndexTmpl} from '../../../generators/fileTemplates/ui/pages/EntityDescriptor/listIndex'
+import {uiDescriptorShowIndexTmpl} from '../../../generators/fileTemplates/ui/pages/EntityDescriptor/showIndex'
 import {addWarnings} from '../../fileHandlers'
+import {existsSync} from 'fs'
 import {
   GenerationPathCategory,
   GenerationPathVars,
@@ -42,6 +46,50 @@ const resolveUiPagePath = (
       ...extraVars,
     },
   })
+}
+
+const generateEntityUiDescriptor = (
+  fileCreator: FileCreator,
+  args: EntityWideGenerationArgs,
+) => {
+  const {
+    entity,
+    options,
+  } = args;
+
+  if (options.typesOnly) {
+    return;
+  }
+
+  if (!options.forms.list && !options.forms.show) {
+    return;
+  }
+
+  const slotsPath = resolveUiPagePath(args, GenerationPathCategory.UiPageSlots);
+
+  fileCreator.create(
+    resolveUiPagePath(args, GenerationPathCategory.UiPageDescriptor),
+    uiEntityDescriptorTmpl(args, {
+      slotsImportPath: existsSync(slotsPath)
+        ? `./${pascalSingular(entity.name)}Slots`
+        : undefined,
+    }),
+    addWarnings({options: args.options})
+  );
+
+  if (options.forms.list) {
+    fileCreator.createIfNotExists(
+      resolveUiPagePath(args, GenerationPathCategory.UiPageListIndex),
+      uiDescriptorListIndexTmpl(args)
+    );
+  }
+
+  if (options.forms.show) {
+    fileCreator.createIfNotExists(
+      resolveUiPagePath(args, GenerationPathCategory.UiPageShowIndex),
+      uiDescriptorShowIndexTmpl(args)
+    );
+  }
 }
 
 const generateEntityUiShow = (
@@ -207,6 +255,16 @@ const generateFrontSrcEntityPages = (
   fileCreator: FileCreator,
   args: EntityWideGenerationArgs,
 ) => {
+  const uiPagesMode = args.entity.forms.uiPagesMode ?? 'legacy';
+
+  if (uiPagesMode === 'descriptor') {
+    generateEntityUiDescriptor(fileCreator, args);
+    generateEntityUiCreate(fileCreator, args);
+    generateEntityUiEdit(fileCreator, args);
+
+    return;
+  }
+
   generateEntityUiShow(fileCreator, args);
   generateEntityUiCreate(fileCreator, args);
   generateEntityUiEdit(fileCreator, args);

@@ -1,0 +1,109 @@
+import {expect} from 'jest-without-globals'
+import SystemMetaBuilder from '../../../../../builders/SystemMetaBuilder'
+import {
+  EntityWideGenerationArgs,
+  prepareEntityWideGenerationArgs,
+  prepareProjectWideGenerationArgs,
+} from '../../../../../args'
+import {defaultBootstrapEntityOptions} from '../../../../../types'
+import {uiEntityDescriptorTmpl} from './descriptor'
+
+// yarn test --testPathPattern EntityDescriptor/descriptor
+
+const getArgs = (): EntityWideGenerationArgs => {
+  const system = new SystemMetaBuilder('test')
+
+  const cities = system.addCatalog('cities')
+  cities.addField('title').setType('string')
+
+  const accountLevels = system.addCatalog('accountLevels')
+  accountLevels.addField('title').setType('string')
+  accountLevels.addLinkField('cities', 'cityId')
+  accountLevels.getForms().setUiPagesMode('descriptor')
+
+  const profiles = system.addCatalog('mdProfiles')
+  profiles.addLinkField('accountLevels', 'accountLevelId')
+
+  const projectArgs = prepareProjectWideGenerationArgs(system.build(), {
+    ...defaultBootstrapEntityOptions,
+  })
+
+  return prepareEntityWideGenerationArgs(projectArgs, projectArgs.allEntities.get('accountLevels')!)
+}
+
+describe('uiEntityDescriptorTmpl', () => {
+  test('imports the descriptor types and exports data and descriptor', () => {
+    const result = uiEntityDescriptorTmpl(getArgs())
+
+    expect(result).toContain(
+      "import type {EntityDescriptor, EntityDescriptorData} from '../../../uiLib/entityPages/descriptorTypes';",
+    )
+    expect(result).toContain('export const accountLevelData = {')
+    expect(result).toContain('} satisfies EntityDescriptorData;')
+    expect(result).toContain(
+      'export const accountLevelDescriptor = {...accountLevelData, slots: {}} satisfies EntityDescriptor;',
+    )
+  })
+
+  test('prints general data of the entity', () => {
+    const result = uiEntityDescriptorTmpl(getArgs())
+
+    expect(result).toContain("  name: 'accountLevels', type: 'catalog',")
+    expect(result).toContain(
+      "  names: {singular: 'accountLevel', pascalSingular: 'AccountLevel'},",
+    )
+    expect(result).toContain(
+      "  i18n: {titlePlural: 'catalogs.accountLevels.title.plural', titleSingular: 'catalogs.accountLevels.title.singular'},",
+    )
+    expect(result).toContain("  sort: {field: 'id', order: 'DESC'},")
+    expect(result).toContain(
+      "  permissions: {get: 'accountLevels.get', update: 'accountLevels.update', delete: 'accountLevels.delete', all: 'accountLevels.all'},",
+    )
+    expect(result).toContain(
+      'removableByUser: true, updatableByUser: true, exportableByUser: true, hasSearch: true, registrarDepended: false, registries: [],',
+    )
+  })
+
+  test('prints one field and one dependency tab per line', () => {
+    const result = uiEntityDescriptorTmpl(getArgs())
+    const fieldLines = result
+      .split('\n')
+      .filter((line) => line.startsWith('    {"name":"'))
+
+    expect(fieldLines).toHaveLength(4)
+    expect(fieldLines[0]).toBe(
+      '    {"name":"id","type":"int","category":"id","labelKey":"catalogs.accountLevels.fields.id","hidden":false,"required":true,"showInList":true,"showInShow":true,"showInFilter":true,"filters":["equal"],"numberType":"base"},',
+    )
+    expect(result).toContain('    {"ownerEntity":"mdProfiles","ownerType":"catalog","fromField":"accountLevelId","path":"mdProfiles-accountLevelId"')
+  })
+
+  test('empty dependency tabs are printed as an empty array', () => {
+    const system = new SystemMetaBuilder('test')
+    const cities = system.addCatalog('cities')
+    cities.getForms().setUiPagesMode('descriptor')
+
+    const projectArgs = prepareProjectWideGenerationArgs(system.build(), {
+      ...defaultBootstrapEntityOptions,
+    })
+    const result = uiEntityDescriptorTmpl(
+      prepareEntityWideGenerationArgs(projectArgs, projectArgs.allEntities.get('cities')!),
+    )
+
+    expect(result).toContain('  dependencyTabs: [],')
+  })
+
+  test('imports slots only when the slots file path is given', () => {
+    const withoutSlots = uiEntityDescriptorTmpl(getArgs())
+
+    expect(withoutSlots).not.toContain('Slots')
+
+    const withSlots = uiEntityDescriptorTmpl(getArgs(), {
+      slotsImportPath: './AccountLevelSlots',
+    })
+
+    expect(withSlots).toContain("import {accountLevelSlots} from './AccountLevelSlots';")
+    expect(withSlots).toContain(
+      'export const accountLevelDescriptor = {...accountLevelData, slots: accountLevelSlots} satisfies EntityDescriptor<typeof accountLevelSlots>;',
+    )
+  })
+})
