@@ -35,13 +35,20 @@ const generateBackEntityGraph = (
       vars: {camelPlural: camelPlural(entity.name)},
     });
 
+  // 'runtime_meta' builds the base CRUD graph layer (types/resolvers/permissions)
+  // in memory at server start instead — see genGraphCrudResolvers/genGraphCrudPermissions.
+  // additional*.ts stubs stay file-based in both modes: they're the manual-code merge point.
+  const buildsRuntimeMetaGraph = options.graphSchemaMode === 'runtime_meta';
+
   // Graph schema
   if (options.genGraphSchema) {
-    fileCreator.create(
-      resolveGraphPath(GenerationPathCategory.BackGraphEntityBaseTypeDefs),
-      backBaseTypesTmpl(printSchema(genGraphCrudSchema(entity)), options),
-      addWarnings({options})
-    );
+    if (!buildsRuntimeMetaGraph) {
+      fileCreator.create(
+        resolveGraphPath(GenerationPathCategory.BackGraphEntityBaseTypeDefs),
+        backBaseTypesTmpl(printSchema(genGraphCrudSchema(entity)), options),
+        addWarnings({options})
+      );
+    }
 
     fileCreator.createIfNotExists(
       resolveGraphPath(GenerationPathCategory.BackGraphEntityAdditionalTypeDefs),
@@ -52,11 +59,13 @@ const generateBackEntityGraph = (
   if (!options.typesOnly) {
     // Graph resolvers
     if (options.genGraphResolvers) {
-      fileCreator.create(
-        resolveGraphPath(GenerationPathCategory.BackGraphEntityBaseResolvers),
-        backBaseResolversTmpl(args),
-        addWarnings({options})
-      );
+      if (!buildsRuntimeMetaGraph) {
+        fileCreator.create(
+          resolveGraphPath(GenerationPathCategory.BackGraphEntityBaseResolvers),
+          backBaseResolversTmpl(args),
+          addWarnings({options})
+        );
+      }
       fileCreator.createIfNotExists(
         resolveGraphPath(GenerationPathCategory.BackGraphEntityAdditionalResolvers),
         backAdditionalResolversTmpl()
@@ -64,21 +73,23 @@ const generateBackEntityGraph = (
     }
 
     // Permissions
-    fileCreator.create(
-      resolveGraphPath(GenerationPathCategory.BackGraphEntityPermissionsToGraphql),
-      backEntityPermissionToGraphqlTmpl(args),
-      addWarnings({options})
-    );
-    fileCreator.create(
-      resolveGraphPath(GenerationPathCategory.BackGraphEntityBasePermissionsToGraphql),
-      backBasePermissionToGraphqlTmpl(args),
-      addWarnings({options})
-    );
-    fileCreator.create(
-      resolveGraphPath(GenerationPathCategory.BackGraphEntityAdditionalPermissionsToGraphql),
-      backEntityAdditionalPermissionToGraphqlTmpl(args),
-      addWarnings({options})
-    );
+    if (!buildsRuntimeMetaGraph) {
+      fileCreator.create(
+        resolveGraphPath(GenerationPathCategory.BackGraphEntityPermissionsToGraphql),
+        backEntityPermissionToGraphqlTmpl(args),
+        addWarnings({options})
+      );
+      fileCreator.create(
+        resolveGraphPath(GenerationPathCategory.BackGraphEntityBasePermissionsToGraphql),
+        backBasePermissionToGraphqlTmpl(args),
+        addWarnings({options})
+      );
+      fileCreator.create(
+        resolveGraphPath(GenerationPathCategory.BackGraphEntityAdditionalPermissionsToGraphql),
+        backEntityAdditionalPermissionToGraphqlTmpl(args),
+        addWarnings({options})
+      );
+    }
   }
 }
 
