@@ -12,6 +12,7 @@ import {
 type GraphSchemesOptions = BootstrapEntityOptions & {
   sharedSchemaPath?: string
   copySchemaToUi?: boolean
+  copyGraphqlTsToUi?: boolean
   generationPaths?: GenerationPathsConfig
   detachedSharedProject?: string
 }
@@ -82,12 +83,20 @@ export const genGraphSchemesByLocalGenerator = async (
     GenerationPathCategory.BackGeneratedGraphqlTs,
   )
 
-  if (options.genFrontend && options.copySchemaToUi !== false) {
+  const copySchemaToUi = options.genFrontend && options.copySchemaToUi !== false
+  // Unset copyGraphqlTsToUi keeps the old behaviour: one flag for both files.
+  const copyGraphqlTsToUi =
+    options.genFrontend &&
+    (options.copyGraphqlTsToUi ?? options.copySchemaToUi) !== false
+
+  if (copyGraphqlTsToUi) {
     await fs.copyFile(
       backGraphqlTs,
       resolvePath(options, GenerationPathCategory.UiGeneratedGraphqlTs),
     )
+  }
 
+  if (copySchemaToUi) {
     await fs.copyFile(
       schemaJsonSrc,
       resolvePath(options, GenerationPathCategory.UiGeneratedGraphqlSchemaJson),
