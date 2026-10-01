@@ -38,6 +38,10 @@ export const defaultBootstrapEntityOptions = {
   genPrismaServices: true,
   genGraphSchema: true,
   genGraphResolvers: true,
+  // 'files' (default): today's behavior — per-entity typeDefs/resolvers/permissions
+  // files on disk, unchanged. 'runtime_meta': base CRUD graph layer is built in
+  // memory from entity meta at server start instead, no per-entity files for it.
+  graphSchemaMode: 'files' as 'files' | 'runtime_meta',
   genUiResources: true,
   skipWarningThisIsGenerated: false,
   genPrismaSchema: true,
