@@ -41,7 +41,8 @@ Both prune flags are service flags: they are passed to the generation as
 - widgets of entities that no longer exist, and all widgets of a type switched off by
   `genUiCountWidget` / `genUiListWidget`;
 - `<Entity>Icon.tsx` when `genUiEntityIcons` is off;
-- legacy list/show components of entities switched to the descriptor mode, see
+- legacy list/show/create/edit components and validation files of entities switched to the
+  descriptor mode, see
   [08-frontend-file-graph.md](./08-frontend-file-graph.md#descriptor-mode).
 
 Page folders without an entity are only reported (a warning per folder) unless

@@ -80,6 +80,12 @@ Nested under `forms`:
 | `forms.menu.show` | `true` | Show entity in sidebar menu |
 | `forms.resourcesPage.show` | `true` | Show entity on resources page |
 
+These toggles are project-wide and apply to the
+[descriptor mode](./08-frontend-file-graph.md#descriptor-mode) as well: they decide which
+of the four pages are generated at all. In the descriptor mode the Create and Edit pages
+additionally require the entity to be `creatableByUser` / `updatableByUser` — otherwise
+the route renders `NotFound` and no `index.tsx` is written.
+
 ---
 
 ### CI/CD — GitLab CI
