@@ -8,7 +8,7 @@ import {getKeyField} from '../../../../../../metaUtils'
 
 export const uiDataProviderTmpl = (
   entities: Entity[],
-  _options: BootstrapEntityOptions = defaultBootstrapEntityOptions
+  options: BootstrapEntityOptions = defaultBootstrapEntityOptions
 ) => `import buildGraphQLProvider, {buildQuery as buildQueryFactory} from 'ra-data-graphql-simple';
 import {IntrospectionResult} from 'ra-data-graphql';
 import {DELETE} from 'ra-core';
@@ -23,7 +23,7 @@ import {DataProvider} from './types';
 let schema: any = undefined;
 
 if (import.meta.env.DEV) {
-  const sch = await import('../generated/graphql.schema.json');
+  const sch = await import('${options.uiGraphqlSchemaImport || defaultBootstrapEntityOptions.uiGraphqlSchemaImport}');
   schema = sch.default.__schema;
 }
 

@@ -148,6 +148,10 @@ export const defaultBootstrapEntityOptions = {
   layoutMode: 'detached' as 'detached' | 'monorepo',
   sharedSchemaPath: '',
   copySchemaToUi: true,
+  /** Copy back src/generated/graphql.ts to ui. Unset → follows copySchemaToUi. */
+  copyGraphqlTsToUi: undefined as boolean | undefined,
+  /** Module specifier of the introspection schema in the generated ui src/dataProvider/index.ts. */
+  uiGraphqlSchemaImport: '../generated/graphql.schema.json',
   prismaModuleFormatCjs: false,
 }
 
