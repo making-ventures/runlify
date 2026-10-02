@@ -48,10 +48,6 @@ export const defaultBootstrapEntityOptions = {
   genContext: true,
   typesOnly: false,
 
-  // Service flags, set from the CLI (regen --prune / --prune-dry-run), not stored in options.json
-  pruneOrphanPages: false,
-  pruneDryRun: false,
-
   genRootConfig: true,
   genRootElements: true,
 
@@ -160,7 +156,12 @@ export const defaultBootstrapEntityOptions = {
   prismaModuleFormatCjs: false,
 }
 
-export type BootstrapEntityOptions = typeof defaultBootstrapEntityOptions;
+export type BootstrapEntityOptions = typeof defaultBootstrapEntityOptions & {
+  /** Service flag set by `regen --prune`; never part of defaults, so it is not written to options.json. */
+  pruneOrphanPages?: boolean;
+  /** Service flag set by `regen --prune-dry-run`: print the prune plan, remove nothing. */
+  pruneDryRun?: boolean;
+};
 
 export interface EntityBuilderWithOptions<
   T extends BaseBuilder | ReportBuilder = CatalogBuilder

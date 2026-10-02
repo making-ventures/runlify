@@ -51,11 +51,29 @@ const entityVars = (entityName: string): GenerationPathVars => ({
   pascalSingular: pascalSingular(entityName) || entityName,
 });
 
-const getPagesDirPath = (args: ProjectWideGenerationArgs) => {
-  const samplePage = resolvePath(args, GenerationPathCategory.UiPageIcon, entityVars('_'));
+/**
+ * Root of the per-entity pages tree (`src/adm/pages` by default). Derived from several page path templates;
+ * if a project overrides them so that they resolve to different roots, cleaning is skipped (returns undefined)
+ * rather than guessing where orphan directories live.
+ */
+const getPagesDirPath = (args: ProjectWideGenerationArgs): string | undefined => {
+  const vars = entityVars('_');
+  const roots = new Set([
+    // src/adm/pages/{entityName}/{pascalSingular}Icon.tsx → src/adm/pages
+    join(resolvePath(args, GenerationPathCategory.UiPageIcon, vars), '..', '..'),
+    join(resolvePath(args, GenerationPathCategory.UiPageDescriptor, vars), '..', '..'),
+    // src/adm/pages/{entityName}/{pascalSingular}List/index.tsx → src/adm/pages
+    join(resolvePath(args, GenerationPathCategory.UiPageListIndex, vars), '..', '..', '..'),
+    join(resolvePath(args, GenerationPathCategory.UiPageShowIndex, vars), '..', '..', '..'),
+  ]);
 
-  // src/adm/pages/{entityName}/{pascalSingular}Icon.tsx → src/adm/pages
-  return join(samplePage, '..', '..');
+  if (roots.size !== 1) {
+    log.warn(`ui pages: page path templates resolve to different roots (${[...roots].join(', ')}); skipping pages cleanup`);
+
+    return undefined;
+  }
+
+  return [...roots][0];
 };
 
 const isInsidePagesDir = (pagesDirPath: string, path: string) => {
@@ -127,8 +145,14 @@ const cleanLegacyPagesOfDescriptorEntities = (
     for (const category of legacyPageCategories) {
       const path = resolvePath(args, category, vars);
 
-      if (existsSync(path)) {
+      if (!existsSync(path)) {
+        continue;
+      }
+
+      if (isGeneratedFile(path)) {
         remove(ctx, path, 'ui pages');
+      } else {
+        log.warn(`ui pages: ${path} has no generated-file marker, left in place (entity ${entity.name} is in descriptor mode)`);
       }
     }
 
@@ -249,7 +273,7 @@ export default (
 ) => {
   const pagesDirPath = getPagesDirPath(args);
 
-  if (!existsSync(pagesDirPath)) {
+  if (!pagesDirPath || !existsSync(pagesDirPath)) {
     return;
   }
 
