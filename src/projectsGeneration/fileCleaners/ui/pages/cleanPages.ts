@@ -12,13 +12,16 @@ import {
   resolveGenerationPath,
 } from "../../../builders/generationPaths";
 
-/** `[gen]`-файлы legacy-страниц List/Show, которые в режиме descriptor не нужны. */
+/** `[gen]`-файлы legacy-страниц List/Show/Create/Edit и валидации, которые в режиме descriptor не нужны. */
 const legacyPageCategories: GenerationPathCategory[] = [
   GenerationPathCategory.UiPageListDefault,
   GenerationPathCategory.UiPageListDefaultFilter,
   GenerationPathCategory.UiPageShowDefaultEntityShow,
   GenerationPathCategory.UiPageShowDefaultMainTab,
   GenerationPathCategory.UiPageShowDefaultActions,
+  GenerationPathCategory.UiPageCreateDefault,
+  GenerationPathCategory.UiPageEditDefault,
+  GenerationPathCategory.UiPageValidation,
 ];
 
 /** Стандартные `[once]`-заглушки страниц сущности (всё, что runlify создаёт один раз). */

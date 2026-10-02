@@ -21,6 +21,8 @@ import {uiAdditionalTabsTmpl} from '../../../generators/fileTemplates/ui/pages/E
 import {uiEntityDescriptorTmpl} from '../../../generators/fileTemplates/ui/pages/EntityDescriptor/descriptor'
 import {uiDescriptorListIndexTmpl} from '../../../generators/fileTemplates/ui/pages/EntityDescriptor/listIndex'
 import {uiDescriptorShowIndexTmpl} from '../../../generators/fileTemplates/ui/pages/EntityDescriptor/showIndex'
+import {uiDescriptorCreateIndexTmpl} from '../../../generators/fileTemplates/ui/pages/EntityDescriptor/createIndex'
+import {uiDescriptorEditIndexTmpl} from '../../../generators/fileTemplates/ui/pages/EntityDescriptor/editIndex'
 import {addWarnings} from '../../fileHandlers'
 import {existsSync} from 'fs'
 import {
@@ -61,7 +63,7 @@ const generateEntityUiDescriptor = (
     return;
   }
 
-  if (!options.forms.list && !options.forms.show) {
+  if (!options.forms.list && !options.forms.show && !options.forms.create && !options.forms.edit) {
     return;
   }
 
@@ -88,6 +90,38 @@ const generateEntityUiDescriptor = (
     fileCreator.createIfNotExists(
       resolveUiPagePath(args, GenerationPathCategory.UiPageShowIndex),
       uiDescriptorShowIndexTmpl(args)
+    );
+  }
+}
+
+/**
+ * `index.tsx` форм Create/Edit в режиме descriptor: только у включённых в мете форм
+ * (`creatableByUser`/`updatableByUser`), иначе маршрут отдаёт `NotFoundPage` и страница не нужна.
+ */
+const generateEntityUiDescriptorForms = (
+  fileCreator: FileCreator,
+  args: EntityWideGenerationArgs,
+) => {
+  const {
+    entity,
+    options,
+  } = args;
+
+  if (options.typesOnly) {
+    return;
+  }
+
+  if (options.forms.create && entity.creatableByUser) {
+    fileCreator.createIfNotExists(
+      resolveUiPagePath(args, GenerationPathCategory.UiPageCreateIndex),
+      uiDescriptorCreateIndexTmpl(args)
+    );
+  }
+
+  if (options.forms.edit && entity.updatableByUser) {
+    fileCreator.createIfNotExists(
+      resolveUiPagePath(args, GenerationPathCategory.UiPageEditIndex),
+      uiDescriptorEditIndexTmpl(args)
     );
   }
 }
@@ -259,8 +293,7 @@ const generateFrontSrcEntityPages = (
 
   if (uiPagesMode === 'descriptor') {
     generateEntityUiDescriptor(fileCreator, args);
-    generateEntityUiCreate(fileCreator, args);
-    generateEntityUiEdit(fileCreator, args);
+    generateEntityUiDescriptorForms(fileCreator, args);
 
     return;
   }

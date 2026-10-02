@@ -30,7 +30,16 @@ const createFakeFileCreator = () => {
   return {fileCreator, created, createdIfNotExists}
 }
 
-const generateFor = (entityName: string, uiPagesMode: 'legacy' | 'descriptor') => {
+interface GenerateOptions {
+  creatableByUser?: boolean
+  updatableByUser?: boolean
+}
+
+const generateFor = (
+  entityName: string,
+  uiPagesMode: 'legacy' | 'descriptor',
+  {creatableByUser, updatableByUser}: GenerateOptions = {},
+) => {
   const system = new SystemMetaBuilder('test')
 
   const cities = system.addCatalog('cities')
@@ -45,6 +54,14 @@ const generateFor = (entityName: string, uiPagesMode: 'legacy' | 'descriptor') =
 
   if (uiPagesMode === 'descriptor') {
     system.getCatalogByName(entityName).getForms().setUiPagesMode(uiPagesMode)
+  }
+
+  if (creatableByUser !== undefined) {
+    system.getCatalogByName(entityName).setCreatableByUser(creatableByUser)
+  }
+
+  if (updatableByUser !== undefined) {
+    system.getCatalogByName(entityName).setUpdatableByUser(updatableByUser)
   }
 
   const projectArgs = prepareProjectWideGenerationArgs(system.build(), {
@@ -89,13 +106,11 @@ describe('generateFrontSrcEntityPages', () => {
     ].sort())
   })
 
-  test('descriptor mode generates the descriptor, two indexes and create/edit pages', () => {
+  test('descriptor mode generates the descriptor and four indexes only', () => {
     const {created, createdIfNotExists} = generateFor('accountLevels', 'descriptor')
 
     expect(created.sort()).toEqual([
-      'src/adm/pages/accountLevels/AccountLevelCreate/DefaultAccountLevelCreate.tsx',
       'src/adm/pages/accountLevels/AccountLevelDescriptor.ts',
-      'src/adm/pages/accountLevels/AccountLevelEdit/DefaultAccountLevelEdit.tsx',
     ].sort())
 
     expect(createdIfNotExists.sort()).toEqual([
@@ -106,20 +121,70 @@ describe('generateFrontSrcEntityPages', () => {
     ].sort())
   })
 
-  test('descriptor mode generates no legacy list/show files', () => {
+  test('descriptor mode generates no legacy page files', () => {
     const {created, createdIfNotExists} = generateFor('accountLevels', 'descriptor')
     const all = [...created, ...createdIfNotExists]
 
-    const listAndShow = all.filter(
-      (path) => path.includes('AccountLevelList/') || path.includes('AccountLevelShow/'),
-    )
-
-    expect(listAndShow.filter((path) => path.includes('/Default'))).toEqual([])
+    expect(all.filter((path) => path.includes('/Default'))).toEqual([])
     expect(all.filter((path) => path.includes('/tabs/'))).toEqual([])
     expect(all.filter((path) => path.includes('MainTab'))).toEqual([])
     expect(all.filter((path) => path.includes('additionalTabs'))).toEqual([])
     expect(all.filter((path) => path.includes('Filter'))).toEqual([])
     expect(all.filter((path) => path.includes('Breadcrumbs'))).toEqual([])
+    expect(all.filter((path) => path.includes('Validation'))).toEqual([])
+  })
+
+  test('descriptor mode skips the Create index when the entity is not creatable', () => {
+    const {createdIfNotExists} = generateFor('accountLevels', 'descriptor', {
+      creatableByUser: false,
+    })
+
+    expect(createdIfNotExists.sort()).toEqual([
+      'src/adm/pages/accountLevels/AccountLevelEdit/index.tsx',
+      'src/adm/pages/accountLevels/AccountLevelList/index.tsx',
+      'src/adm/pages/accountLevels/AccountLevelShow/index.tsx',
+    ].sort())
+  })
+
+  test('descriptor mode skips the Edit index when the entity is not updatable', () => {
+    const {createdIfNotExists} = generateFor('accountLevels', 'descriptor', {
+      updatableByUser: false,
+    })
+
+    expect(createdIfNotExists.sort()).toEqual([
+      'src/adm/pages/accountLevels/AccountLevelCreate/index.tsx',
+      'src/adm/pages/accountLevels/AccountLevelList/index.tsx',
+      'src/adm/pages/accountLevels/AccountLevelShow/index.tsx',
+    ].sort())
+  })
+
+  test('descriptor mode keeps only the descriptor and two indexes when both forms are off', () => {
+    const {created, createdIfNotExists} = generateFor('accountLevels', 'descriptor', {
+      creatableByUser: false,
+      updatableByUser: false,
+    })
+
+    expect(created).toEqual(['src/adm/pages/accountLevels/AccountLevelDescriptor.ts'])
+    expect(createdIfNotExists.sort()).toEqual([
+      'src/adm/pages/accountLevels/AccountLevelList/index.tsx',
+      'src/adm/pages/accountLevels/AccountLevelShow/index.tsx',
+    ].sort())
+  })
+
+  test('legacy mode ignores creatableByUser/updatableByUser as before', () => {
+    const {created, createdIfNotExists} = generateFor('accountLevels', 'legacy', {
+      creatableByUser: false,
+      updatableByUser: false,
+    })
+
+    expect(created).toContain(
+      'src/adm/pages/accountLevels/AccountLevelCreate/DefaultAccountLevelCreate.tsx',
+    )
+    expect(created).toContain(
+      'src/adm/pages/accountLevels/AccountLevelEdit/DefaultAccountLevelEdit.tsx',
+    )
+    expect(createdIfNotExists).toContain('src/adm/pages/accountLevels/AccountLevelCreate/index.tsx')
+    expect(createdIfNotExists).toContain('src/adm/pages/accountLevels/AccountLevelEdit/index.tsx')
   })
 
   test('the mode of one entity does not change the files of another one', () => {

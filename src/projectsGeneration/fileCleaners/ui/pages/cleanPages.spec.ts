@@ -6,6 +6,7 @@ import SystemMetaBuilder from '../../../builders/SystemMetaBuilder'
 import {prepareProjectWideGenerationArgs} from '../../../args'
 import {BootstrapEntityOptions, defaultBootstrapEntityOptions} from '../../../types'
 import {generatedWarning} from '../../../utils'
+import {GenerationPathCategory} from '../../../builders/generationPaths'
 import log from '../../../../log'
 import cleanPages from './cleanPages'
 
@@ -78,6 +79,48 @@ describe('cleanPages', () => {
     legacyFiles.forEach((path) => expect(existsSync(path)).toBe(false))
     keptFiles.forEach((path) => expect(existsSync(path)).toBe(true))
     expect(existsSync(join(root, 'src/adm/pages/accountLevels/AccountLevelShow/tabs'))).toBe(false)
+  })
+
+  test('removes legacy create/edit/validation files of a descriptor entity', () => {
+    const root = createRoot()
+    const args = prepareArgs(root)
+    spyOnLog()
+
+    const legacyFiles = [
+      'src/adm/pages/accountLevels/AccountLevelCreate/DefaultAccountLevelCreate.tsx',
+      'src/adm/pages/accountLevels/AccountLevelEdit/DefaultAccountLevelEdit.tsx',
+      'src/adm/pages/accountLevels/getAccountLevelValidation.tsx',
+    ].map((path) => writeUiFile(root, path, generated('export default null;')))
+
+    const keptFiles = [
+      'src/adm/pages/accountLevels/AccountLevelCreate/index.tsx',
+      'src/adm/pages/accountLevels/AccountLevelEdit/index.tsx',
+    ].map((path) => writeUiFile(root, path, 'export default null;'))
+
+    cleanPages(args)
+
+    legacyFiles.forEach((path) => expect(existsSync(path)).toBe(false))
+    keptFiles.forEach((path) => expect(existsSync(path)).toBe(true))
+  })
+
+  test('keeps legacy files of a descriptor entity without the generated marker and warns', () => {
+    const root = createRoot()
+    const args = prepareArgs(root)
+    const {warn} = spyOnLog()
+
+    const handwrittenLegacy = [
+      'src/adm/pages/accountLevels/AccountLevelCreate/DefaultAccountLevelCreate.tsx',
+      'src/adm/pages/accountLevels/AccountLevelEdit/DefaultAccountLevelEdit.tsx',
+      'src/adm/pages/accountLevels/AccountLevelList/DefaultAccountLevelList.tsx',
+      'src/adm/pages/accountLevels/getAccountLevelValidation.tsx',
+    ].map((path) => writeUiFile(root, path, 'export default null;'))
+
+    cleanPages(args)
+
+    handwrittenLegacy.forEach((path) => expect(existsSync(path)).toBe(true))
+    expect(warn).toHaveBeenCalledWith(
+      expect.stringContaining('has no generated-file marker, left in place'),
+    )
   })
 
   test('keeps handwritten files in the tabs folder', () => {
@@ -235,6 +278,44 @@ describe('cleanPages', () => {
 
     expect(existsSync(generatedFile)).toBe(true)
     expect(warn).toHaveBeenCalledWith(expect.stringContaining('Entity oldCards not found for pages path'))
+  })
+
+  test('skips cleanup when page path templates resolve to different roots', () => {
+    const root = createRoot()
+    const system = new SystemMetaBuilder('test')
+
+    const accountLevels = system.addCatalog('accountLevels')
+    accountLevels.addField('title').setType('string')
+    accountLevels.getForms().setUiPagesMode('descriptor')
+
+    system
+      .generationPaths()
+      .setPath(
+        GenerationPathCategory.UiPageDescriptor,
+        'src/adm/descriptors/{entityName}/{pascalSingular}Descriptor.ts',
+      )
+
+    mkdirSync(join(root, 'src/adm/pages'), {recursive: true})
+
+    const args = prepareProjectWideGenerationArgs(system.build(), {
+      ...defaultBootstrapEntityOptions,
+      detachedBackProject: join(root, 'back'),
+      detachedUiProject: root,
+    })
+    const {warn} = spyOnLog()
+
+    const legacyFile = writeUiFile(
+      root,
+      'src/adm/pages/accountLevels/AccountLevelList/DefaultAccountLevelList.tsx',
+      generated('export default null;'),
+    )
+
+    cleanPages(args)
+
+    expect(existsSync(legacyFile)).toBe(true)
+    expect(warn).toHaveBeenCalledWith(
+      expect.stringContaining('page path templates resolve to different roots'),
+    )
   })
 
   test('additional service folders are not touched', () => {

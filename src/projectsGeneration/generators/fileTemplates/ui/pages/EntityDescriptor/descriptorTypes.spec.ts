@@ -12,17 +12,17 @@ import {uiDescriptorTypesTmpl} from './descriptorTypes'
 
 /** Ключи верхнего уровня интерфейса из текста шаблона (вложенные объекты не считаются). */
 const getInterfaceKeys = (text: string, name: string): string[] => {
-  const marker = `export interface ${name} {`
-  const start = text.indexOf(marker)
+  const marker = new RegExp(`export interface ${name}(?: extends \\w+)? \\{`)
+  const matched = marker.exec(text)
 
-  if (start < 0) {
+  if (!matched) {
     throw new Error(`There is no "${name}" interface in the template`)
   }
 
   const keys: string[] = []
   let depth = 0
   let buffer = ''
-  let index = start + marker.length
+  let index = matched.index + matched[0].length
 
   const flush = () => {
     const matched = /^\s*(\w+)\??\s*:/.exec(buffer)
@@ -80,6 +80,7 @@ const getData = () => {
 
   const accountLevels = system.addCatalog('accountLevels')
   accountLevels.addLinkField('cities', 'cityId')
+  accountLevels.addField('locked').setType('bool')
   accountLevels.getForms().setUiPagesMode('descriptor')
 
   const profiles = system.addCatalog('mdProfiles')
@@ -102,6 +103,10 @@ describe('uiDescriptorTypesTmpl', () => {
     expect(template).toContain('export type DescriptorFieldType =')
     expect(template).toContain('export type DescriptorFilterOp =')
     expect(template).toContain('export interface DescriptorField {')
+    expect(template).toContain('export type DescriptorDefaultValue =')
+    expect(template).toContain(
+      'export interface DescriptorEntityField extends DescriptorField {',
+    )
     expect(template).toContain('export interface DescriptorFilterField {')
     expect(template).toContain('export interface DescriptorDependencyTab {')
     expect(template).toContain('export interface EntityDescriptorData {')
@@ -116,14 +121,20 @@ describe('uiDescriptorTypesTmpl', () => {
     )
   })
 
-  test('DescriptorField keys match the built fields', () => {
+  test('DescriptorEntityField keys match the built fields', () => {
     const data = getData()
-    const interfaceKeys = getInterfaceKeys(template, 'DescriptorField')
+    const interfaceKeys = [
+      ...getInterfaceKeys(template, 'DescriptorField'),
+      ...getInterfaceKeys(template, 'DescriptorEntityField'),
+    ]
     const builtKeys = new Set(data.fields.flatMap((field) => Object.keys(field)))
 
     for (const key of builtKeys) {
       expect(interfaceKeys).toContain(key)
     }
+
+    // the optional defaultValue is built for the bool field
+    expect(builtKeys).toContain('defaultValue')
 
     // all the non-optional keys are filled for every field
     const requiredKeys = interfaceKeys.filter((key) => !template.includes(`  ${key}?:`))
@@ -137,6 +148,25 @@ describe('uiDescriptorTypesTmpl', () => {
     // link is filled for link fields only
     expect(interfaceKeys).toContain('link')
     expect(Object.keys(data.fields.find((f) => f.category === 'link')!)).toContain('link')
+  })
+
+  test('dependency tab fields stay on the base DescriptorField, without the form keys', () => {
+    const data = getData()
+    const baseKeys = getInterfaceKeys(template, 'DescriptorField')
+    const formKeys = getInterfaceKeys(template, 'DescriptorEntityField')
+    const builtKeys = [
+      ...new Set(data.dependencyTabs[0].fields.flatMap((field) => Object.keys(field))),
+    ]
+
+    expect(data.dependencyTabs[0].fields.length).toBeGreaterThan(0)
+
+    for (const key of builtKeys) {
+      expect(baseKeys).toContain(key)
+    }
+
+    for (const key of formKeys) {
+      expect(builtKeys).not.toContain(key)
+    }
   })
 
   test('DescriptorFilterField keys match the built filter fields', () => {
