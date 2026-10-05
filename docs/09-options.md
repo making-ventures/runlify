@@ -80,11 +80,12 @@ Nested under `forms`:
 | `forms.menu.show` | `true` | Show entity in sidebar menu |
 | `forms.resourcesPage.show` | `true` | Show entity on resources page |
 
-These toggles are project-wide and apply to the
-[descriptor mode](./08-frontend-file-graph.md#descriptor-mode) as well: they decide which
-of the four pages are generated at all. In the descriptor mode the Create and Edit pages
-additionally require the entity to be `creatableByUser` / `updatableByUser` — otherwise
-the route renders `NotFound` and no `index.tsx` is written.
+Note: the generator currently checks the presence of the `forms.list` / `forms.show` /
+`forms.create` / `forms.edit` objects, not their `gen` flag, so `gen: false` has no effect
+(this predates the descriptor mode). In the
+[descriptor mode](./08-frontend-file-graph.md#descriptor-mode) the Create and Edit pages are
+driven by the entity instead: `index.tsx` is written only for `creatableByUser` /
+`updatableByUser` entities — otherwise the route renders `NotFound` and nothing is generated.
 
 ---
 
