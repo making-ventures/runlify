@@ -167,7 +167,7 @@ describe('buildEntityDescriptorData', () => {
 
   test('catalog: dependency tab fields have no form keys', () => {
     const data = buildEntityDescriptorData(buildArgs(getCatalogSystem(), 'accountLevels'))
-    const tabFieldKeys = data.dependencyTabs[0].fields.flatMap((f) => Object.keys(f))
+    const tabFieldKeys = data.dependencyTabs[0].fields!.flatMap((f) => Object.keys(f))
 
     for (const key of ['showInCreate', 'showInEdit', 'requiredOnInput', 'sharded', 'defaultValue']) {
       expect(tabFieldKeys).not.toContain(key)
@@ -272,8 +272,27 @@ describe('buildEntityDescriptorData', () => {
     expect(tab.labelKey).toBe('catalogs.mdProfiles.title.plural')
     expect(tab.permissions).toEqual({get: 'mdProfiles.get'})
     // hidden and markdown fields of the owner are skipped, labels are the owner's ones
-    expect(tab.fields.map((f) => f.name)).toEqual(['id', 'name', 'accountLevelId'])
-    expect(tab.fields[1].labelKey).toBe('catalogs.mdProfiles.fields.name')
+    expect(tab.fields!.map((f) => f.name)).toEqual(['id', 'name', 'accountLevelId'])
+    expect(tab.fields![1].labelKey).toBe('catalogs.mdProfiles.fields.name')
+  })
+
+  test('catalog: a descriptor owner prints no inline tab fields', () => {
+    const system = getCatalogSystem()
+    system.getCatalogByName('mdProfiles').getForms().setUiPagesMode('descriptor')
+
+    const data = buildEntityDescriptorData(buildArgs(system, 'accountLevels'))
+    const [tab] = data.dependencyTabs
+
+    // the owner descriptor carries the fields itself, the UI resolves them through its registry
+    expect(tab).not.toHaveProperty('fields')
+    expect(tab).toEqual({
+      ownerEntity: 'mdProfiles',
+      ownerType: 'catalog',
+      fromField: 'accountLevelId',
+      path: 'mdProfiles-accountLevelId',
+      labelKey: 'catalogs.mdProfiles.title.plural',
+      permissions: {get: 'mdProfiles.get'},
+    })
   })
 
   test('catalog: ignoredLinkedEntities without field removes the tab', () => {

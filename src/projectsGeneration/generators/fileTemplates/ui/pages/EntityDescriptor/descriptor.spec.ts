@@ -93,6 +93,36 @@ describe('uiEntityDescriptorTmpl', () => {
     expect(result).toContain('    {"ownerEntity":"mdProfiles","ownerType":"catalog","fromField":"accountLevelId","path":"mdProfiles-accountLevelId"')
   })
 
+  test('a descriptor owner tab is printed without the fields key', () => {
+    const system = new SystemMetaBuilder('test')
+
+    const accountLevels = system.addCatalog('accountLevels')
+    accountLevels.addField('title').setType('string')
+    accountLevels.getForms().setUiPagesMode('descriptor')
+
+    const profiles = system.addCatalog('mdProfiles')
+    profiles.addLinkField('accountLevels', 'accountLevelId')
+    profiles.getForms().setUiPagesMode('descriptor')
+
+    const projectArgs = prepareProjectWideGenerationArgs(system.build(), {
+      ...defaultBootstrapEntityOptions,
+    })
+    const result = uiEntityDescriptorTmpl(
+      prepareEntityWideGenerationArgs(
+        projectArgs,
+        projectArgs.allEntities.get('accountLevels')!,
+      ),
+    )
+    const tabLine = result
+      .split('\n')
+      .find((line) => line.includes('"ownerEntity":"mdProfiles"'))!
+
+    expect(tabLine).not.toContain('"fields":')
+    expect(tabLine).toBe(
+      '    {"ownerEntity":"mdProfiles","ownerType":"catalog","fromField":"accountLevelId","path":"mdProfiles-accountLevelId","labelKey":"catalogs.mdProfiles.title.plural","permissions":{"get":"mdProfiles.get"}},',
+    )
+  })
+
   test('empty dependency tabs are printed as an empty array', () => {
     const system = new SystemMetaBuilder('test')
     const cities = system.addCatalog('cities')

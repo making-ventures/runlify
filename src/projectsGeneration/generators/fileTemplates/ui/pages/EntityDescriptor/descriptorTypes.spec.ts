@@ -72,7 +72,7 @@ const getInterfaceKeys = (text: string, name: string): string[] => {
   return keys
 }
 
-const getData = () => {
+const getData = (ownerUiPagesMode: 'legacy' | 'descriptor' = 'legacy') => {
   const system = new SystemMetaBuilder('test')
 
   const cities = system.addCatalog('cities')
@@ -85,6 +85,7 @@ const getData = () => {
 
   const profiles = system.addCatalog('mdProfiles')
   profiles.addLinkField('accountLevels', 'accountLevelId')
+  profiles.getForms().setUiPagesMode(ownerUiPagesMode)
 
   const projectArgs = prepareProjectWideGenerationArgs(system.build(), {
     ...defaultBootstrapEntityOptions,
@@ -155,10 +156,10 @@ describe('uiDescriptorTypesTmpl', () => {
     const baseKeys = getInterfaceKeys(template, 'DescriptorField')
     const formKeys = getInterfaceKeys(template, 'DescriptorEntityField')
     const builtKeys = [
-      ...new Set(data.dependencyTabs[0].fields.flatMap((field) => Object.keys(field))),
+      ...new Set(data.dependencyTabs[0].fields!.flatMap((field) => Object.keys(field))),
     ]
 
-    expect(data.dependencyTabs[0].fields.length).toBeGreaterThan(0)
+    expect(data.dependencyTabs[0].fields!.length).toBeGreaterThan(0)
 
     for (const key of builtKeys) {
       expect(baseKeys).toContain(key)
@@ -177,11 +178,25 @@ describe('uiDescriptorTypesTmpl', () => {
     )
   })
 
-  test('DescriptorDependencyTab keys match the built tabs', () => {
-    const data = getData()
+  test('DescriptorDependencyTab keys match the tabs of a legacy owner', () => {
+    const data = getData('legacy')
 
     expect(getInterfaceKeys(template, 'DescriptorDependencyTab').sort()).toEqual(
       Object.keys(data.dependencyTabs[0]).sort(),
     )
+  })
+
+  test('a descriptor owner tab keeps every key but the optional fields', () => {
+    const data = getData('descriptor')
+    const optionalKeys = getInterfaceKeys(template, 'DescriptorDependencyTab').filter((key) =>
+      template.includes(`  ${key}?:`),
+    )
+
+    expect(optionalKeys).toEqual(['fields'])
+    expect(
+      getInterfaceKeys(template, 'DescriptorDependencyTab')
+        .filter((key) => !optionalKeys.includes(key))
+        .sort(),
+    ).toEqual(Object.keys(data.dependencyTabs[0]).sort())
   })
 })

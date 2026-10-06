@@ -67,7 +67,7 @@ export interface DescriptorDependencyTab {
   path: string
   labelKey: string
   permissions: {get: string}
-  fields: DescriptorField[]
+  fields?: DescriptorField[]
 }
 
 export interface EntityDescriptorData {
@@ -243,18 +243,27 @@ const buildDependencyTab = (
   ownerEntity: Entity,
   link: LinkedEntities,
   allEntities: Map<string, Entity>,
-): DescriptorDependencyTab => ({
-  ownerEntity: ownerEntity.name,
-  ownerType: ownerEntity.type,
-  fromField: link.fromField.name,
-  path: `${ownerEntity.name}-${link.fromField.name}`,
-  labelKey: `${plural(ownerEntity.type)}.${ownerEntity.name}.title.plural`,
-  permissions: {get: `${ownerEntity.name}.get`},
-  fields: ownerEntity.fields
-    .filter((f) => !f.hidden)
-    .filter((f) => !isMarkdownField(f))
-    .map((f) => buildDescriptorField(ownerEntity, f, allEntities)),
-})
+): DescriptorDependencyTab => {
+  const tab: DescriptorDependencyTab = {
+    ownerEntity: ownerEntity.name,
+    ownerType: ownerEntity.type,
+    fromField: link.fromField.name,
+    path: `${ownerEntity.name}-${link.fromField.name}`,
+    labelKey: `${plural(ownerEntity.type)}.${ownerEntity.name}.title.plural`,
+    permissions: {get: `${ownerEntity.name}.get`},
+  }
+
+  // Владелец в режиме descriptor печатает свои поля сам (<Owner>Descriptor.ts) — UI берёт их из реестра.
+  // Инлайн остаётся только для legacy-владельцев. Присваивание после литерала держит fields последним ключом.
+  if ((ownerEntity.forms.uiPagesMode ?? 'legacy') !== 'descriptor') {
+    tab.fields = ownerEntity.fields
+      .filter((f) => !f.hidden)
+      .filter((f) => !isMarkdownField(f))
+      .map((f) => buildDescriptorField(ownerEntity, f, allEntities))
+  }
+
+  return tab
+}
 
 const buildRegistries = (
   entity: Entity,

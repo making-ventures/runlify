@@ -42,13 +42,14 @@ export interface DescriptorEntityField extends DescriptorField {
 export interface DescriptorFilterField { name: string; hidden: boolean; alwaysOn: boolean }   // forms.list.filter.fields как есть
 
 export interface DescriptorDependencyTab {
-  ownerEntity: string;           // link.entityOwnerName
+  ownerEntity: string;           // link.entityOwnerName; ключ дескриптора владельца в реестре UI
   ownerType: EntityPageType;
   fromField: string;             // link.fromField.name
   path: string;                  // \`\${ownerEntity}-\${fromField}\` — deep-link сохраняется (DefaultEntityShow.ts:87)
   labelKey: string;              // \`\${plural(ownerType)}.\${ownerEntity}.title.plural\`
   permissions: {get: string};    // \`\${ownerEntity}.get\` → rowClick (DependencyTab.ts:81)
-  fields: DescriptorField[];     // ВСЕ !hidden поля владельца без markdown, порядок меты, labelKey владельца (DependencyTab.ts:84-92; showInList НЕ учитывается)
+  fields?: DescriptorField[];    // ТОЛЬКО если владелец вне режима descriptor: иначе колонки строятся
+                                 // из <Owner>Descriptor.ts (!hidden && !markdown, порядок меты; showInList НЕ учитывается)
 }
 
 export interface EntityDescriptorData {

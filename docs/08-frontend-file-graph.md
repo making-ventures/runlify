@@ -168,6 +168,18 @@ implements once for all entities.
 | `pages/<EntityName>/<Entity>Edit/index.tsx` | `[once]` | Renders `<EntityEdit descriptor={...} />`. Written **only** when the entity is `updatableByUser` |
 | `uiLib/entityPages/descriptorTypes.ts` | `[gen]` | The descriptor data type, written once per project when at least one entity uses the mode |
 
+**Dependency tab columns.** A `dependencyTabs` entry always carries `ownerEntity` and the
+service keys (`ownerType`, `fromField`, `path`, `labelKey`, `permissions`), while its
+`fields` are printed **only when the owner entity is not in the `descriptor` mode**. An
+owner in the mode writes its own `<Owner>Descriptor.ts`, so repeating a copy of its fields
+in every tab of every dependent entity would be pure duplication. The UI is therefore
+required to resolve `ownerEntity` through its own registry of generated descriptors (in
+rlw — `src/uiLib/entityPages/descriptorRegistry.ts`, an `import.meta.glob` without
+`eager`) and to build the columns out of the owner fields the same way the generator did:
+`!hidden && !markdown`, the meta order, `showInList` not taken into account. The inline
+`fields` stay the contract for legacy owners (an entity with `allowedToChange`, for
+instance, can never get a descriptor).
+
 **Form data in the descriptor.** Every object of `fields` (and only there — the fields of
 `dependencyTabs` keep the smaller shape) carries `showInCreate`, `showInEdit`,
 `requiredOnInput`, `sharded` and the optional `defaultValue`; the entity itself carries
