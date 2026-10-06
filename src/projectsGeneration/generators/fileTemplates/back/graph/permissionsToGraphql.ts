@@ -2,17 +2,25 @@ import {addComma} from '../../../../utils'
 import {ProjectWideGenerationArgs} from '../../../../args'
 
 export const backPermissionToGraphqlTmpl = (
-  {entities}: ProjectWideGenerationArgs,
-) => `import * as R from 'ramda';
+  {entities, options}: ProjectWideGenerationArgs,
+) => {
+  // 'runtime_meta': per-entity permissionsToGraphql.ts files no longer exist
+  // (generateBackEntityGraph skips them) — entity permissions are merged in
+  // separately at runtime instead (buildRuntimeMetaPermissions).
+  const includesEntityPermissions = options.graphSchemaMode !== 'runtime_meta'
+
+  return `import * as R from 'ramda';
 import {additionalServicesPermissionToGraphql} from './additionalServicesPermissionToGraphql';
 import {MutationResolvers, QueryResolvers} from '../../generated/graphql';
 import {Services} from '../services/types';
 import helpPermissionToGraphql from './services/help/permissionsToGraphql';
-${entities.map(
-  (m) =>
-    `import ${m.name}PermissionToGraphql from './services/${m.name}/permissionsToGraphql';`
-).join(`
-`)}
+${includesEntityPermissions
+    ? entities.map(
+      (m) =>
+        `import ${m.name}PermissionToGraphql from './services/${m.name}/permissionsToGraphql';`
+    ).join(`
+`)
+    : ''}
 
 type queryKeys = keyof QueryResolvers;
 type mutationKeys = keyof MutationResolvers;
@@ -25,9 +33,11 @@ export type PermissionToGraphql <T = any> = Record<
 export const permissionsToGraphql: Partial<Record<keyof Services, Partial<PermissionToGraphql>>> = {
   ...additionalServicesPermissionToGraphql,
   help: helpPermissionToGraphql,
-  ${entities.map((m) => `${m.name}: ${m.name}PermissionToGraphql`).map(addComma)
-    .join(`
-  `)}
+  ${includesEntityPermissions
+    ? entities.map((m) => `${m.name}: ${m.name}PermissionToGraphql`).map(addComma)
+      .join(`
+  `)
+    : ''}
 };
 
 const flattenPermissionToGraphql: Map<string, string> = new Map([])
@@ -52,3 +62,4 @@ export function permissionToGraphql (permission: string):string | undefined {ret
 
 export function graphqlToPermission (graphql: string):string | undefined {return flattenGraphqlToPermission.get(graphql)}
 `
+}

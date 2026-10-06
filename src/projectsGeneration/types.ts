@@ -38,6 +38,10 @@ export const defaultBootstrapEntityOptions = {
   genPrismaServices: true,
   genGraphSchema: true,
   genGraphResolvers: true,
+  // 'files' (default): today's behavior — per-entity typeDefs/resolvers/permissions
+  // files on disk, unchanged. 'runtime_meta': base CRUD graph layer is built in
+  // memory from entity meta at server start instead, no per-entity files for it.
+  graphSchemaMode: 'files' as 'files' | 'runtime_meta',
   genUiResources: true,
   skipWarningThisIsGenerated: false,
   genPrismaSchema: true,
@@ -144,6 +148,10 @@ export const defaultBootstrapEntityOptions = {
   layoutMode: 'detached' as 'detached' | 'monorepo',
   sharedSchemaPath: '',
   copySchemaToUi: true,
+  /** Copy back src/generated/graphql.ts to ui. Unset → follows copySchemaToUi. */
+  copyGraphqlTsToUi: undefined as boolean | undefined,
+  /** Module specifier of the introspection schema in the generated ui src/dataProvider/index.ts. */
+  uiGraphqlSchemaImport: '../generated/graphql.schema.json',
   prismaModuleFormatCjs: false,
 }
 

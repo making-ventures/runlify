@@ -164,6 +164,9 @@ Nested under `forms`:
 |------|---------|-------------|
 | `detachedBackProject` | `''` | Absolute path to the backend project. Auto-resolved to `../<prefix>-back` if empty. |
 | `detachedUiProject` | `''` | Absolute path to the frontend project. Auto-resolved to `../<prefix>-ui` if empty. |
+| `copySchemaToUi` | `true` | Copy back `src/generated/graphql.schema.json` to ui `src/generated/`. Set `false` in a monorepo where ui reads the schema from a shared package (`runlify.json` → `paths.sharedSchema`). |
+| `copyGraphqlTsToUi` | unset | Copy back `src/generated/graphql.ts` to ui `src/generated/`. Unset → same as `copySchemaToUi` (old behaviour: one flag for both files). |
+| `uiGraphqlSchemaImport` | `'../generated/graphql.schema.json'` | Module specifier of the schema in the generated ui `src/dataProvider/index.ts`, e.g. `'@acme/shared/graphql.schema.json'`. |
 
 ---
 

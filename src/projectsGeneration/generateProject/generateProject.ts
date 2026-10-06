@@ -24,9 +24,7 @@ const generateProject = async (
 
   const args = prepareProjectWideGenerationArgs(system, opts);
 
-  if (opts.genFrontend) {
-    cleanFiles(args);
-  }
+  cleanFiles(args);
 
   // Pre grapgql types compose generation
   generateBack(fileCreator, {...args, options: {...args.options, typesOnly: true}});
