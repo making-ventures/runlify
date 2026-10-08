@@ -35,6 +35,8 @@ Most projects use the same options object for all entities.
 | `genGraphResolvers` | `true` | Generate GraphQL resolvers |
 | `genContext` | `true` | Generate request context wiring |
 | `typesOnly` | `false` | Internal — first generation pass (types only). Do not set manually. |
+| `pruneOrphanPages` | `false` | Service flag, set by `regen --prune`. Not stored in `options.json`. See [commands.md](./commands.md#regen) |
+| `pruneDryRun` | `false` | Service flag, set by `regen --prune-dry-run`: prints the prune plan and removes nothing. Not stored in `options.json` |
 | `readOnly` | `false` | Skip write operations in generation. Rarely used. |
 | `corePrismaGetter` | `true` | Generate the Prisma client getter (`getPrisma.ts`) |
 | `coreIndex` | `true` | Generate the main `index.ts` entry point |
@@ -57,6 +59,7 @@ Most projects use the same options object for all entities.
 | `genUiDashboard` | `true` | Generate `Dashboard.tsx` (created once) |
 | `genUiCountWidget` | `true` | Generate count widgets per entity |
 | `genUiListWidget` | `true` | Generate list widgets per entity |
+| `genUiEntityIcons` | `true` | Generate `<Entity>Icon.tsx` per entity. With `false` the icons are not generated and the existing generated ones are removed on the next `regen` |
 | `genUiAppBar` | `true` | Generate `AppBar.tsx` |
 | `showMetaPage` | `true` | Show the `/meta` debug page in the UI |
 
@@ -76,6 +79,13 @@ Nested under `forms`:
 | `forms.create.idEditable` | `false` | Show `id` field in create forms |
 | `forms.menu.show` | `true` | Show entity in sidebar menu |
 | `forms.resourcesPage.show` | `true` | Show entity on resources page |
+
+Note: the generator currently checks the presence of the `forms.list` / `forms.show` /
+`forms.create` / `forms.edit` objects, not their `gen` flag, so `gen: false` has no effect
+(this predates the descriptor mode). In the
+[descriptor mode](./08-frontend-file-graph.md#descriptor-mode) the Create and Edit pages are
+driven by the entity instead: `index.tsx` is written only for `creatableByUser` /
+`updatableByUser` entities — otherwise the route renders `NotFound` and nothing is generated.
 
 ---
 

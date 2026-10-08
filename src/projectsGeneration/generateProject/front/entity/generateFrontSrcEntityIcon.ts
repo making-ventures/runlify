@@ -18,6 +18,11 @@ const generateFrontSrcEntityIcon = (
     system,
   } = args
 
+  // Undefined (options.json of an older project) keeps the historical behaviour
+  if (options.genUiEntityIcons === false) {
+    return;
+  }
+
   const filePath = resolveGenerationPath({
     category: GenerationPathCategory.UiPageIcon,
     detachedBackProject: options.detachedBackProject,

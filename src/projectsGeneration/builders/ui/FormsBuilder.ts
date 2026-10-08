@@ -1,5 +1,5 @@
 import BaseSavableEntityBuilder from '../BaseSavableEntityBuilder'
-import Forms from './Forms'
+import Forms, {UiPagesMode} from './Forms'
 import ListFormBuilder from './ListFormBuilder'
 import ShowFormBuilder from './ShowFormBuilder';
 
@@ -7,6 +7,7 @@ class FormsBuilder {
   private getEntity: () => BaseSavableEntityBuilder;
   private list: ListFormBuilder;
   private show: ShowFormBuilder;
+  private uiPagesMode: UiPagesMode = 'legacy';
 
   constructor(getEntity: () => BaseSavableEntityBuilder) {
     this.getEntity = getEntity;
@@ -23,10 +24,21 @@ class FormsBuilder {
     return this.show;
   }
 
+  setUiPagesMode(mode: UiPagesMode): this {
+    this.uiPagesMode = mode;
+
+    return this;
+  }
+
+  getUiPagesMode(): UiPagesMode {
+    return this.uiPagesMode;
+  }
+
   build(): Forms {
     return {
       list: this.list.build(),
       show: this.show.build(),
+      uiPagesMode: this.uiPagesMode,
     }
   }
 }

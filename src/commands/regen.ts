@@ -29,6 +29,8 @@ module.exports = {
     const {parameters} = toolbox
 
     const backOnly = parameters.options.backOnly || parameters.options['back-only']
+    const pruneDryRun = !!(parameters.options['prune-dry-run'] || parameters.options.pruneDryRun)
+    const pruneOrphanPages = !!parameters.options.prune || pruneDryRun
 
     const runlifyConfig = toolbox.localConfig.getConfig().main ?? null
     const cwd = process.cwd()
@@ -51,6 +53,9 @@ module.exports = {
     if (backOnly) {
       options.genFrontend = false
     }
+
+    options.pruneOrphanPages = pruneOrphanPages
+    options.pruneDryRun = pruneDryRun
 
     const resolved = resolveProjectPaths({
       cwd,
