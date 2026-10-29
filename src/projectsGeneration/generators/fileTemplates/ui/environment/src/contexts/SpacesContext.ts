@@ -42,7 +42,7 @@ export const SpacesContext = createContext<ISpacesContext>(
 export const SpacesProvider = memo((props: IProps) => {
   const [availableSpaces, setAvailableSpaces] = useState<Space[]>(
     (envConfig.spaces && !envConfig.spaces.includes('SPACES')) ?
-    envConfig.spaces.split(',') as Space[] :
+      envConfig.spaces.split(',') as Space[] :
       allSpaces,
   );
 
