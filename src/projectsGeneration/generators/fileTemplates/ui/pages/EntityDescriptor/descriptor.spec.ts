@@ -81,16 +81,16 @@ describe('uiEntityDescriptorTmpl', () => {
     const result = uiEntityDescriptorTmpl(getArgs())
     const fieldLines = result
       .split('\n')
-      .filter((line) => line.startsWith('    {"name":"'))
+      .filter((line) => line.startsWith('    {name: "'))
 
     expect(fieldLines).toHaveLength(5)
-    expect(fieldLines.find((line) => line.includes('"name":"locked"'))).toContain(
-      '"sharded":false,"defaultValue":false}',
+    expect(fieldLines.find((line) => line.includes('name: "locked"'))).toContain(
+      'sharded: false, defaultValue: false}',
     )
     expect(fieldLines[0]).toBe(
-      '    {"name":"id","type":"int","category":"id","labelKey":"catalogs.accountLevels.fields.id","hidden":false,"required":true,"showInList":true,"showInShow":true,"showInFilter":true,"filters":["equal"],"numberType":"base","showInCreate":true,"showInEdit":true,"requiredOnInput":null,"sharded":false},',
+      '    {name: "id", type: "int", category: "id", labelKey: "catalogs.accountLevels.fields.id", hidden: false, required: true, showInList: true, showInShow: true, showInFilter: true, filters: ["equal"], numberType: "base", showInCreate: true, showInEdit: true, requiredOnInput: null, sharded: false},',
     )
-    expect(result).toContain('    {"ownerEntity":"mdProfiles","ownerType":"catalog","fromField":"accountLevelId","path":"mdProfiles-accountLevelId"')
+    expect(result).toContain('    {ownerEntity: "mdProfiles", ownerType: "catalog", fromField: "accountLevelId", path: "mdProfiles-accountLevelId"')
   })
 
   test('a descriptor owner tab is printed without the fields key', () => {
@@ -115,11 +115,11 @@ describe('uiEntityDescriptorTmpl', () => {
     )
     const tabLine = result
       .split('\n')
-      .find((line) => line.includes('"ownerEntity":"mdProfiles"'))!
+      .find((line) => line.includes('ownerEntity: "mdProfiles"'))!
 
-    expect(tabLine).not.toContain('"fields":')
+    expect(tabLine).not.toContain('fields:')
     expect(tabLine).toBe(
-      '    {"ownerEntity":"mdProfiles","ownerType":"catalog","fromField":"accountLevelId","path":"mdProfiles-accountLevelId","labelKey":"catalogs.mdProfiles.title.plural","permissions":{"get":"mdProfiles.get"}},',
+      '    {ownerEntity: "mdProfiles", ownerType: "catalog", fromField: "accountLevelId", path: "mdProfiles-accountLevelId", labelKey: "catalogs.mdProfiles.title.plural", permissions: {get: "mdProfiles.get"}},',
     )
   })
 

@@ -204,6 +204,19 @@ describe('buildEntityDescriptorData', () => {
     expect(defaultValueOf('enabled')).toBe(true)
   })
 
+  test('defaultValue: an escaped apostrophe inside a single-quoted literal is unescaped', () => {
+    const system = getCatalogSystem()
+    const accountLevels = system.getCatalogByName('accountLevels')
+    accountLevels.addField('name').setType('string').setDefaultValueExpression("'it\\'s a test'")
+    accountLevels.addField('path').setType('string').setDefaultValueExpression("'C:\\\\temp'")
+
+    const data = buildEntityDescriptorData(buildArgs(system, 'accountLevels'))
+    const defaultValueOf = (name: string) => data.fields.find((f) => f.name === name)!.defaultValue
+
+    expect(defaultValueOf('name')).toBe("it's a test")
+    expect(defaultValueOf('path')).toBe('C:\\temp')
+  })
+
   test('defaultValue: new Date() and Date.now() become the "now" marker', () => {
     const system = getCatalogSystem()
     const accountLevels = system.getCatalogByName('accountLevels')

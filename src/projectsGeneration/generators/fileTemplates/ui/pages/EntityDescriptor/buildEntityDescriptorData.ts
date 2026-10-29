@@ -155,8 +155,19 @@ const parseDefaultValueExpression = (
     return {value: {kind: 'now'}}
   }
 
-  const singleQuoted = /^'([^'\\]*)'$/.exec(expression)
-  const json = singleQuoted ? JSON.stringify(singleQuoted[1]) : expression
+  const singleQuoted = /^'((?:[^'\\]|\\.)*)'$/.exec(expression)
+  const json = singleQuoted
+    ? JSON.stringify(singleQuoted[1].replace(/\\(.)/g, (_, escaped: string) => {
+        switch (escaped) {
+          case 'n':
+            return '\n'
+          case 't':
+            return '\t'
+          default:
+            return escaped
+        }
+      }))
+    : expression
 
   let parsed: unknown
 

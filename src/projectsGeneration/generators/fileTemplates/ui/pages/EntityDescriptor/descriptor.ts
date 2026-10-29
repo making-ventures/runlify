@@ -7,7 +7,29 @@ export interface UiEntityDescriptorTmplOptions {
   slotsImportPath?: string
 }
 
-const stringifyRow = (value: unknown) => JSON.stringify(value)
+const isValidIdentifierKey = (key: string) => /^[A-Za-z_$][\w$]*$/.test(key)
+
+/**
+ * Печатает значение как JS-литерал (не JSON): ключи объектов без кавычек,
+ * если это валидный идентификатор — иначе остаётся экранированная строка.
+ * JSON.stringify квотит абсолютно все ключи, что ломает eslint `quote-props`
+ * на сгенерированном (не отключающем eslint) коде.
+ */
+const stringifyRow = (value: unknown): string => {
+  if (Array.isArray(value)) {
+    return `[${value.map(stringifyRow).join(', ')}]`
+  }
+
+  if (value !== null && typeof value === 'object') {
+    const entries = Object.entries(value as Record<string, unknown>).map(
+      ([key, val]) => `${isValidIdentifierKey(key) ? key : JSON.stringify(key)}: ${stringifyRow(val)}`,
+    )
+
+    return `{${entries.join(', ')}}`
+  }
+
+  return JSON.stringify(value)
+}
 
 /**
  * Дескриптор сущности: `src/adm/pages/<entity>/<Pascal>Descriptor.ts`.

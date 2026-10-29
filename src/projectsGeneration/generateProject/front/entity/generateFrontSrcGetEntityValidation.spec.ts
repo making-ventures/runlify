@@ -31,10 +31,10 @@ const generateFor = (uiPagesMode: 'legacy' | 'descriptor') => {
   const created: string[] = []
   const fileCreator: FileCreator = {
     create: (path) => {
-      created.push(path.slice(`${uiProject}/`.length))
+      created.push(path.slice(`${uiProject}/`.length).split('\\').join('/'))
     },
     createIfNotExists: (path) => {
-      created.push(path.slice(`${uiProject}/`.length))
+      created.push(path.slice(`${uiProject}/`.length).split('\\').join('/'))
     },
   }
 

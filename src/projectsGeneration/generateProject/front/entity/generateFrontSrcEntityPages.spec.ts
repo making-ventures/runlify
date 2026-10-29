@@ -16,7 +16,7 @@ const createFakeFileCreator = () => {
   const created: string[] = []
   const createdIfNotExists: string[] = []
 
-  const toRelative = (path: string) => path.slice(`${uiProject}/`.length)
+  const toRelative = (path: string) => path.slice(`${uiProject}/`.length).split('\\').join('/')
 
   const fileCreator: FileCreator = {
     create: (path) => {

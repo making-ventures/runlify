@@ -4,7 +4,7 @@ import {existsSync, readdirSync, readFileSync, statSync} from "fs";
 import fs from 'fs-jetpack'
 import log from "../../../../log";
 import {pascalSingular} from "../../../../utils/cases";
-import {generatedWarning} from "../../../utils";
+import {generatedWarning, toPosixPath} from "../../../utils";
 import {Entity} from "../../../builders/buildedTypes";
 import {
   GenerationPathCategory,
@@ -259,7 +259,7 @@ const pruneOrphanPageDirs = (args: ProjectWideGenerationArgs, ctx: CleanContext)
 
     log.warn(
       `prune: ${fullPath} is kept, there is no "${name}" entity but the folder has own files: ${
-        handwrittenFiles.map((file) => relative(fullPath, file)).join(', ')
+        handwrittenFiles.map((file) => toPosixPath(relative(fullPath, file))).join(', ')
       }`,
     );
   }
