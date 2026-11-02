@@ -22,7 +22,6 @@ export const uiGetMenuIconsTmpl = (args: ProjectWideGenerationArgs) => {
 
   return `import {additionalMenuIcons} from '../../adm/additionalMenuIcons';
 
-import {type SvgIconComponent} from '@mui/icons-material';
 ${imports}
 export const menuIcons = {
   ...additionalMenuIcons,

@@ -34,10 +34,10 @@ import {
 } from '../../../generated/graphql';
 
 interface List${pascal(entity.name)}WidgetProps extends
-Omit<ListWidgetProps<${pascalSingular(
+  Omit<ListWidgetProps<${pascalSingular(
     entity.name
   )}>, 'request' | 'resultToValue'| 'children' | 'source'>,
-QueryAll${pascalPlural(entity.name)}Args {
+  QueryAll${pascalPlural(entity.name)}Args {
   children?: FC<${pascalSingular(entity.name)}>,
 }
 

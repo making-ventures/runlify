@@ -2,15 +2,15 @@ import {BootstrapEntityOptions} from "../types";
 import {FileHandler} from "./types";
 
 export function disableEslintForCode(content: string): string {
-  return '/* eslint-disable */\n' + content 
+  return '/* eslint-disable */\n\n' + content
 }
 
 export function addDoNotEditThisIsGeneratedFileForCode(content: string): string {
-  return '\n//\n// DO NOT EDIT! THIS IS GENERATED FILE\n//\n\n' + content;
+  return '//\n// DO NOT EDIT! THIS IS GENERATED FILE\n//\n\n' + content;
 }
 
 export function addDoNotEditThisIsGeneratedFileForYaml(content: string): string {
-  return '\n#\n# DO NOT EDIT! THIS IS GENERATED FILE\n#\n\n' + content;
+  return '#\n# DO NOT EDIT! THIS IS GENERATED FILE\n#\n\n' + content;
 }
 
 export function addGeneratedOnceNotice(content: string): string {
@@ -24,7 +24,7 @@ type addWarningsInput = {
   addDoNotEdit?: boolean,
 }
 
-export function addWarnings({options, fileType = 'code', disableEslint = true, addDoNotEdit = true}: addWarningsInput): FileHandler[] {
+export function addWarnings({options, fileType = 'code', disableEslint = false, addDoNotEdit = true}: addWarningsInput): FileHandler[] {
   if (options.skipWarningThisIsGenerated) {
     return []
   }

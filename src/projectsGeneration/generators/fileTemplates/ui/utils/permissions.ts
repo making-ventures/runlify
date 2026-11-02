@@ -1,7 +1,6 @@
 const uiPermissionsTmpl = () => `import {ComponentType} from 'react';
 import PermissionPage from '../adm/PermissionPage';
 
-
 const matchesPermission = (currentPermissions: string[], requiredPermission: string) => {
   if (requiredPermission.endsWith('.*')) {
     const prefix = requiredPermission.slice(0, -1);
@@ -77,11 +76,11 @@ export const withPermission = <P extends object>(
   requiredPermissions: string | string[],
   Component: ComponentType<P>,
 ) => (
-    hasAllPermissions(
-      currentPermissions,
-      Array.isArray(requiredPermissions) ? requiredPermissions : [requiredPermissions],
-    ) ? Component : PermissionPage
-  );
+  hasAllPermissions(
+    currentPermissions,
+    Array.isArray(requiredPermissions) ? requiredPermissions : [requiredPermissions],
+  ) ? Component : PermissionPage
+);
 `
 
 export default uiPermissionsTmpl

@@ -13,11 +13,6 @@ ${
   withTenantIdRequiredHooks
     ? "import {beforeUpdate, beforeUpsertStrict, beforeDelete, changeListFilter} from './hooks/tenantIdRequiredHooks';\n"
     : ''
-}${
-  withTenantIdRequiredHooks
-    ? ''
-    : `
-// eslint-disable-next-line @typescript-eslint/no-empty-function`
 }
 const initBuiltInHooks = (${
     withTenantIdRequiredHooks ? '{hooksAdd}' : '_service'
