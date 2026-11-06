@@ -36,7 +36,7 @@ const AppBar = (props: any) => {
         color='inherit'
         id='react-admin-title'
       />
-      <Box flex={1} />
+      <Box sx={{flex: 1}} />
       {wide && (
         <Typography
           sx={{color: ${options.mainColorOfAppTitile ? `'primary.main'` : `'text.main'`}}}
@@ -51,7 +51,7 @@ const AppBar = (props: any) => {
           </Link>
         </Typography>
       )}
-      <Box flex={1} />
+      <Box sx={{flex: 1}} />
     </RaAppBar>
   );
 };
