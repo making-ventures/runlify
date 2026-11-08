@@ -2,6 +2,7 @@ import {Entity, MenuItem, MenuItemType} from '../../../builders/buildedTypes'
 import {ProjectWideGenerationArgs} from '../../../args'
 import {pad2} from '../../../utils'
 import {plural} from 'pluralize'
+import {MENU_DEFAULT_ICON} from './builtInIcons'
 
 const checkHasMenuItemEnv = (item: MenuItem) => {
   switch (item.itemType) {
@@ -82,7 +83,7 @@ export const uiGetDefaultMenuTmpl = ({
   const renderEntity = (entity: Entity) => `    {
       label: '${plural(entity.type)}.${entity.name}.title.plural',
       link: '/${entity.name}',
-      icon: 'DetailsOutlined',
+      icon: '${MENU_DEFAULT_ICON}',
       debugOnly: true,
       permissions: ['${entity.name}.all', '${entity.name}.meta', 'ui.${entity.name}.list'],
     },`
@@ -95,21 +96,21 @@ ${system.menuItems.map(i => `${menuItemTmpl(i)},`).map(pad2).join('\n')}${option
     {
       label: 'app.menu.functions',
       link: '/functions',
-      icon: 'DetailsOutlined',
+      icon: '${MENU_DEFAULT_ICON}',
       debugOnly: true,
       permissions: ['ui.functions'],
     },` : ''}${options.showResourcesInMenu ? `
     {
       label: 'app.menu.resources',
       link: '/resources',
-      icon: 'DetailsOutlined',
+      icon: '${MENU_DEFAULT_ICON}',
       debugOnly: true,
       permissions: ['ui.resources'],
     },` : ''}${options.showMetaInMenu ? `
     {
       label: 'app.menu.meta',
       link: '/meta',
-      icon: 'DetailsOutlined',
+      icon: '${MENU_DEFAULT_ICON}',
       debugOnly: true,
       permissions: ['ui.meta'],
     },` : ''}
@@ -122,7 +123,7 @@ ${infoRegistries.map((entity) => renderEntity(entity)).join('\n')}
   if (infoRegistriesMenuData.length) {
     menuData.push({
       label: 'app.infoRegistries',
-      icon: 'DetailsOutlined',
+      icon: '${MENU_DEFAULT_ICON}',
       debugOnly: true,
       children: infoRegistriesMenuData,
     });
@@ -135,7 +136,7 @@ ${sumRegistries.map((entity) => renderEntity(entity)).join('\n')}
   if (sumRegistriesMenuData.length) {
     menuData.push({
       label: 'app.sumRegistries',
-      icon: 'DetailsOutlined',
+      icon: '${MENU_DEFAULT_ICON}',
       debugOnly: true,
       children: sumRegistriesMenuData,
     });
@@ -148,7 +149,7 @@ ${documents.map((entity) => renderEntity(entity)).join('\n')}
   if (documentsMenuData.length) {
     menuData.push({
       label: 'app.documents',
-      icon: 'DetailsOutlined',
+      icon: '${MENU_DEFAULT_ICON}',
       debugOnly: true,
       children: documentsMenuData,
     });
@@ -161,7 +162,7 @@ ${catalogs.map((entity) => renderEntity(entity)).join('\n')}
   if (catalogsMenuData.length) {
     menuData.push({
       label: 'app.catalogs',
-      icon: 'DetailsOutlined',
+      icon: '${MENU_DEFAULT_ICON}',
       debugOnly: true,
       children: catalogsMenuData,
     });

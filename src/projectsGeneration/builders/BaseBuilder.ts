@@ -1,5 +1,4 @@
 import * as R from 'ramda'
-import materialUiIcons from './materialUiIcons'
 import {BaseEntity, PreviewFeature} from './buildedTypes'
 
 // * у каких ролей есть полный доступ к сущности
@@ -66,8 +65,11 @@ class BaseBuilder {
   }
 
   setMaterialUiIcon(materialUiIcon: string) {
-    if (!materialUiIcons.includes(materialUiIcon)) {
-      throw new Error(`THere is no "${materialUiIcon}" material ui icon`)
+    // The name is interpolated into `import … from '@mui/icons-material/<name>'`, so only allow
+    // an icon-shaped identifier here. Whether the icon exists is checked on regen against the
+    // UI project's installed @mui/icons-material (see validateMaterialUiIcons).
+    if (!/^[A-Z][A-Za-z0-9]*$/.test(materialUiIcon)) {
+      throw new Error(`"${materialUiIcon}" is not a valid Material UI icon name (expected PascalCase, e.g. "HelpOutlined")`)
     }
 
     this.materialUiIcon = materialUiIcon

@@ -2,6 +2,7 @@ import {
   BootstrapEntityOptions,
   defaultBootstrapEntityOptions,
 } from '../../../../types'
+import {FUNCTIONS_SEND_ICON} from '../builtInIcons'
 
 export const uiFunctionsTmpl = (
   _options: BootstrapEntityOptions = defaultBootstrapEntityOptions
@@ -12,7 +13,7 @@ export const uiFunctionsTmpl = (
   ChangeEvent,
 } from 'react';
 import {Typography, TextField, IconButton} from '@mui/material';
-import SendIcon from '@mui/icons-material/SendOutlined';
+import SendIcon from '@mui/icons-material/${FUNCTIONS_SEND_ICON}';
 import {
   gql, useLazyQuery,
 } from '@apollo/client';

@@ -46,6 +46,7 @@ runlify regen
   │
   ├─ reads metadata.json + options.json
   ├─ prepareProjectWideGenerationArgs()   ← resolves links, normalises DBs
+  ├─ validateMaterialUiIcons()            ← icons vs the UI project's @mui/icons-material (if frontend enabled)
   ├─ cleanFiles()                         ← wipes previous generated output
   ├─ generateBack()  [typesOnly pass]     ← generates TS types first
   ├─ genGraphSchemesByLocalGenerator()    ← generates .graphql schema files
