@@ -363,6 +363,13 @@ Validates and serialises the entire meta description into a plain `System` objec
 Throws on any validation error (duplicate names, unregistered databases, invalid
 constraints, etc.).
 
+Not checked here: whether a Material UI icon set with `setMaterialUiIcon(name)` exists.
+The builder only checks the name is PascalCase. Existence is checked on `regen` against
+the `@mui/icons-material` installed for the UI project (exact, case-sensitive match), and
+all unknown icons are reported in one error, e.g.
+`catalog "users": "HelpOutline" (did you mean "HelpOutlined"?)`. If the package is not
+installed yet, `regen` only warns and an unknown icon will fail the UI build instead.
+
 ### `validate(): System`
 
 Alias of `build()`. Can be used to check for errors without assigning the result.

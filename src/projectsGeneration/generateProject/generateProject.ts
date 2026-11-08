@@ -8,6 +8,7 @@ import {prepareProjectWideGenerationArgs} from '../args'
 import cleanFiles from '../fileCleaners/cleanFiles'
 import generateFront from './front/generateFront'
 import generateBack from './back/generateBack'
+import {validateMaterialUiIcons} from './validateMaterialUiIcons'
 
 const generateProject = async (
   system: System,
@@ -23,6 +24,10 @@ const generateProject = async (
   const fileCreator: FileCreator = {create, createIfNotExists};
 
   const args = prepareProjectWideGenerationArgs(system, opts);
+
+  if (opts.genFrontend) {
+    validateMaterialUiIcons(args);
+  }
 
   cleanFiles(args);
 

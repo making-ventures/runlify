@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file. See [standa
 
 > **Note (2026-10-05):** entries from 0.0.733 through 0.0.799 below were reconstructed after the fact from `git log` — `standard-version`'s `release` script (and this file) stopped being run for a long stretch while the project also migrated from GitLab to GitHub (`making-ventures/runlify`), so no automatic entries exist for that period. Versions 0.0.733–0.0.756 have no reconstructable dedicated commit on `main` at all (likely published from a branch that was never merged back with its bump commit) and are omitted rather than guessed. From here on, run `pnpm release` after merging a feature so this file stays current.
 
+### [0.0.801](https://github.com/making-ventures/runlify/compare/88a77e8...HEAD) (2026-11-06)
+
+* fix(ui): MUI 9 support in generated templates. `AppBar` uses `sx={{flex: 1}}` instead of the removed `Box` system prop `flex`, and `MetaPage` uses `Box` `sx` instead of `makeStyles` (no more `shared/mui-styles-adapter` import). Works with MUI 5–9.
+* feat: Material UI icons are validated on `regen` against the `@mui/icons-material` installed for the UI project, instead of a hard-coded 2022 icon list. All unknown icons are reported in one error, naming the entity or menu item and suggesting `…Outlined` for the `…Outline` icons removed in MUI 9. If the package is not installed, `regen` only warns.
+* **breaking for metas:** `setMaterialUiIcon()` no longer throws for unknown icons, only for names that aren't PascalCase. An unknown or wrongly-cased icon (e.g. `HelpOutline` on MUI 9) now fails `regen` instead of the meta build.
+
 ### [0.0.800](https://github.com/making-ventures/runlify/compare/66f7c72...HEAD) (2026-10-06)
 
 * feat: new project-wide `graphSchemaMode: 'files' | 'runtime_meta'` option — build GraphQL CRUD schema/resolvers/permissions at the consumer's runtime from entity meta instead of generating per-entity files (default `'files'`, no effect until opted in)

@@ -1,18 +1,12 @@
 import { ProjectWideGenerationArgs } from '../../../args'
-import { MenuItem, MenuItemType } from '../../../builders'
-
-function resolveMenuItems(item: MenuItem): string[] {
-  if (item.itemType === MenuItemType.Group) {
-    return [item.materialUiIcon, ...item.items.flatMap(resolveMenuItems)]
-  }
-  
-  return [item.materialUiIcon]
-}
+import { MENU_DEFAULT_ICON, flattenMenuItems } from './builtInIcons'
 
 export const uiGetMenuIconsTmpl = (args: ProjectWideGenerationArgs) => {
-  const icons = args.system.menuItems.flatMap(resolveMenuItems)
+  const icons = args.system.menuItems
+    .flatMap((menuItem) => flattenMenuItems(menuItem))
+    .map(({item}) => item.materialUiIcon)
 
-  const uniqueIcons = [...new Set([...icons, 'DetailsOutlined'])]
+  const uniqueIcons = [...new Set([...icons, MENU_DEFAULT_ICON])]
 
   const imports = uniqueIcons
     .map((icon) => `import ${icon} from '@mui/icons-material/${icon}';`)
