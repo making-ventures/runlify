@@ -14,7 +14,6 @@ export default gql\`
     getHelp(entityType: EntityType!): String!
   }
 \`;
-
 `
 
 export default baseTypeDefsTmpl

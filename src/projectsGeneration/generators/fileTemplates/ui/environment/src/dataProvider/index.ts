@@ -12,7 +12,7 @@ export const uiDataProviderTmpl = (
 ) => `import buildGraphQLProvider, {buildQuery as buildQueryFactory} from 'ra-data-graphql-simple';
 import {IntrospectionResult} from 'ra-data-graphql';
 import {DELETE} from 'ra-core';
-import gql from 'graphql-tag';
+import {gql} from 'graphql-tag';
 import {IntrospectionType, IntrospectionSchema} from 'graphql';
 import {mapping} from '../adm/entityMapping';
 import {ApolloClient} from '@apollo/client';
@@ -20,13 +20,12 @@ import getCustomMethods from './getCustomMethods';
 import getAdditionalMethods from './getAdditionalMethods';
 import {DataProvider} from './types';
 
-let schema: any = undefined;
+let schema: any;
 
 if (import.meta.env.DEV) {
   const sch = await import('${options.uiGraphqlSchemaImport || defaultBootstrapEntityOptions.uiGraphqlSchemaImport}');
   schema = sch.default.__schema;
 }
-
 
 const getGqlResource = (resource: string) => {
   if (resource in mapping) {

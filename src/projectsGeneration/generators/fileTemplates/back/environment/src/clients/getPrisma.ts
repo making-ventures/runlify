@@ -272,5 +272,5 @@ import log from '../log';
 ${p7Imports}
 ${mainGetter}
 ${extraGetters}
-`
+`.replace(/\n+$/, '\n')
 }

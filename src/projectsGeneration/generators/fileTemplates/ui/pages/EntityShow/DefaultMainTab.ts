@@ -17,10 +17,13 @@ export const uiEntityShowDefaultMainTabTmpl = ({
   const notDateFieldsToImport = fieldsToImport.filter(
     (f) => !['datetime', 'date'].includes(f.type)
   )
+  const hasLinkFieldToShow = entity.fields.some(
+    (f) => !f.hidden && f.showInShow && f.category === 'link'
+  )
   const reactAdminImports: string[] = [
     'Tab',
     'TabProps',
-    'usePermissions',
+    ...(hasLinkFieldToShow ? ['usePermissions'] : []),
 
     ...R.flatten(
       notDateFieldsToImport.map((f) => getCompNamesToShowField(f))
@@ -43,12 +46,20 @@ import DateField from '../../../../uiLib/DateField';`
 import {moneyMinorToMajor} from '../../../../uiLib/transformations/moneyAmount';`
       : ''
   }
-import {Grid} from 'shared/Components/Grid';
-import {hasPermission} from '../../../../utils/permissions';${entity.fields.some(isMarkdownField) ? '\nimport ReactMarkdownField from \'../../../../uiLib/ReactMarkdownField\';' : ''}
+import {Grid} from 'shared/Components/Grid';${
+    hasLinkFieldToShow
+      ? `
+import {hasPermission} from '../../../../utils/permissions';`
+      : ''
+  }${entity.fields.some(isMarkdownField) ? '\nimport ReactMarkdownField from \'../../../../uiLib/ReactMarkdownField\';' : ''}
 
-const DefaultMainTab: FC<Omit<TabProps, 'children'>> = (props) => {
+const DefaultMainTab: FC<Omit<TabProps, 'children'>> = (props) => {${
+    hasLinkFieldToShow
+      ? `
   const {permissions} = usePermissions<string[]>();
-
+`
+      : ''
+  }
   return (<Tab {...props}>
     <Grid container spacing={2}>
 ${entity.fields

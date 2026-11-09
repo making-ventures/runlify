@@ -21,9 +21,12 @@ export interface ShowForm {
   ignoredLinkedEntities: LinkedEntity[];
 }
 
+export type UiPagesMode = 'legacy' | 'descriptor'
+
 interface Forms {
   list: ListForm;
   show: ShowForm;
+  uiPagesMode: UiPagesMode;
 }
 
 export default Forms;
