@@ -51,6 +51,8 @@ export const GenerationPathCategory = {
   UiPageListIndex: 'ui.page.list.index',
   UiPageIcon: 'ui.page.icon',
   UiPageValidation: 'ui.page.validation',
+  UiPageDescriptor: 'ui.page.descriptor',
+  UiPageSlots: 'ui.page.slots',
   UiWidgetCount: 'ui.widget.count',
   UiWidgetList: 'ui.widget.list',
   // —— graph ——
@@ -113,6 +115,7 @@ export const GenerationPathCategory = {
   UiResourcesPage: 'ui.resourcesPage',
   UiMetaPage: 'ui.metaPage',
   UiEntityMapping: 'ui.entityMapping',
+  UiEntityPagesDescriptorTypes: 'ui.entityPages.descriptorTypes',
   UiGetDefaultMenu: 'ui.getDefaultMenu',
   UiGetAdditionalMenu: 'ui.getAdditionalMenu',
   UiMenuIcons: 'ui.menuIcons',
@@ -365,6 +368,12 @@ export const DEFAULT_GENERATION_PATHS = {
   [GenerationPathCategory.UiPageValidation]: uiPage(
     'src/adm/pages/{entityName}/get{pascalSingular}Validation.tsx',
   ),
+  [GenerationPathCategory.UiPageDescriptor]: uiPage(
+    'src/adm/pages/{entityName}/{pascalSingular}Descriptor.ts',
+  ),
+  [GenerationPathCategory.UiPageSlots]: uiPage(
+    'src/adm/pages/{entityName}/{pascalSingular}Slots.tsx',
+  ),
   [GenerationPathCategory.UiWidgetCount]: {
     root: 'ui',
     defaultTemplate: 'src/adm/widgets/count/Count{PascalEntity}Widget.tsx',
@@ -606,6 +615,11 @@ export const DEFAULT_GENERATION_PATHS = {
   [GenerationPathCategory.UiEntityMapping]: {
     root: 'ui',
     defaultTemplate: 'src/adm/entityMapping.ts',
+    params: [],
+  },
+  [GenerationPathCategory.UiEntityPagesDescriptorTypes]: {
+    root: 'ui',
+    defaultTemplate: 'src/uiLib/entityPages/descriptorTypes.ts',
     params: [],
   },
   [GenerationPathCategory.UiGetDefaultMenu]: {

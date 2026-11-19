@@ -15,7 +15,7 @@ import {
 import {${pascalSingular(entity.name)}Filter} from '../../../generated/graphql';
 
 interface Count${pascal(entity.name)}WidgetProps extends
-Omit<NumberWidgetProps, 'request' | 'resultToValue'> {
+  Omit<NumberWidgetProps, 'request' | 'resultToValue'> {
   filter?: ${pascalSingular(entity.name)}Filter;
 }
 

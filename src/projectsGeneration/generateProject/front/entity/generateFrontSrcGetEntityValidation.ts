@@ -13,10 +13,16 @@ const generateFrontSrcGetEntityValidation = (
   args: EntityWideGenerationArgs,
 ) => {
   const {
+    entity,
     entity: { name },
     options,
     system,
   } = args
+
+  // В режиме descriptor yup-схема строится в рантайме из данных дескриптора.
+  if ((entity.forms.uiPagesMode ?? 'legacy') === 'descriptor') {
+    return
+  }
 
   const filePath = resolveGenerationPath({
     category: GenerationPathCategory.UiPageValidation,

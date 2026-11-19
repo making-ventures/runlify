@@ -26,3 +26,6 @@ export const pad10 = (content: string) => padN(content, 10)
 export const pad = (num: number) => (content: string) => padN(content, num)
 export const addComma = (content: string) => content + ','
 export const newStrBefore = (content: string) => '\n' + content
+
+/** `path.join`/`path.relative` return OS-specific separators (`\` on Windows) — normalize to `/` for stable, cross-platform generation paths and messages. */
+export const toPosixPath = (filePath: string) => filePath.split('\\').join('/')

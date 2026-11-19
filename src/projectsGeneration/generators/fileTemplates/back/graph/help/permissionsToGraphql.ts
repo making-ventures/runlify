@@ -7,7 +7,6 @@ const helpPermissionToGraphql: Partial<PermissionToGraphql<HelpService>> = {
 };
 
 export default helpPermissionToGraphql;
-
 `
 
 export default permissionsToGraphqlTmpl

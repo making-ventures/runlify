@@ -314,11 +314,13 @@ provider = "postgresql"
     }
 
     // layout
-    fileCreator.create(
-      resolveEnvPath(GenerationPathCategory.UiLayoutMenu),
-      uiLayoutMenuTmpl(opts),
-      addWarnings({options: opts})
-    )
+    if (opts.genUiMenu) {
+      fileCreator.create(
+        resolveEnvPath(GenerationPathCategory.UiLayoutMenu),
+        uiLayoutMenuTmpl(opts),
+        addWarnings({options: opts})
+      )
+    }
 
     if (opts.genUiAppBar) {
       fileCreator.create(

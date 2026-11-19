@@ -16,7 +16,7 @@ ${client.queryMethods.map(m => `export type ${pascalCase(m.name)}Result = ${pasc
 
 export interface I${pascalCase(client.name)}Client {
 ${client.queryMethods.map(m => `  ${m.name}: (args: ${pascalCase(m.name)}Args) =>
-    Promise<${pascalCase(m.name)}Result>,`).join('\n')}
+  Promise<${pascalCase(m.name)}Result>,`).join('\n')}
 }
 `
 }

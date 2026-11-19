@@ -243,6 +243,24 @@ Prevents this entity from appearing in the auto-generated sidebar menu. Default 
 Returns the UI forms builder for customising list/show/create/edit form fields and
 their display order. See [08-frontend-file-graph.md](./08-frontend-file-graph.md).
 
+#### `getForms().setUiPagesMode(mode: 'legacy' | 'descriptor'): this`
+
+Switches how the List, Show, Create and Edit pages of this entity are generated. Default
+is `'legacy'` — the usual `Default<Entity>List` / `Default<Entity>Show` /
+`Default<Entity>Create` / `Default<Entity>Edit` components and `get<Entity>Validation`.
+
+```ts
+entity.getForms().setUiPagesMode('descriptor')
+```
+
+In the `'descriptor'` mode runlify generates a single data file
+`<Entity>Descriptor.ts` instead of the whole set of page components and the validation
+file; the pages are rendered and the yup schema is built by the project's own universal
+components. The `index.tsx` of the Create and Edit pages is generated only when the entity
+is `creatableByUser` / `updatableByUser`. The mode requires `src/uiLib/entityPages/` in the
+UI project, see
+[08-frontend-file-graph.md](./08-frontend-file-graph.md#descriptor-mode).
+
 ---
 
 ### Key field {#key-field}

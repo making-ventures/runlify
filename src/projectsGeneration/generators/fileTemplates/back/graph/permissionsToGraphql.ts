@@ -32,16 +32,16 @@ export type PermissionToGraphql <T = any> = Record<
 
 export const permissionsToGraphql: Partial<Record<keyof Services, Partial<PermissionToGraphql>>> = {
   ...additionalServicesPermissionToGraphql,
-  help: helpPermissionToGraphql,
-  ${includesEntityPermissions
-    ? entities.map((m) => `${m.name}: ${m.name}PermissionToGraphql`).map(addComma)
+  help: helpPermissionToGraphql,${includesEntityPermissions
+    ? `
+  ${entities.map((m) => `${m.name}: ${m.name}PermissionToGraphql`).map(addComma)
       .join(`
-  `)
+  `)}`
     : ''}
 };
 
-const flattenPermissionToGraphql: Map<string, string> = new Map([])
-const flattenGraphqlToPermission: Map<string, string> = new Map([])
+const flattenPermissionToGraphql: Map<string, string> = new Map()
+const flattenGraphqlToPermission: Map<string, string> = new Map()
 
 R.keys(permissionsToGraphql).forEach((service) => {
   const mapping = permissionsToGraphql[service]
@@ -58,8 +58,8 @@ R.keys(permissionsToGraphql).forEach((service) => {
   })
 })
 
-export function permissionToGraphql (permission: string):string | undefined {return flattenPermissionToGraphql.get(permission)}
+export function permissionToGraphql(permission: string):string | undefined {return flattenPermissionToGraphql.get(permission)}
 
-export function graphqlToPermission (graphql: string):string | undefined {return flattenGraphqlToPermission.get(graphql)}
+export function graphqlToPermission(graphql: string):string | undefined {return flattenGraphqlToPermission.get(graphql)}
 `
 }

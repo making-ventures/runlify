@@ -53,6 +53,7 @@ export const defaultBootstrapEntityOptions = {
 
   genUiCountWidget: true,
   genUiListWidget: true,
+  genUiEntityIcons: true,
   genUiAppBar: true,
 
   genUiEntityMapping: true,
@@ -155,7 +156,12 @@ export const defaultBootstrapEntityOptions = {
   prismaModuleFormatCjs: false,
 }
 
-export type BootstrapEntityOptions = typeof defaultBootstrapEntityOptions;
+export type BootstrapEntityOptions = typeof defaultBootstrapEntityOptions & {
+  /** Service flag set by `regen --prune`; never part of defaults, so it is not written to options.json. */
+  pruneOrphanPages?: boolean;
+  /** Service flag set by `regen --prune-dry-run`: print the prune plan, remove nothing. */
+  pruneDryRun?: boolean;
+};
 
 export interface EntityBuilderWithOptions<
   T extends BaseBuilder | ReportBuilder = CatalogBuilder

@@ -122,6 +122,48 @@ describe('resolveGenerationPath', () => {
     )
   })
 
+  test('default entity descriptor path', () => {
+    const path = resolveGenerationPath({
+      category: GenerationPathCategory.UiPageDescriptor,
+      detachedBackProject,
+      detachedUiProject,
+      pathsConfig: null,
+      vars: {entityName: 'users', pascalSingular: 'User'},
+    })
+
+    expect(path).toBe(
+      join(detachedUiProject, 'src/adm/pages/users/UserDescriptor.ts'),
+    )
+  })
+
+  test('default entity slots path', () => {
+    const path = resolveGenerationPath({
+      category: GenerationPathCategory.UiPageSlots,
+      detachedBackProject,
+      detachedUiProject,
+      pathsConfig: null,
+      vars: {entityName: 'users', pascalSingular: 'User'},
+    })
+
+    expect(path).toBe(
+      join(detachedUiProject, 'src/adm/pages/users/UserSlots.tsx'),
+    )
+  })
+
+  test('default descriptor types path has no placeholders', () => {
+    const path = resolveGenerationPath({
+      category: GenerationPathCategory.UiEntityPagesDescriptorTypes,
+      detachedBackProject,
+      detachedUiProject,
+      pathsConfig: null,
+      vars: {},
+    })
+
+    expect(path).toBe(
+      join(detachedUiProject, 'src/uiLib/entityPages/descriptorTypes.ts'),
+    )
+  })
+
   test('dependency tab uses OwnerPascal and FromFieldPascal', () => {
     const path = resolveGenerationPath({
       category: GenerationPathCategory.UiPageShowDependencyTab,

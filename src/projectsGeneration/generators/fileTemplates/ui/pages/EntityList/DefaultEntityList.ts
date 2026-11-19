@@ -78,8 +78,12 @@ import ${pascalSingular(entity.name)}Filter from './${pascalSingular(
     entity.name
   )}Filter';
 import {hasPermission} from '../../../../utils/permissions';
-import ListActions from '../../../../raUiLib/ListActions';
-import {BulkActionProps} from "shared/type";
+import ListActions from '../../../../raUiLib/ListActions';${
+    entity.removableByUser
+      ? `
+import {BulkActionProps} from "shared/type";`
+      : ''
+  }
 import ${pascalSingular(entity.name)}ListBreadcrumbs from './${pascalSingular(entity.name)}ListBreadcrumbs';${
   withFileRef
     ? "\nimport ImageViewField from '../../../../uiLib/file/ImageViewField';"
